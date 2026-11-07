@@ -12,6 +12,7 @@ import '../workspace/open_novel.dart';
 import '../write/writing_prefs.dart';
 import 'backup_actions.dart';
 import 'book_opening.dart';
+import 'cover_art.dart';
 import 'cover_picker.dart';
 import 'library_actions.dart';
 
@@ -61,39 +62,43 @@ class BookJacket extends StatelessWidget {
           colors: [Color.lerp(accent, Colors.white, 0.08)!, Color.lerp(accent, Colors.black, 0.35)!],
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(width * 0.06),
-        child: DecoratedBox(
-          decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.55))),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.06, vertical: width * 0.1),
-            child: Column(
-              children: [
-                const Spacer(),
-                _Lettering(
-                  title,
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                  style: vaultHeading(context, size: width * 0.1, color: ink, weight: 700),
-                ),
-                if (novel.subtitle.isNotEmpty) ...[
-                  SizedBox(height: width * 0.04),
+      // The book's own motif, faint, behind its frame and lettering (`cover_art.dart`).
+      child: CustomPaint(
+        painter: CoverArtPainter(motif: motifOf(novel), seed: coverSeed(novel.id), ink: ink),
+        child: Padding(
+          padding: EdgeInsets.all(width * 0.06),
+          child: DecoratedBox(
+            decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.55))),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.06, vertical: width * 0.1),
+              child: Column(
+                children: [
+                  const Spacer(),
                   _Lettering(
-                    novel.subtitle,
-                    maxLines: 2,
+                    title,
+                    maxLines: 4,
                     overflow: TextOverflow.ellipsis,
-                    style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.85)),
+                    style: vaultHeading(context, size: width * 0.1, color: ink, weight: 700),
                   ),
+                  if (novel.subtitle.isNotEmpty) ...[
+                    SizedBox(height: width * 0.04),
+                    _Lettering(
+                      novel.subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.85)),
+                    ),
+                  ],
+                  const Spacer(),
+                  if (novel.author.isNotEmpty)
+                    _Lettering(
+                      novel.author,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.9)),
+                    ),
                 ],
-                const Spacer(),
-                if (novel.author.isNotEmpty)
-                  _Lettering(
-                    novel.author,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.9)),
-                  ),
-              ],
+              ),
             ),
           ),
         ),

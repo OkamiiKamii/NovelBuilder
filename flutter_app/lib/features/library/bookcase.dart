@@ -6,6 +6,7 @@ import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
 import 'book_opening.dart';
 import 'bookshelf.dart';
+import 'cover_art.dart';
 
 /// THE BOOKCASE: the library as spines standing on wooden shelves, so a long shelf of novels is seen at a glance. Each
 /// spine carries the book's colour, its title down the spine in the vault's capitals and its author's initials at the
@@ -182,6 +183,14 @@ class _SpineState extends ConsumerState<Spine> {
         children: [
           const SizedBox(height: 10),
           _Bands(ink: ink),
+          // The book's motif, small, under the head bands (`cover_art.dart`).
+          const SizedBox(height: 8),
+          SizedBox.square(
+            dimension: 14,
+            child: CustomPaint(
+              painter: SpineEmblemPainter(motif: motifOf(novel), ink: ink),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
