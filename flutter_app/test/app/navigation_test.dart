@@ -94,4 +94,27 @@ void main() {
       expect(tester.takeException(), isNull, reason: d.label);
     }
   });
+
+  testWidgets('going to another area turns the page being left like a leaf, then leaves nothing over the new one', (
+    tester,
+  ) async {
+    final container = await pumpApp(tester, size: desktop);
+    expect(find.byType(RawImage), findsNothing);
+    await tester.tap(find.text(Destination.write.label).first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.byType(RawImage), findsOneWidget, reason: 'the leaf, turning');
+    expect(currentLocation(container), Destination.write.path, reason: 'the new area is open under it at once');
+    await tester.pumpAndSettle();
+    expect(find.byType(RawImage), findsNothing, reason: 'gone once turned');
+
+    // Back the other way, and with less motion asked for, no leaf at all.
+    tester.platformDispatcher.accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(Destination.library.label).first);
+    await tester.pump();
+    expect(find.byType(RawImage), findsNothing);
+    expect(currentLocation(container), Destination.library.path);
+  });
 }

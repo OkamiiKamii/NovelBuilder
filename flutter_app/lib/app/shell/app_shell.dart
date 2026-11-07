@@ -13,6 +13,7 @@ import '../../shared/data/providers.dart';
 import '../destinations.dart';
 import '../theme/leather.dart';
 import 'app_shortcuts.dart';
+import 'page_turn.dart';
 
 /// The frame around every page: a navigation rail on wide screens, a bottom bar on phones.
 ///
@@ -31,12 +32,26 @@ class AppShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final current = Destination.forLocation(location);
     final size = WindowSize.of(context);
-    final body = FocusTraversalGroup(
-      child: ReviewGate(location: location, child: child),
-    );
     // Focus mode while writing: no navigation, only the page. The editor shows how to leave it.
     final focus = current == Destination.write && ref.watch(focusModeProvider);
+    // The page between areas turns like a leaf of the book (`page_turn.dart`).
+    return PageTurner(
+      builder: (context, bind) => _frame(
+        context,
+        ref,
+        current,
+        size,
+        focus,
+        bind(
+          FocusTraversalGroup(
+            child: ReviewGate(location: location, child: child),
+          ),
+        ),
+      ),
+    );
+  }
 
+  Widget _frame(BuildContext context, WidgetRef ref, Destination? current, WindowSize size, bool focus, Widget body) {
     final Widget layout = switch (size) {
       _ when focus => Scaffold(body: SafeArea(child: body)),
       WindowSize.compact => Scaffold(
@@ -71,7 +86,7 @@ class AppShell extends ConsumerWidget {
         actions: {
           GoToDestinationIntent: CallbackAction<GoToDestinationIntent>(
             onInvoke: (intent) {
-              context.go(intent.destination.path);
+              goToArea(context, current, intent.destination);
               return null;
             },
           ),
@@ -160,7 +175,7 @@ class _Rail extends StatelessWidget {
         ),
       ),
       selectedIndex: current?.index,
-      onDestinationSelected: (index) => context.go(Destination.values[index].path),
+      onDestinationSelected: (index) => goToArea(context, current, Destination.values[index]),
       destinations: [
         for (final d in Destination.values)
           NavigationRailDestination(
@@ -189,7 +204,7 @@ class _BottomBar extends StatelessWidget {
       indicatorColor: selected == null ? Colors.transparent : null,
       onDestinationSelected: (index) {
         if (index < primary.length) {
-          context.go(primary[index].path);
+          goToArea(context, current, primary[index]);
         } else {
           _showMore(context);
         }
@@ -234,7 +249,7 @@ class _BottomBar extends StatelessWidget {
                   selected: d == current,
                   onTap: () {
                     Navigator.of(sheetContext).pop();
-                    context.go(d.path);
+                    goToArea(context, current, d);
                   },
                 ),
               Consumer(
@@ -278,4 +293,16 @@ class _CompactSaveStatus extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Opens another area, turning the page being left like a leaf of the book: to the left going forward through the
+/// areas, to the right going back. The same area, or no known one to leave, just opens.
+void goToArea(BuildContext context, Destination? from, Destination to) {
+  void go() => context.go(to.path);
+  final turner = PageTurner.of(context);
+  if (turner == null || from == null || from == to) {
+    go();
+    return;
+  }
+  turner.turn(forward: to.index > from.index, go: go);
 }
