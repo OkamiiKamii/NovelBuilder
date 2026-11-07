@@ -97,7 +97,8 @@ const tutorialTopics = <Topic>[
     what: 'The editor. It saves as you type, never changes your words by itself, and works with no connection.',
     steps: [
       'Add a chapter (or a scene inside one) in the outline, and select it.',
-      'Write on the page. Its title is typed at the top, under the chapter number.',
+      'Write on the page; its title is typed at the top. Beside it (the panel button) are notes: how the chapter '
+          'before ends, this chapter\'s plan and beats, who is on the page and the threads that move here.',
       'Below the page: today\'s words against your goal (tap to set one), the words added this session, the '
           'chapter\'s length and the save status.',
       'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. The frame button is focus '

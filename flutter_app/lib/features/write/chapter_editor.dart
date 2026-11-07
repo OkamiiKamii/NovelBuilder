@@ -24,6 +24,7 @@ import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
 import 'editor/link_bar.dart';
 import 'editor/prose_document.dart';
+import 'margin.dart';
 import 'sprint.dart';
 import 'version_history.dart';
 import 'write_providers.dart';
@@ -215,6 +216,33 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
           }),
         );
   }
+
+  /// The margin's cards as a sheet over the page: on a phone, or where the window leaves no room beside it.
+  void _openMarginSheet() => showModalBottomSheet<void>(
+    context: context,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (sheet) => DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.6,
+      maxChildSize: 0.92,
+      builder: (sheet, scroll) => ListView(
+        controller: scroll,
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+        children: [
+          ChapterMargin(
+            novelId: widget.novelId,
+            nodeId: widget.node.id,
+            onLeave: () {
+              Navigator.of(sheet).pop();
+              _flush();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 
   JsonMap _currentDoc() => documentToProse(_document!, extras: _prose!.docExtras);
 
@@ -510,180 +538,221 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
         const SingleActivator(LogicalKeyboardKey.keyF, control: true, shift: true): toggleFocus,
         const SingleActivator(LogicalKeyboardKey.escape): escape,
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (focus)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                child: Wrap(
-                  spacing: 8,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    if (_editor != null)
-                      FilterChip(
-                        avatar: const Icon(Icons.vertical_align_center, size: 18),
-                        label: const Text('Typewriter'),
-                        tooltip: 'Keep the line you are writing in the middle',
-                        selected: ref.watch(typewriterProvider),
-                        showCheckmark: false,
-                        onSelected: (on) => ref.read(typewriterProvider.notifier).set(on),
-                      ),
-                    TextButton.icon(
-                      onPressed: () => ref.read(focusModeProvider.notifier).set(false),
-                      icon: const Icon(Icons.fullscreen_exit),
-                      label: const Text('Exit focus'),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          else
-            Padding(
-              padding: EdgeInsets.fromLTRB(compact ? 4 : 16, 8, 8, 0),
-              child: Row(
-                children: [
-                  if (widget.onBack != null)
-                    IconButton(
-                      tooltip: 'Back to the outline',
-                      onPressed: widget.onBack,
-                      icon: const Icon(Icons.arrow_back),
-                    ),
-                  const Spacer(),
-                  if (_editor != null)
-                    IconButton(tooltip: 'Find and replace (⌘F)', onPressed: _openFind, icon: const Icon(Icons.search)),
-                  IconButton(tooltip: 'Writing settings', onPressed: _openPrefs, icon: const Icon(Icons.text_fields)),
-                  IconButton(tooltip: 'Focus mode (⇧⌘F)', onPressed: toggleFocus, icon: const Icon(Icons.fullscreen)),
-                  IconButton(tooltip: 'Alternate drafts', onPressed: _openDrafts, icon: const Icon(Icons.alt_route)),
-                  IconButton(tooltip: 'Version history', onPressed: _openHistory, icon: const Icon(Icons.history)),
-                ],
-              ),
-            ),
-          if (!focus)
-            _DraftLine(service: _service, novelId: widget.novelId, nodeId: widget.node.id, onOpen: _openDrafts),
-          if (_recovered != null)
-            MaterialBanner(
-              content: Text(
-                'Unsaved writing from ${formatRelative(context, _recovered!.at.millisecondsSinceEpoch)} was recovered. '
-                'Keep it, or keep the saved text?',
-              ),
-              actions: [
-                TextButton(onPressed: _discardRecovered, child: const Text('Keep the saved text')),
-                FilledButton(onPressed: _keepRecovered, child: const Text('Keep the recovered writing')),
-              ],
-            ),
-          if (_editor != null && !focus)
-            _Toolbar(
-              editor: _editor!,
-              composer: _composer!,
-              document: _document!,
-              onLink: _linkEntry,
-              onUnlink: _unlink,
-              onSplit: _splitHere,
-            ),
-          if (_findOpen && _editor != null)
-            FindBar(
-              editor: _editor!,
-              document: _document!,
-              initialTerm: _findStart?.term,
-              initialBlock: _findStart?.block,
-              onClose: () => setState(() {
-                _findOpen = false;
-                _findStart = null;
-              }),
-            ),
-          if (_editor != null && !focus)
-            LinkBar(
-              composer: _composer!,
-              document: _document!,
-              entryOf: (id) {
-                final row = ref.read(novelStoreProvider).row(widget.novelId, 'loreEntries', id);
-                return row == null ? null : Entry(row);
-              },
-              kindOf: (e) {
-                final rows = ref.read(novelStoreProvider).rowsIn(widget.novelId, 'loreSchemas');
-                final kinds = resolveCategories([for (final r in rows) Category(r)]);
-                return kinds.where((c) => c.key == e.category).firstOrNull?.singular ?? 'Entry';
-              },
-              onOpen: (entry) {
-                _flush();
-                context.go(entryPath(entry.id, character: entry.category == 'character'));
-              },
-            ),
-          // Keyed, so the page (and the editor on it) stays the same when bars above it come and go (focus mode, a
-          // sprint): rebuilt from nothing, the editor would lose the caret and, on a phone, fail while it mounts.
-          Expanded(
-            key: const ValueKey('page'),
-            child: _Desk(
-              compact: compact,
-              paper: page?.background,
-              width: prefs.width.maxWidth,
-              // The typewriter's light: the text away from the line being written fades back. Always in the tree (clear
-              // when off), so turning it on or off never rebuilds the editor under it.
-              child: LayoutBuilder(
-                builder: (context, box) => ShaderMask(
-                  blendMode: BlendMode.dstIn,
-                  shaderCallback: (rect) => LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: typewriter
-                        ? const [Color(0x40000000), Color(0xFF000000), Color(0xFF000000), Color(0x40000000)]
-                        : const [Color(0xFF000000), Color(0xFF000000)],
-                    stops: typewriter ? const [0.05, typewriterLine - 0.12, typewriterLine + 0.1, 0.95] : null,
-                  ).createShader(rect),
-                  child: CustomScrollView(
-                    controller: _scroll,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: _ChapterHeading(
-                          title: _title,
-                          kicker: _kicker(),
-                          hint: 'Untitled ${widget.node.kindKey}',
-                          compact: compact,
-                          ink: page?.text,
-                          muted: page?.muted,
-                          onRename: _rename,
+      // The editor's own width says whether the margin fits beside the page (always in the tree: nothing under it is
+      // rebuilt when it changes).
+      child: LayoutBuilder(
+        builder: (context, box) {
+          final paperWidth = prefs.width.maxWidth.isFinite ? prefs.width.maxWidth + 112 : 900.0;
+          final room = !compact && box.maxWidth >= paperWidth * 0.85 + marginWidth + 68;
+          final showMargin = room && !focus && ref.watch(marginProvider);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (focus)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                    child: Wrap(
+                      spacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        if (_editor != null)
+                          FilterChip(
+                            avatar: const Icon(Icons.vertical_align_center, size: 18),
+                            label: const Text('Typewriter'),
+                            tooltip: 'Keep the line you are writing in the middle',
+                            selected: ref.watch(typewriterProvider),
+                            showCheckmark: false,
+                            onSelected: (on) => ref.read(typewriterProvider.notifier).set(on),
+                          ),
+                        TextButton.icon(
+                          onPressed: () => ref.read(focusModeProvider.notifier).set(false),
+                          icon: const Icon(Icons.fullscreen_exit),
+                          label: const Text('Exit focus'),
                         ),
-                      ),
-                      if (_editor == null)
-                        _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
-                      else
-                        SuperEditor(
-                          // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
-                          key: ObjectKey(_editor),
-                          editor: _editor!,
-                          documentLayoutKey: _layout,
-                          focusNode: _focus,
-                          autofocus: !compact,
-                          stylesheet: writingStylesheet(theme, prefs),
-                          contentTapDelegateFactories: const [],
+                      ],
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: EdgeInsets.fromLTRB(compact ? 4 : 16, 8, 8, 0),
+                  child: Row(
+                    children: [
+                      if (widget.onBack != null)
+                        IconButton(
+                          tooltip: 'Back to the outline',
+                          onPressed: widget.onBack,
+                          icon: const Icon(Icons.arrow_back),
                         ),
-                      // Room under the last line, so it too can come up to the middle.
-                      if (typewriter) SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),
+                      const Spacer(),
+                      if (_editor != null)
+                        IconButton(
+                          tooltip: 'Find and replace (⌘F)',
+                          onPressed: _openFind,
+                          icon: const Icon(Icons.search),
+                        ),
+                      IconButton(
+                        tooltip: 'Writing settings',
+                        onPressed: _openPrefs,
+                        icon: const Icon(Icons.text_fields),
+                      ),
+                      // Beside the page where there is room (on and off), otherwise as a sheet over it.
+                      IconButton(
+                        tooltip: room
+                            ? (showMargin ? 'Hide the notes beside the page' : 'Show the notes beside the page')
+                            : 'Notes for this chapter',
+                        isSelected: room && showMargin,
+                        onPressed: room
+                            ? () => ref.read(marginProvider.notifier).set(!showMargin)
+                            : () => _openMarginSheet(),
+                        icon: const Icon(Icons.view_sidebar_outlined),
+                        selectedIcon: const Icon(Icons.view_sidebar),
+                      ),
+                      IconButton(
+                        tooltip: 'Focus mode (⇧⌘F)',
+                        onPressed: toggleFocus,
+                        icon: const Icon(Icons.fullscreen),
+                      ),
+                      IconButton(
+                        tooltip: 'Alternate drafts',
+                        onPressed: _openDrafts,
+                        icon: const Icon(Icons.alt_route),
+                      ),
+                      IconButton(tooltip: 'Version history', onPressed: _openHistory, icon: const Icon(Icons.history)),
                     ],
                   ),
                 ),
+              if (!focus)
+                _DraftLine(service: _service, novelId: widget.novelId, nodeId: widget.node.id, onOpen: _openDrafts),
+              if (_recovered != null)
+                MaterialBanner(
+                  content: Text(
+                    'Unsaved writing from ${formatRelative(context, _recovered!.at.millisecondsSinceEpoch)} was recovered. '
+                    'Keep it, or keep the saved text?',
+                  ),
+                  actions: [
+                    TextButton(onPressed: _discardRecovered, child: const Text('Keep the saved text')),
+                    FilledButton(onPressed: _keepRecovered, child: const Text('Keep the recovered writing')),
+                  ],
+                ),
+              if (_editor != null && !focus)
+                _Toolbar(
+                  editor: _editor!,
+                  composer: _composer!,
+                  document: _document!,
+                  onLink: _linkEntry,
+                  onUnlink: _unlink,
+                  onSplit: _splitHere,
+                ),
+              if (_findOpen && _editor != null)
+                FindBar(
+                  editor: _editor!,
+                  document: _document!,
+                  initialTerm: _findStart?.term,
+                  initialBlock: _findStart?.block,
+                  onClose: () => setState(() {
+                    _findOpen = false;
+                    _findStart = null;
+                  }),
+                ),
+              if (_editor != null && !focus)
+                LinkBar(
+                  composer: _composer!,
+                  document: _document!,
+                  entryOf: (id) {
+                    final row = ref.read(novelStoreProvider).row(widget.novelId, 'loreEntries', id);
+                    return row == null ? null : Entry(row);
+                  },
+                  kindOf: (e) {
+                    final rows = ref.read(novelStoreProvider).rowsIn(widget.novelId, 'loreSchemas');
+                    final kinds = resolveCategories([for (final r in rows) Category(r)]);
+                    return kinds.where((c) => c.key == e.category).firstOrNull?.singular ?? 'Entry';
+                  },
+                  onOpen: (entry) {
+                    _flush();
+                    context.go(entryPath(entry.id, character: entry.category == 'character'));
+                  },
+                ),
+              // Keyed, so the page (and the editor on it) stays the same when bars above it come and go (focus mode, a
+              // sprint): rebuilt from nothing, the editor would lose the caret and, on a phone, fail while it mounts.
+              Expanded(
+                key: const ValueKey('page'),
+                child: _Desk(
+                  compact: compact,
+                  paper: page?.background,
+                  width: prefs.width.maxWidth,
+                  margin: showMargin
+                      ? ChapterMargin(novelId: widget.novelId, nodeId: widget.node.id, onLeave: _flush)
+                      : null,
+                  // The typewriter's light: the text away from the line being written fades back. Always in the tree (clear
+                  // when off), so turning it on or off never rebuilds the editor under it.
+                  child: LayoutBuilder(
+                    builder: (context, box) => ShaderMask(
+                      blendMode: BlendMode.dstIn,
+                      shaderCallback: (rect) => LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: typewriter
+                            ? const [Color(0x40000000), Color(0xFF000000), Color(0xFF000000), Color(0x40000000)]
+                            : const [Color(0xFF000000), Color(0xFF000000)],
+                        stops: typewriter ? const [0.05, typewriterLine - 0.12, typewriterLine + 0.1, 0.95] : null,
+                      ).createShader(rect),
+                      child: CustomScrollView(
+                        controller: _scroll,
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: _ChapterHeading(
+                              title: _title,
+                              kicker: _kicker(),
+                              hint: 'Untitled ${widget.node.kindKey}',
+                              compact: compact,
+                              ink: page?.text,
+                              muted: page?.muted,
+                              onRename: _rename,
+                            ),
+                          ),
+                          if (_editor == null)
+                            _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
+                          else
+                            SuperEditor(
+                              // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
+                              key: ObjectKey(_editor),
+                              editor: _editor!,
+                              documentLayoutKey: _layout,
+                              focusNode: _focus,
+                              autofocus: !compact,
+                              stylesheet: writingStylesheet(theme, prefs),
+                              contentTapDelegateFactories: const [],
+                            ),
+                          // Room under the last line, so it too can come up to the middle.
+                          if (typewriter)
+                            SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          if (sprint != null)
-            SprintBar(sprint: sprint)
-          else if (sprintResult != null)
-            SprintCard(result: sprintResult)
-          else if (!focus)
-            _Meter(
-              words: _counts.words,
-              minutes: _counts.readingMinutes,
-              session: _counts.words - _sessionStart,
-              today: written.today,
-              week: written.week,
-              daily: goals.daily,
-              weekly: goals.weekly,
-              onGoals: _goals,
-            ),
-        ],
+              if (sprint != null)
+                SprintBar(sprint: sprint)
+              else if (sprintResult != null)
+                SprintCard(result: sprintResult)
+              else if (!focus)
+                _Meter(
+                  words: _counts.words,
+                  minutes: _counts.readingMinutes,
+                  session: _counts.words - _sessionStart,
+                  today: written.today,
+                  week: written.week,
+                  daily: goals.daily,
+                  weekly: goals.weekly,
+                  onGoals: _goals,
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -692,7 +761,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
 /// THE WRITING DESK: on a tablet or a computer the chapter is a sheet of paper on a desk, as wide as the author's
 /// line length plus its margins. On a phone the paper is the whole screen.
 class _Desk extends StatelessWidget {
-  const _Desk({required this.compact, required this.paper, required this.width, required this.child});
+  const _Desk({required this.compact, required this.paper, required this.width, required this.child, this.margin});
 
   final bool compact;
 
@@ -700,6 +769,10 @@ class _Desk extends StatelessWidget {
   final Color? paper;
   final double width;
   final Widget child;
+
+  /// The margin's cards beside the page (`margin.dart`), when shown. The page is always the row's first child, so
+  /// showing or hiding them never rebuilds the editor.
+  final Widget? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -712,40 +785,58 @@ class _Desk extends StatelessWidget {
       child: Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
-          // The text's own width, its 24-point margins, and the paper's edge.
-          constraints: BoxConstraints(maxWidth: width.isFinite ? width + 112 : double.infinity),
+          // The text's own width, its 24-point margins, and the paper's edge; then the margin beside it.
+          constraints: BoxConstraints(
+            maxWidth: width.isFinite ? width + 112 + (margin == null ? 0 : marginWidth + _marginGap) : double.infinity,
+          ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-                border: Border.all(color: scheme.outlineVariant.withValues(alpha: dark ? 0.6 : 0.45)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: dark ? 0.45 : 0.10),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: dark ? 0.3 : 0.06),
-                    blurRadius: 3,
-                    offset: const Offset(0, 1),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(child: _paper(scheme, dark, sheet)),
+                if (margin != null) ...[
+                  const SizedBox(width: _marginGap),
+                  SizedBox(
+                    width: marginWidth,
+                    child: SingleChildScrollView(padding: const EdgeInsets.only(bottom: 24), child: margin),
                   ),
                 ],
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-                child: ColoredBox(
-                  color: sheet,
-                  child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: child),
-                ),
-              ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
+
+  static const _marginGap = 20.0;
+
+  Widget _paper(ColorScheme scheme, bool dark, Color sheet) => DecoratedBox(
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+      border: Border.all(color: scheme.outlineVariant.withValues(alpha: dark ? 0.6 : 0.45)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: dark ? 0.45 : 0.10),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: dark ? 0.3 : 0.06),
+          blurRadius: 3,
+          offset: const Offset(0, 1),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+      child: ColoredBox(
+        color: sheet,
+        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: child),
+      ),
+    ),
+  );
 }
 
 /// The top of the page, set like a printed book's: where it sits, the title (typed here), and an ornament.
