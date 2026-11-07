@@ -38,18 +38,26 @@ class WritePage extends ConsumerWidget {
         : ChapterEditor(key: ValueKey(node.id), novelId: novelId, node: node, onBack: onBack);
 
     // Focus mode: only the chapter being written.
-    if (ref.watch(focusModeProvider) && node != null) return editor();
+    final focus = ref.watch(focusModeProvider) && node != null;
     if (WindowSize.of(context) == WindowSize.compact) {
+      if (focus) return editor();
       return node == null
           ? const OutlinePanel()
           : editor(onBack: () => ref.read(selectedNodeProvider.notifier).select(null));
     }
+    // On a computer, the same row in focus mode, without the outline, so the chapter's editor (and its caret) is kept
+    // as it is. On a tablet the editor is built afresh, as before: there the keyboard closes and the caret goes anyway,
+    // and keeping it trips a known slip of super_editor 0.3.0-dev.50's Android handles (README, "The typewriter").
+    final computer = switch (Theme.of(context).platform) {
+      TargetPlatform.macOS || TargetPlatform.windows || TargetPlatform.linux => true,
+      _ => false,
+    };
+    if (focus && !computer) return editor();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(width: 300, child: OutlinePanel()),
-        const VerticalDivider(width: 1),
-        Expanded(child: editor()),
+        if (!focus) ...[const SizedBox(width: 300, child: OutlinePanel()), const VerticalDivider(width: 1)],
+        Expanded(key: const ValueKey('chapter'), child: editor()),
       ],
     );
   }

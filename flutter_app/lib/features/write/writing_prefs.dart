@@ -220,3 +220,19 @@ class FocusModeNotifier extends Notifier<bool> {
 }
 
 final focusModeProvider = NotifierProvider<FocusModeNotifier, bool>(FocusModeNotifier.new);
+
+/// TYPEWRITER: in focus mode (and so in a sprint) the line being written stays at the middle of the screen and the
+/// text above and below fades back. On unless the author turns it off; kept on this device.
+const typewriterKey = 'write.typewriter';
+
+class TypewriterNotifier extends Notifier<bool> {
+  @override
+  bool build() => ref.watch(settingsStoreProvider).read(typewriterKey) != false;
+
+  void set(bool on) {
+    state = on;
+    ref.read(settingsStoreProvider).write(typewriterKey, on);
+  }
+}
+
+final typewriterProvider = NotifierProvider<TypewriterNotifier, bool>(TypewriterNotifier.new);

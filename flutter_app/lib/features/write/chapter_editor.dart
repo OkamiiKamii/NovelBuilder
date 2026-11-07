@@ -36,6 +36,9 @@ const _maxUnsaved = Duration(seconds: 5);
 /// Crash copies are written this often while there is unsaved writing.
 const _draftEvery = Duration(milliseconds: 250);
 
+/// Where the typewriter keeps the line being written: this far down the page's height.
+const typewriterLine = 0.45;
+
 /// Writing one chapter or scene.
 ///
 /// NON-INVASIVE EDITING: the editor is built with no automatic conversions (no Markdown shortcuts, no smart dashes,
@@ -59,6 +62,9 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
   late final _saves = ref.read(saveControllerProvider);
   late final _title = TextEditingController(text: widget.node.title);
   final _focus = FocusNode();
+  final _scroll = ScrollController();
+  final _layout = GlobalKey();
+  bool _centering = false;
 
   late OpenedText _opened;
   late int _rev;
@@ -153,16 +159,61 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
       isHistoryEnabled: true,
     );
     document.addListener(_changed);
+    _composer!.selectionNotifier.addListener(_keepCentred);
   }
 
   void _detach() {
     _document?.removeListener(_changed);
     // The editor on screen may still be using its composer this frame: let it go first.
     final composer = _composer;
+    composer?.selectionNotifier.removeListener(_keepCentred);
     if (composer != null) WidgetsBinding.instance.addPostFrameCallback((_) => composer.dispose());
     _editor = null;
     _composer = null;
     _document = null;
+  }
+
+  /// TYPEWRITER: in focus mode, the page moves so the caret's line sits a little above the middle of the screen, the
+  /// way paper feeds through a typewriter. Once a frame at most, after the caret has been laid out; only ever scrolls,
+  /// never touches the text or the caret.
+  void _keepCentred() {
+    if (_centering || !ref.read(focusModeProvider) || !ref.read(typewriterProvider)) return;
+    _centering = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _centering = false;
+      if (mounted) _centre(glide: !MediaQuery.disableAnimationsOf(context));
+    });
+  }
+
+  /// Moves the page so the caret's line is at [typewriterLine]. A glide that something else interrupts (the editor
+  /// keeping a tapped caret in view, on a phone) is set straight once it stops, without gliding again.
+  void _centre({required bool glide}) {
+    if (!mounted || !_scroll.hasClients) return;
+    final selection = _composer?.selection;
+    final Object? layout = _layout.currentState;
+    if (selection == null || layout is! DocumentLayout) return;
+    final caret = layout.getRectForPosition(selection.extent);
+    final position = _scroll.position;
+    final viewport = position.context.storageContext.findRenderObject();
+    if (caret == null || viewport is! RenderBox) return;
+    // The layout is a sliver here: it says where its own points are on the screen.
+    final y = layout.getGlobalOffsetFromDocumentOffset(caret.center).dy - viewport.localToGlobal(Offset.zero).dy;
+    final target = (position.pixels + y - viewport.size.height * typewriterLine).clamp(
+      position.minScrollExtent,
+      position.maxScrollExtent,
+    );
+    if ((target - position.pixels).abs() < 2) return;
+    if (!glide) {
+      position.jumpTo(target);
+      return;
+    }
+    position
+        .animateTo(target, duration: const Duration(milliseconds: 160), curve: Curves.easeOutCubic)
+        .whenComplete(
+          () => WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && ref.read(focusModeProvider) && ref.read(typewriterProvider)) _centre(glide: false);
+          }),
+        );
   }
 
   JsonMap _currentDoc() => documentToProse(_document!, extras: _prose!.docExtras);
@@ -271,6 +322,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
     _detach();
     _title.dispose();
     _focus.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
@@ -426,6 +478,14 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
     final focus = ref.watch(focusModeProvider);
     final sprint = ref.watch(sprintProvider);
     final sprintResult = ref.watch(sprintResultProvider);
+    final typewriter = focus && ref.watch(typewriterProvider) && _editor != null;
+    // Into focus mode (or the typewriter turned on): bring the caret's line to the middle at once.
+    ref.listen(focusModeProvider, (_, on) {
+      if (on) _keepCentred();
+    });
+    ref.listen(typewriterProvider, (_, on) {
+      if (on) _keepCentred();
+    });
     // A sprint starting while this chapter is open counts from its words now.
     ref.listen(sprintProvider, (before, now) {
       if (before == null && now != null) ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
@@ -458,10 +518,25 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                child: TextButton.icon(
-                  onPressed: () => ref.read(focusModeProvider.notifier).set(false),
-                  icon: const Icon(Icons.fullscreen_exit),
-                  label: const Text('Exit focus'),
+                child: Wrap(
+                  spacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    if (_editor != null)
+                      FilterChip(
+                        avatar: const Icon(Icons.vertical_align_center, size: 18),
+                        label: const Text('Typewriter'),
+                        tooltip: 'Keep the line you are writing in the middle',
+                        selected: ref.watch(typewriterProvider),
+                        showCheckmark: false,
+                        onSelected: (on) => ref.read(typewriterProvider.notifier).set(on),
+                      ),
+                    TextButton.icon(
+                      onPressed: () => ref.read(focusModeProvider.notifier).set(false),
+                      icon: const Icon(Icons.fullscreen_exit),
+                      label: const Text('Exit focus'),
+                    ),
+                  ],
                 ),
               ),
             )
@@ -545,32 +620,51 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
               compact: compact,
               paper: page?.background,
               width: prefs.width.maxWidth,
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: _ChapterHeading(
-                      title: _title,
-                      kicker: _kicker(),
-                      hint: 'Untitled ${widget.node.kindKey}',
-                      compact: compact,
-                      ink: page?.text,
-                      muted: page?.muted,
-                      onRename: _rename,
-                    ),
+              // The typewriter's light: the text away from the line being written fades back. Always in the tree (clear
+              // when off), so turning it on or off never rebuilds the editor under it.
+              child: LayoutBuilder(
+                builder: (context, box) => ShaderMask(
+                  blendMode: BlendMode.dstIn,
+                  shaderCallback: (rect) => LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: typewriter
+                        ? const [Color(0x40000000), Color(0xFF000000), Color(0xFF000000), Color(0x40000000)]
+                        : const [Color(0xFF000000), Color(0xFF000000)],
+                    stops: typewriter ? const [0.05, typewriterLine - 0.12, typewriterLine + 0.1, 0.95] : null,
+                  ).createShader(rect),
+                  child: CustomScrollView(
+                    controller: _scroll,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: _ChapterHeading(
+                          title: _title,
+                          kicker: _kicker(),
+                          hint: 'Untitled ${widget.node.kindKey}',
+                          compact: compact,
+                          ink: page?.text,
+                          muted: page?.muted,
+                          onRename: _rename,
+                        ),
+                      ),
+                      if (_editor == null)
+                        _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
+                      else
+                        SuperEditor(
+                          // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
+                          key: ObjectKey(_editor),
+                          editor: _editor!,
+                          documentLayoutKey: _layout,
+                          focusNode: _focus,
+                          autofocus: !compact,
+                          stylesheet: writingStylesheet(theme, prefs),
+                          contentTapDelegateFactories: const [],
+                        ),
+                      // Room under the last line, so it too can come up to the middle.
+                      if (typewriter) SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),
+                    ],
                   ),
-                  if (_editor == null)
-                    _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
-                  else
-                    SuperEditor(
-                      // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
-                      key: ObjectKey(_editor),
-                      editor: _editor!,
-                      focusNode: _focus,
-                      autofocus: !compact,
-                      stylesheet: writingStylesheet(theme, prefs),
-                      contentTapDelegateFactories: const [],
-                    ),
-                ],
+                ),
               ),
             ),
           ),

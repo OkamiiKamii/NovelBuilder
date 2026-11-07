@@ -100,8 +100,8 @@ const tutorialTopics = <Topic>[
       'Write on the page. Its title is typed at the top, under the chapter number.',
       'Below the page: today\'s words against your goal (tap to set one), the words added this session, the '
           'chapter\'s length and the save status.',
-      'Use the text button for font, size and spacing, the frame button for focus mode, and Ctrl/⌘+F to find and '
-          'replace words in the chapter.',
+      'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. The frame button is focus '
+          'mode: the line you write stays in the middle and the rest fades back (Typewriter turns that off).',
       'Press Sprint below the page and choose 10, 15, 25 or 45 minutes: the desk clears, a ring shows the time left '
           'beside the words you add, and at the end a card says what you wrote. Stop ends it early.',
     ],
