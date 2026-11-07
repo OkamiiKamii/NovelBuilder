@@ -20,6 +20,7 @@ import '../progression/progression_tab.dart';
 import 'character_actions.dart';
 import 'characters_providers.dart';
 import 'data/portrait_image.dart';
+import 'interview.dart';
 import 'tabs/details_tab.dart';
 import 'tabs/history_tab.dart';
 import 'tabs/notes_tab.dart';
@@ -103,6 +104,26 @@ class CharacterPage extends ConsumerWidget {
             icon: const Icon(Icons.arrow_back),
             label: const Text('All characters'),
           ),
+          // Getting to know them, a question at a time, while their profile still has empty answers.
+          if (interviewFor(entry, profile, cast.templates).isNotEmpty)
+            FilledButton.icon(
+              onPressed: () => showInterview(
+                context,
+                entry: entry,
+                profile: profile,
+                templates: cast.templates,
+                // Into the field they have, or the one their section suggests, made now with the answer.
+                save: (step, value) => actions.now((c) {
+                  if (step.fieldId != null) return c.updateField(entry.id, step.fieldId!, value: value);
+                  // The section as it is stored now (found by name: an unstored profile's ids change on each read).
+                  final sections = c.profileOf(c.character(entry.id)).sections;
+                  final section = sections.where((s) => s.name == step.sectionName).firstOrNull;
+                  c.addField(entry.id, section?.id ?? step.sectionId!, step.suggestion!, value: value);
+                }),
+              ),
+              icon: const Icon(Icons.record_voice_over_outlined),
+              label: Text('Interview ${entry.name}'),
+            ),
           _MoreMenu(cast: cast, listed: listed, actions: actions),
         ],
         child: Column(

@@ -17,6 +17,8 @@ import 'character_actions.dart';
 import 'characters_providers.dart';
 import 'new_character_dialog.dart';
 import 'widgets/cast_card.dart';
+import 'widgets/cast_ties.dart';
+import 'widgets/manuscript_names.dart';
 import 'widgets/portrait.dart';
 
 const _page = 60;
@@ -104,6 +106,21 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
             child: OrganizeSwitch(current: OrganizePart.characters),
           ),
           const SizedBox(height: 16),
+          // The names written in the manuscript that are not in the cast yet, one press from it.
+          ManuscriptNames(
+            cast: cast,
+            onAdd: (name) {
+              final actions = CharacterActions(context, cast.novelId);
+              final made = actions.now((c) => c.create(name: name));
+              if (made != null) {
+                actions.tell(
+                  '$name is in the cast.',
+                  actionLabel: 'Open',
+                  onAction: () => actions.openCharacter(made.id),
+                );
+              }
+            },
+          ),
           if (list.isEmpty)
             EmptyState(
               icon: Icons.people_outline,
@@ -143,6 +160,9 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 order: cast.model.order,
                 onOpen: (l) => context.go(characterPath(l.entry.id)),
               )
+            else if (view == CastView.ties)
+              // Who they are to each other: every pair, one press to record a tie (`widgets/cast_ties.dart`).
+              CastTies(found: found, cast: cast)
             else
               _ListView(
                 found.take(_shown).toList(),
@@ -244,6 +264,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
       segments: const [
         ButtonSegment(value: CastView.cards, icon: Icon(Icons.grid_view), label: Text('Cards')),
         ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), label: Text('List')),
+        ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), label: Text('Ties')),
       ],
       selected: {view},
       showSelectedIcon: false,
@@ -275,6 +296,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 segments: const [
                   ButtonSegment(value: CastView.cards, icon: Icon(Icons.grid_view), tooltip: 'Cards'),
                   ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), tooltip: 'List'),
+                  ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), tooltip: 'Ties'),
                 ],
                 selected: {view},
                 showSelectedIcon: false,

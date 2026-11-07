@@ -29,8 +29,11 @@ class OutlinePanel extends ConsumerWidget {
     final novelId = ref.watch(openNovelProvider)!;
     final reading = readingOrder(nodes);
     final depth = <String, int>{};
+    // Chapters are numbered in reading order, as on a contents page.
+    final number = <String, int>{};
     for (final n in reading) {
       depth[n.id] = n.parentId == null ? 0 : (depth[n.parentId] ?? -1) + 1;
+      if (n.kind == NodeKind.chapter) number[n.id] = number.length + 1;
     }
     final total = nodes.fold(0, (sum, n) => sum + n.wordCount);
     final theme = Theme.of(context);
@@ -44,13 +47,34 @@ class OutlinePanel extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 12, 4, 4),
             child: Row(
               children: [
+                // Headed like a printed book's contents page.
                 Expanded(
-                  child: Semantics(
-                    header: true,
-                    child: Text(
-                      '${ref.watch(libraryProvider).where((n) => n.id == novelId).firstOrNull?.title ?? 'Manuscript'} · ${formatNumber(total)} words',
-                      style: theme.textTheme.titleSmall,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Semantics(
+                        header: true,
+                        child: Text(
+                          'Contents',
+                          style: TextStyle(
+                            fontFamily: 'Cinzel',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                            letterSpacing: 1.6,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${ref.watch(libraryProvider).where((n) => n.id == novelId).firstOrNull?.title ?? 'Manuscript'} · ${formatNumber(total)} words',
+                        style: TextStyle(
+                          fontFamily: 'EB Garamond',
+                          fontStyle: FontStyle.italic,
+                          fontSize: 15.5,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 _AddMenu(novelId: novelId, parentId: null, label: 'Add to the manuscript'),
@@ -109,6 +133,7 @@ class OutlinePanel extends ConsumerWidget {
                         depth: depth[n.id] ?? 0,
                         selected: n.id == selected,
                         novelId: novelId,
+                        number: number[n.id],
                       );
                     },
                   ),
@@ -180,12 +205,21 @@ class _AddMenu extends ConsumerWidget {
 }
 
 class _OutlineRow extends ConsumerWidget {
-  const _OutlineRow({required this.node, required this.depth, required this.selected, required this.novelId});
+  const _OutlineRow({
+    required this.node,
+    required this.depth,
+    required this.selected,
+    required this.novelId,
+    this.number,
+  });
 
   final StoryNode node;
   final int depth;
   final bool selected;
   final String novelId;
+
+  /// Its number among the chapters, in reading order (chapters only).
+  final int? number;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -193,102 +227,100 @@ class _OutlineRow extends ConsumerWidget {
     final service = ref.read(manuscriptServiceProvider);
     final doc = isDocument(node.kind);
     final title = node.displayTitle;
-    return ListTile(
-      dense: true,
-      selected: selected,
-      contentPadding: EdgeInsets.only(left: 12.0 + depth * 16, right: 0),
-      leading: Icon(kindIcon(node.kind), size: 20),
-      title: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: doc ? null : theme.textTheme.titleSmall),
-      subtitle: Text(
-        doc ? '${formatNumber(node.wordCount)} words · ${node.status.label}' : node.kind?.label ?? node.kindKey,
-        style: theme.textTheme.bodySmall,
-      ),
-      onTap: doc ? () => ref.read(selectedNodeProvider.notifier).select(node.id) : null,
-      trailing: PopupMenuButton<String>(
-        tooltip: 'More for $title',
-        useRootNavigator: true,
-        onSelected: (action) async {
-          switch (action) {
-            case 'rename':
-              final t = await showTextPrompt(context, title: 'Rename', label: 'Title', initial: node.title);
-              if (t != null && context.mounted) _attempt(context, () => service.rename(novelId, node.id, t));
-            case 'up':
-              _attempt(context, () => service.nudge(novelId, node.id, -1));
-            case 'down':
-              _attempt(context, () => service.nudge(novelId, node.id, 1));
-            case 'move':
-              await _moveTo(context, ref);
-            case 'plan':
-              GoRouter.of(context).go(chapterPlanPath(node.id));
-            case 'duplicate':
-              _attempt(context, () => service.duplicate(novelId, node.id));
-            case 'merge':
-              final ok = await showConfirmDialog(
+    final menu = PopupMenuButton<String>(
+      tooltip: 'More for $title',
+      useRootNavigator: true,
+      onSelected: (action) async {
+        switch (action) {
+          case 'rename':
+            final t = await showTextPrompt(context, title: 'Rename', label: 'Title', initial: node.title);
+            if (t != null && context.mounted) _attempt(context, () => service.rename(novelId, node.id, t));
+          case 'up':
+            _attempt(context, () => service.nudge(novelId, node.id, -1));
+          case 'down':
+            _attempt(context, () => service.nudge(novelId, node.id, 1));
+          case 'move':
+            await _moveTo(context, ref);
+          case 'plan':
+            GoRouter.of(context).go(chapterPlanPath(node.id));
+          case 'duplicate':
+            _attempt(context, () => service.duplicate(novelId, node.id));
+          case 'merge':
+            final ok = await showConfirmDialog(
+              context,
+              title: 'Merge with the next ${node.kindKey}?',
+              message:
+                  'Its text follows this one\'s, its scenes and plan come along, and anything that pointed at it points '
+                  'here. Both texts are kept in their history first.',
+              confirmLabel: 'Merge',
+            );
+            if (ok && context.mounted) _attempt(context, () => service.merge(novelId, node.id));
+          case 'delete':
+            final ok = await showConfirmDialog(
+              context,
+              title: 'Delete “$title”?',
+              message:
+                  'It is removed with everything inside it and its text. A restore point of the novel is kept first, '
+                  'so it can be brought back.',
+              confirmLabel: 'Delete',
+              destructive: true,
+            );
+            if (!ok || !context.mounted) return;
+            late String kept;
+            if (_attempt(context, () => kept = service.delete(novelId, node.id, title: title))) {
+              if (selected) ref.read(selectedNodeProvider.notifier).select(null);
+              _tell(
                 context,
-                title: 'Merge with the next ${node.kindKey}?',
-                message:
-                    'Its text follows this one\'s, its scenes and plan come along, and anything that pointed at it points '
-                    'here. Both texts are kept in their history first.',
-                confirmLabel: 'Merge',
+                'Deleted “$title”.',
+                action: SnackBarAction(label: 'Undo', onPressed: () => service.undoDelete(kept)),
               );
-              if (ok && context.mounted) _attempt(context, () => service.merge(novelId, node.id));
-            case 'delete':
-              final ok = await showConfirmDialog(
+            }
+          default:
+            if (action.startsWith('add:')) {
+              _create(context, ref, novelId, NodeKind.values.byName(action.substring(4)), node.id);
+            } else if (action.startsWith('status:')) {
+              _attempt(
                 context,
-                title: 'Delete “$title”?',
-                message:
-                    'It is removed with everything inside it and its text. A restore point of the novel is kept first, '
-                    'so it can be brought back.',
-                confirmLabel: 'Delete',
-                destructive: true,
+                () => service.setStatus(novelId, node.id, NodeStatus.values.byName(action.substring(7))),
               );
-              if (!ok || !context.mounted) return;
-              late String kept;
-              if (_attempt(context, () => kept = service.delete(novelId, node.id, title: title))) {
-                if (selected) ref.read(selectedNodeProvider.notifier).select(null);
-                _tell(
-                  context,
-                  'Deleted “$title”.',
-                  action: SnackBarAction(label: 'Undo', onPressed: () => service.undoDelete(kept)),
-                );
-              }
-            default:
-              if (action.startsWith('add:')) {
-                _create(context, ref, novelId, NodeKind.values.byName(action.substring(4)), node.id);
-              } else if (action.startsWith('status:')) {
-                _attempt(
-                  context,
-                  () => service.setStatus(novelId, node.id, NodeStatus.values.byName(action.substring(7))),
-                );
-              }
-          }
-        },
-        itemBuilder: (_) {
-          // Merging needs the next sibling to be the same kind (a chapter after a chapter, a scene after a scene).
-          final siblings = siblingsOf(ref.read(outlineProvider), node.parentId);
-          final at = siblings.indexWhere((n) => n.id == node.id);
-          final mergeable = doc && at + 1 < siblings.length && siblings[at + 1].kind == node.kind;
-          return [
-            const PopupMenuItem(value: 'rename', child: Text('Rename…')),
-            if (doc) const PopupMenuItem(value: 'plan', child: Text('Plan…')),
-            for (final k in NodeKind.values)
-              if (node.kind != null && canContain(node.kind, k))
-                PopupMenuItem(value: 'add:${k.name}', child: Text('Add ${k.label.toLowerCase()} inside')),
-            const PopupMenuItem(value: 'up', child: Text('Move up')),
-            const PopupMenuItem(value: 'down', child: Text('Move down')),
-            const PopupMenuItem(value: 'move', child: Text('Move to…')),
-            const PopupMenuItem(value: 'duplicate', child: Text('Duplicate')),
-            if (mergeable) const PopupMenuItem(value: 'merge', child: Text('Merge with the next one')),
-            if (doc) ...[
-              const PopupMenuDivider(),
-              for (final s in NodeStatus.values)
-                CheckedPopupMenuItem(value: 'status:${s.name}', checked: node.status == s, child: Text(s.label)),
-            ],
+            }
+        }
+      },
+      itemBuilder: (_) {
+        // Merging needs the next sibling to be the same kind (a chapter after a chapter, a scene after a scene).
+        final siblings = siblingsOf(ref.read(outlineProvider), node.parentId);
+        final at = siblings.indexWhere((n) => n.id == node.id);
+        final mergeable = doc && at + 1 < siblings.length && siblings[at + 1].kind == node.kind;
+        return [
+          const PopupMenuItem(value: 'rename', child: Text('Rename…')),
+          if (doc) const PopupMenuItem(value: 'plan', child: Text('Plan…')),
+          for (final k in NodeKind.values)
+            if (node.kind != null && canContain(node.kind, k))
+              PopupMenuItem(value: 'add:${k.name}', child: Text('Add ${k.label.toLowerCase()} inside')),
+          const PopupMenuItem(value: 'up', child: Text('Move up')),
+          const PopupMenuItem(value: 'down', child: Text('Move down')),
+          const PopupMenuItem(value: 'move', child: Text('Move to…')),
+          const PopupMenuItem(value: 'duplicate', child: Text('Duplicate')),
+          if (mergeable) const PopupMenuItem(value: 'merge', child: Text('Merge with the next one')),
+          if (doc) ...[
             const PopupMenuDivider(),
-            const PopupMenuItem(value: 'delete', child: Text('Delete…')),
-          ];
-        },
-      ),
+            for (final s in NodeStatus.values)
+              CheckedPopupMenuItem(value: 'status:${s.name}', checked: node.status == s, child: Text(s.label)),
+          ],
+          const PopupMenuDivider(),
+          const PopupMenuItem(value: 'delete', child: Text('Delete…')),
+        ];
+      },
+    );
+    return _ContentsLine(
+      node: node,
+      title: title,
+      depth: depth,
+      number: number,
+      selected: selected,
+      menu: menu,
+      onTap: doc ? () => ref.read(selectedNodeProvider.notifier).select(node.id) : null,
+      theme: theme,
     );
   }
 
@@ -315,4 +347,217 @@ class _OutlineRow extends ConsumerWidget {
     if (choice == null || !context.mounted) return;
     _attempt(context, () => ref.read(manuscriptServiceProvider).move(novelId, node.id, choice.$1));
   }
+}
+
+/// One line of the contents page. A part (volume, act, arc) is set in capitals between rules; a chapter is its
+/// number, its title in the book face and a dotted leader to its length, as a printed contents page runs to page
+/// numbers; a scene is indented in italic with a section mark. The chapter being written is marked by a ribbon down
+/// its side. Its menu sits at the end.
+class _ContentsLine extends StatelessWidget {
+  const _ContentsLine({
+    required this.node,
+    required this.title,
+    required this.depth,
+    required this.number,
+    required this.selected,
+    required this.menu,
+    required this.onTap,
+    required this.theme,
+  });
+
+  final StoryNode node;
+  final String title;
+  final int depth;
+  final int? number;
+  final bool selected;
+  final Widget menu;
+  final VoidCallback? onTap;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = theme.colorScheme;
+    final doc = isDocument(node.kind);
+    final scene = node.kind == NodeKind.scene;
+    final muted = scheme.onSurfaceVariant;
+    final indent = 14.0 + depth * 16;
+    // The line's own paper, under the title and the length, so the leader's dots stop at them.
+    final paper = selected ? Color.alphaBlend(scheme.primary.withValues(alpha: 0.08), scheme.surface) : scheme.surface;
+
+    if (!doc) {
+      // A part: its kind and title in capitals, between rules.
+      return Padding(
+        padding: EdgeInsets.fromLTRB(indent, 14, 0, 2),
+        child: Row(
+          children: [
+            Expanded(
+              child: Semantics(
+                header: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      node.kind?.label ?? node.kindKey,
+                      style: TextStyle(fontFamily: 'Cinzel', fontSize: 11, letterSpacing: 1.4, color: muted),
+                    ),
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Cinzel',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                        letterSpacing: 1,
+                        color: scheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(height: 1, color: scheme.outlineVariant),
+                  ],
+                ),
+              ),
+            ),
+            menu,
+          ],
+        ),
+      );
+    }
+
+    final text = TextStyle(
+      fontFamily: 'EB Garamond',
+      fontSize: scene ? 15.5 : 17,
+      fontStyle: scene ? FontStyle.italic : FontStyle.normal,
+      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+      color: scheme.onSurface,
+    );
+    return Semantics(
+      selected: selected,
+      child: Material(
+        color: selected ? scheme.primary.withValues(alpha: 0.08) : Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 52),
+            child: Stack(
+              children: [
+                // The ribbon bookmark at the chapter being written.
+                if (selected)
+                  Positioned(
+                    left: 4,
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 4,
+                      decoration: BoxDecoration(
+                        color: scheme.primary,
+                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(1)),
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: EdgeInsets.only(left: indent),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 28,
+                        child: Text(
+                          scene ? '§' : '${number ?? ''}',
+                          style: TextStyle(
+                            fontFamily: 'Cinzel',
+                            fontWeight: FontWeight.w700,
+                            fontSize: scene ? 14 : 15,
+                            color: selected ? scheme.primary : muted,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // As a printer sets it: dots across the whole line, the title laid over them on the
+                            // paper at the left and the length at the right, so the dots fill exactly the gap.
+                            Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 6,
+                                  child: CustomPaint(painter: _LeaderPainter(muted), size: const Size(0, 2)),
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: Align(
+                                        alignment: AlignmentDirectional.bottomStart,
+                                        child: ColoredBox(
+                                          color: paper,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 6),
+                                            child: Text(
+                                              title,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: text,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    ColoredBox(
+                                      color: paper,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 6),
+                                        child: Text(
+                                          formatNumber(node.wordCount),
+                                          style: TextStyle(
+                                            fontFamily: 'EB Garamond',
+                                            fontSize: 15,
+                                            color: muted,
+                                            fontFeatures: const [FontFeature.oldstyleFigures()],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Text(
+                              node.status.label,
+                              style: theme.textTheme.labelSmall?.copyWith(color: muted, letterSpacing: 0.6),
+                            ),
+                          ],
+                        ),
+                      ),
+                      menu,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Dots along a contents line, from the title to the length.
+class _LeaderPainter extends CustomPainter {
+  _LeaderPainter(this.color);
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final dot = Paint()..color = color.withValues(alpha: 0.55);
+    for (var x = 0.0; x < size.width; x += 5) {
+      canvas.drawCircle(Offset(x + 1, size.height / 2), 0.9, dot);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_LeaderPainter old) => old.color != color;
 }

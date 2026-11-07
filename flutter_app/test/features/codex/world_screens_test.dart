@@ -46,7 +46,7 @@ void main() {
 
   testWidgets('an empty world says what it holds; a new entry of a kind opens its page', (tester) async {
     final w = await openWorld(tester);
-    expect(find.text('Build your world'), findsOneWidget);
+    expect(find.text('The first page of your world'), findsOneWidget);
     await tester.tap(find.text('New entry'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Location').last);

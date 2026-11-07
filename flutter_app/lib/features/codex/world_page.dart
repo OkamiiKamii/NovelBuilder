@@ -16,6 +16,7 @@ import '../characters/character_actions.dart';
 import '../characters/characters_providers.dart';
 import '../workspace/organize_switch.dart';
 import 'widgets/encyclopedia.dart';
+import 'widgets/world_charter.dart';
 
 /// THE WORLD: places, factions, items, powers, lore and the author's own kinds of record. Characters live in their own
 /// library and are the same entries; they can be linked from here. The kinds are volumes on a shelf and the entries an
@@ -111,13 +112,7 @@ class _WorldPageState extends ConsumerState<WorldPage> {
           ),
           const SizedBox(height: 16),
           if (all.isEmpty)
-            const EmptyState(
-              icon: Icons.public,
-              title: 'Build your world',
-              message:
-                  'Keep places, factions, items, power systems and history here, and look them up while you write. '
-                  'Your cast lives under Characters.',
-            )
+            WorldCharter(novelId: cast.novelId, kinds: cast.model.categories)
           else ...[
             WorldVolumes(
               kinds: [

@@ -55,11 +55,18 @@ void main() {
       await tester.placeCaretInParagraph(last.id, 0);
       w.c.read(focusModeProvider.notifier).set(true);
       await tester.pumpAndSettle();
+      double length() => tester
+          .state<ScrollableState>(
+            find.descendant(of: find.byKey(const ValueKey('page')), matching: find.byType(Scrollable)).first,
+          )
+          .position
+          .maxScrollExtent;
+      final withRoom = length();
       await tester.tap(find.text('Typewriter'));
       await tester.pumpAndSettle();
       expect(w.c.read(settingsStoreProvider).read(typewriterKey), false);
       expect(w.c.read(typewriterProvider), isFalse);
-      expect(lastLineAt(tester), greaterThan(0.75), reason: 'no room under the last line: it goes back down');
+      expect(length(), lessThan(withRoom - 100), reason: 'the room under the last line is gone');
       expect(SuperEditorInspector.findDocumentSelection()!.extent.nodeId, last.id, reason: 'the same editor');
 
       await tester.tap(find.text('Typewriter'));

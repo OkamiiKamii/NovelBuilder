@@ -19,6 +19,7 @@ import '../../shared/domain/records/entry.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../characters/character_actions.dart';
 import '../characters/widgets/vault.dart';
+import 'chapter_end.dart';
 import 'data/manuscript_service.dart';
 import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
@@ -726,6 +727,15 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
                               stylesheet: writingStylesheet(theme, prefs),
                               contentTapDelegateFactories: const [],
                             ),
+                          // The chapter's end: what follows, one press away (`chapter_end.dart`).
+                          SliverToBoxAdapter(
+                            child: ChapterEnd(
+                              novelId: widget.novelId,
+                              node: widget.node,
+                              ink: page?.text,
+                              muted: page?.muted,
+                            ),
+                          ),
                           // Room under the last line, so it too can come up to the middle.
                           if (typewriter)
                             SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),

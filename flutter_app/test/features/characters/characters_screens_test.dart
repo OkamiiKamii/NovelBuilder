@@ -216,6 +216,8 @@ void main() {
     await tester.tap(find.text('Add secret'));
     await tester.pumpAndSettle();
     await tester.enterText(find.widgetWithText(TextField, 'What is true'), 'Kael is the king’s son.');
+    await tester.ensureVisible(find.byTooltip('Add to Characters who know'));
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Add to Characters who know'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Mira').last);

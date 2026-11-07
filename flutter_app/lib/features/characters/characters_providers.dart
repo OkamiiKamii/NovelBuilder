@@ -110,13 +110,15 @@ class CastNotifier extends Notifier<CastData?> {
 final castProvider = NotifierProvider.autoDispose<CastNotifier, CastData?>(CastNotifier.new);
 
 /// Cards or a list, remembered on this device.
-enum CastView { cards, list }
+enum CastView { cards, list, ties }
 
 const _viewKey = 'characters.view';
 
 class CastViewNotifier extends Notifier<CastView> {
   @override
-  CastView build() => ref.read(settingsStoreProvider).read(_viewKey) == 'list' ? CastView.list : CastView.cards;
+  CastView build() =>
+      CastView.values.where((v) => v.name == ref.read(settingsStoreProvider).read(_viewKey)).firstOrNull ??
+      CastView.cards;
 
   void set(CastView view) {
     state = view;
