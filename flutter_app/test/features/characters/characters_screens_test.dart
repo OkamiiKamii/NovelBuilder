@@ -54,13 +54,13 @@ void main() {
     expect(find.text('No characters yet'), findsOneWidget);
     await tester.tap(find.text('Create a character'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Create character'));
+    await tester.tap(find.text('Add to the cast'));
     await tester.pumpAndSettle();
     expect(find.text('Give the character a name.'), findsOneWidget, reason: 'only a name is needed, and it is');
     await tester.enterText(find.widgetWithText(TextField, 'Name *'), 'Kaelen Draven');
     await tester.tap(find.widgetWithText(FilterChip, 'Protagonist'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Create character'));
+    await tester.tap(find.text('Add to the cast'));
     await tester.pumpAndSettle();
     expect(currentLocation(w.c), startsWith('/organize/character/'));
     expect(find.text('Kaelen Draven'), findsWidgets);
@@ -69,6 +69,49 @@ void main() {
     expect(profileOf(w.c, w.novel, str(entries.single['id'])).roles, ['Protagonist']);
     // Empty fields say so, rather than looking like values.
     expect(find.text('Core Identity (0)'), findsOneWidget);
+  });
+
+  testWidgets('a new character starts as their portrait card, filled in while typed, and keeps its colour', (
+    tester,
+  ) async {
+    final w = await openOrganize(tester);
+    await tester.tap(find.text('Create a character'));
+    await tester.pumpAndSettle();
+    expect(find.text('?'), findsOneWidget, reason: 'no initials yet');
+    expect(find.text('Their name'), findsOneWidget);
+    await tester.enterText(find.widgetWithText(TextField, 'Name *'), 'Mira Vance');
+    await tester.enterText(find.widgetWithText(TextField, 'Title or epithet'), 'The Last Heir');
+    await tester.tap(find.widgetWithText(FilterChip, 'Antagonist'));
+    await tester.pumpAndSettle();
+    expect(find.text('MV'), findsOneWidget);
+    expect(find.text('Mira Vance'), findsWidgets);
+    expect(find.text('ANTAGONIST'), findsOneWidget);
+    // The card's colour is the one the character keeps: its id was decided when the card was drawn.
+    final drawn = [
+      for (final box in tester.widgetList<DecoratedBox>(
+        find.ancestor(of: find.text('MV'), matching: find.byType(DecoratedBox)),
+      ))
+        if (box.decoration case BoxDecoration(:final gradient?)) gradient,
+    ].single.colors;
+    await tester.tap(find.text('Add to the cast'));
+    await tester.pumpAndSettle();
+    final id = str(w.c.read(novelStoreProvider).rowsIn(w.novel, 'loreEntries').single['id']);
+    expect(currentLocation(w.c), '/organize/character/$id');
+    expect(drawn.first, Color.lerp(castTone(id), Colors.white, 0.1));
+  });
+
+  testWidgets('the casting call fits a phone at twice the text size', (tester) async {
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await openOrganize(tester, size: phone);
+    await tester.ensureVisible(find.text('Create a character'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Create a character'));
+    await tester.pumpAndSettle();
+    expect(find.text('A new character'), findsOneWidget);
+    await tester.enterText(find.widgetWithText(TextField, 'Name *'), 'Kaelen Draven of the Ninth Gate');
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('editing who the character is saves as it is typed, and is noted in their history', (tester) async {

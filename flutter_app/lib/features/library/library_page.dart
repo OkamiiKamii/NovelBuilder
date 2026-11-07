@@ -13,6 +13,7 @@ import 'backup_actions.dart';
 import 'bookcase.dart';
 import 'bookshelf.dart';
 import 'library_actions.dart';
+import 'stage_shelves.dart';
 import 'title_page.dart';
 
 enum LibrarySort {
@@ -177,7 +178,12 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               Semantics(
                 label: '${plural(visible.length, 'novel')} shown',
                 container: true,
-                child: spines ? Bookcase(novels: visible) : Bookshelf(novels: visible),
+                // The whole library stands on shelves by stage; a search, filter or the archive is one shelf.
+                child: !_filtering && !_archived
+                    ? StageShelves(novels: visible, spines: spines)
+                    : spines
+                    ? Bookcase(novels: visible)
+                    : Bookshelf(novels: visible),
               ),
           ],
         ],

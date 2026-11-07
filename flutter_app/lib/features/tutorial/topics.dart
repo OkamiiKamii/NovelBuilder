@@ -65,8 +65,9 @@ const tutorialTopics = <Topic>[
       'Press a book to open it, or Continue writing to go straight back to the chapter you left. The last lines you '
           'wrote there wait on the page above the button, and you land with the caret after the last word.',
       'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete.',
-      'Choose Covers or Spines beside the search. With more than six books the shelf stands them as spines on a '
-          'bookcase; press a spine to take the book off the shelf, then open it or use any of its actions.',
+      'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
+          'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
+          'shelf and opens it.',
       'Search, filter by status or genre, and sort when the shelf fills up.',
     ],
     example:

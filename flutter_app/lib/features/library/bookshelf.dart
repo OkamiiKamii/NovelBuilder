@@ -471,6 +471,9 @@ class _ShelfBookState extends ConsumerState<ShelfBook> {
 List<(String, String)> bookActions(Novel novel) {
   final review = ReviewMark.of(novel.raw) != null;
   return [
+    // An idea, or a book set aside, can become the one being written.
+    if (!review && !novel.archived && (novel.status == NovelStatus.planning || novel.status == NovelStatus.onHold))
+      ('start', 'Start writing it'),
     ('open', 'Open'),
     if (!review) ('edit', 'Edit details'),
     if (!novel.archived) ('pin', novel.pinned ? 'Unpin' : 'Pin to top'),
@@ -483,6 +486,7 @@ List<(String, String)> bookActions(Novel novel) {
 
 /// Does one of [bookActions] to [novel].
 void runBookAction(BuildContext context, WidgetRef ref, Novel novel, String action) => switch (action) {
+  'start' => startWritingFlow(context, ref, novel),
   'open' => openNovel(context, ref, novel),
   'edit' => editNovelFlow(context, ref, novel),
   'pin' => togglePinFlow(context, ref, novel),

@@ -179,6 +179,7 @@ void main() {
     final container = await pumpApp(tester);
     _add(container, 'Zephyr', genre: 'Fantasy');
     _add(container, 'Anvil', status: 'complete', genre: 'Mystery');
+    _add(container, 'Bramble', genre: 'Romance');
     await tester.pumpAndSettle();
 
     await tester.enterText(find.widgetWithText(TextField, 'Search novels'), 'mystery');
@@ -198,7 +199,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Title').last);
     await tester.pumpAndSettle();
-    expect(_before(tester, 'Anvil', 'Zephyr'), isTrue);
+    // Sorted within each shelf: the two being written, then the finished one on its own shelf below.
+    expect(_before(tester, 'Bramble', 'Zephyr'), isTrue);
+    expect(_before(tester, 'Zephyr', 'Anvil'), isTrue);
 
     // Totals count what is in the library.
     expect(find.text('In progress'), findsOneWidget);
@@ -488,5 +491,76 @@ void main() {
     await tester.tap(find.text('Continue writing “The Gate”'));
     await tester.pump();
     expect(currentLocation(container), '/write', reason: 'no animation: straight in');
+  });
+
+  testWidgets('books stand on shelves by stage, and an empty desk says how to fill it', (tester) async {
+    final container = await pumpApp(tester);
+    _add(container, 'Idea one', status: 'planning');
+    _add(container, 'Idea two', status: 'planning');
+    _add(container, 'Done', status: 'complete');
+    _add(container, 'Paused', status: 'on-hold');
+    await tester.pumpAndSettle();
+    for (final plate in ['Writing now, 0 books', 'Ideas, 2 books', 'Set aside, 1 book', 'Finished, 1 book']) {
+      expect(find.bySemanticsLabel(plate), findsOneWidget, reason: plate);
+    }
+    expect(find.text('Nothing being written'), findsOneWidget);
+    expect(_before(tester, 'Nothing being written', 'Idea one'), isTrue, reason: 'the desk is the top shelf');
+    expect(_before(tester, 'Idea two', 'Paused'), isTrue);
+    expect(_before(tester, 'Paused', 'Done'), isTrue);
+
+    // A search is one shelf, as before.
+    await tester.enterText(find.widgetWithText(TextField, 'Search novels'), 'idea');
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel(RegExp(r'^Ideas, ')), findsNothing);
+    expect(find.text('Idea one'), findsOneWidget);
+  });
+
+  testWidgets('Start writing it makes an idea the book being written and opens it on its first chapter; Undo', (
+    tester,
+  ) async {
+    BlinkController.indeterminateAnimationsEnabled = false;
+    addTearDown(() => BlinkController.indeterminateAnimationsEnabled = true);
+    final container = await pumpApp(tester);
+    final idea = _add(container, 'The Long Night', status: 'planning');
+    await tester.pumpAndSettle();
+    await _menu(tester, 'The Long Night', 'Start writing it');
+    expect(container.read(libraryProvider).single.status, NovelStatus.drafting);
+    expect(currentLocation(container), '/write');
+    expect(container.read(openNovelProvider), idea.id);
+    final chapters = container.read(manuscriptServiceProvider).nodes(idea.id);
+    expect(chapters.single.kind, NodeKind.chapter, reason: 'a first chapter made for it');
+    expect(container.read(selectedNodeProvider), chapters.single.id);
+    expect(find.text('“The Long Night” is now being written (Drafting).'), findsOneWidget);
+    await tester.tap(find.text('Undo'));
+    await tester.pumpAndSettle();
+    expect(container.read(libraryProvider).single.status, NovelStatus.planning);
+  });
+
+  testWidgets('a spine of an idea offers Start writing it first, and a book being written does not', (tester) async {
+    BlinkController.indeterminateAnimationsEnabled = false;
+    addTearDown(() => BlinkController.indeterminateAnimationsEnabled = true);
+    final container = await pumpApp(tester);
+    container.read(settingsStoreProvider).write(libraryViewKey, 'spines');
+    final idea = _add(container, 'Idea', status: 'planning');
+    final m = container.read(manuscriptServiceProvider);
+    final first = m.create(idea.id, NodeKind.chapter, title: 'One');
+    m.create(idea.id, NodeKind.chapter, title: 'Two');
+    _add(container, 'Draft');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Draft'));
+    await tester.pumpAndSettle();
+    expect(find.text('Start writing it'), findsNothing);
+    await tester.tap(find.text('Back on the shelf'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Idea'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Start writing it'));
+    await tester.pumpAndSettle();
+    expect(currentLocation(container), '/write');
+    expect(container.read(selectedNodeProvider), first.id, reason: 'its first chapter, none added');
+    expect(m.nodes(idea.id), hasLength(2));
+    expect(container.read(libraryProvider).firstWhere((n) => n.id == idea.id).status, NovelStatus.drafting);
   });
 }

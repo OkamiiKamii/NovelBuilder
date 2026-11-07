@@ -324,7 +324,7 @@ void main() {
       await tester.tap(find.text('Create a character'));
       await tester.pumpAndSettle();
       await tester.enterText(find.widgetWithText(TextField, 'Name *'), 'Mira');
-      await tester.tap(find.text('Create character'));
+      await tester.tap(find.text('Add to the cast'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Edit profile'));
       await tester.pumpAndSettle();

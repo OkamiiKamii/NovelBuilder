@@ -149,12 +149,14 @@ class CodexChanges extends RecordChanges {
 
   /// A new entry of a category, with only a name. The category's fields show on it by themselves; only values the
   /// author writes are stored.
-  Entry createEntry(String categoryKey, [String? name]) {
+  /// [id], when given, is the new entry's permanent id (a fresh one decided beforehand, so a preview can show the
+  /// colour it will keep); otherwise a new one is made.
+  Entry createEntry(String categoryKey, [String? name, String? id]) {
     final kind = categoriesOf(snapshot)[categoryKey];
     if (kind == null) throw ChangeRefused('Unknown category.');
     if (kind.archived) throw ChangeRefused('${kind.name} is archived. Restore it to add entries.');
     final entry = <String, Object?>{
-      'id': newId(),
+      'id': id ?? newId(),
       'projectId': projectId,
       'category': categoryKey,
       'name': (name ?? '').trim().isNotEmpty ? name!.trim() : 'New ${kind.singular.toLowerCase()}',

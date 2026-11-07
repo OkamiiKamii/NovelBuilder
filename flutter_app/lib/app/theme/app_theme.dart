@@ -76,6 +76,20 @@ abstract final class AppTheme {
       outlineVariant: p.border,
     );
     final radius = BorderRadius.circular(10);
+    final theme = _base(p, scheme, radius);
+    // Page titles in the book's capitals (Cinzel, bundled), as the areas' own headings are; text stays in the UI face.
+    TextStyle? capitals(TextStyle? s) =>
+        s?.copyWith(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: (s.fontSize ?? 24) * 0.06);
+    return theme.copyWith(
+      textTheme: theme.textTheme.copyWith(
+        headlineLarge: capitals(theme.textTheme.headlineLarge),
+        headlineMedium: capitals(theme.textTheme.headlineMedium),
+        headlineSmall: capitals(theme.textTheme.headlineSmall),
+      ),
+    );
+  }
+
+  static ThemeData _base(Palette p, ColorScheme scheme, BorderRadius radius) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,

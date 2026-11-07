@@ -78,6 +78,10 @@ class LibraryService {
 
   void markOpened(String id) => store.putNovelDetails(_require(id).withFields({'lastOpenedAt': _now}));
 
+  /// Moves the novel to another stage (planning, drafting, revising, complete, on hold). Only `status` changes.
+  void setStatus(String id, NovelStatus status) =>
+      store.putNovelDetails(_require(id).withFields({'status': status.key, 'updatedAt': _now}));
+
   /// A separate copy of the novel, titled "… (Copy)": new ids for everything, every link kept within the copy.
   /// Version history stays with the original.
   Novel duplicate(String id) {

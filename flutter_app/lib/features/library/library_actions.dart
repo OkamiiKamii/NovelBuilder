@@ -7,6 +7,7 @@ import '../../core/widgets/confirm_dialog.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/data/template_store.dart';
 import '../../shared/domain/codex/world_presets.dart';
+import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/novel.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../characters/characters_providers.dart';
@@ -56,6 +57,35 @@ class _Scope {
 }
 
 void openNovel(BuildContext context, WidgetRef ref, Novel novel) => _Scope(context).open(novel);
+
+/// "Start writing it": an idea (planning, or on hold) becomes the book being written. Its status is set to Drafting
+/// (Undo puts it back), and it opens on the page: at its first chapter or scene in reading order, or a first chapter
+/// made for it when it has none, with the caret after the last word.
+void startWritingFlow(BuildContext context, WidgetRef ref, Novel novel) {
+  final scope = _Scope(context);
+  final library = scope.container.read(libraryServiceProvider);
+  final before = novel.status;
+  if (!scope.attempt('Starting the book', () => library.setStatus(novel.id, NovelStatus.drafting))) return;
+  final manuscript = scope.container.read(manuscriptServiceProvider);
+  StoryNode? chapter = readingOrder(
+    manuscript.nodes(novel.id),
+  ).where((n) => n.kind == NodeKind.chapter || n.kind == NodeKind.scene).firstOrNull;
+  if (chapter == null) {
+    scope.attempt('Adding the first chapter', () => chapter = manuscript.create(novel.id, NodeKind.chapter));
+  }
+  scope.container.read(openNovelProvider.notifier).open(novel.id);
+  if (chapter case final c?) {
+    scope.container.read(selectedNodeProvider.notifier).select(c.id);
+    scope.container.read(pendingCaretEndProvider.notifier).request(c.id);
+  }
+  scope.router.go(Destination.write.path);
+  final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
+  scope.tell(
+    '“$title” is now being written (Drafting).',
+    actionLabel: 'Undo',
+    onAction: () => scope.attempt('Undoing', () => library.setStatus(novel.id, before)),
+  );
+}
 
 /// "Continue writing": the novel open at the chapter it was left at, with the caret after the last word written.
 void continueWritingFlow(BuildContext context, WidgetRef ref, Novel novel, StoryNode chapter) {

@@ -184,9 +184,10 @@ class CharacterChanges extends CodexChanges {
     List<String> roles = const [],
     String summary = '',
     String? templateId,
+    String? id,
   }) {
     if (name.trim().isEmpty) throw ChangeRefused('Give the character a name.');
-    var entry = createEntry('character', name.trim());
+    var entry = createEntry('character', name.trim(), id);
     if (summary.trim().isNotEmpty) {
       updateEntry(entry.id, summary: summary.trim());
       entry = owned(entry.id);

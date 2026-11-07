@@ -11,6 +11,7 @@ import '../../features/write/writing_prefs.dart';
 import '../../shared/data/autosave.dart';
 import '../../shared/data/providers.dart';
 import '../destinations.dart';
+import '../theme/leather.dart';
 import 'app_shortcuts.dart';
 
 /// The frame around every page: a navigation rail on wide screens, a bottom bar on phones.
@@ -44,7 +45,7 @@ class AppShell extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const _CompactSaveStatus(),
-            _BottomBar(current: current),
+            LeatherBinding(horizontal: true, child: _BottomBar(current: current)),
           ],
         ),
       ),
@@ -53,9 +54,10 @@ class AppShell extends ConsumerWidget {
           child: Row(
             children: [
               FocusTraversalGroup(
-                child: _Rail(current: current, extended: size == WindowSize.expanded),
+                child: LeatherBinding(
+                  child: _Rail(current: current, extended: size == WindowSize.expanded),
+                ),
               ),
-              const VerticalDivider(width: 1),
               Expanded(child: body),
             ],
           ),
@@ -112,11 +114,21 @@ class _Rail extends StatelessWidget {
       minExtendedWidth: 200,
       labelType: extended ? NavigationRailLabelType.none : NavigationRailLabelType.all,
       leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        // Clear of the gilt bands across the head of the spine.
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
         child: Column(
           children: [
             if (extended)
-              Text('Novel Builder', style: Theme.of(context).textTheme.titleMedium)
+              Text(
+                'Novel Builder',
+                style: TextStyle(
+                  fontFamily: 'Cinzel',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              )
             else
               const Icon(Icons.auto_stories_outlined),
             const SizedBox(height: 8),
@@ -197,49 +209,53 @@ class _BottomBar extends StatelessWidget {
       showDragHandle: true,
       // As tall as its items need (up to the whole screen), so on a short phone every area shows without scrolling.
       isScrollControlled: true,
-      builder: (sheetContext) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Consumer(
-              builder: (context, ref, _) => ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Search the novel'),
-                subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  showNovelSearch(context, ref);
-                },
+      // In the app's own paper colours, not the binding's it was opened from.
+      builder: (sheetContext) => Theme(
+        data: Theme.of(Navigator.of(context, rootNavigator: true).context),
+        child: SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Consumer(
+                builder: (context, ref, _) => ListTile(
+                  leading: const Icon(Icons.search),
+                  title: const Text('Search the novel'),
+                  subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    showNovelSearch(context, ref);
+                  },
+                ),
               ),
-            ),
-            for (final d in rest)
-              ListTile(
-                leading: Icon(d == current ? d.selectedIcon : d.icon),
-                title: Text(d.label),
-                selected: d == current,
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  context.go(d.path);
-                },
+              for (final d in rest)
+                ListTile(
+                  leading: Icon(d == current ? d.selectedIcon : d.icon),
+                  title: Text(d.label),
+                  selected: d == current,
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go(d.path);
+                  },
+                ),
+              Consumer(
+                builder: (context, ref, _) => ref.watch(tutorialShownProvider)
+                    ? ListTile(
+                        leading: const Icon(Icons.school_outlined),
+                        title: const Text('Tutorial'),
+                        subtitle: const Text(
+                          'A short lesson for this page',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        onTap: () {
+                          Navigator.of(sheetContext).pop();
+                          showTutorial(context);
+                        },
+                      )
+                    : const SizedBox.shrink(),
               ),
-            Consumer(
-              builder: (context, ref, _) => ref.watch(tutorialShownProvider)
-                  ? ListTile(
-                      leading: const Icon(Icons.school_outlined),
-                      title: const Text('Tutorial'),
-                      subtitle: const Text(
-                        'A short lesson for this page',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      onTap: () {
-                        Navigator.of(sheetContext).pop();
-                        showTutorial(context);
-                      },
-                    )
-                  : const SizedBox.shrink(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

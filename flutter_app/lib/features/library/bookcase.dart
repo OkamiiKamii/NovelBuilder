@@ -304,7 +304,7 @@ Future<void> showBookInHand(BuildContext context, WidgetRef ref, Novel novel, {G
     builder: (context) => _BookInHand(novel: novel),
   );
   if (action == null || !context.mounted) return;
-  if (action == 'open' && from != null) {
+  if ((action == 'open' || action == 'start') && from != null) {
     // The book opens from its place on the shelf.
     openWithBook(context, ref, novel, from: from, go: () => runBookAction(context, ref, novel, action));
   } else {
@@ -322,7 +322,9 @@ class _BookInHand extends StatelessWidget {
     final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
     final narrow = MediaQuery.sizeOf(context).width < 600;
     final genres = [novel.primaryGenre, ...novel.secondaryGenres].where((g) => g.isNotEmpty).join(', ');
-    final actions = bookActions(novel).where((a) => a.$1 != 'open').toList();
+    final all = bookActions(novel);
+    final startable = all.any((a) => a.$1 == 'start');
+    final actions = all.where((a) => a.$1 != 'open' && a.$1 != 'start').toList();
     final details = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -379,8 +381,16 @@ class _BookInHand extends StatelessWidget {
                 runSpacing: 8,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  FilledButton.icon(
-                    autofocus: true,
+                  // An idea's first press is to start writing it; Open stays beside it.
+                  if (startable)
+                    FilledButton.icon(
+                      autofocus: true,
+                      onPressed: () => Navigator.of(context).pop('start'),
+                      icon: const Icon(Icons.edit_note),
+                      label: const Text('Start writing it'),
+                    ),
+                  (startable ? OutlinedButton.icon : FilledButton.icon)(
+                    autofocus: !startable,
                     onPressed: () => Navigator.of(context).pop('open'),
                     icon: const Icon(Icons.menu_book),
                     label: Text('Open $title'),

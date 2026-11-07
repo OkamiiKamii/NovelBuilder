@@ -187,6 +187,8 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
         roles: made.roles,
         summary: made.summary,
         templateId: made.templateId,
+        // The id the card was drawn with, so the character keeps the colour shown while they were made.
+        id: made.id,
       ),
     );
     if (entry != null) actions.openCharacter(entry.id);
