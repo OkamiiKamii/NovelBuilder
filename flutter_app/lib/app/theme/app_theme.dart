@@ -80,11 +80,76 @@ abstract final class AppTheme {
     // Page titles in the book's capitals (Cinzel, bundled), as the areas' own headings are; text stays in the UI face.
     TextStyle? capitals(TextStyle? s) =>
         s?.copyWith(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: (s.fontSize ?? 24) * 0.06);
-    return theme.copyWith(
-      textTheme: theme.textTheme.copyWith(
-        headlineLarge: capitals(theme.textTheme.headlineLarge),
-        headlineMedium: capitals(theme.textTheme.headlineMedium),
-        headlineSmall: capitals(theme.textTheme.headlineSmall),
+    return _stationery(
+      theme.copyWith(
+        textTheme: theme.textTheme.copyWith(
+          headlineLarge: capitals(theme.textTheme.headlineLarge),
+          headlineMedium: capitals(theme.textTheme.headlineMedium),
+          headlineSmall: capitals(theme.textTheme.headlineSmall),
+        ),
+      ),
+      p,
+      brightness,
+    );
+  }
+
+  /// THE STATIONERY: what is pressed and what speaks, set like the rest of the book. Buttons are stamped labels
+  /// (squared with softly rounded corners, lettered in the book's capitals; the main ones with a pressed, darker edge
+  /// and a soft shadow), dialogs are cards of the book (paper with a thin edge, titled in capitals), and messages are
+  /// slips of paper (ink on paper across the foot of the screen, under an accent rule).
+  static ThemeData _stationery(ThemeData t, Palette p, Brightness brightness) {
+    const label = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6)));
+    const lettering = TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: 0.7, fontSize: 14);
+    final pressedEdge = Color.lerp(p.accent, Colors.black, 0.28)!;
+    final dark = brightness == Brightness.dark;
+    return t.copyWith(
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          shape: label.copyWith(side: BorderSide(color: pressedEdge)),
+          textStyle: lettering,
+          elevation: 1.5,
+          shadowColor: Colors.black.withValues(alpha: dark ? 0.6 : 0.35),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(shape: label, textStyle: lettering),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          shape: label,
+          textStyle: lettering,
+          side: BorderSide(color: p.accent.withValues(alpha: 0.7)),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(shape: label, textStyle: lettering),
+      ),
+      dialogTheme: t.dialogTheme.copyWith(
+        backgroundColor: p.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: p.border),
+        ),
+        titleTextStyle: TextStyle(
+          fontFamily: 'Cinzel',
+          fontWeight: FontWeight.w700,
+          fontSize: 20,
+          letterSpacing: 1.1,
+          color: p.text,
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        // Fixed, so it always sits above the phone's bottom bar, even at the largest text sizes.
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: p.surface,
+        elevation: 4,
+        // A slip of paper across the foot, with an accent rule along its top edge.
+        shape: Border(top: BorderSide(color: p.accent.withValues(alpha: 0.75), width: 2)),
+        contentTextStyle: TextStyle(fontFamily: 'EB Garamond', fontSize: 15, height: 1.25, color: p.text),
+        actionTextColor: p.accent,
+        closeIconColor: p.muted,
       ),
     );
   }

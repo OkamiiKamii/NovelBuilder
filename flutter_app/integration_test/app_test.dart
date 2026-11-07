@@ -483,7 +483,7 @@ void main() {
       container.read(openNovelProvider.notifier).open(novel.id);
       await tester.pumpAndSettle();
       await goTo(tester, Destination.plan);
-      await tester.tap(find.widgetWithText(ChoiceChip, 'Plot threads'));
+      await tester.tap(find.widgetWithText(InkWell, 'Plot threads'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('New thread').first);
       await tester.pumpAndSettle();
@@ -492,7 +492,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Plot threads').first);
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(ChoiceChip, 'Scene board'));
+      await tester.tap(find.widgetWithText(InkWell, 'Scene board'));
       await tester.pumpAndSettle();
       final later = find.byTooltip('Move The Gate later');
       await tester.ensureVisible(later);

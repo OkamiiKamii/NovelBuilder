@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/layout/breakpoints.dart';
+import 'area_switch.dart';
 
 /// The parts of Organize: the cast, the rest of the world, the systems characters grow by, and the genre modules.
 enum OrganizePart {
@@ -16,28 +16,24 @@ enum OrganizePart {
   final IconData icon;
 }
 
+/// Moves between the parts of Organize, as the same index tabs as every area (`area_switch.dart`).
 class OrganizeSwitch extends StatelessWidget {
   const OrganizeSwitch({super.key, required this.current});
 
   final OrganizePart current;
 
   @override
-  // Sideways scrolling keeps every part on one line when the text is large.
-  Widget build(BuildContext context) => SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: SegmentedButton<OrganizePart>(
-      // On a phone the labels alone fit on one line.
-      segments: [
-        for (final p in OrganizePart.values)
-          ButtonSegment(
-            value: p,
-            icon: WindowSize.of(context) == WindowSize.compact ? null : Icon(p.icon),
-            label: Text(p.label),
-          ),
-      ],
-      selected: {current},
-      showSelectedIcon: false,
-      onSelectionChanged: (v) => context.go(v.first.path),
-    ),
+  Widget build(BuildContext context) => IndexTabs(
+    tabs: [
+      for (final p in OrganizePart.values)
+        (
+          label: p.label,
+          icon: p.icon,
+          selected: p == current,
+          onTap: () {
+            if (p != current) context.go(p.path);
+          },
+        ),
+    ],
   );
 }

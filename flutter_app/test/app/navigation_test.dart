@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/destinations.dart';
 import 'package:novel_builder/app/shell/app_shell.dart';
+import 'package:novel_builder/app/theme/app_theme.dart';
+import 'package:novel_builder/features/workspace/open_novel.dart';
+import 'package:novel_builder/shared/data/providers.dart';
 
 import '../helpers/pump_app.dart';
 
@@ -116,5 +119,19 @@ void main() {
     await tester.pump();
     expect(find.byType(RawImage), findsNothing);
     expect(currentLocation(container), Destination.library.path);
+  });
+
+  testWidgets('a dialog opened from the binding is in the app\'s paper colours, not gilt on leather', (tester) async {
+    final container = await pumpApp(tester, size: desktop);
+    container.read(openNovelProvider.notifier).open(container.read(libraryServiceProvider).create({'title': 'A'}).id);
+    await tester.pumpAndSettle();
+    final rail = Theme.of(
+      tester.element(find.descendant(of: find.byType(NavigationRail), matching: find.text('Library'))),
+    ).colorScheme;
+    await tester.tap(find.byTooltip(RegExp(r'^Search the whole novel')));
+    await tester.pumpAndSettle();
+    final inDialog = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField)).first;
+    expect(Theme.of(tester.element(inDialog)).colorScheme.onSurface, AppTheme.light().colorScheme.onSurface);
+    expect(rail.onSurface, isNot(AppTheme.light().colorScheme.onSurface), reason: 'the rail itself is gilt');
   });
 }

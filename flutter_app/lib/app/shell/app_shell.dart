@@ -150,7 +150,7 @@ class _Rail extends StatelessWidget {
             Consumer(
               builder: (context, ref, _) => IconButton(
                 tooltip: 'Search the whole novel (${primaryModifierLabel}K)',
-                onPressed: () => showNovelSearch(context, ref),
+                onPressed: () => showNovelSearch(paperContext(context), ref),
                 icon: const Icon(Icons.search),
               ),
             ),
@@ -158,7 +158,7 @@ class _Rail extends StatelessWidget {
               builder: (context, ref, _) => ref.watch(tutorialShownProvider)
                   ? IconButton(
                       tooltip: 'Tutorial',
-                      onPressed: () => showTutorial(context),
+                      onPressed: () => showTutorial(paperContext(context)),
                       icon: const Icon(Icons.school_outlined),
                     )
                   : const SizedBox.shrink(),
@@ -238,7 +238,7 @@ class _BottomBar extends StatelessWidget {
                   subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () {
                     Navigator.of(sheetContext).pop();
-                    showNovelSearch(context, ref);
+                    showNovelSearch(paperContext(context), ref);
                   },
                 ),
               ),
@@ -264,7 +264,7 @@ class _BottomBar extends StatelessWidget {
                         ),
                         onTap: () {
                           Navigator.of(sheetContext).pop();
-                          showTutorial(context);
+                          showTutorial(paperContext(context));
                         },
                       )
                     : const SizedBox.shrink(),
@@ -306,3 +306,7 @@ void goToArea(BuildContext context, Destination? from, Destination to) {
   }
   turner.turn(forward: to.index > from.index, go: go);
 }
+
+/// Where a dialog opened from the binding (the rail, the bottom bar) takes its colours from: the app's own paper, not
+/// the gilt-on-leather of the binding it was pressed on. A dialog takes the theme of the place it is opened from.
+BuildContext paperContext(BuildContext context) => Navigator.of(context, rootNavigator: true).context;

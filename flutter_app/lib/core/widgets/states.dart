@@ -125,37 +125,171 @@ class _StateCard extends StatelessWidget {
   final Widget? action;
   final bool liveRegion;
 
+  /// THE BLANK PAGE: every empty, error and no-results state is a leaf of the book with its corner turned down, the
+  /// area's sign in a medallion between rules, the title in the book face (EB Garamond, bundled), the message in its
+  /// italic, and the way on below. The same words as before; only how they are set changed.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final dark = theme.brightness == Brightness.dark;
+    final paper = dark ? scheme.surfaceContainerHigh : Color.lerp(scheme.surfaceContainerLowest, Colors.white, 0.6)!;
+    final accent = iconColor ?? scheme.primary;
     return Semantics(
       liveRegion: liveRegion,
       container: true,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, size: 40, color: iconColor ?? theme.colorScheme.onSurfaceVariant),
-                const SizedBox(height: 12),
-                Text(title, style: theme.textTheme.titleMedium, textAlign: TextAlign.center),
-                if (message != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    message!,
-                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-                if (action != null) ...[const SizedBox(height: 16), action!],
-              ],
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: CustomPaint(
+              painter: _BlankPagePainter(
+                paper: paper,
+                fold: Color.lerp(paper, dark ? Colors.black : const Color(0xFFB9AE9C), dark ? 0.35 : 0.35)!,
+                edge: scheme.outlineVariant,
+                shadow: Colors.black.withValues(alpha: dark ? 0.5 : 0.12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 20, 24, 22),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _Medallion(icon: icon, color: accent),
+                    const SizedBox(height: 10),
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'EB Garamond',
+                        fontSize: 23,
+                        height: 1.25,
+                        fontWeight: FontWeight.w600,
+                        color: scheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _Ornament(color: accent),
+                    if (message != null) ...[
+                      const SizedBox(height: 10),
+                      Text(
+                        message!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'EB Garamond',
+                          fontStyle: FontStyle.italic,
+                          fontSize: 17,
+                          height: 1.4,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                    if (action != null) ...[const SizedBox(height: 16), action!],
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
     );
   }
+}
+
+/// The area's sign in a ring within a ring, in the accent (the error colour for an error).
+class _Medallion extends StatelessWidget {
+  const _Medallion({required this.icon, required this.color});
+  final IconData icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 54,
+    height: 54,
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(color: color.withValues(alpha: 0.55)),
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color.withValues(alpha: 0.1),
+        border: Border.all(color: color.withValues(alpha: 0.8), width: 1.4),
+      ),
+      child: Icon(icon, size: 22, color: color),
+    ),
+  );
+}
+
+/// A rule, a diamond and a rule, as under a chapter heading.
+class _Ornament extends StatelessWidget {
+  const _Ornament({required this.color});
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(width: 36, height: 1, color: color.withValues(alpha: 0.6)),
+        const SizedBox(width: 8),
+        Transform.rotate(angle: 0.785398, child: Container(width: 6, height: 6, color: color.withValues(alpha: 0.8))),
+        const SizedBox(width: 8),
+        Container(width: 36, height: 1, color: color.withValues(alpha: 0.6)),
+      ],
+    ),
+  );
+}
+
+/// A leaf of paper with its top right corner turned down, and its shadow.
+class _BlankPagePainter extends CustomPainter {
+  _BlankPagePainter({required this.paper, required this.fold, required this.edge, required this.shadow});
+  final Color paper;
+  final Color fold;
+  final Color edge;
+  final Color shadow;
+
+  static const _corner = 26.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final page = Path()
+      ..moveTo(0, 0)
+      ..lineTo(w - _corner, 0)
+      ..lineTo(w, _corner)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawShadow(page, shadow, 6, false);
+    canvas.drawPath(page, Paint()..color = paper);
+    canvas.drawPath(
+      page,
+      Paint()
+        ..color = edge
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+    // The turned-down corner, lying on the page.
+    final flap = Path()
+      ..moveTo(w - _corner, 0)
+      ..lineTo(w - _corner, _corner)
+      ..lineTo(w, _corner)
+      ..close();
+    canvas.drawShadow(flap, shadow, 2, false);
+    canvas.drawPath(flap, Paint()..color = fold);
+    canvas.drawPath(
+      flap,
+      Paint()
+        ..color = edge
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_BlankPagePainter old) =>
+      old.paper != paper || old.fold != fold || old.edge != edge || old.shadow != shadow;
 }
