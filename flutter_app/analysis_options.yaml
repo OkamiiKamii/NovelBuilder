@@ -1,0 +1,28 @@
+# Static analysis for Novel Builder. Run with `flutter analyze`; format with `dart format .`.
+include: package:flutter_lints/flutter.yaml
+
+formatter:
+  page_width: 120
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    # A future that is dropped can hide a failed save.
+    unawaited_futures: error
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_print
+    - directives_ordering
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_final_fields
+    - prefer_final_locals
+    - prefer_single_quotes
+    - sort_child_properties_last
+    - unawaited_futures
+    - use_super_parameters

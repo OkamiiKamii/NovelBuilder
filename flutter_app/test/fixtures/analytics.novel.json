@@ -1,0 +1,1210 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "analytics",
+  "title": "Analytics",
+  "targetWordCount": 90000,
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "v1",
+    "projectId": "analytics",
+    "parentId": null,
+    "kind": "volume",
+    "title": "Book One",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "c1",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "The Call",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "final",
+    "wordCount": 2400,
+    "charCount": 12000,
+    "createdAt": 2,
+    "updatedAt": 0,
+    "mentions": [
+     "orrin"
+    ]
+   },
+   {
+    "id": "c2",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "Crossing",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "s2a",
+    "projectId": "analytics",
+    "parentId": "c2",
+    "kind": "scene",
+    "title": "At the river",
+    "order": 3,
+    "summary": "",
+    "notes": "",
+    "status": "draft-complete",
+    "wordCount": 1800,
+    "charCount": 9000,
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "s2b",
+    "projectId": "analytics",
+    "parentId": "c2",
+    "kind": "scene",
+    "title": "",
+    "order": 4,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 900,
+    "charCount": 4500,
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "c3",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "  ",
+    "order": 5,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 300,
+    "charCount": 1500,
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "s3a",
+    "projectId": "analytics",
+    "parentId": "c3",
+    "kind": "scene",
+    "title": "The tower",
+    "order": 6,
+    "summary": "",
+    "notes": "",
+    "status": "published",
+    "wordCount": 4100,
+    "charCount": 20500,
+    "createdAt": 7,
+    "updatedAt": 0
+   },
+   {
+    "id": "c4",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "Quiet",
+    "order": 7,
+    "summary": "",
+    "notes": "",
+    "status": "planned",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 8,
+    "updatedAt": 0
+   },
+   {
+    "id": "c5",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "Ashes",
+    "order": 8,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 12500,
+    "charCount": 62500,
+    "createdAt": 9,
+    "updatedAt": 0
+   },
+   {
+    "id": "c6",
+    "projectId": "analytics",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "Return",
+    "order": 9,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 1250,
+    "charCount": 6250,
+    "createdAt": 10,
+    "updatedAt": 0
+   }
+  ],
+  "chapterContents": [
+   {
+    "id": "c1",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira woke before the bells."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "The road north was empty."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "s2a",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira and Kai crossed at dawn."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "s2b",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Kai said nothing. Miracles were rare."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "s3a",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Pell waited in the tower."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "c5",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Ash fell over everything. Mira, Kai and Pell."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "c6",
+    "projectId": "analytics",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Home, at last."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "mira",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Mira",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 10,
+    "updatedAt": 0
+   },
+   {
+    "id": "kai",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Kai",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 11,
+    "updatedAt": 0
+   },
+   {
+    "id": "pell",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Pell",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 12,
+    "updatedAt": 0
+   },
+   {
+    "id": "orrin",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Orrin",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 13,
+    "updatedAt": 0
+   },
+   {
+    "id": "zed",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Zed",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 14,
+    "updatedAt": 0
+   },
+   {
+    "id": "ana",
+    "projectId": "analytics",
+    "category": "character",
+    "name": "Ana",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 15,
+    "updatedAt": 0
+   },
+   {
+    "id": "tower",
+    "projectId": "analytics",
+    "category": "location",
+    "name": "The Tower",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 16,
+    "updatedAt": 0
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "c1",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Action",
+     "opening"
+    ],
+    "appearIds": [
+     "mira"
+    ],
+    "mentionIds": [
+     "pell"
+    ],
+    "povIds": [
+     "mira"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "c2",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "travel"
+    ],
+    "appearIds": [],
+    "mentionIds": [],
+    "povIds": [
+     "kai"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "s2a",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "action",
+     "Dialogue"
+    ],
+    "appearIds": [
+     "mira",
+     "kai"
+    ],
+    "mentionIds": [],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "s2b",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "ana"
+    ],
+    "labels": [
+     "dialogue"
+    ],
+    "appearIds": [],
+    "mentionIds": [],
+    "povIds": [
+     "mira",
+     "kai"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "s3a",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Quiet moment"
+    ],
+    "appearIds": [
+     "pell"
+    ],
+    "mentionIds": [],
+    "povIds": [
+     "pell",
+     "gone"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "c5",
+    "projectId": "analytics",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "ACTION"
+    ],
+    "appearIds": [
+     "mira",
+     "kai",
+     "pell"
+    ],
+    "mentionIds": [],
+    "povIds": [
+     "mira"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   }
+  ],
+  "plotThreads": [
+   {
+    "id": "t1",
+    "projectId": "analytics",
+    "title": "The heir",
+    "premise": "",
+    "category": "main",
+    "customCategory": "",
+    "status": "active",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 17,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "t1-b0",
+      "nodeId": "c1",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0,
+      "role": "introduction"
+     },
+     {
+      "id": "t1-b1",
+      "nodeId": "s2a",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1,
+      "role": "development"
+     },
+     {
+      "id": "t1-b2",
+      "nodeId": "c5",
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2
+     }
+    ]
+   },
+   {
+    "id": "t2",
+    "projectId": "analytics",
+    "title": "Who burned the tower",
+    "premise": "",
+    "category": "mystery",
+    "customCategory": "",
+    "status": "active",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 18,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "t2-b0",
+      "nodeId": "c1",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0,
+      "role": "introduction"
+     }
+    ]
+   },
+   {
+    "id": "t3",
+    "projectId": "analytics",
+    "title": "Kai learns to trust",
+    "premise": "",
+    "category": "character-arc",
+    "customCategory": "",
+    "status": "paused",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 19,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "t3-b0",
+      "nodeId": "s2b",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0
+     },
+     {
+      "id": "t3-b1",
+      "nodeId": "s3a",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1
+     },
+     {
+      "id": "t3-b2",
+      "nodeId": null,
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2
+     }
+    ]
+   },
+   {
+    "id": "t4",
+    "projectId": "analytics",
+    "title": "Old debts",
+    "premise": "",
+    "category": "custom",
+    "customCategory": "Vendetta",
+    "status": "custom",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 20,
+    "updatedAt": 0,
+    "beats": [],
+    "customStatus": "Simmering"
+   },
+   {
+    "id": "t5",
+    "projectId": "analytics",
+    "title": "A quiet one",
+    "premise": "",
+    "category": "subplot",
+    "customCategory": "",
+    "status": "active",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 21,
+    "updatedAt": 0,
+    "beats": []
+   },
+   {
+    "id": "t6",
+    "projectId": "analytics",
+    "title": "The war",
+    "premise": "",
+    "category": "main",
+    "customCategory": "",
+    "status": "resolved",
+    "characterIds": [],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "createdAt": 22,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "t6-b0",
+      "nodeId": "c6",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0,
+      "role": "resolution"
+     }
+    ]
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "e1",
+    "projectId": "analytics",
+    "name": "The summons",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 310,
+     "month": 3,
+     "day": 1,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "c1"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "t1"
+    ],
+    "createdAt": 23,
+    "updatedAt": 0
+   },
+   {
+    "id": "e2",
+    "projectId": "analytics",
+    "name": "The crossing",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 310,
+     "month": 4,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "s2a"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "t1"
+    ],
+    "createdAt": 24,
+    "updatedAt": 0
+   },
+   {
+    "id": "e3",
+    "projectId": "analytics",
+    "name": "The fire",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 302,
+     "month": null,
+     "season": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [
+     "t2"
+    ],
+    "createdAt": 25,
+    "updatedAt": 0
+   },
+   {
+    "id": "e4",
+    "projectId": "analytics",
+    "name": "Someday",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "c5"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "createdAt": 26,
+    "updatedAt": 0
+   },
+   {
+    "id": "e5",
+    "projectId": "analytics",
+    "name": "The ashes",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 311,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "c5"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "t1",
+     "t2"
+    ],
+    "createdAt": 27,
+    "updatedAt": 0
+   },
+   {
+    "id": "e6",
+    "projectId": "analytics",
+    "name": "Home",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 340,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "c6"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "t6"
+    ],
+    "createdAt": 28,
+    "updatedAt": 0
+   },
+   {
+    "id": "e7",
+    "projectId": "analytics",
+    "name": "The tower",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 305,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "s3a"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "createdAt": 29,
+    "updatedAt": 0
+   }
+  ],
+  "characterRelations": [
+   {
+    "id": "r1",
+    "projectId": "analytics",
+    "fromId": "mira",
+    "toId": "kai",
+    "type": "Friends",
+    "description": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "r2",
+    "projectId": "analytics",
+    "fromId": "mira",
+    "toId": "pell",
+    "type": "Rivals",
+    "description": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "r3",
+    "projectId": "analytics",
+    "fromId": "zed",
+    "toId": "zed",
+    "type": "Self",
+    "description": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "progressSnapshots": [
+   {
+    "id": "p1",
+    "projectId": "analytics",
+    "entryId": "mira",
+    "nodeId": "c1",
+    "title": "Start",
+    "note": "",
+    "values": {},
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "p2",
+    "projectId": "analytics",
+    "entryId": "mira",
+    "nodeId": "c5",
+    "title": "After",
+    "note": "",
+    "values": {},
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "p3",
+    "projectId": "analytics",
+    "entryId": "kai",
+    "nodeId": null,
+    "title": "Before",
+    "note": "",
+    "values": {},
+    "createdAt": 2,
+    "updatedAt": 0
+   }
+  ],
+  "writingSessions": [
+   {
+    "id": "w1",
+    "projectId": "analytics",
+    "day": "2026-08-30",
+    "startedAt": 1788098400000,
+    "lastActiveAt": 1788101100000,
+    "netWords": 1100,
+    "added": 1200,
+    "removed": 100,
+    "saves": 3
+   },
+   {
+    "id": "w2",
+    "projectId": "analytics",
+    "day": "2026-09-28",
+    "startedAt": 1790643600000,
+    "lastActiveAt": 1790649000000,
+    "netWords": 2100,
+    "added": 2100,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w3",
+    "projectId": "analytics",
+    "day": "2026-09-29",
+    "startedAt": 1790733600000,
+    "lastActiveAt": 1790735400000,
+    "netWords": 750,
+    "added": 800,
+    "removed": 50,
+    "saves": 3
+   },
+   {
+    "id": "w4",
+    "projectId": "analytics",
+    "day": "2026-09-30",
+    "startedAt": 1790769600000,
+    "lastActiveAt": 1790770800000,
+    "netWords": 400,
+    "added": 400,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w5",
+    "projectId": "analytics",
+    "day": "2026-10-01",
+    "startedAt": 1790859600000,
+    "lastActiveAt": 1790859600000,
+    "netWords": 0,
+    "added": 0,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w6",
+    "projectId": "analytics",
+    "day": "2026-10-10",
+    "startedAt": 1791644400000,
+    "lastActiveAt": 1791651600000,
+    "netWords": 3200,
+    "added": 3500,
+    "removed": 300,
+    "saves": 3
+   },
+   {
+    "id": "w7",
+    "projectId": "analytics",
+    "day": "2026-10-19",
+    "startedAt": 1792422000000,
+    "lastActiveAt": 1792423500000,
+    "netWords": 600,
+    "added": 600,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w8",
+    "projectId": "analytics",
+    "day": "2026-10-21",
+    "startedAt": 1792594800000,
+    "lastActiveAt": 1792596300000,
+    "netWords": 650,
+    "added": 650,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w9",
+    "projectId": "analytics",
+    "day": "2026-10-22",
+    "startedAt": 1792681200000,
+    "lastActiveAt": 1792683600000,
+    "netWords": -900,
+    "added": 0,
+    "removed": 900,
+    "saves": 3
+   },
+   {
+    "id": "w10",
+    "projectId": "analytics",
+    "day": "2026-10-23",
+    "startedAt": 1792810800000,
+    "lastActiveAt": 1792811700000,
+    "netWords": 280,
+    "added": 300,
+    "removed": 20,
+    "saves": 3
+   },
+   {
+    "id": "w11",
+    "projectId": "analytics",
+    "day": "2026-10-24",
+    "startedAt": 1792900800000,
+    "lastActiveAt": 1792905000000,
+    "netWords": 1500,
+    "added": 1500,
+    "removed": 0,
+    "saves": 3
+   },
+   {
+    "id": "w12",
+    "projectId": "analytics",
+    "day": "2026-10-24",
+    "startedAt": 1792839600000,
+    "lastActiveAt": 1792840200000,
+    "netWords": 200,
+    "added": 200,
+    "removed": 0,
+    "saves": 3
+   }
+  ],
+  "goals": [
+   {
+    "id": "g1",
+    "projectId": "analytics",
+    "kind": "daily",
+    "title": "Daily",
+    "targetWords": 500,
+    "dueDate": null,
+    "nodeId": null,
+    "category": null,
+    "done": false,
+    "doneAt": null,
+    "createdAt": 30,
+    "updatedAt": 0
+   },
+   {
+    "id": "g2",
+    "projectId": "analytics",
+    "kind": "weekly",
+    "title": "Weekly",
+    "targetWords": 4000,
+    "dueDate": null,
+    "nodeId": null,
+    "category": null,
+    "done": false,
+    "doneAt": null,
+    "createdAt": 31,
+    "updatedAt": 0
+   },
+   {
+    "id": "g3",
+    "projectId": "analytics",
+    "kind": "deadline",
+    "title": "Book one",
+    "targetWords": 40000,
+    "dueDate": "2026-12-31",
+    "nodeId": null,
+    "category": null,
+    "done": false,
+    "doneAt": null,
+    "createdAt": 32,
+    "updatedAt": 0
+   },
+   {
+    "id": "g4",
+    "projectId": "analytics",
+    "kind": "deadline",
+    "title": "Crossing",
+    "targetWords": 2000,
+    "dueDate": "2026-10-20",
+    "nodeId": "c2",
+    "category": null,
+    "done": false,
+    "doneAt": null,
+    "createdAt": 33,
+    "updatedAt": 0
+   },
+   {
+    "id": "g5",
+    "projectId": "analytics",
+    "kind": "deadline",
+    "title": "Submit",
+    "targetWords": null,
+    "dueDate": "2026-11-15",
+    "nodeId": null,
+    "category": null,
+    "done": false,
+    "doneAt": null,
+    "createdAt": 34,
+    "updatedAt": 0
+   },
+   {
+    "id": "g6",
+    "projectId": "analytics",
+    "kind": "task",
+    "title": "Map the river",
+    "targetWords": null,
+    "dueDate": null,
+    "nodeId": null,
+    "category": "research",
+    "done": true,
+    "doneAt": null,
+    "createdAt": 35,
+    "updatedAt": 0
+   },
+   {
+    "id": "g7",
+    "projectId": "analytics",
+    "kind": "task",
+    "title": "Rename Kai",
+    "targetWords": null,
+    "dueDate": null,
+    "nodeId": null,
+    "category": "revision",
+    "done": false,
+    "doneAt": null,
+    "createdAt": 36,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

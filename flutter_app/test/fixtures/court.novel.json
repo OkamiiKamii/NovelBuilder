@@ -1,0 +1,6647 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "court",
+  "title": "The Court",
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "00000000-0000-4000-8000-c00000000000",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000001",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "mentions": [],
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000002",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 2,
+    "mentions": [],
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000003",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 4",
+    "order": 3,
+    "mentions": [],
+    "createdAt": 3
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000004",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 5",
+    "order": 4,
+    "mentions": [],
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000005",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 6",
+    "order": 5,
+    "mentions": [],
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000006",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 7",
+    "order": 6,
+    "mentions": [],
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000007",
+    "projectId": "court",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 8",
+    "order": 7,
+    "mentions": [],
+    "createdAt": 7
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "00000000-0000-4000-8000-p00000000000",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 00",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000001",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 01",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000002",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 02",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000003",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 03",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 3
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000004",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 04",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000005",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 05",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000006",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 06",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000007",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 07",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 7
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000008",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 08",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 8
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000009",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 09",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 9
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000010",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 10",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 10
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000011",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 11",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 11
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000012",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 12",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 12
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000013",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 13",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 13
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000014",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 14",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 14
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000015",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 15",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 15
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000016",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 16",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 16
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000017",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 17",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 17
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000018",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 18",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 18
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000019",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 19",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 19
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000020",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 20",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 20
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000021",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 21",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 21
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000022",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 22",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 22
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000023",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 23",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 23
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000024",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 24",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 24
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000025",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 25",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 25
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000026",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 26",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 26
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000027",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 27",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 27
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000028",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 28",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 28
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000029",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 29",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 29
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000030",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 30",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 30
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000031",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 31",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 31
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000032",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 32",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 32
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000033",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 33",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 33
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000034",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 34",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 34
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000035",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 35",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 35
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000036",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 36",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 36
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000037",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 37",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 37
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000038",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 38",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 38
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000039",
+    "projectId": "court",
+    "category": "character",
+    "name": "Courtier 39",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 39
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000000",
+    "projectId": "court",
+    "category": "faction",
+    "name": "House 0",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 100
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000001",
+    "projectId": "court",
+    "category": "faction",
+    "name": "House 1",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 101
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000002",
+    "projectId": "court",
+    "category": "faction",
+    "name": "House 2",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 102
+   }
+  ],
+  "characterRelations": [
+   {
+    "id": "00000000-0000-4000-8000-r00000000000",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000011",
+    "stages": [
+     {
+      "id": "s0",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s1",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "Phase 1",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 0,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s2",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000001",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000032",
+    "toId": "00000000-0000-4000-8000-p00000000005",
+    "stages": [
+     {
+      "id": "s3",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000002",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-p00000000013",
+    "stages": [
+     {
+      "id": "s4",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000003",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000034",
+    "toId": "00000000-0000-4000-8000-p00000000022",
+    "stages": [
+     {
+      "id": "s5",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000004",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000024",
+    "toId": "00000000-0000-4000-8000-p00000000014",
+    "stages": [
+     {
+      "id": "s6",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": 5
+       }
+      }
+     },
+     {
+      "id": "s7",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 6
+       }
+      }
+     },
+     {
+      "id": "s8",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000005",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000007",
+    "stages": [
+     {
+      "id": "s9",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s10",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s11",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 11",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000006",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000030",
+    "toId": "00000000-0000-4000-8000-p00000000014",
+    "stages": [
+     {
+      "id": "s12",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000007",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000035",
+    "stages": [
+     {
+      "id": "s13",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s14",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s15",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 7,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000008",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000034",
+    "toId": "00000000-0000-4000-8000-p00000000007",
+    "stages": [
+     {
+      "id": "s16",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "Phase 16",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 8,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000009",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000022",
+    "stages": [
+     {
+      "id": "s17",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s18",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 9,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000010",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000027",
+    "toId": "00000000-0000-4000-8000-p00000000004",
+    "stages": [
+     {
+      "id": "s19",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s20",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "Phase 20",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s21",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s22",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "Phase 22",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 10,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000011",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000008",
+    "stages": [
+     {
+      "id": "s23",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "Phase 23",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 11,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000012",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000017",
+    "toId": "00000000-0000-4000-8000-p00000000007",
+    "stages": [
+     {
+      "id": "s24",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 12,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000013",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000004",
+    "toId": "00000000-0000-4000-8000-p00000000034",
+    "stages": [
+     {
+      "id": "s25",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "Phase 25",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 13,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000014",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000027",
+    "toId": "00000000-0000-4000-8000-p00000000001",
+    "stages": [
+     {
+      "id": "s26",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 14,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000015",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000012",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s27",
+      "startNodeId": null,
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 15,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000016",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s28",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 28",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s29",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 9
+       }
+      }
+     }
+    ],
+    "createdAt": 16,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000017",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000021",
+    "toId": "00000000-0000-4000-8000-p00000000034",
+    "stages": [
+     {
+      "id": "s30",
+      "startNodeId": null,
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s31",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s32",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 17,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000018",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-p00000000028",
+    "stages": [
+     {
+      "id": "s33",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 18,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000019",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000033",
+    "toId": "00000000-0000-4000-8000-p00000000001",
+    "stages": [
+     {
+      "id": "s34",
+      "startNodeId": null,
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "Phase 34",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": 8
+       }
+      }
+     },
+     {
+      "id": "s35",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": 1
+       }
+      }
+     }
+    ],
+    "createdAt": 19,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000020",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000010",
+    "toId": "00000000-0000-4000-8000-p00000000000",
+    "stages": [
+     {
+      "id": "s36",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 20,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000021",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000036",
+    "stages": [
+     {
+      "id": "s37",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 37",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s38",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "Phase 38",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s39",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "Phase 39",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s40",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 1
+       }
+      }
+     }
+    ],
+    "createdAt": 21,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000022",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000015",
+    "toId": "00000000-0000-4000-8000-p00000000013",
+    "stages": [
+     {
+      "id": "s41",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "Phase 41",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s42",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s43",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s44",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 22,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000023",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000039",
+    "toId": "00000000-0000-4000-8000-p00000000026",
+    "stages": [
+     {
+      "id": "s45",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": 1
+       }
+      }
+     }
+    ],
+    "createdAt": 23,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000024",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000030",
+    "toId": "00000000-0000-4000-8000-p00000000001",
+    "stages": [
+     {
+      "id": "s46",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 24,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000025",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000024",
+    "toId": "00000000-0000-4000-8000-p00000000021",
+    "stages": [
+     {
+      "id": "s47",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "Phase 47",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 1,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 25,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000026",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000033",
+    "toId": "00000000-0000-4000-8000-p00000000020",
+    "stages": [
+     {
+      "id": "s48",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s49",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "Phase 49",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": 7
+       }
+      }
+     },
+     {
+      "id": "s50",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s51",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 1,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 26,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000027",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-p00000000001",
+    "stages": [
+     {
+      "id": "s52",
+      "startNodeId": null,
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 52",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s53",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s54",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 27,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000028",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000014",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "stages": [
+     {
+      "id": "s55",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": 7
+       }
+      }
+     }
+    ],
+    "createdAt": 28,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000029",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000015",
+    "toId": "00000000-0000-4000-8000-p00000000026",
+    "stages": [
+     {
+      "id": "s56",
+      "startNodeId": null,
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s57",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s58",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s59",
+      "startNodeId": null,
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     }
+    ],
+    "createdAt": 29,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000030",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000037",
+    "toId": "00000000-0000-4000-8000-p00000000012",
+    "stages": [
+     {
+      "id": "s60",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 30,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000031",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000006",
+    "toId": "00000000-0000-4000-8000-p00000000025",
+    "stages": [
+     {
+      "id": "s61",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s62",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "Phase 62",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s63",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s64",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 31,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000032",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000024",
+    "toId": "00000000-0000-4000-8000-p00000000020",
+    "stages": [
+     {
+      "id": "s65",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s66",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 32,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000033",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000002",
+    "toId": "00000000-0000-4000-8000-p00000000024",
+    "stages": [
+     {
+      "id": "s67",
+      "startNodeId": null,
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 67",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s68",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 33,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000034",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000026",
+    "stages": [
+     {
+      "id": "s69",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s70",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     }
+    ],
+    "createdAt": 34,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000035",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-p00000000013",
+    "stages": [
+     {
+      "id": "s71",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 35,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000036",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000012",
+    "stages": [
+     {
+      "id": "s72",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s73",
+      "startNodeId": null,
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s74",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s75",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 36,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000037",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000002",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s76",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 37,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000038",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000031",
+    "toId": "00000000-0000-4000-8000-p00000000032",
+    "stages": [
+     {
+      "id": "s77",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s78",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 38,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000039",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000015",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s79",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 39,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000040",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000016",
+    "toId": "00000000-0000-4000-8000-p00000000027",
+    "stages": [
+     {
+      "id": "s80",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s81",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "Phase 81",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 1,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 40,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000041",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "stages": [
+     {
+      "id": "s82",
+      "startNodeId": null,
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s83",
+      "startNodeId": null,
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s84",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s85",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 41,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000042",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000007",
+    "stages": [
+     {
+      "id": "s86",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s87",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s88",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 42,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000043",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-p00000000034",
+    "stages": [
+     {
+      "id": "s89",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 43,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000044",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000014",
+    "toId": "00000000-0000-4000-8000-p00000000000",
+    "stages": [
+     {
+      "id": "s90",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 44,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000045",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000038",
+    "toId": "00000000-0000-4000-8000-p00000000008",
+    "stages": [
+     {
+      "id": "s91",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s92",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s93",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "Phase 93",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s94",
+      "startNodeId": null,
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     }
+    ],
+    "createdAt": 45,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000046",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-p00000000004",
+    "stages": [
+     {
+      "id": "s95",
+      "startNodeId": null,
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 1,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s96",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 46,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000047",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000031",
+    "toId": "00000000-0000-4000-8000-p00000000005",
+    "stages": [
+     {
+      "id": "s97",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "Phase 97",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 47,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000048",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000008",
+    "toId": "00000000-0000-4000-8000-p00000000010",
+    "stages": [
+     {
+      "id": "s98",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "Phase 98",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s99",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 48,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000049",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000034",
+    "toId": "00000000-0000-4000-8000-p00000000036",
+    "stages": [
+     {
+      "id": "s100",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 49,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000050",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000031",
+    "toId": "00000000-0000-4000-8000-p00000000024",
+    "stages": [
+     {
+      "id": "s101",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 1,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s102",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s103",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 0,
+        "to": 7
+       }
+      }
+     }
+    ],
+    "createdAt": 50,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000051",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000012",
+    "stages": [
+     {
+      "id": "s104",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "Phase 104",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 51,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000052",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000029",
+    "toId": "00000000-0000-4000-8000-p00000000014",
+    "stages": [
+     {
+      "id": "s105",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s106",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "Phase 106",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     }
+    ],
+    "createdAt": 52,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000053",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-p00000000029",
+    "stages": [
+     {
+      "id": "s107",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "Phase 107",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 7
+       }
+      }
+     },
+     {
+      "id": "s108",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 53,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000054",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000004",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "stages": [
+     {
+      "id": "s109",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s110",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s111",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 54,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000055",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-p00000000039",
+    "stages": [
+     {
+      "id": "s112",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s113",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 1
+       }
+      }
+     }
+    ],
+    "createdAt": 55,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000056",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000011",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "stages": [
+     {
+      "id": "s114",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s115",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 5,
+        "to": 9
+       }
+      }
+     },
+     {
+      "id": "s116",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 56,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000057",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000025",
+    "stages": [
+     {
+      "id": "s117",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 57,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000058",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000029",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s118",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 58,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000059",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-p00000000025",
+    "stages": [
+     {
+      "id": "s119",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "Phase 119",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": 0
+       }
+      }
+     },
+     {
+      "id": "s120",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "Phase 120",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s121",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 59,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000060",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000022",
+    "toId": "00000000-0000-4000-8000-p00000000005",
+    "stages": [
+     {
+      "id": "s122",
+      "startNodeId": null,
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s123",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "Phase 123",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s124",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 60,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000061",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-p00000000037",
+    "stages": [
+     {
+      "id": "s125",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "Phase 125",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s126",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s127",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 61,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000062",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000025",
+    "stages": [
+     {
+      "id": "s128",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s129",
+      "startNodeId": null,
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s130",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 62,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000063",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-p00000000000",
+    "stages": [
+     {
+      "id": "s131",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 5,
+        "to": 1
+       }
+      }
+     },
+     {
+      "id": "s132",
+      "startNodeId": null,
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s133",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 63,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000064",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000039",
+    "toId": "00000000-0000-4000-8000-p00000000037",
+    "stages": [
+     {
+      "id": "s134",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s135",
+      "startNodeId": null,
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "Phase 135",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s136",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s137",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "Phase 137",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 64,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000065",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "stages": [
+     {
+      "id": "s138",
+      "startNodeId": null,
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": 3
+       }
+      }
+     }
+    ],
+    "createdAt": 65,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000066",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000034",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "stages": [
+     {
+      "id": "s139",
+      "startNodeId": null,
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": 4
+       }
+      }
+     }
+    ],
+    "createdAt": 66,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000067",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000027",
+    "stages": [
+     {
+      "id": "s140",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s141",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s142",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "Phase 142",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s143",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 67,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000068",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000020",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "stages": [
+     {
+      "id": "s144",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "Phase 144",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s145",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "Phase 145",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s146",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "Phase 146",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 68,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000069",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-p00000000016",
+    "stages": [
+     {
+      "id": "s147",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s148",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 69,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000070",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000033",
+    "toId": "00000000-0000-4000-8000-p00000000012",
+    "stages": [
+     {
+      "id": "s149",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s150",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 70,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000071",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000032",
+    "toId": "00000000-0000-4000-8000-p00000000003",
+    "stages": [
+     {
+      "id": "s151",
+      "startNodeId": null,
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 5,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s152",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 71,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000072",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000030",
+    "stages": [
+     {
+      "id": "s153",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "Phase 153",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": 2
+       }
+      }
+     },
+     {
+      "id": "s154",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 7
+       }
+      }
+     }
+    ],
+    "createdAt": 72,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000073",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-p00000000010",
+    "stages": [
+     {
+      "id": "s155",
+      "startNodeId": null,
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s156",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s157",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 73,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000074",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000011",
+    "stages": [
+     {
+      "id": "s158",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": 4
+       }
+      }
+     },
+     {
+      "id": "s159",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 4
+       }
+      }
+     }
+    ],
+    "createdAt": 74,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000075",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000031",
+    "toId": "00000000-0000-4000-8000-p00000000001",
+    "stages": [
+     {
+      "id": "s160",
+      "startNodeId": null,
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s161",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 75,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000076",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-p00000000037",
+    "stages": [
+     {
+      "id": "s162",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s163",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 76,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000077",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-p00000000024",
+    "stages": [
+     {
+      "id": "s164",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 164",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": 3
+       }
+      }
+     },
+     {
+      "id": "s165",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 165",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s166",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": 7
+       }
+      }
+     },
+     {
+      "id": "s167",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "Phase 167",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 77,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000078",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000022",
+    "toId": "00000000-0000-4000-8000-p00000000016",
+    "stages": [
+     {
+      "id": "s168",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": 7
+       }
+      }
+     }
+    ],
+    "createdAt": 78,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000079",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000029",
+    "toId": "00000000-0000-4000-8000-p00000000025",
+    "stages": [
+     {
+      "id": "s169",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s170",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s171",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "Phase 171",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s172",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "Phase 172",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 79,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000080",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000015",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "stages": [
+     {
+      "id": "s173",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 8
+       }
+      }
+     },
+     {
+      "id": "s174",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s175",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s176",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": 2
+       }
+      }
+     }
+    ],
+    "createdAt": 80,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000081",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000037",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "stages": [
+     {
+      "id": "s177",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s178",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s179",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s180",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 81,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000082",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000000",
+    "stages": [
+     {
+      "id": "s181",
+      "startNodeId": null,
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 181",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 3
+       }
+      }
+     }
+    ],
+    "createdAt": 82,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000083",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000011",
+    "toId": "00000000-0000-4000-8000-p00000000033",
+    "stages": [
+     {
+      "id": "s182",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s183",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "Phase 183",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s184",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 83,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000084",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s185",
+      "startNodeId": null,
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s186",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s187",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s188",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 84,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000085",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-p00000000006",
+    "stages": [
+     {
+      "id": "s189",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s190",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s191",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s192",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "Phase 192",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 85,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000086",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-p00000000032",
+    "stages": [
+     {
+      "id": "s193",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "Phase 193",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s194",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": 5
+       }
+      }
+     }
+    ],
+    "createdAt": 86,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000087",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-p00000000015",
+    "stages": [
+     {
+      "id": "s195",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "Phase 195",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 4
+       }
+      }
+     }
+    ],
+    "createdAt": 87,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000088",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "stages": [
+     {
+      "id": "s196",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 6
+       }
+      }
+     },
+     {
+      "id": "s197",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": 8
+       }
+      }
+     }
+    ],
+    "createdAt": 88,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000089",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000032",
+    "toId": "00000000-0000-4000-8000-p00000000035",
+    "stages": [
+     {
+      "id": "s198",
+      "startNodeId": null,
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 89,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000090",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000017",
+    "toId": "00000000-0000-4000-8000-p00000000008",
+    "stages": [
+     {
+      "id": "s199",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": 5
+       }
+      }
+     }
+    ],
+    "createdAt": 90,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000091",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-p00000000027",
+    "stages": [
+     {
+      "id": "s200",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s201",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s202",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 91,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000092",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000004",
+    "stages": [
+     {
+      "id": "s203",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s204",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 204",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 3,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s205",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 205",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 1
+       }
+      }
+     },
+     {
+      "id": "s206",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 5,
+        "to": 4
+       }
+      }
+     }
+    ],
+    "createdAt": 92,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000093",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000011",
+    "toId": "00000000-0000-4000-8000-p00000000029",
+    "stages": [
+     {
+      "id": "s207",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 0,
+        "to": 2
+       }
+      }
+     },
+     {
+      "id": "s208",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s209",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 93,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000094",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000021",
+    "toId": "00000000-0000-4000-8000-p00000000011",
+    "stages": [
+     {
+      "id": "s210",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 94,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000095",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000021",
+    "toId": "00000000-0000-4000-8000-p00000000018",
+    "stages": [
+     {
+      "id": "s211",
+      "startNodeId": null,
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "Phase 211",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s212",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 10,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 95,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000096",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000039",
+    "toId": "00000000-0000-4000-8000-p00000000033",
+    "stages": [
+     {
+      "id": "s213",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s214",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 96,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000097",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-p00000000020",
+    "stages": [
+     {
+      "id": "s215",
+      "startNodeId": null,
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 5
+       }
+      }
+     }
+    ],
+    "createdAt": 97,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000098",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000007",
+    "toId": "00000000-0000-4000-8000-p00000000032",
+    "stages": [
+     {
+      "id": "s216",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s217",
+      "startNodeId": null,
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s218",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "partners",
+      "category": "romance",
+      "label": "Partners",
+      "fromRole": "Partner",
+      "toRole": "Partner",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s219",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "startUnknown": true,
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 98,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000099",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-p00000000010",
+    "stages": [
+     {
+      "id": "s220",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 99,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000100",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000021",
+    "toId": "00000000-0000-4000-8000-p00000000019",
+    "stages": [
+     {
+      "id": "s221",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 100,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000101",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000004",
+    "toId": "00000000-0000-4000-8000-p00000000014",
+    "stages": [
+     {
+      "id": "s222",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "Phase 222",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s223",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": 5
+       }
+      }
+     },
+     {
+      "id": "s224",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "Phase 224",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 101,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000102",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000033",
+    "stages": [
+     {
+      "id": "s225",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 8,
+        "to": 5
+       }
+      }
+     },
+     {
+      "id": "s226",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s227",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s228",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 102,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000103",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000020",
+    "stages": [
+     {
+      "id": "s229",
+      "startNodeId": null,
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s230",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s231",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "employer-employee",
+      "category": "hierarchy",
+      "label": "Employer / Employee",
+      "fromRole": "Employer",
+      "toRole": "Employee",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 103,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000104",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000014",
+    "toId": "00000000-0000-4000-8000-p00000000028",
+    "stages": [
+     {
+      "id": "s232",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s233",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s234",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 104,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000105",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000032",
+    "toId": "00000000-0000-4000-8000-p00000000033",
+    "stages": [
+     {
+      "id": "s235",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 105,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000106",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000030",
+    "stages": [
+     {
+      "id": "s236",
+      "startNodeId": null,
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 7
+       }
+      }
+     },
+     {
+      "id": "s237",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "romantic-interest",
+      "category": "romance",
+      "label": "Romantic interest",
+      "fromRole": "Romantic interest",
+      "toRole": "Romantic interest",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 106,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000107",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000027",
+    "toId": "00000000-0000-4000-8000-p00000000036",
+    "stages": [
+     {
+      "id": "s238",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 107,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000108",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000011",
+    "toId": "00000000-0000-4000-8000-p00000000032",
+    "stages": [
+     {
+      "id": "s239",
+      "startNodeId": null,
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "Phase 239",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 108,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000109",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000036",
+    "toId": "00000000-0000-4000-8000-p00000000033",
+    "stages": [
+     {
+      "id": "s240",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s241",
+      "startNodeId": "00000000-0000-4000-8000-c00000000005",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": 8
+       }
+      }
+     },
+     {
+      "id": "s242",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "enemies",
+      "category": "social",
+      "label": "Enemies",
+      "fromRole": "Enemy",
+      "toRole": "Enemy",
+      "directional": false,
+      "title": "Phase 242",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 109,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000110",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000026",
+    "toId": "00000000-0000-4000-8000-p00000000037",
+    "stages": [
+     {
+      "id": "s243",
+      "startNodeId": null,
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s244",
+      "startNodeId": null,
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "startUnknown": true
+     },
+     {
+      "id": "s245",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 4
+       }
+      }
+     },
+     {
+      "id": "s246",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 110,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000111",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000032",
+    "stages": [
+     {
+      "id": "s247",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 0,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s248",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s249",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 111,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000112",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000029",
+    "toId": "00000000-0000-4000-8000-p00000000022",
+    "stages": [
+     {
+      "id": "s250",
+      "startNodeId": null,
+      "preset": "master-servant",
+      "category": "hierarchy",
+      "label": "Master / Servant",
+      "fromRole": "Master",
+      "toRole": "Servant",
+      "directional": true,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s251",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 112,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000113",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000008",
+    "stages": [
+     {
+      "id": "s252",
+      "startNodeId": null,
+      "preset": "ruler-subject",
+      "category": "hierarchy",
+      "label": "Ruler / Subject",
+      "fromRole": "Ruler",
+      "toRole": "Subject",
+      "directional": true,
+      "title": "",
+      "affinity": "trusting",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 113,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000114",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-p00000000036",
+    "stages": [
+     {
+      "id": "s253",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": 1
+       }
+      }
+     },
+     {
+      "id": "s254",
+      "startNodeId": "00000000-0000-4000-8000-c00000000000",
+      "preset": "siblings",
+      "category": "family",
+      "label": "Siblings",
+      "fromRole": "Sibling",
+      "toRole": "Sibling",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s255",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "exes",
+      "category": "romance",
+      "label": "Exes",
+      "fromRole": "Ex",
+      "toRole": "Ex",
+      "directional": false,
+      "title": "Phase 255",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s256",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "Rival",
+      "toRole": "Rival",
+      "directional": false,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 7,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 114,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000115",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000039",
+    "stages": [
+     {
+      "id": "s257",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "Friend",
+      "toRole": "Friend",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 0,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s258",
+      "startNodeId": "00000000-0000-4000-8000-c00000000004",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 115,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000116",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-p00000000030",
+    "stages": [
+     {
+      "id": "s259",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "political",
+      "category": "hierarchy",
+      "label": "Political tie",
+      "fromRole": "Political tie",
+      "toRole": "Political tie",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 6,
+        "to": null
+       }
+      }
+     }
+    ],
+    "createdAt": 116,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000117",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-p00000000029",
+    "stages": [
+     {
+      "id": "s260",
+      "startNodeId": null,
+      "preset": "allies",
+      "category": "social",
+      "label": "Allies",
+      "fromRole": "Ally",
+      "toRole": "Ally",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 4,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s261",
+      "startNodeId": "00000000-0000-4000-8000-c00000000002",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "Phase 261",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 117,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000118",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-p00000000008",
+    "stages": [
+     {
+      "id": "s262",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 2,
+        "to": 10
+       }
+      }
+     },
+     {
+      "id": "s263",
+      "startNodeId": "00000000-0000-4000-8000-c00000000001",
+      "preset": "spouses",
+      "category": "family",
+      "label": "Spouses",
+      "fromRole": "Spouse",
+      "toRole": "Spouse",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s264",
+      "startNodeId": "00000000-0000-4000-8000-c00000000003",
+      "preset": "relatives",
+      "category": "family",
+      "label": "Relatives",
+      "fromRole": "Relative",
+      "toRole": "Relative",
+      "directional": false,
+      "title": "",
+      "affinity": "reluctant",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 118,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000119",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000024",
+    "toId": "00000000-0000-4000-8000-p00000000039",
+    "stages": [
+     {
+      "id": "s265",
+      "startNodeId": null,
+      "preset": "parent-child",
+      "category": "family",
+      "label": "Parent / Child",
+      "fromRole": "Parent",
+      "toRole": "Child",
+      "directional": true,
+      "title": "",
+      "affinity": "hostile",
+      "event": "",
+      "notes": "",
+      "attributes": {
+       "trust": {
+        "from": 9,
+        "to": null
+       }
+      }
+     },
+     {
+      "id": "s266",
+      "startNodeId": "00000000-0000-4000-8000-c00000000006",
+      "preset": "mentor-student",
+      "category": "mentorship",
+      "label": "Mentor / Student",
+      "fromRole": "Mentor",
+      "toRole": "Student",
+      "directional": true,
+      "title": "",
+      "affinity": "neutral",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 119,
+    "updatedAt": 0
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "00000000-0000-4000-8000-m00000000000",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000001",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000002",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000002",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000003",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 3
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000004",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000004",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000005",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000006",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000006",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000007",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000007",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 7
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000008",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000008",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 8
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000009",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 9
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000010",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000010",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 10
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000011",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000011",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 11
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000012",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000012",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 12
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000013",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000013",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 13
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000014",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000014",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 14
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000015",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000015",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 15
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000016",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000016",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 16
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000017",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000017",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 17
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000018",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000018",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 18
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000019",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000019",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 19
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000020",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000020",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 20
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000021",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000021",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 21
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000022",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000022",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 22
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000023",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000023",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 23
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000024",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000024",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 24
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000025",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000025",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 25
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000026",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000026",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 26
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000027",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000027",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 27
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000028",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000028",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 28
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000029",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000029",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 29
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000030",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000030",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 30
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000031",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000031",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 31
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000032",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000032",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 32
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000033",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000033",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 33
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000034",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000034",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 34
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000035",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000035",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 35
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000036",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000036",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 36
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000037",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000037",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 37
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000038",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000038",
+    "toId": "00000000-0000-4000-8000-f00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 38
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000039",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000039",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 39
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000000",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-p00000000003",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 200
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000001",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-p00000000010",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 201
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000002",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000002",
+    "toId": "00000000-0000-4000-8000-p00000000017",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 202
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000003",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000003",
+    "toId": "00000000-0000-4000-8000-p00000000024",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 203
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000004",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000004",
+    "toId": "00000000-0000-4000-8000-p00000000031",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 204
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000005",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000005",
+    "toId": "00000000-0000-4000-8000-p00000000038",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 205
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000006",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000006",
+    "toId": "00000000-0000-4000-8000-p00000000005",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 206
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000007",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000007",
+    "toId": "00000000-0000-4000-8000-p00000000012",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 207
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000008",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000008",
+    "toId": "00000000-0000-4000-8000-p00000000019",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 208
+   },
+   {
+    "id": "00000000-0000-4000-8000-d00000000009",
+    "projectId": "court",
+    "fromId": "00000000-0000-4000-8000-p00000000009",
+    "toId": "00000000-0000-4000-8000-p00000000026",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "distrusts",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 209
+   }
+  ]
+ }
+}

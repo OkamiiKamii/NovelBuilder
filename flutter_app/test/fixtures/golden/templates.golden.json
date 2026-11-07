@@ -1,0 +1,3906 @@
+{
+ "templates": [
+  {
+   "id": "general",
+   "projectId": null,
+   "name": "General Character",
+   "description": "Identity, personality, arc, position, biography and appearance.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Resources & Position",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Rank",
+       "type": "text"
+      },
+      {
+       "name": "Organization",
+       "type": "text"
+      },
+      {
+       "name": "Political Influence",
+       "type": "number"
+      },
+      {
+       "name": "Wealth",
+       "type": "text"
+      },
+      {
+       "name": "Resources",
+       "type": "longtext"
+      },
+      {
+       "name": "Social Standing",
+       "type": "text"
+      },
+      {
+       "name": "Reputation",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "protagonist",
+   "projectId": null,
+   "name": "Protagonist",
+   "description": "The general layout with room for the want, the need and what stands in the way.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Goals & Stakes",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "What they want",
+       "type": "longtext"
+      },
+      {
+       "name": "What they need",
+       "type": "longtext"
+      },
+      {
+       "name": "What stands in the way",
+       "type": "longtext"
+      },
+      {
+       "name": "What they stand to lose",
+       "type": "longtext"
+      },
+      {
+       "name": "The lie they believe",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Resources & Position",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Rank",
+       "type": "text"
+      },
+      {
+       "name": "Organization",
+       "type": "text"
+      },
+      {
+       "name": "Political Influence",
+       "type": "number"
+      },
+      {
+       "name": "Wealth",
+       "type": "text"
+      },
+      {
+       "name": "Resources",
+       "type": "longtext"
+      },
+      {
+       "name": "Social Standing",
+       "type": "text"
+      },
+      {
+       "name": "Reputation",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "antagonist",
+   "projectId": null,
+   "name": "Antagonist",
+   "description": "Why they oppose the protagonist, how, and what would make them stop.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Opposition",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "What they want",
+       "type": "longtext"
+      },
+      {
+       "name": "Why they believe they are right",
+       "type": "longtext"
+      },
+      {
+       "name": "Methods",
+       "type": "longtext"
+      },
+      {
+       "name": "Resources and reach",
+       "type": "longtext"
+      },
+      {
+       "name": "Lines they will not cross",
+       "type": "longtext"
+      },
+      {
+       "name": "What would make them stop",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Resources & Position",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Rank",
+       "type": "text"
+      },
+      {
+       "name": "Organization",
+       "type": "text"
+      },
+      {
+       "name": "Political Influence",
+       "type": "number"
+      },
+      {
+       "name": "Wealth",
+       "type": "text"
+      },
+      {
+       "name": "Resources",
+       "type": "longtext"
+      },
+      {
+       "name": "Social Standing",
+       "type": "text"
+      },
+      {
+       "name": "Reputation",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "supporting",
+   "projectId": null,
+   "name": "Supporting Character",
+   "description": "A lighter layout: who they are, and what they are to the story.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Role in the Story",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "What they are to the protagonist",
+       "type": "longtext"
+      },
+      {
+       "name": "What they want",
+       "type": "longtext"
+      },
+      {
+       "name": "How they change, if they do",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "fantasy",
+   "projectId": null,
+   "name": "Fantasy Character",
+   "description": "Adds lineage, magic and allegiances.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Lineage & Magic",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Bloodline",
+       "type": "text"
+      },
+      {
+       "name": "Magical Lineage",
+       "type": "text"
+      },
+      {
+       "name": "School of Magic",
+       "type": "text"
+      },
+      {
+       "name": "Gifts",
+       "type": "longtext"
+      },
+      {
+       "name": "Limits and cost",
+       "type": "longtext"
+      },
+      {
+       "name": "Patron or Deity",
+       "type": "reference"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Allegiances",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Faction",
+       "type": "reference"
+      },
+      {
+       "name": "Rank",
+       "type": "text"
+      },
+      {
+       "name": "Sworn to",
+       "type": "reference"
+      },
+      {
+       "name": "Oaths",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "progression",
+   "projectId": null,
+   "name": "Progression Fantasy Character",
+   "description": "Goals, path and growth. Level, class, attributes and skills live on their system sheet.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Goals",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Immediate goal",
+       "type": "longtext"
+      },
+      {
+       "name": "Long-term goal",
+       "type": "longtext"
+      },
+      {
+       "name": "What drives the climb",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Path",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Path or Realm",
+       "type": "text"
+      },
+      {
+       "name": "How they fight",
+       "type": "longtext"
+      },
+      {
+       "name": "Signature technique",
+       "type": "longtext"
+      },
+      {
+       "name": "Limits and cost",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Evolution History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Breakthroughs",
+       "type": "longtext"
+      },
+      {
+       "name": "Evolutions",
+       "type": "longtext"
+      },
+      {
+       "name": "Setbacks",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "suspect",
+   "projectId": null,
+   "name": "Mystery Suspect",
+   "description": "Motive, means, opportunity and alibi, and what is yet to come out.",
+   "sections": [
+    {
+     "name": "Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Connection to the victim",
+       "type": "longtext"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "The Case",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Motive",
+       "type": "longtext"
+      },
+      {
+       "name": "Means",
+       "type": "longtext"
+      },
+      {
+       "name": "Opportunity",
+       "type": "longtext"
+      },
+      {
+       "name": "Alibi",
+       "type": "longtext"
+      },
+      {
+       "name": "Alibi holds?",
+       "type": "toggle"
+      },
+      {
+       "name": "Evidence for",
+       "type": "longtext"
+      },
+      {
+       "name": "Evidence against",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Reveal",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Reveal status",
+       "type": "select",
+       "options": [
+        "Unsuspected",
+        "Suspected",
+        "Cleared",
+        "Exposed"
+       ]
+      },
+      {
+       "name": "What they are hiding",
+       "type": "longtext"
+      },
+      {
+       "name": "How it comes out",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "romance",
+   "projectId": null,
+   "name": "Romance Character",
+   "description": "What they want from love, what they fear from it, and what keeps them apart.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Heart",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "What they want from love",
+       "type": "longtext"
+      },
+      {
+       "name": "What they fear from it",
+       "type": "longtext"
+      },
+      {
+       "name": "Past relationships",
+       "type": "longtext"
+      },
+      {
+       "name": "Wound",
+       "type": "longtext"
+      },
+      {
+       "name": "What attracts them",
+       "type": "tags"
+      },
+      {
+       "name": "What keeps them apart",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  },
+  {
+   "id": "scifi",
+   "projectId": null,
+   "name": "Science Fiction Character",
+   "description": "Origin, augmentation, affiliation and clearance.",
+   "sections": [
+    {
+     "name": "Core Identity",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Full Name",
+       "type": "text"
+      },
+      {
+       "name": "Age",
+       "type": "text"
+      },
+      {
+       "name": "Date of Birth",
+       "type": "text"
+      },
+      {
+       "name": "Gender",
+       "type": "text"
+      },
+      {
+       "name": "Pronouns",
+       "type": "text"
+      },
+      {
+       "name": "Species",
+       "type": "text"
+      },
+      {
+       "name": "Nationality",
+       "type": "text"
+      },
+      {
+       "name": "Place of Origin",
+       "type": "reference"
+      },
+      {
+       "name": "Occupation",
+       "type": "text"
+      },
+      {
+       "name": "Alignment",
+       "type": "text"
+      },
+      {
+       "name": "Loyalty",
+       "type": "number"
+      },
+      {
+       "name": "Ambition",
+       "type": "number"
+      },
+      {
+       "name": "Physical Appearance",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Origin & Body",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Homeworld or Habitat",
+       "type": "reference"
+      },
+      {
+       "name": "Species or Strain",
+       "type": "text"
+      },
+      {
+       "name": "Augmentations",
+       "type": "longtext"
+      },
+      {
+       "name": "Implants",
+       "type": "longtext"
+      },
+      {
+       "name": "Lifespan",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "name": "Affiliation",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Faction",
+       "type": "reference"
+      },
+      {
+       "name": "Rank",
+       "type": "text"
+      },
+      {
+       "name": "Clearance",
+       "type": "text"
+      },
+      {
+       "name": "Ship or Posting",
+       "type": "reference"
+      },
+      {
+       "name": "Specialisation",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Personality & Psychology",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Core Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Secondary Traits",
+       "type": "tags"
+      },
+      {
+       "name": "Strengths",
+       "type": "tags"
+      },
+      {
+       "name": "Weaknesses",
+       "type": "tags"
+      },
+      {
+       "name": "Fears",
+       "type": "tags"
+      },
+      {
+       "name": "Motivations",
+       "type": "longtext"
+      },
+      {
+       "name": "Values",
+       "type": "tags"
+      },
+      {
+       "name": "Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Habits",
+       "type": "tags"
+      },
+      {
+       "name": "Behavioral Patterns",
+       "type": "longtext"
+      },
+      {
+       "name": "Emotional Triggers",
+       "type": "longtext"
+      },
+      {
+       "name": "Coping Mechanisms",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflicts",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Character Arc",
+     "tab": "overview",
+     "fields": [
+      {
+       "name": "Starting Point",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Beliefs",
+       "type": "longtext"
+      },
+      {
+       "name": "Initial Goals",
+       "type": "longtext"
+      },
+      {
+       "name": "Internal Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "External Conflict",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Turning Points",
+       "type": "longtext"
+      },
+      {
+       "name": "Development Milestones",
+       "type": "longtext"
+      },
+      {
+       "name": "Current State",
+       "type": "longtext"
+      },
+      {
+       "name": "Intended Resolution",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Biography & History",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Childhood",
+       "type": "longtext"
+      },
+      {
+       "name": "Family Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Education",
+       "type": "longtext"
+      },
+      {
+       "name": "Important Past Events",
+       "type": "longtext"
+      },
+      {
+       "name": "Previous Occupations",
+       "type": "longtext"
+      },
+      {
+       "name": "Personal History",
+       "type": "longtext"
+      },
+      {
+       "name": "Cultural Background",
+       "type": "longtext"
+      },
+      {
+       "name": "Major Life Experiences",
+       "type": "longtext"
+      }
+     ]
+    },
+    {
+     "name": "Appearance",
+     "tab": "details",
+     "fields": [
+      {
+       "name": "Height",
+       "type": "text"
+      },
+      {
+       "name": "Build",
+       "type": "text"
+      },
+      {
+       "name": "Hair",
+       "type": "text"
+      },
+      {
+       "name": "Eyes",
+       "type": "text"
+      },
+      {
+       "name": "Skin",
+       "type": "text"
+      },
+      {
+       "name": "Distinguishing Features",
+       "type": "longtext"
+      },
+      {
+       "name": "Scars",
+       "type": "longtext"
+      },
+      {
+       "name": "Tattoos",
+       "type": "longtext"
+      },
+      {
+       "name": "Clothing",
+       "type": "longtext"
+      },
+      {
+       "name": "Voice",
+       "type": "text"
+      },
+      {
+       "name": "Mannerisms",
+       "type": "longtext"
+      }
+     ]
+    }
+   ],
+   "createdAt": 0
+  }
+ ],
+ "sections": {
+  "general": [
+   {
+    "id": "general-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "general-personality-psychology-1",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "general-character-arc-2",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "general-resources-position-3",
+    "name": "Resources & Position",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "general-biography-history-4",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "general-appearance-5",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "protagonist": [
+   {
+    "id": "protagonist-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-personality-psychology-1",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-goals-stakes-2",
+    "name": "Goals & Stakes",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-character-arc-3",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-resources-position-4",
+    "name": "Resources & Position",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-biography-history-5",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "protagonist-appearance-6",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "antagonist": [
+   {
+    "id": "antagonist-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-personality-psychology-1",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-opposition-2",
+    "name": "Opposition",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-character-arc-3",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-resources-position-4",
+    "name": "Resources & Position",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-biography-history-5",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "antagonist-appearance-6",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "supporting": [
+   {
+    "id": "supporting-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "supporting-role-in-the-story-1",
+    "name": "Role in the Story",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "supporting-personality-2",
+    "name": "Personality",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "supporting-biography-history-3",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "fantasy": [
+   {
+    "id": "fantasy-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-lineage-magic-1",
+    "name": "Lineage & Magic",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-personality-psychology-2",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-character-arc-3",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-allegiances-4",
+    "name": "Allegiances",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-biography-history-5",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "fantasy-appearance-6",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "progression": [
+   {
+    "id": "progression-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "progression-personality-psychology-1",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "progression-goals-2",
+    "name": "Goals",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "progression-path-3",
+    "name": "Path",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "progression-evolution-history-4",
+    "name": "Evolution History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "progression-character-arc-5",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "suspect": [
+   {
+    "id": "suspect-identity-0",
+    "name": "Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "suspect-the-case-1",
+    "name": "The Case",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "suspect-reveal-2",
+    "name": "Reveal",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "suspect-personality-psychology-3",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "suspect-biography-history-4",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "romance": [
+   {
+    "id": "romance-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "romance-personality-psychology-1",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "romance-heart-2",
+    "name": "Heart",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "romance-character-arc-3",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "romance-biography-history-4",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "romance-appearance-5",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ],
+  "scifi": [
+   {
+    "id": "scifi-core-identity-0",
+    "name": "Core Identity",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-origin-body-1",
+    "name": "Origin & Body",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-affiliation-2",
+    "name": "Affiliation",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-personality-psychology-3",
+    "name": "Personality & Psychology",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-character-arc-4",
+    "name": "Character Arc",
+    "tab": "overview",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-biography-history-5",
+    "name": "Biography & History",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   },
+   {
+    "id": "scifi-appearance-6",
+    "name": "Appearance",
+    "tab": "details",
+    "hidden": false,
+    "fieldIds": []
+   }
+  ]
+ },
+ "suggestions": {
+  "Core Identity|": [
+   {
+    "name": "Full Name",
+    "type": "text"
+   },
+   {
+    "name": "Age",
+    "type": "text"
+   },
+   {
+    "name": "Date of Birth",
+    "type": "text"
+   },
+   {
+    "name": "Gender",
+    "type": "text"
+   },
+   {
+    "name": "Pronouns",
+    "type": "text"
+   },
+   {
+    "name": "Species",
+    "type": "text"
+   },
+   {
+    "name": "Nationality",
+    "type": "text"
+   },
+   {
+    "name": "Place of Origin",
+    "type": "reference"
+   },
+   {
+    "name": "Occupation",
+    "type": "text"
+   },
+   {
+    "name": "Alignment",
+    "type": "text"
+   },
+   {
+    "name": "Loyalty",
+    "type": "number"
+   },
+   {
+    "name": "Ambition",
+    "type": "number"
+   },
+   {
+    "name": "Physical Appearance",
+    "type": "longtext"
+   }
+  ],
+  "Core Identity|Age,motive, Core Traits ": [
+   {
+    "name": "Full Name",
+    "type": "text"
+   },
+   {
+    "name": "Date of Birth",
+    "type": "text"
+   },
+   {
+    "name": "Gender",
+    "type": "text"
+   },
+   {
+    "name": "Pronouns",
+    "type": "text"
+   },
+   {
+    "name": "Species",
+    "type": "text"
+   },
+   {
+    "name": "Nationality",
+    "type": "text"
+   },
+   {
+    "name": "Place of Origin",
+    "type": "reference"
+   },
+   {
+    "name": "Occupation",
+    "type": "text"
+   },
+   {
+    "name": "Alignment",
+    "type": "text"
+   },
+   {
+    "name": "Loyalty",
+    "type": "number"
+   },
+   {
+    "name": "Ambition",
+    "type": "number"
+   },
+   {
+    "name": "Physical Appearance",
+    "type": "longtext"
+   }
+  ],
+  "Personality & Psychology|": [
+   {
+    "name": "Core Traits",
+    "type": "tags"
+   },
+   {
+    "name": "Secondary Traits",
+    "type": "tags"
+   },
+   {
+    "name": "Strengths",
+    "type": "tags"
+   },
+   {
+    "name": "Weaknesses",
+    "type": "tags"
+   },
+   {
+    "name": "Fears",
+    "type": "tags"
+   },
+   {
+    "name": "Motivations",
+    "type": "longtext"
+   },
+   {
+    "name": "Values",
+    "type": "tags"
+   },
+   {
+    "name": "Beliefs",
+    "type": "longtext"
+   },
+   {
+    "name": "Habits",
+    "type": "tags"
+   },
+   {
+    "name": "Behavioral Patterns",
+    "type": "longtext"
+   },
+   {
+    "name": "Emotional Triggers",
+    "type": "longtext"
+   },
+   {
+    "name": "Coping Mechanisms",
+    "type": "longtext"
+   },
+   {
+    "name": "Internal Conflicts",
+    "type": "longtext"
+   }
+  ],
+  "Personality & Psychology|Age,motive, Core Traits ": [
+   {
+    "name": "Secondary Traits",
+    "type": "tags"
+   },
+   {
+    "name": "Strengths",
+    "type": "tags"
+   },
+   {
+    "name": "Weaknesses",
+    "type": "tags"
+   },
+   {
+    "name": "Fears",
+    "type": "tags"
+   },
+   {
+    "name": "Motivations",
+    "type": "longtext"
+   },
+   {
+    "name": "Values",
+    "type": "tags"
+   },
+   {
+    "name": "Beliefs",
+    "type": "longtext"
+   },
+   {
+    "name": "Habits",
+    "type": "tags"
+   },
+   {
+    "name": "Behavioral Patterns",
+    "type": "longtext"
+   },
+   {
+    "name": "Emotional Triggers",
+    "type": "longtext"
+   },
+   {
+    "name": "Coping Mechanisms",
+    "type": "longtext"
+   },
+   {
+    "name": "Internal Conflicts",
+    "type": "longtext"
+   }
+  ],
+  "Character Arc|": [
+   {
+    "name": "Starting Point",
+    "type": "longtext"
+   },
+   {
+    "name": "Initial Beliefs",
+    "type": "longtext"
+   },
+   {
+    "name": "Initial Goals",
+    "type": "longtext"
+   },
+   {
+    "name": "Internal Conflict",
+    "type": "longtext"
+   },
+   {
+    "name": "External Conflict",
+    "type": "longtext"
+   },
+   {
+    "name": "Major Turning Points",
+    "type": "longtext"
+   },
+   {
+    "name": "Development Milestones",
+    "type": "longtext"
+   },
+   {
+    "name": "Current State",
+    "type": "longtext"
+   },
+   {
+    "name": "Intended Resolution",
+    "type": "longtext"
+   }
+  ],
+  "Character Arc|Age,motive, Core Traits ": [
+   {
+    "name": "Starting Point",
+    "type": "longtext"
+   },
+   {
+    "name": "Initial Beliefs",
+    "type": "longtext"
+   },
+   {
+    "name": "Initial Goals",
+    "type": "longtext"
+   },
+   {
+    "name": "Internal Conflict",
+    "type": "longtext"
+   },
+   {
+    "name": "External Conflict",
+    "type": "longtext"
+   },
+   {
+    "name": "Major Turning Points",
+    "type": "longtext"
+   },
+   {
+    "name": "Development Milestones",
+    "type": "longtext"
+   },
+   {
+    "name": "Current State",
+    "type": "longtext"
+   },
+   {
+    "name": "Intended Resolution",
+    "type": "longtext"
+   }
+  ],
+  "Resources & Position|": [
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Organization",
+    "type": "text"
+   },
+   {
+    "name": "Political Influence",
+    "type": "number"
+   },
+   {
+    "name": "Wealth",
+    "type": "text"
+   },
+   {
+    "name": "Resources",
+    "type": "longtext"
+   },
+   {
+    "name": "Social Standing",
+    "type": "text"
+   },
+   {
+    "name": "Reputation",
+    "type": "longtext"
+   }
+  ],
+  "Resources & Position|Age,motive, Core Traits ": [
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Organization",
+    "type": "text"
+   },
+   {
+    "name": "Political Influence",
+    "type": "number"
+   },
+   {
+    "name": "Wealth",
+    "type": "text"
+   },
+   {
+    "name": "Resources",
+    "type": "longtext"
+   },
+   {
+    "name": "Social Standing",
+    "type": "text"
+   },
+   {
+    "name": "Reputation",
+    "type": "longtext"
+   }
+  ],
+  "Biography & History|": [
+   {
+    "name": "Childhood",
+    "type": "longtext"
+   },
+   {
+    "name": "Family Background",
+    "type": "longtext"
+   },
+   {
+    "name": "Education",
+    "type": "longtext"
+   },
+   {
+    "name": "Important Past Events",
+    "type": "longtext"
+   },
+   {
+    "name": "Previous Occupations",
+    "type": "longtext"
+   },
+   {
+    "name": "Personal History",
+    "type": "longtext"
+   },
+   {
+    "name": "Cultural Background",
+    "type": "longtext"
+   },
+   {
+    "name": "Major Life Experiences",
+    "type": "longtext"
+   }
+  ],
+  "Biography & History|Age,motive, Core Traits ": [
+   {
+    "name": "Childhood",
+    "type": "longtext"
+   },
+   {
+    "name": "Family Background",
+    "type": "longtext"
+   },
+   {
+    "name": "Education",
+    "type": "longtext"
+   },
+   {
+    "name": "Important Past Events",
+    "type": "longtext"
+   },
+   {
+    "name": "Previous Occupations",
+    "type": "longtext"
+   },
+   {
+    "name": "Personal History",
+    "type": "longtext"
+   },
+   {
+    "name": "Cultural Background",
+    "type": "longtext"
+   },
+   {
+    "name": "Major Life Experiences",
+    "type": "longtext"
+   }
+  ],
+  "Appearance|": [
+   {
+    "name": "Height",
+    "type": "text"
+   },
+   {
+    "name": "Build",
+    "type": "text"
+   },
+   {
+    "name": "Hair",
+    "type": "text"
+   },
+   {
+    "name": "Eyes",
+    "type": "text"
+   },
+   {
+    "name": "Skin",
+    "type": "text"
+   },
+   {
+    "name": "Distinguishing Features",
+    "type": "longtext"
+   },
+   {
+    "name": "Scars",
+    "type": "longtext"
+   },
+   {
+    "name": "Tattoos",
+    "type": "longtext"
+   },
+   {
+    "name": "Clothing",
+    "type": "longtext"
+   },
+   {
+    "name": "Voice",
+    "type": "text"
+   },
+   {
+    "name": "Mannerisms",
+    "type": "longtext"
+   }
+  ],
+  "Appearance|Age,motive, Core Traits ": [
+   {
+    "name": "Height",
+    "type": "text"
+   },
+   {
+    "name": "Build",
+    "type": "text"
+   },
+   {
+    "name": "Hair",
+    "type": "text"
+   },
+   {
+    "name": "Eyes",
+    "type": "text"
+   },
+   {
+    "name": "Skin",
+    "type": "text"
+   },
+   {
+    "name": "Distinguishing Features",
+    "type": "longtext"
+   },
+   {
+    "name": "Scars",
+    "type": "longtext"
+   },
+   {
+    "name": "Tattoos",
+    "type": "longtext"
+   },
+   {
+    "name": "Clothing",
+    "type": "longtext"
+   },
+   {
+    "name": "Voice",
+    "type": "text"
+   },
+   {
+    "name": "Mannerisms",
+    "type": "longtext"
+   }
+  ],
+  "Goals & Stakes|": [
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "What they need",
+    "type": "longtext"
+   },
+   {
+    "name": "What stands in the way",
+    "type": "longtext"
+   },
+   {
+    "name": "What they stand to lose",
+    "type": "longtext"
+   },
+   {
+    "name": "The lie they believe",
+    "type": "longtext"
+   }
+  ],
+  "Goals & Stakes|Age,motive, Core Traits ": [
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "What they need",
+    "type": "longtext"
+   },
+   {
+    "name": "What stands in the way",
+    "type": "longtext"
+   },
+   {
+    "name": "What they stand to lose",
+    "type": "longtext"
+   },
+   {
+    "name": "The lie they believe",
+    "type": "longtext"
+   }
+  ],
+  "Opposition|": [
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "Why they believe they are right",
+    "type": "longtext"
+   },
+   {
+    "name": "Methods",
+    "type": "longtext"
+   },
+   {
+    "name": "Resources and reach",
+    "type": "longtext"
+   },
+   {
+    "name": "Lines they will not cross",
+    "type": "longtext"
+   },
+   {
+    "name": "What would make them stop",
+    "type": "longtext"
+   }
+  ],
+  "Opposition|Age,motive, Core Traits ": [
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "Why they believe they are right",
+    "type": "longtext"
+   },
+   {
+    "name": "Methods",
+    "type": "longtext"
+   },
+   {
+    "name": "Resources and reach",
+    "type": "longtext"
+   },
+   {
+    "name": "Lines they will not cross",
+    "type": "longtext"
+   },
+   {
+    "name": "What would make them stop",
+    "type": "longtext"
+   }
+  ],
+  "Role in the Story|": [
+   {
+    "name": "What they are to the protagonist",
+    "type": "longtext"
+   },
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "How they change, if they do",
+    "type": "longtext"
+   }
+  ],
+  "Role in the Story|Age,motive, Core Traits ": [
+   {
+    "name": "What they are to the protagonist",
+    "type": "longtext"
+   },
+   {
+    "name": "What they want",
+    "type": "longtext"
+   },
+   {
+    "name": "How they change, if they do",
+    "type": "longtext"
+   }
+  ],
+  "Personality|": [
+   {
+    "name": "Core Traits",
+    "type": "tags"
+   },
+   {
+    "name": "Strengths",
+    "type": "tags"
+   },
+   {
+    "name": "Weaknesses",
+    "type": "tags"
+   }
+  ],
+  "Personality|Age,motive, Core Traits ": [
+   {
+    "name": "Strengths",
+    "type": "tags"
+   },
+   {
+    "name": "Weaknesses",
+    "type": "tags"
+   }
+  ],
+  "Lineage & Magic|": [
+   {
+    "name": "Bloodline",
+    "type": "text"
+   },
+   {
+    "name": "Magical Lineage",
+    "type": "text"
+   },
+   {
+    "name": "School of Magic",
+    "type": "text"
+   },
+   {
+    "name": "Gifts",
+    "type": "longtext"
+   },
+   {
+    "name": "Limits and cost",
+    "type": "longtext"
+   },
+   {
+    "name": "Patron or Deity",
+    "type": "reference"
+   }
+  ],
+  "Lineage & Magic|Age,motive, Core Traits ": [
+   {
+    "name": "Bloodline",
+    "type": "text"
+   },
+   {
+    "name": "Magical Lineage",
+    "type": "text"
+   },
+   {
+    "name": "School of Magic",
+    "type": "text"
+   },
+   {
+    "name": "Gifts",
+    "type": "longtext"
+   },
+   {
+    "name": "Limits and cost",
+    "type": "longtext"
+   },
+   {
+    "name": "Patron or Deity",
+    "type": "reference"
+   }
+  ],
+  "Allegiances|": [
+   {
+    "name": "Faction",
+    "type": "reference"
+   },
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Sworn to",
+    "type": "reference"
+   },
+   {
+    "name": "Oaths",
+    "type": "longtext"
+   }
+  ],
+  "Allegiances|Age,motive, Core Traits ": [
+   {
+    "name": "Faction",
+    "type": "reference"
+   },
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Sworn to",
+    "type": "reference"
+   },
+   {
+    "name": "Oaths",
+    "type": "longtext"
+   }
+  ],
+  "Goals|": [
+   {
+    "name": "Immediate goal",
+    "type": "longtext"
+   },
+   {
+    "name": "Long-term goal",
+    "type": "longtext"
+   },
+   {
+    "name": "What drives the climb",
+    "type": "longtext"
+   }
+  ],
+  "Goals|Age,motive, Core Traits ": [
+   {
+    "name": "Immediate goal",
+    "type": "longtext"
+   },
+   {
+    "name": "Long-term goal",
+    "type": "longtext"
+   },
+   {
+    "name": "What drives the climb",
+    "type": "longtext"
+   }
+  ],
+  "Path|": [
+   {
+    "name": "Path or Realm",
+    "type": "text"
+   },
+   {
+    "name": "How they fight",
+    "type": "longtext"
+   },
+   {
+    "name": "Signature technique",
+    "type": "longtext"
+   },
+   {
+    "name": "Limits and cost",
+    "type": "longtext"
+   }
+  ],
+  "Path|Age,motive, Core Traits ": [
+   {
+    "name": "Path or Realm",
+    "type": "text"
+   },
+   {
+    "name": "How they fight",
+    "type": "longtext"
+   },
+   {
+    "name": "Signature technique",
+    "type": "longtext"
+   },
+   {
+    "name": "Limits and cost",
+    "type": "longtext"
+   }
+  ],
+  "Evolution History|": [
+   {
+    "name": "Breakthroughs",
+    "type": "longtext"
+   },
+   {
+    "name": "Evolutions",
+    "type": "longtext"
+   },
+   {
+    "name": "Setbacks",
+    "type": "longtext"
+   }
+  ],
+  "Evolution History|Age,motive, Core Traits ": [
+   {
+    "name": "Breakthroughs",
+    "type": "longtext"
+   },
+   {
+    "name": "Evolutions",
+    "type": "longtext"
+   },
+   {
+    "name": "Setbacks",
+    "type": "longtext"
+   }
+  ],
+  "Identity|": [
+   {
+    "name": "Age",
+    "type": "text"
+   },
+   {
+    "name": "Occupation",
+    "type": "text"
+   },
+   {
+    "name": "Connection to the victim",
+    "type": "longtext"
+   },
+   {
+    "name": "Physical Appearance",
+    "type": "longtext"
+   }
+  ],
+  "Identity|Age,motive, Core Traits ": [
+   {
+    "name": "Occupation",
+    "type": "text"
+   },
+   {
+    "name": "Connection to the victim",
+    "type": "longtext"
+   },
+   {
+    "name": "Physical Appearance",
+    "type": "longtext"
+   }
+  ],
+  "The Case|": [
+   {
+    "name": "Motive",
+    "type": "longtext"
+   },
+   {
+    "name": "Means",
+    "type": "longtext"
+   },
+   {
+    "name": "Opportunity",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi holds?",
+    "type": "toggle"
+   },
+   {
+    "name": "Evidence for",
+    "type": "longtext"
+   },
+   {
+    "name": "Evidence against",
+    "type": "longtext"
+   }
+  ],
+  "The Case|Age,motive, Core Traits ": [
+   {
+    "name": "Means",
+    "type": "longtext"
+   },
+   {
+    "name": "Opportunity",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi holds?",
+    "type": "toggle"
+   },
+   {
+    "name": "Evidence for",
+    "type": "longtext"
+   },
+   {
+    "name": "Evidence against",
+    "type": "longtext"
+   }
+  ],
+  "Reveal|": [
+   {
+    "name": "Reveal status",
+    "type": "select",
+    "options": [
+     "Unsuspected",
+     "Suspected",
+     "Cleared",
+     "Exposed"
+    ]
+   },
+   {
+    "name": "What they are hiding",
+    "type": "longtext"
+   },
+   {
+    "name": "How it comes out",
+    "type": "longtext"
+   }
+  ],
+  "Reveal|Age,motive, Core Traits ": [
+   {
+    "name": "Reveal status",
+    "type": "select",
+    "options": [
+     "Unsuspected",
+     "Suspected",
+     "Cleared",
+     "Exposed"
+    ]
+   },
+   {
+    "name": "What they are hiding",
+    "type": "longtext"
+   },
+   {
+    "name": "How it comes out",
+    "type": "longtext"
+   }
+  ],
+  "Heart|": [
+   {
+    "name": "What they want from love",
+    "type": "longtext"
+   },
+   {
+    "name": "What they fear from it",
+    "type": "longtext"
+   },
+   {
+    "name": "Past relationships",
+    "type": "longtext"
+   },
+   {
+    "name": "Wound",
+    "type": "longtext"
+   },
+   {
+    "name": "What attracts them",
+    "type": "tags"
+   },
+   {
+    "name": "What keeps them apart",
+    "type": "longtext"
+   }
+  ],
+  "Heart|Age,motive, Core Traits ": [
+   {
+    "name": "What they want from love",
+    "type": "longtext"
+   },
+   {
+    "name": "What they fear from it",
+    "type": "longtext"
+   },
+   {
+    "name": "Past relationships",
+    "type": "longtext"
+   },
+   {
+    "name": "Wound",
+    "type": "longtext"
+   },
+   {
+    "name": "What attracts them",
+    "type": "tags"
+   },
+   {
+    "name": "What keeps them apart",
+    "type": "longtext"
+   }
+  ],
+  "Origin & Body|": [
+   {
+    "name": "Homeworld or Habitat",
+    "type": "reference"
+   },
+   {
+    "name": "Species or Strain",
+    "type": "text"
+   },
+   {
+    "name": "Augmentations",
+    "type": "longtext"
+   },
+   {
+    "name": "Implants",
+    "type": "longtext"
+   },
+   {
+    "name": "Lifespan",
+    "type": "text"
+   }
+  ],
+  "Origin & Body|Age,motive, Core Traits ": [
+   {
+    "name": "Homeworld or Habitat",
+    "type": "reference"
+   },
+   {
+    "name": "Species or Strain",
+    "type": "text"
+   },
+   {
+    "name": "Augmentations",
+    "type": "longtext"
+   },
+   {
+    "name": "Implants",
+    "type": "longtext"
+   },
+   {
+    "name": "Lifespan",
+    "type": "text"
+   }
+  ],
+  "Affiliation|": [
+   {
+    "name": "Faction",
+    "type": "reference"
+   },
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Clearance",
+    "type": "text"
+   },
+   {
+    "name": "Ship or Posting",
+    "type": "reference"
+   },
+   {
+    "name": "Specialisation",
+    "type": "longtext"
+   }
+  ],
+  "Affiliation|Age,motive, Core Traits ": [
+   {
+    "name": "Faction",
+    "type": "reference"
+   },
+   {
+    "name": "Rank",
+    "type": "text"
+   },
+   {
+    "name": "Clearance",
+    "type": "text"
+   },
+   {
+    "name": "Ship or Posting",
+    "type": "reference"
+   },
+   {
+    "name": "Specialisation",
+    "type": "longtext"
+   }
+  ],
+  " the case |": [
+   {
+    "name": "Motive",
+    "type": "longtext"
+   },
+   {
+    "name": "Means",
+    "type": "longtext"
+   },
+   {
+    "name": "Opportunity",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi holds?",
+    "type": "toggle"
+   },
+   {
+    "name": "Evidence for",
+    "type": "longtext"
+   },
+   {
+    "name": "Evidence against",
+    "type": "longtext"
+   }
+  ],
+  " the case |Age,motive, Core Traits ": [
+   {
+    "name": "Means",
+    "type": "longtext"
+   },
+   {
+    "name": "Opportunity",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi",
+    "type": "longtext"
+   },
+   {
+    "name": "Alibi holds?",
+    "type": "toggle"
+   },
+   {
+    "name": "Evidence for",
+    "type": "longtext"
+   },
+   {
+    "name": "Evidence against",
+    "type": "longtext"
+   }
+  ],
+  "A section of my own|": [],
+  "A section of my own|Age,motive, Core Traits ": []
+ }
+}

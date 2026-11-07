@@ -1,0 +1,1961 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "growth",
+  "title": "Growth",
+  "subtitle": "",
+  "author": "",
+  "primaryGenre": "",
+  "secondaryGenres": [],
+  "cover": null,
+  "tags": [],
+  "synopsis": "",
+  "status": "planning",
+  "targetWordCount": null,
+  "deadline": null,
+  "language": "en",
+  "accent": "#b4532a",
+  "pinned": false,
+  "archived": false,
+  "createdAt": 1,
+  "updatedAt": 1,
+  "lastOpenedAt": null
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "c1",
+    "projectId": "growth",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "c2",
+    "projectId": "growth",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "c3",
+    "projectId": "growth",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 2,
+    "updatedAt": 0
+   }
+  ],
+  "loreSchemas": [
+   {
+    "id": "s-tech",
+    "projectId": "growth",
+    "key": "custom-tech",
+    "name": "Techniques",
+    "singular": "Technique",
+    "color": "#6b7a2b",
+    "builtin": false,
+    "order": 9,
+    "fields": [
+     {
+      "id": "grade",
+      "name": "Grade",
+      "type": "select",
+      "options": [
+       "Low",
+       "High"
+      ]
+     }
+    ],
+    "uses": {
+     "tree": true,
+     "rank": "grade"
+    },
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "mira",
+    "projectId": "growth",
+    "category": "character",
+    "name": "Mira",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "orrin",
+    "projectId": "growth",
+    "category": "character",
+    "name": "Orrin",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "pell",
+    "projectId": "growth",
+    "category": "character",
+    "name": "Pell",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "stance",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Iron Stance",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "ember-stance",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Ember Stance",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "fortress",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Iron Fortress",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "fortress-g",
+      "key": "",
+      "value": "High",
+      "defId": "grade"
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "palm",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Palm Strike",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "kick",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Kick",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "combo",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Combo",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "ouro",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Ouro",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "boros",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Boros",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "tail",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Tail Whip",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "solo",
+    "projectId": "growth",
+    "category": "custom-tech",
+    "name": "Solo Fusion",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "rusty",
+    "projectId": "growth",
+    "category": "item",
+    "name": "Rusty Blade",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "ashen",
+    "projectId": "growth",
+    "category": "item",
+    "name": "Ashen Blade",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "crown",
+    "projectId": "growth",
+    "category": "item",
+    "name": "Ember Crown",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "l1",
+    "projectId": "growth",
+    "fromId": "stance",
+    "toId": "fortress",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l2",
+    "projectId": "growth",
+    "fromId": "ember-stance",
+    "toId": "fortress",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l3",
+    "projectId": "growth",
+    "fromId": "stance",
+    "toId": "ember-stance",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "excludes"
+   },
+   {
+    "id": "l4",
+    "projectId": "growth",
+    "fromId": "rusty",
+    "toId": "ashen",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "upgrades-to"
+   },
+   {
+    "id": "l5",
+    "projectId": "growth",
+    "fromId": "court/squire",
+    "toId": "court/knight",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "evolves-into",
+    "fromType": "ability",
+    "toType": "ability"
+   },
+   {
+    "id": "l6",
+    "projectId": "growth",
+    "fromId": "court/knight",
+    "toId": "court/squire",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "evolves-into",
+    "fromType": "ability",
+    "toType": "ability"
+   },
+   {
+    "id": "l7",
+    "projectId": "growth",
+    "fromId": "palm",
+    "toId": "combo",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "alternative-for"
+   },
+   {
+    "id": "l8",
+    "projectId": "growth",
+    "fromId": "kick",
+    "toId": "combo",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "alternative-for"
+   },
+   {
+    "id": "l9",
+    "projectId": "growth",
+    "fromId": "ember/lance",
+    "toId": "ember/inferno",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "fuses-into",
+    "fromType": "ability",
+    "toType": "ability"
+   },
+   {
+    "id": "l10",
+    "projectId": "growth",
+    "fromId": "ouro",
+    "toId": "boros",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l11",
+    "projectId": "growth",
+    "fromId": "boros",
+    "toId": "ouro",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l12",
+    "projectId": "growth",
+    "fromId": "boros",
+    "toId": "tail",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l13",
+    "projectId": "growth",
+    "fromId": "stance",
+    "toId": "kick",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "teaches"
+   },
+   {
+    "id": "l14",
+    "projectId": "growth",
+    "fromId": "mira",
+    "toId": "stance",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for"
+   },
+   {
+    "id": "l15",
+    "projectId": "growth",
+    "fromId": "palm",
+    "toId": "solo",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "fuses-into"
+   },
+   {
+    "id": "l16",
+    "projectId": "growth",
+    "fromId": "ember/spark",
+    "toId": "ember/lance",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "type": "prerequisite-for",
+    "fromType": "ability",
+    "toType": "ability"
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "coronation",
+    "projectId": "growth",
+    "name": "The coronation",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 10,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "end": null,
+    "ongoing": false,
+    "nodeIds": [
+     "c2"
+    ],
+    "characters": [],
+    "entryIds": [],
+    "threadIds": [],
+    "labels": [],
+    "locationId": null,
+    "createdAt": 1
+   },
+   {
+    "id": "siege",
+    "projectId": "growth",
+    "name": "The siege",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 12,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "end": null,
+    "ongoing": false,
+    "nodeIds": [],
+    "characters": [],
+    "entryIds": [],
+    "threadIds": [],
+    "labels": [],
+    "locationId": null,
+    "createdAt": 2
+   },
+   {
+    "id": "undated",
+    "projectId": "growth",
+    "name": "Somewhen",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "end": null,
+    "ongoing": false,
+    "nodeIds": [],
+    "characters": [],
+    "entryIds": [],
+    "threadIds": [],
+    "labels": [],
+    "locationId": null,
+    "createdAt": 3
+   }
+  ],
+  "systems": [
+   {
+    "id": "ember",
+    "projectId": "growth",
+    "name": "Ember Arts",
+    "description": "",
+    "variables": [
+     {
+      "id": "v",
+      "name": "Mana",
+      "key": "mana",
+      "kind": "resource",
+      "unit": "",
+      "base": 10,
+      "formula": "",
+      "options": [],
+      "note": ""
+     }
+    ],
+    "tracks": [],
+    "ranks": [
+     {
+      "id": "r1",
+      "name": "Novice"
+     },
+     {
+      "id": "r2",
+      "name": "Adept"
+     }
+    ],
+    "groups": [
+     {
+      "id": "g",
+      "name": "Skills",
+      "single": false
+     }
+    ],
+    "items": [
+     {
+      "id": "spark",
+      "groupId": "g",
+      "name": "Spark",
+      "description": "",
+      "parentId": null,
+      "rankId": "r1",
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "lance",
+      "groupId": "g",
+      "name": "Fire Lance",
+      "description": "",
+      "parentId": "spark",
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [
+       {
+        "id": "c",
+        "target": "mana",
+        "amount": "5"
+       }
+      ],
+      "cooldown": "1 turn",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "wall",
+      "groupId": "g",
+      "name": "Flame Wall",
+      "description": "",
+      "parentId": null,
+      "rankId": null,
+      "requires": "Skill: Fire Lance",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "nova",
+      "groupId": "g",
+      "name": "Nova",
+      "description": "",
+      "parentId": null,
+      "rankId": null,
+      "requires": "levl >= 5",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "inferno",
+      "groupId": "g",
+      "name": "Inferno",
+      "description": "",
+      "parentId": null,
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "loop1",
+      "groupId": "g",
+      "name": "Loop One",
+      "description": "",
+      "parentId": "loop2",
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "loop2",
+      "groupId": "g",
+      "name": "Loop Two",
+      "description": "",
+      "parentId": "loop1",
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     }
+    ],
+    "matrices": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "court",
+    "projectId": "growth",
+    "name": "Court Ranks",
+    "description": "",
+    "variables": [],
+    "tracks": [],
+    "ranks": [],
+    "groups": [
+     {
+      "id": "cl",
+      "name": "Classes",
+      "single": true
+     }
+    ],
+    "items": [
+     {
+      "id": "squire",
+      "groupId": "cl",
+      "name": "Squire",
+      "description": "",
+      "parentId": null,
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "knight",
+      "groupId": "cl",
+      "name": "Knight",
+      "description": "",
+      "parentId": null,
+      "rankId": null,
+      "requires": "",
+      "modifiers": [],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     }
+    ],
+    "matrices": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "lit",
+    "projectId": "growth",
+    "name": "The System",
+    "description": "A game-like system: stats grow with levels, a class shapes them, and skills spend mana or stamina.",
+    "variables": [
+     {
+      "id": "v-strength",
+      "name": "Strength",
+      "key": "strength",
+      "kind": "number",
+      "unit": "",
+      "base": 10,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-agility",
+      "name": "Agility",
+      "key": "agility",
+      "kind": "number",
+      "unit": "",
+      "base": 10,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-intelligence",
+      "name": "Intelligence",
+      "key": "intelligence",
+      "kind": "number",
+      "unit": "",
+      "base": 10,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-vitality",
+      "name": "Vitality",
+      "key": "vitality",
+      "kind": "number",
+      "unit": "",
+      "base": 10,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-health",
+      "name": "Health",
+      "key": "health",
+      "kind": "resource",
+      "unit": "HP",
+      "base": 100,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-mana",
+      "name": "Mana",
+      "key": "mana",
+      "kind": "resource",
+      "unit": "MP",
+      "base": 50,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-stamina",
+      "name": "Stamina",
+      "key": "stamina",
+      "kind": "resource",
+      "unit": "SP",
+      "base": 100,
+      "formula": "",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-max_health",
+      "name": "Max Health",
+      "key": "max_health",
+      "kind": "derived",
+      "unit": "HP",
+      "base": 0,
+      "formula": "health + vitality * 10",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-max_mana",
+      "name": "Max Mana",
+      "key": "max_mana",
+      "kind": "derived",
+      "unit": "MP",
+      "base": 0,
+      "formula": "mana + intelligence * 5",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-damage",
+      "name": "Damage",
+      "key": "damage",
+      "kind": "derived",
+      "unit": "",
+      "base": 0,
+      "formula": "strength * 1.5",
+      "options": [],
+      "note": "Base melee damage."
+     },
+     {
+      "id": "v-mana_regen",
+      "name": "Mana Regen",
+      "key": "mana_regen",
+      "kind": "derived",
+      "unit": "per minute",
+      "base": 0,
+      "formula": "intelligence / 10",
+      "options": [],
+      "note": ""
+     },
+     {
+      "id": "v-skill_slots",
+      "name": "Skill Slots",
+      "key": "skill_slots",
+      "kind": "derived",
+      "unit": "slots",
+      "base": 0,
+      "formula": "3 + floor(level / 10)",
+      "options": [],
+      "note": ""
+     }
+    ],
+    "tracks": [
+     {
+      "id": "t-level",
+      "name": "Level",
+      "key": "level",
+      "kind": "levels",
+      "cap": 100,
+      "curve": "100 * level ^ 1.5",
+      "curveUnit": "XP",
+      "points": 3,
+      "sources": [
+       "Combat",
+       "Quest",
+       "Discovery",
+       "Training"
+      ],
+      "stages": []
+     }
+    ],
+    "ranks": [
+     {
+      "id": "r-common",
+      "name": "Common"
+     },
+     {
+      "id": "r-advanced",
+      "name": "Advanced"
+     },
+     {
+      "id": "r-unique",
+      "name": "Unique"
+     },
+     {
+      "id": "r-legendary",
+      "name": "Legendary"
+     }
+    ],
+    "groups": [
+     {
+      "id": "g-classes",
+      "name": "Classes",
+      "single": true
+     },
+     {
+      "id": "g-skills",
+      "name": "Skills",
+      "single": false
+     },
+     {
+      "id": "g-titles",
+      "name": "Titles",
+      "single": false
+     }
+    ],
+    "items": [
+     {
+      "id": "i-warrior",
+      "groupId": "g-classes",
+      "name": "Warrior",
+      "description": "Front-line fighter.",
+      "parentId": null,
+      "rankId": null,
+      "requires": "",
+      "modifiers": [
+       {
+        "id": "m-strength-add-5",
+        "target": "strength",
+        "op": "add",
+        "value": "5"
+       },
+       {
+        "id": "m-vitality-add-3",
+        "target": "vitality",
+        "op": "add",
+        "value": "3"
+       }
+      ],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "i-mage",
+      "groupId": "g-classes",
+      "name": "Mage",
+      "description": "Shapes mana into spells.",
+      "parentId": null,
+      "rankId": null,
+      "requires": "",
+      "modifiers": [
+       {
+        "id": "m-intelligence-add-6",
+        "target": "intelligence",
+        "op": "add",
+        "value": "6"
+       },
+       {
+        "id": "m-mana-add-40",
+        "target": "mana",
+        "op": "add",
+        "value": "40"
+       }
+      ],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     },
+     {
+      "id": "i-void_mage",
+      "groupId": "g-classes",
+      "name": "Void Mage",
+      "description": "A mage who has touched the space between.",
+      "parentId": "i-mage",
+      "rankId": null,
+      "requires": "Class: Mage AND level >= 25",
+      "modifiers": [
+       {
+        "id": "m-intelligence-add-12",
+        "target": "intelligence",
+        "op": "add",
+        "value": "12"
+       },
+       {
+        "id": "m-mana-multiply-2",
+        "target": "mana",
+        "op": "multiply",
+        "value": "2"
+       }
+      ],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": "Evolves from Mage at level 25."
+     },
+     {
+      "id": "i-power_strike",
+      "groupId": "g-skills",
+      "name": "Power Strike",
+      "description": "",
+      "parentId": null,
+      "rankId": "r-common",
+      "requires": "",
+      "modifiers": [],
+      "costs": [
+       {
+        "id": "c-stamina",
+        "target": "stamina",
+        "amount": "15"
+       }
+      ],
+      "cooldown": "10 seconds",
+      "affinity": "Physical",
+      "evolution": ""
+     },
+     {
+      "id": "i-fireball",
+      "groupId": "g-skills",
+      "name": "Fireball",
+      "description": "",
+      "parentId": null,
+      "rankId": "r-advanced",
+      "requires": "intelligence >= 15",
+      "modifiers": [],
+      "costs": [
+       {
+        "id": "c-mana",
+        "target": "mana",
+        "amount": "20"
+       }
+      ],
+      "cooldown": "5 seconds",
+      "affinity": "Fire",
+      "evolution": "Becomes Inferno after 1,000 casts."
+     },
+     {
+      "id": "i-void_step",
+      "groupId": "g-skills",
+      "name": "Void Step",
+      "description": "",
+      "parentId": null,
+      "rankId": "r-unique",
+      "requires": "Class: Void Mage AND level >= 50",
+      "modifiers": [],
+      "costs": [
+       {
+        "id": "c-mana",
+        "target": "mana",
+        "amount": "40 + level"
+       }
+      ],
+      "cooldown": "30 seconds",
+      "affinity": "Void",
+      "evolution": ""
+     },
+     {
+      "id": "i-giant_slayer",
+      "groupId": "g-titles",
+      "name": "Giant Slayer",
+      "description": "Passive: for felling something ten levels above you.",
+      "parentId": null,
+      "rankId": "r-unique",
+      "requires": "",
+      "modifiers": [
+       {
+        "id": "m-damage-multiply-1_1",
+        "target": "damage",
+        "op": "multiply",
+        "value": "1.1"
+       }
+      ],
+      "costs": [],
+      "cooldown": "",
+      "affinity": "",
+      "evolution": ""
+     }
+    ],
+    "matrices": [],
+    "createdAt": 1,
+    "updatedAt": 0
+   }
+  ],
+  "systemSheets": [
+   {
+    "id": "sh",
+    "projectId": "growth",
+    "systemId": "ember",
+    "entryId": "mira",
+    "values": {},
+    "progress": {},
+    "itemIds": [
+     "spark",
+     "wall"
+    ],
+    "note": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "sh-lit",
+    "projectId": "growth",
+    "systemId": "lit",
+    "entryId": "pell",
+    "values": {
+     "v-strength": 14
+    },
+    "progress": {
+     "t-level": 2
+    },
+    "itemIds": [
+     "i-mage",
+     "i-fireball",
+     "i-giant-slayer"
+    ],
+    "xp": [
+     {
+      "id": "x1",
+      "trackId": "t-level",
+      "amount": 300,
+      "source": "Combat",
+      "nodeId": "c1",
+      "note": ""
+     },
+     {
+      "id": "x2",
+      "trackId": "t-level",
+      "amount": 900,
+      "source": "Quest",
+      "nodeId": "c3",
+      "note": ""
+     },
+     {
+      "id": "x3",
+      "trackId": "t-level",
+      "amount": 50,
+      "source": "",
+      "nodeId": null,
+      "note": ""
+     },
+     {
+      "id": "x4",
+      "trackId": "t-level",
+      "amount": -20,
+      "source": "Curse",
+      "nodeId": "c2",
+      "note": ""
+     }
+    ],
+    "spent": {
+     "v-agility": 4,
+     "v-damage": 3
+    },
+    "note": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "progressCategories": [
+   {
+    "id": "abilities",
+    "projectId": "growth",
+    "name": "Abilities",
+    "shape": "held",
+    "ladder": [],
+    "characterIds": [],
+    "order": 3,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "level",
+    "projectId": "growth",
+    "name": "Level",
+    "shape": "value",
+    "ladder": [],
+    "characterIds": [],
+    "order": 0,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "rank",
+    "projectId": "growth",
+    "name": "Rank",
+    "shape": "value",
+    "ladder": [
+     "Squire",
+     "Knight",
+     "Captain"
+    ],
+    "characterIds": [],
+    "order": 1,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "attrs",
+    "projectId": "growth",
+    "name": "Attributes",
+    "shape": "named",
+    "ladder": [],
+    "characterIds": [],
+    "order": 2,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "moments",
+    "projectId": "growth",
+    "name": "Milestones",
+    "shape": "moment",
+    "ladder": [],
+    "characterIds": [],
+    "order": 4,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "scars",
+    "projectId": "growth",
+    "name": "Scars",
+    "shape": "held",
+    "ladder": [],
+    "characterIds": [
+     "mira"
+    ],
+    "order": 5,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "old",
+    "projectId": "growth",
+    "name": "Old",
+    "shape": "value",
+    "ladder": [],
+    "characterIds": [],
+    "order": 6,
+    "createdAt": 0,
+    "updatedAt": 0,
+    "archived": true
+   }
+  ],
+  "progressChanges": [
+   {
+    "id": "p1",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "gain",
+    "subject": "Iron Stance",
+    "value": "",
+    "refId": "stance",
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c1"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "p2",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "gain",
+    "subject": "Ember Stance",
+    "value": "",
+    "refId": "ember-stance",
+    "abilityId": null,
+    "at": {
+     "kind": "date",
+     "when": {
+      "precision": "unknown"
+     }
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "p3",
+    "projectId": "growth",
+    "entryId": "orrin",
+    "categoryId": "abilities",
+    "action": "gain",
+    "subject": "Fire Lance",
+    "value": "",
+    "refId": null,
+    "abilityId": "ember/lance",
+    "at": {
+     "kind": "node",
+     "nodeId": "c2"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "p4",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "level",
+    "action": "set",
+    "subject": "",
+    "value": "1",
+    "refId": null,
+    "abilityId": null,
+    "at": null,
+    "cost": "",
+    "note": "",
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "p5",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "level",
+    "action": "set",
+    "subject": "",
+    "value": "3",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c2"
+    },
+    "cost": "A scar",
+    "note": "Hard won",
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "p6",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "level",
+    "action": "set",
+    "subject": "",
+    "value": "5",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "siege"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "p7",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "rank",
+    "action": "set",
+    "subject": "",
+    "value": "Knight",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c1"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 7,
+    "updatedAt": 0
+   },
+   {
+    "id": "p8",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "rank",
+    "action": "set",
+    "subject": "",
+    "value": "Warlord",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c3"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 8,
+    "updatedAt": 0
+   },
+   {
+    "id": "p9",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "attrs",
+    "action": "set",
+    "subject": "Strength",
+    "value": "6",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "coronation"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 9,
+    "updatedAt": 0
+   },
+   {
+    "id": "p10",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "attrs",
+    "action": "set",
+    "subject": "strength",
+    "value": "8",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c3"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 10,
+    "updatedAt": 0
+   },
+   {
+    "id": "p11",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "attrs",
+    "action": "set",
+    "subject": "Wits",
+    "value": "4",
+    "refId": null,
+    "abilityId": null,
+    "at": null,
+    "cost": "",
+    "note": "",
+    "createdAt": 11,
+    "updatedAt": 0
+   },
+   {
+    "id": "p12",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "gain",
+    "subject": "Fire Lance",
+    "value": "",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c1"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 12,
+    "updatedAt": 0
+   },
+   {
+    "id": "p13",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "lose",
+    "subject": "Fire Lance",
+    "value": "",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c3"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 13,
+    "updatedAt": 0
+   },
+   {
+    "id": "p14",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "gain",
+    "subject": "",
+    "value": "",
+    "refId": "crown",
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "coronation"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 14,
+    "updatedAt": 0
+   },
+   {
+    "id": "p15",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "abilities",
+    "action": "lose",
+    "subject": "Ember Crown",
+    "value": "",
+    "refId": "crown",
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c3"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 15,
+    "updatedAt": 0
+   },
+   {
+    "id": "p16",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "moments",
+    "action": "happen",
+    "subject": "First kill",
+    "value": "",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "c2"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 16,
+    "updatedAt": 0
+   },
+   {
+    "id": "p17",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "moments",
+    "action": "happen",
+    "subject": "Crowned",
+    "value": "",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "coronation"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 17,
+    "updatedAt": 0
+   },
+   {
+    "id": "p18",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "scars",
+    "action": "gain",
+    "subject": "Burned hand",
+    "value": "",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": null,
+      "day": null,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 18,
+    "updatedAt": 0
+   },
+   {
+    "id": "p19",
+    "projectId": "growth",
+    "entryId": "mira",
+    "categoryId": "old",
+    "action": "set",
+    "subject": "",
+    "value": "kept",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "node",
+     "nodeId": "gone"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 19,
+    "updatedAt": 0
+   },
+   {
+    "id": "p20",
+    "projectId": "growth",
+    "entryId": "pell",
+    "categoryId": "level",
+    "action": "set",
+    "subject": "",
+    "value": "over nine thousand",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "undated"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 20,
+    "updatedAt": 0
+   },
+   {
+    "id": "p21",
+    "projectId": "growth",
+    "entryId": "orrin",
+    "categoryId": "rank",
+    "action": "set",
+    "subject": "",
+    "value": "Squire",
+    "refId": null,
+    "abilityId": null,
+    "at": null,
+    "cost": "",
+    "note": "",
+    "createdAt": 21,
+    "updatedAt": 0
+   },
+   {
+    "id": "p22",
+    "projectId": "growth",
+    "entryId": "orrin",
+    "categoryId": "rank",
+    "action": "set",
+    "subject": "",
+    "value": "Captain",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "siege"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 22,
+    "updatedAt": 0
+   }
+  ],
+  "progressSnapshots": [
+   {
+    "id": "s1",
+    "projectId": "growth",
+    "entryId": "orrin",
+    "nodeId": "c1",
+    "label": "",
+    "systems": {
+     "court": {
+      "auto": true,
+      "values": {},
+      "progress": {},
+      "itemIds": [
+       "squire"
+      ],
+      "overrides": {}
+     }
+    },
+    "gear": [],
+    "status": {
+     "condition": "",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": ""
+    },
+    "notes": "",
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "s2",
+    "projectId": "growth",
+    "entryId": "orrin",
+    "nodeId": "c2",
+    "label": "",
+    "systems": {
+     "court": {
+      "auto": true,
+      "values": {},
+      "progress": {},
+      "itemIds": [
+       "knight"
+      ],
+      "overrides": {}
+     }
+    },
+    "gear": [],
+    "status": {
+     "condition": "",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": ""
+    },
+    "notes": "",
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "s3",
+    "projectId": "growth",
+    "entryId": "pell",
+    "nodeId": null,
+    "label": "",
+    "systems": {
+     "lit": {
+      "auto": true,
+      "values": {
+       "v-strength": 12
+      },
+      "progress": {
+       "t-level": 1
+      },
+      "itemIds": [
+       "i-warrior"
+      ],
+      "overrides": {}
+     }
+    },
+    "gear": [
+     {
+      "id": "g1",
+      "name": "Rusty sword",
+      "kind": "Weapon",
+      "entryId": "rusty",
+      "note": ""
+     }
+    ],
+    "status": {
+     "condition": "Tired\nHungry",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": "Find the crown"
+    },
+    "notes": "",
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "s4",
+    "projectId": "growth",
+    "entryId": "pell",
+    "nodeId": "c2",
+    "label": "",
+    "systems": {
+     "lit": {
+      "auto": true,
+      "values": {
+       "v-strength": 15
+      },
+      "progress": {
+       "t-level": 6
+      },
+      "itemIds": [
+       "i-warrior",
+       "i-power-strike"
+      ],
+      "overrides": {
+       "v-damage": 99,
+       "v-mana": "x"
+      }
+     }
+    },
+    "gear": [
+     {
+      "id": "g2",
+      "name": "rusty SWORD",
+      "kind": "Carried",
+      "entryId": null,
+      "note": "dull"
+     },
+     {
+      "id": "g3",
+      "name": "Shield",
+      "kind": "",
+      "entryId": null,
+      "note": ""
+     }
+    ],
+    "status": {
+     "condition": "tired",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": "Find the crown\nAvenge Mira"
+    },
+    "notes": "",
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "s5",
+    "projectId": "growth",
+    "entryId": "pell",
+    "nodeId": "c3",
+    "label": "",
+    "systems": {
+     "lit": {
+      "auto": false,
+      "values": {
+       "v-strength": 3,
+       "v-max-health": 7
+      },
+      "progress": {},
+      "itemIds": [
+       "i-mage"
+      ],
+      "overrides": {
+       "v-mana": 1
+      }
+     }
+    },
+    "gear": [],
+    "status": {
+     "condition": "",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": ""
+    },
+    "notes": "",
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "s6",
+    "projectId": "growth",
+    "entryId": "pell",
+    "nodeId": "gone",
+    "label": "",
+    "systems": {
+     "lit": {
+      "auto": true,
+      "values": {},
+      "progress": {},
+      "itemIds": [],
+      "overrides": {}
+     }
+    },
+    "gear": [],
+    "status": {
+     "condition": "",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": ""
+    },
+    "notes": "",
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "s7",
+    "projectId": "growth",
+    "entryId": "pell",
+    "nodeId": "c2",
+    "label": "",
+    "systems": {
+     "lit": {
+      "auto": true,
+      "values": {},
+      "progress": {},
+      "itemIds": [
+       "i-warrior",
+       "i-power-strike"
+      ],
+      "overrides": {}
+     }
+    },
+    "gear": [],
+    "status": {
+     "condition": "",
+     "transformations": "",
+     "reputation": "",
+     "knowledge": "",
+     "goals": ""
+    },
+    "notes": "",
+    "createdAt": 7,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

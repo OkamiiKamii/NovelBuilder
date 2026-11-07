@@ -1,0 +1,733 @@
+{
+ "presets": [
+  {
+   "id": "spells",
+   "name": "Spells",
+   "description": "Magic: what it does, what it costs, who knows it.",
+   "categories": [
+    {
+     "key": "preset-spells",
+     "name": "Spells",
+     "singular": "Spell",
+     "color": "#7a4fa3",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "spells-0",
+       "name": "Effect",
+       "type": "longtext",
+       "options": [],
+       "required": true,
+       "help": "What happens when it is cast."
+      },
+      {
+       "id": "spells-1",
+       "name": "School",
+       "type": "select",
+       "options": [
+        "Fire",
+        "Water",
+        "Earth",
+        "Air",
+        "Mind",
+        "Other"
+       ]
+      },
+      {
+       "id": "spells-2",
+       "name": "Rank",
+       "type": "number",
+       "options": [],
+       "min": 0,
+       "max": 10,
+       "help": "0 for a cantrip, 10 for the greatest."
+      },
+      {
+       "id": "spells-3",
+       "name": "Cost",
+       "type": "text",
+       "options": []
+      },
+      {
+       "id": "spells-4",
+       "name": "Known by",
+       "type": "references",
+       "options": [],
+       "target": "character"
+      }
+     ],
+     "uses": {
+      "rank": "spells-2",
+      "tree": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "planets",
+   "name": "Planets",
+   "description": "Worlds: climate, people, who rules.",
+   "categories": [
+    {
+     "key": "preset-planets",
+     "name": "Planets",
+     "singular": "Planet",
+     "color": "#2b7a8c",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "planets-0",
+       "name": "System",
+       "type": "text",
+       "options": [],
+       "required": true
+      },
+      {
+       "id": "planets-1",
+       "name": "Climate",
+       "type": "select",
+       "options": [
+        "Arid",
+        "Temperate",
+        "Frozen",
+        "Oceanic",
+        "Toxic",
+        "Other"
+       ]
+      },
+      {
+       "id": "planets-2",
+       "name": "Population",
+       "type": "number",
+       "options": [],
+       "min": 0
+      },
+      {
+       "id": "planets-3",
+       "name": "Moons",
+       "type": "number",
+       "options": [],
+       "min": 0
+      },
+      {
+       "id": "planets-4",
+       "name": "Governed by",
+       "type": "reference",
+       "options": [],
+       "target": "faction"
+      },
+      {
+       "id": "planets-5",
+       "name": "First visited",
+       "type": "date",
+       "options": []
+      }
+     ],
+     "uses": {
+      "timeline": {
+       "start": "planets-5"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "investigations",
+   "name": "Investigations",
+   "description": "Cases: who leads them, who is suspected, where they stand.",
+   "categories": [
+    {
+     "key": "preset-investigations",
+     "name": "Investigations",
+     "singular": "Investigation",
+     "color": "#a8436b",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "investigations-0",
+       "name": "Status",
+       "type": "select",
+       "options": [
+        "Open",
+        "Stalled",
+        "Solved",
+        "Cold"
+       ],
+       "required": true
+      },
+      {
+       "id": "investigations-1",
+       "name": "Opened",
+       "type": "date",
+       "options": []
+      },
+      {
+       "id": "investigations-2",
+       "name": "Lead investigator",
+       "type": "reference",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "investigations-3",
+       "name": "Suspects",
+       "type": "references",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "investigations-4",
+       "name": "Solved",
+       "type": "toggle",
+       "options": []
+      },
+      {
+       "id": "investigations-5",
+       "name": "Evidence so far",
+       "type": "longtext",
+       "options": []
+      }
+     ],
+     "uses": {
+      "timeline": {
+       "start": "investigations-1"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "techniques",
+   "name": "Techniques",
+   "description": "Skills and martial arts: how hard, who can do them.",
+   "categories": [
+    {
+     "key": "preset-techniques",
+     "name": "Techniques",
+     "singular": "Technique",
+     "color": "#6b7a2b",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "techniques-0",
+       "name": "Discipline",
+       "type": "text",
+       "options": [],
+       "required": true
+      },
+      {
+       "id": "techniques-1",
+       "name": "Difficulty",
+       "type": "number",
+       "options": [],
+       "min": 1,
+       "max": 10
+      },
+      {
+       "id": "techniques-2",
+       "name": "Prerequisites",
+       "type": "longtext",
+       "options": []
+      },
+      {
+       "id": "techniques-3",
+       "name": "Practitioners",
+       "type": "references",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "techniques-4",
+       "name": "Signature move",
+       "type": "toggle",
+       "options": []
+      }
+     ],
+     "uses": {
+      "rank": "techniques-1",
+      "tree": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "organizations",
+   "name": "Organizations",
+   "description": "Guilds, companies, orders: who leads, who belongs, where they sit.",
+   "categories": [
+    {
+     "key": "preset-organizations",
+     "name": "Organizations",
+     "singular": "Organization",
+     "color": "#4f5fa3",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "organizations-0",
+       "name": "Kind",
+       "type": "select",
+       "options": [
+        "Guild",
+        "Company",
+        "Order",
+        "Government",
+        "Cult",
+        "Other"
+       ],
+       "required": true
+      },
+      {
+       "id": "organizations-1",
+       "name": "Leader",
+       "type": "reference",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "organizations-2",
+       "name": "Members",
+       "type": "references",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "organizations-3",
+       "name": "Headquarters",
+       "type": "reference",
+       "options": [],
+       "target": "location"
+      },
+      {
+       "id": "organizations-4",
+       "name": "Founded",
+       "type": "date",
+       "options": []
+      },
+      {
+       "id": "organizations-5",
+       "name": "Goals",
+       "type": "longtext",
+       "options": []
+      }
+     ],
+     "uses": {
+      "timeline": {
+       "start": "organizations-4"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "species",
+   "name": "Species",
+   "description": "Peoples and creatures: lifespan, home, traits.",
+   "categories": [
+    {
+     "key": "preset-species",
+     "name": "Species",
+     "singular": "Species",
+     "color": "#a3622b",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "species-0",
+       "name": "Lifespan",
+       "type": "text",
+       "options": []
+      },
+      {
+       "id": "species-1",
+       "name": "Homeland",
+       "type": "reference",
+       "options": [],
+       "target": "location"
+      },
+      {
+       "id": "species-2",
+       "name": "Sapient",
+       "type": "toggle",
+       "options": [],
+       "required": true
+      },
+      {
+       "id": "species-3",
+       "name": "Traits",
+       "type": "tags",
+       "options": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "technologies",
+   "name": "Technologies",
+   "description": "Machines and inventions: who made them, whether they still work.",
+   "categories": [
+    {
+     "key": "preset-technologies",
+     "name": "Technologies",
+     "singular": "Technology",
+     "color": "#8c2b5a",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "technologies-0",
+       "name": "Status",
+       "type": "select",
+       "options": [
+        "Prototype",
+        "In use",
+        "Lost",
+        "Forbidden"
+       ],
+       "required": true
+      },
+      {
+       "id": "technologies-1",
+       "name": "Inventor",
+       "type": "reference",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "technologies-2",
+       "name": "Tech level",
+       "type": "number",
+       "options": [],
+       "min": 1,
+       "max": 10
+      },
+      {
+       "id": "technologies-3",
+       "name": "Power source",
+       "type": "text",
+       "options": []
+      }
+     ],
+     "uses": {
+      "rank": "technologies-2"
+     }
+    }
+   ]
+  },
+  {
+   "id": "relics",
+   "name": "Relics",
+   "description": "Artifacts of power: where from, who holds them, what they do.",
+   "categories": [
+    {
+     "key": "preset-relics",
+     "name": "Relics",
+     "singular": "Relic",
+     "color": "#2b8c6b",
+     "builtin": false,
+     "fields": [
+      {
+       "id": "relics-0",
+       "name": "Powers",
+       "type": "longtext",
+       "options": [],
+       "required": true
+      },
+      {
+       "id": "relics-1",
+       "name": "Current holder",
+       "type": "reference",
+       "options": [],
+       "target": "character"
+      },
+      {
+       "id": "relics-2",
+       "name": "Last seen",
+       "type": "reference",
+       "options": [],
+       "target": "location"
+      },
+      {
+       "id": "relics-3",
+       "name": "Cursed",
+       "type": "toggle",
+       "options": []
+      },
+      {
+       "id": "relics-4",
+       "name": "Age in years",
+       "type": "number",
+       "options": [],
+       "min": 0
+      }
+     ],
+     "uses": {
+      "ownership": {
+       "type": "owns",
+       "field": "relics-1"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "cleaned": [
+  null,
+  null,
+  null,
+  {
+   "timeline": {
+    "start": "a"
+   }
+  },
+  {
+   "map": {
+    "x": "a",
+    "y": "b"
+   },
+   "rank": "c",
+   "tree": true
+  },
+  {
+   "ownership": {
+    "type": "owns",
+    "field": "b"
+   },
+   "graphLabel": "a",
+   "graphLinks": [
+    "a",
+    "c"
+   ]
+  },
+  {
+   "graphLinks": []
+  },
+  null,
+  {
+   "ownership": {
+    "type": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ ],
+ "remapped": [
+  null,
+  null,
+  null,
+  {
+   "timeline": {
+    "start": "a2"
+   }
+  },
+  {
+   "map": {
+    "x": "a2",
+    "y": "b2"
+   },
+   "tree": true
+  },
+  {
+   "ownership": {
+    "type": "owns",
+    "field": "b2"
+   },
+   "graphLabel": "a2",
+   "graphLinks": [
+    "a2"
+   ]
+  },
+  {
+   "graphLinks": []
+  },
+  null,
+  {
+   "ownership": {
+    "type": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ ],
+ "merged": [
+  {
+   "rank": "a"
+  },
+  {
+   "rank": "a"
+  },
+  {
+   "rank": "a",
+   "tree": true,
+   "map": {
+    "x": "a"
+   }
+  }
+ ],
+ "search": {
+  "qa-sample": {
+   "": [
+    "00000000-0000-4000-8000-000000000002",
+    "00000000-0000-4000-8000-000000000003",
+    "00000000-0000-4000-8000-000000000004",
+    "00000000-0000-4000-8000-000000000005",
+    "00000000-0000-4000-8000-000000000006",
+    "00000000-0000-4000-8000-000000000007",
+    "00000000-0000-4000-8000-000000000008",
+    "00000000-0000-4000-8000-000000000009",
+    "00000000-0000-4000-8000-00000000000a",
+    "00000000-0000-4000-8000-00000000000b",
+    "00000000-0000-4000-8000-00000000000c",
+    "00000000-0000-4000-8000-00000000000d",
+    "00000000-0000-4000-8000-00000000000e"
+   ],
+   "the": [
+    "00000000-0000-4000-8000-000000000002",
+    "00000000-0000-4000-8000-000000000004",
+    "00000000-0000-4000-8000-000000000005",
+    "00000000-0000-4000-8000-000000000006",
+    "00000000-0000-4000-8000-000000000007",
+    "00000000-0000-4000-8000-000000000008",
+    "00000000-0000-4000-8000-000000000009",
+    "00000000-0000-4000-8000-00000000000b",
+    "00000000-0000-4000-8000-00000000000d"
+   ],
+   "GUILD": [
+    "00000000-0000-4000-8000-000000000007"
+   ],
+   " keep ": [],
+   "zzz": [],
+   "Ilse": [
+    "00000000-0000-4000-8000-000000000002",
+    "00000000-0000-4000-8000-000000000003",
+    "00000000-0000-4000-8000-000000000004",
+    "00000000-0000-4000-8000-000000000006"
+   ],
+   "Cori": [
+    "00000000-0000-4000-8000-000000000003"
+   ],
+   "Tams": [
+    "00000000-0000-4000-8000-000000000004"
+   ],
+   "Odo ": [
+    "00000000-0000-4000-8000-000000000005"
+   ],
+   "Wren": [
+    "00000000-0000-4000-8000-000000000006"
+   ],
+   "The ": [
+    "00000000-0000-4000-8000-000000000002",
+    "00000000-0000-4000-8000-000000000004",
+    "00000000-0000-4000-8000-000000000005",
+    "00000000-0000-4000-8000-000000000006",
+    "00000000-0000-4000-8000-000000000007",
+    "00000000-0000-4000-8000-000000000008",
+    "00000000-0000-4000-8000-000000000009",
+    "00000000-0000-4000-8000-00000000000b",
+    "00000000-0000-4000-8000-00000000000d"
+   ]
+  },
+  "made-in-the-app": {
+   "": [
+    "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "70465ae9-f720-4346-8683-298ce006ed1a-ren",
+    "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "9b98bdb8-1836-4175-b4dd-8e993b014a8b",
+    "b99120ca-bbde-411a-a568-df285a9649d7",
+    "01ac40fa-82f4-4e46-848d-2039d865984c-lyon",
+    "01ac40fa-82f4-4e46-848d-2039d865984c-marseille",
+    "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "01ac40fa-82f4-4e46-848d-2039d865984c-paris",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-docks",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-keep",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "0e5b8e62-42e6-4916-89c0-4fdbfd6e1b0a",
+    "d036b962-7224-4c8f-bd74-fd3bc106298e-alex",
+    "d036b962-7224-4c8f-bd74-fd3bc106298e-guild",
+    "d036b962-7224-4c8f-bd74-fd3bc106298e-marcus",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-oren",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-tam",
+    "2b852e2e-b121-4e32-8291-5fab11d3723b-crown",
+    "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-badge",
+    "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-hq",
+    "75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37",
+    "88334800-fff7-42c5-8fa1-6458d55100e8-crown",
+    "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "9f2cf642-1787-4c36-9157-519f02c9b784",
+    "9b735947-e79e-4519-991c-deb6a809d2f4",
+    "d33c9abf-b04d-432e-b749-7c60f76ec224-gallery",
+    "ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-smith",
+    "80cecce9-8dab-4504-87f1-597250024e22",
+    "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "f9cc6f18-305e-4ca2-b3b1-173fba48b3d3-solar",
+    "89342824-f943-42b5-8266-2e629dad4fe4",
+    "c82fbed4-4a48-48d8-bb0f-d0359bd74a4d",
+    "2ed11059-8145-4a6f-9377-c48ef38414a3"
+   ],
+   "the": [
+    "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-docks",
+    "0e5b8e62-42e6-4916-89c0-4fdbfd6e1b0a",
+    "75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-smith",
+    "c82fbed4-4a48-48d8-bb0f-d0359bd74a4d"
+   ],
+   "GUILD": [
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild"
+   ],
+   " keep ": [
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-keep"
+   ],
+   "zzz": [],
+   "Kai ": [
+    "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "b99120ca-bbde-411a-a568-df285a9649d7",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai"
+   ],
+   "Kai": [
+    "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "b99120ca-bbde-411a-a568-df285a9649d7",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai"
+   ],
+   "Ren": [
+    "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "70465ae9-f720-4346-8683-298ce006ed1a-ren",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-oren"
+   ],
+   "The ": [
+    "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown",
+    "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-docks",
+    "0e5b8e62-42e6-4916-89c0-4fdbfd6e1b0a",
+    "75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "72fe506d-41d3-4042-b69a-52075a1ee7ee-smith",
+    "c82fbed4-4a48-48d8-bb0f-d0359bd74a4d"
+   ]
+  }
+ }
+}

@@ -1,0 +1,5 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+
+// Xcode 27 ships no Intel iPhone Simulator; Flutter's simulator engine is Apple-silicon only here.
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = x86_64

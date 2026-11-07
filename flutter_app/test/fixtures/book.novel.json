@@ -1,0 +1,567 @@
+{
+  "format": "novel-builder/project",
+  "version": 4,
+  "exportedAt": 1,
+  "project": {
+    "title": "Book Layout Test",
+    "subtitle": "A test of every page",
+    "author": "Test Author",
+    "primaryGenre": "Fantasy",
+    "secondaryGenres": [],
+    "cover": null,
+    "tags": [
+      "test data"
+    ],
+    "synopsis": "Test content for the reader and publishing checks.",
+    "status": "drafting",
+    "targetWordCount": null,
+    "deadline": null,
+    "language": "en",
+    "accent": "#2a6fb8",
+    "id": "b0000000-0000-4000-8000-000000000000",
+    "pinned": false,
+    "archived": false,
+    "createdAt": 1768478400000,
+    "updatedAt": 1768478400000,
+    "lastOpenedAt": null
+  },
+  "collections": {
+    "chapters": [
+      {
+        "id": "b0000000-0000-4000-8000-000000000001",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": null,
+        "kind": "volume",
+        "title": "The First Book",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000002",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000001",
+        "kind": "chapter",
+        "title": "Arrival",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1,
+        "noteBefore": "Thanks for reading!\nNew chapters on Fridays.",
+        "noteAfter": "Next week: the river."
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000003",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000002",
+        "kind": "scene",
+        "title": "Morning",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000004",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000002",
+        "kind": "scene",
+        "title": "Evening",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000005",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000001",
+        "kind": "chapter",
+        "title": "Chapter 2",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000006",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000001",
+        "kind": "chapter",
+        "title": "",
+        "order": 2,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000007",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": null,
+        "kind": "act",
+        "title": "",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000008",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": "b0000000-0000-4000-8000-000000000007",
+        "kind": "chapter",
+        "title": "Embers",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000009",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": null,
+        "kind": "scene",
+        "title": "Loose scene",
+        "order": 2,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000010",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "parentId": null,
+        "kind": "chapter",
+        "title": "Empty",
+        "order": 3,
+        "summary": "",
+        "notes": "",
+        "status": "drafting",
+        "wordCount": 0,
+        "charCount": 0,
+        "mentions": [],
+        "createdAt": 1,
+        "updatedAt": 1
+      }
+    ],
+    "chapterContents": [
+      {
+        "id": "b0000000-0000-4000-8000-000000000002",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph"
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The chapter’s own opening, before its scenes."
+                }
+              ]
+            },
+            {
+              "type": "paragraph"
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000003",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph"
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Mira woke "
+                },
+                {
+                  "type": "text",
+                  "text": "early",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "listened",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "* * *"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The bell rang twice."
+                }
+              ]
+            },
+            {
+              "type": "paragraph"
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000004",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Evening came over the "
+                },
+                {
+                  "type": "text",
+                  "text": "salt road",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    },
+                    {
+                      "type": "italic"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "type": "horizontalRule"
+            },
+            {
+              "type": "horizontalRule"
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "They slept."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "   "
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000005",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "heading",
+              "attrs": {
+                "level": 2
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "A heading inside"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Text after a heading."
+                }
+              ]
+            },
+            {
+              "type": "blockquote",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A quoted line."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "One"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Two"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000006",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Untitled chapter text, with a "
+                },
+                {
+                  "type": "hardBreak"
+                },
+                {
+                  "type": "text",
+                  "text": "line break."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "⁂"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "After a typed break."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000008",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Centred."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": "center"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Centred line."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "#"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "—"
+                },
+                {
+                  "type": "text",
+                  "text": " a dash line that is text."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000009",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "A scene outside any chapter."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1
+      }
+    ],
+    "bookMatter": [
+      {
+        "id": "b0000000-0000-4000-8000-000000000100",
+        "projectId": "b0000000-0000-4000-8000-000000000000",
+        "dedication": "For Wren,\nwho asked.",
+        "epigraph": "All glass remembers.",
+        "epigraphSource": "Old saying",
+        "copyright": "Copyright © 2026 Test Author",
+        "acknowledgements": "Thanks to everyone.",
+        "aboutAuthor": "Test Author writes tests.",
+        "sceneBreak": "⁂",
+        "updatedAt": 1
+      }
+    ],
+    "loreEntries": [],
+    "outlines": [],
+    "characters": []
+  }
+}

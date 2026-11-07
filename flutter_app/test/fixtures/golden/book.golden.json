@@ -1,0 +1,5257 @@
+{
+  "book": {
+    "novel": {
+      "title": "Book Layout Test",
+      "subtitle": "A test of every page",
+      "author": "Test Author",
+      "cover": null,
+      "accent": "#2a6fb8",
+      "sceneBreak": "⁂",
+      "words": 61,
+      "chapters": 5,
+      "sections": [
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "copyright",
+          "kind": "copyright",
+          "title": "Copyright",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Copyright © 2026 Test Author",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dedication",
+          "kind": "dedication",
+          "title": "Dedication",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "For Wren,\nwho asked.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "epigraph",
+          "kind": "epigraph",
+          "title": "Epigraph",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "All glass remembers.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "Old saying",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000001",
+          "kind": "part",
+          "title": "The First Book",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000001",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000002",
+          "kind": "chapter",
+          "title": "Arrival",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000002",
+          "words": 24,
+          "text": "",
+          "noteBefore": "Thanks for reading!\nNew chapters on Fridays.",
+          "noteAfter": "Next week: the river.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The chapter’s own opening, before its scenes."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Mira woke early and listened."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "The bell rang twice."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Evening came over the salt road."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "They slept."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000005",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000005",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "heading",
+              "text": "A heading inside"
+            },
+            {
+              "type": "paragraph",
+              "text": "Text after a heading."
+            },
+            {
+              "type": "blockquote",
+              "text": "A quoted line."
+            },
+            {
+              "type": "bulletList",
+              "text": "OneTwo"
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000006",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000006",
+          "words": 11,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Untitled chapter text, with a \nline break."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "After a typed break."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000007",
+          "kind": "part",
+          "title": "Act 1",
+          "label": "Act 1",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000007",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000008",
+          "kind": "chapter",
+          "title": "Embers",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000008",
+          "words": 9,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Centred."
+            },
+            {
+              "type": "paragraph",
+              "text": "Centred line."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "— a dash line that is text."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000009",
+          "kind": "chapter",
+          "title": "Loose scene",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000009",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "A scene outside any chapter."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000010",
+          "kind": "chapter",
+          "title": "Empty",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000010",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "acknowledgements",
+          "kind": "acknowledgements",
+          "title": "Acknowledgements",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Thanks to everyone.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "about",
+          "kind": "about",
+          "title": "About the author",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Test Author writes tests.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.19672131147540983,
+          0.39344262295081966
+        ],
+        [
+          0.39344262295081966,
+          0.4918032786885246,
+          0.5901639344262295
+        ],
+        [
+          0.5901639344262295,
+          0.680327868852459,
+          0.7704918032786885
+        ],
+        [
+          0.7704918032786885,
+          0.7704918032786885,
+          0.7704918032786885
+        ],
+        [
+          0.7704918032786885,
+          0.8442622950819673,
+          0.9180327868852459
+        ],
+        [
+          0.9180327868852459,
+          0.9590163934426229,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "ebook": {
+      "title": "Book Layout Test",
+      "subtitle": "A test of every page",
+      "author": "Test Author",
+      "cover": null,
+      "accent": "#2a6fb8",
+      "sceneBreak": "⁂",
+      "words": 61,
+      "chapters": 5,
+      "sections": [
+        {
+          "id": "cover",
+          "kind": "cover",
+          "title": "Cover",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "copyright",
+          "kind": "copyright",
+          "title": "Copyright",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Copyright © 2026 Test Author",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dedication",
+          "kind": "dedication",
+          "title": "Dedication",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "For Wren,\nwho asked.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "epigraph",
+          "kind": "epigraph",
+          "title": "Epigraph",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "All glass remembers.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "Old saying",
+          "pieces": []
+        },
+        {
+          "id": "contents",
+          "kind": "contents",
+          "title": "Contents",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000001",
+          "kind": "part",
+          "title": "The First Book",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000001",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000002",
+          "kind": "chapter",
+          "title": "Arrival",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000002",
+          "words": 24,
+          "text": "",
+          "noteBefore": "Thanks for reading!\nNew chapters on Fridays.",
+          "noteAfter": "Next week: the river.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The chapter’s own opening, before its scenes."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Mira woke early and listened."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "The bell rang twice."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Evening came over the salt road."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "They slept."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000005",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000005",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "heading",
+              "text": "A heading inside"
+            },
+            {
+              "type": "paragraph",
+              "text": "Text after a heading."
+            },
+            {
+              "type": "blockquote",
+              "text": "A quoted line."
+            },
+            {
+              "type": "bulletList",
+              "text": "OneTwo"
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000006",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000006",
+          "words": 11,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Untitled chapter text, with a \nline break."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "After a typed break."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000007",
+          "kind": "part",
+          "title": "Act 1",
+          "label": "Act 1",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000007",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000008",
+          "kind": "chapter",
+          "title": "Embers",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000008",
+          "words": 9,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Centred."
+            },
+            {
+              "type": "paragraph",
+              "text": "Centred line."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "— a dash line that is text."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000009",
+          "kind": "chapter",
+          "title": "Loose scene",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000009",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "A scene outside any chapter."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000010",
+          "kind": "chapter",
+          "title": "Empty",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000010",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "acknowledgements",
+          "kind": "acknowledgements",
+          "title": "Acknowledgements",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Thanks to everyone.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "about",
+          "kind": "about",
+          "title": "About the author",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Test Author writes tests.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.19672131147540983,
+          0.39344262295081966
+        ],
+        [
+          0.39344262295081966,
+          0.4918032786885246,
+          0.5901639344262295
+        ],
+        [
+          0.5901639344262295,
+          0.680327868852459,
+          0.7704918032786885
+        ],
+        [
+          0.7704918032786885,
+          0.7704918032786885,
+          0.7704918032786885
+        ],
+        [
+          0.7704918032786885,
+          0.8442622950819673,
+          0.9180327868852459
+        ],
+        [
+          0.9180327868852459,
+          0.9590163934426229,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "serial": {
+      "title": "Book Layout Test",
+      "subtitle": "A test of every page",
+      "author": "Test Author",
+      "cover": null,
+      "accent": "#2a6fb8",
+      "sceneBreak": "⁂",
+      "words": 61,
+      "chapters": 5,
+      "sections": [
+        {
+          "id": "b0000000-0000-4000-8000-000000000002",
+          "kind": "chapter",
+          "title": "Arrival",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000002",
+          "words": 24,
+          "text": "",
+          "noteBefore": "Thanks for reading!\nNew chapters on Fridays.",
+          "noteAfter": "Next week: the river.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The chapter’s own opening, before its scenes."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Mira woke early and listened."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "The bell rang twice."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Evening came over the salt road."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "They slept."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000005",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000005",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "heading",
+              "text": "A heading inside"
+            },
+            {
+              "type": "paragraph",
+              "text": "Text after a heading."
+            },
+            {
+              "type": "blockquote",
+              "text": "A quoted line."
+            },
+            {
+              "type": "bulletList",
+              "text": "OneTwo"
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000006",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000006",
+          "words": 11,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Untitled chapter text, with a \nline break."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "After a typed break."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000008",
+          "kind": "chapter",
+          "title": "Embers",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "b0000000-0000-4000-8000-000000000008",
+          "words": 9,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Centred."
+            },
+            {
+              "type": "paragraph",
+              "text": "Centred line."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "— a dash line that is text."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000009",
+          "kind": "chapter",
+          "title": "Loose scene",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000009",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "A scene outside any chapter."
+            }
+          ]
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000010",
+          "kind": "chapter",
+          "title": "Empty",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "b0000000-0000-4000-8000-000000000010",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0.19672131147540983,
+          0.39344262295081966
+        ],
+        [
+          0.39344262295081966,
+          0.4918032786885246,
+          0.5901639344262295
+        ],
+        [
+          0.5901639344262295,
+          0.680327868852459,
+          0.7704918032786885
+        ],
+        [
+          0.7704918032786885,
+          0.8442622950819673,
+          0.9180327868852459
+        ],
+        [
+          0.9180327868852459,
+          0.9590163934426229,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    }
+  },
+  "qa-sample": {
+    "novel": {
+      "title": "QA Sample: The Glass Meridian (test data)",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 228,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000017",
+          "kind": "part",
+          "title": "Act I: The Archive",
+          "label": "Act 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "00000000-0000-4000-8000-000000000017",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000019",
+          "kind": "chapter",
+          "title": "Salt and Glass",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000019",
+          "words": 62,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The tide came in grey over Port Calder, and Ilse read it in the window glass before it reached the harbour wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Wren asked her what she saw. She said rain, and a ledger, and a man who would want it back."
+            },
+            {
+              "type": "paragraph",
+              "text": "Somewhere above the town, in the guild house, her old teacher was waiting for an answer she had not given."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001a",
+          "kind": "chapter",
+          "title": "The Guild Mark",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001a",
+          "words": 64,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Corin pressed the guild mark into the warm glass and handed it to her without a word."
+            },
+            {
+              "type": "paragraph",
+              "text": "The burn on his wrist was older than she was. She had asked about it once, as a child, and he had looked at the hills and said nothing at all."
+            },
+            {
+              "type": "paragraph",
+              "text": "Ilse took the mark. From that night she was one of the Glasswrights, whatever came after."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001b",
+          "kind": "chapter",
+          "title": "The Night of Two Doors",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001b",
+          "words": 67,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Archive smelled of dust and lamp oil. Tamsin had the door open before Ilse finished reading the lock."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Ledger of Tides was lighter than either of them had thought. They argued about who would carry it, and then ran."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Across the square, Magistrate Hale counted the raised hands in Council Hall and smiled at the number."
+            },
+            {
+              "type": "paragraph",
+              "text": "He did not yet know the Archive stood open."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "kind": "part",
+          "title": "Act II: The Hill Country",
+          "label": "Act 2",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "00000000-0000-4000-8000-000000000018",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001e",
+          "kind": "chapter",
+          "title": "Roads Inland",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001e",
+          "words": 35,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "They left Port Calder by the salt road before dawn. Tamsin walked ahead; Ilse carried the ledger."
+            },
+            {
+              "type": "paragraph",
+              "text": "By the third night they had stopped arguing. By the fourth they were friends, though neither said it."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001f",
+          "kind": "chapter",
+          "title": "Ashe House",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001f",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000020",
+          "kind": "chapter",
+          "title": "What the Fire Kept",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000020",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.13596491228070176,
+          0.2719298245614035
+        ],
+        [
+          0.2719298245614035,
+          0.41228070175438597,
+          0.5526315789473685
+        ],
+        [
+          0.5526315789473685,
+          0.6995614035087719,
+          0.8464912280701754
+        ],
+        [
+          0.8464912280701754,
+          0.8464912280701754,
+          0.8464912280701754
+        ],
+        [
+          0.8464912280701754,
+          0.9232456140350878,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "ebook": {
+      "title": "QA Sample: The Glass Meridian (test data)",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 228,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "cover",
+          "kind": "cover",
+          "title": "Cover",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "contents",
+          "kind": "contents",
+          "title": "Contents",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000017",
+          "kind": "part",
+          "title": "Act I: The Archive",
+          "label": "Act 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "00000000-0000-4000-8000-000000000017",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000019",
+          "kind": "chapter",
+          "title": "Salt and Glass",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000019",
+          "words": 62,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The tide came in grey over Port Calder, and Ilse read it in the window glass before it reached the harbour wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Wren asked her what she saw. She said rain, and a ledger, and a man who would want it back."
+            },
+            {
+              "type": "paragraph",
+              "text": "Somewhere above the town, in the guild house, her old teacher was waiting for an answer she had not given."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001a",
+          "kind": "chapter",
+          "title": "The Guild Mark",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001a",
+          "words": 64,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Corin pressed the guild mark into the warm glass and handed it to her without a word."
+            },
+            {
+              "type": "paragraph",
+              "text": "The burn on his wrist was older than she was. She had asked about it once, as a child, and he had looked at the hills and said nothing at all."
+            },
+            {
+              "type": "paragraph",
+              "text": "Ilse took the mark. From that night she was one of the Glasswrights, whatever came after."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001b",
+          "kind": "chapter",
+          "title": "The Night of Two Doors",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001b",
+          "words": 67,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Archive smelled of dust and lamp oil. Tamsin had the door open before Ilse finished reading the lock."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Ledger of Tides was lighter than either of them had thought. They argued about who would carry it, and then ran."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Across the square, Magistrate Hale counted the raised hands in Council Hall and smiled at the number."
+            },
+            {
+              "type": "paragraph",
+              "text": "He did not yet know the Archive stood open."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "kind": "part",
+          "title": "Act II: The Hill Country",
+          "label": "Act 2",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "00000000-0000-4000-8000-000000000018",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001e",
+          "kind": "chapter",
+          "title": "Roads Inland",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001e",
+          "words": 35,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "They left Port Calder by the salt road before dawn. Tamsin walked ahead; Ilse carried the ledger."
+            },
+            {
+              "type": "paragraph",
+              "text": "By the third night they had stopped arguing. By the fourth they were friends, though neither said it."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001f",
+          "kind": "chapter",
+          "title": "Ashe House",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001f",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000020",
+          "kind": "chapter",
+          "title": "What the Fire Kept",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000020",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.13596491228070176,
+          0.2719298245614035
+        ],
+        [
+          0.2719298245614035,
+          0.41228070175438597,
+          0.5526315789473685
+        ],
+        [
+          0.5526315789473685,
+          0.6995614035087719,
+          0.8464912280701754
+        ],
+        [
+          0.8464912280701754,
+          0.8464912280701754,
+          0.8464912280701754
+        ],
+        [
+          0.8464912280701754,
+          0.9232456140350878,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "serial": {
+      "title": "QA Sample: The Glass Meridian (test data)",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 228,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "00000000-0000-4000-8000-000000000019",
+          "kind": "chapter",
+          "title": "Salt and Glass",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000019",
+          "words": 62,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The tide came in grey over Port Calder, and Ilse read it in the window glass before it reached the harbour wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Wren asked her what she saw. She said rain, and a ledger, and a man who would want it back."
+            },
+            {
+              "type": "paragraph",
+              "text": "Somewhere above the town, in the guild house, her old teacher was waiting for an answer she had not given."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001a",
+          "kind": "chapter",
+          "title": "The Guild Mark",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001a",
+          "words": 64,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Corin pressed the guild mark into the warm glass and handed it to her without a word."
+            },
+            {
+              "type": "paragraph",
+              "text": "The burn on his wrist was older than she was. She had asked about it once, as a child, and he had looked at the hills and said nothing at all."
+            },
+            {
+              "type": "paragraph",
+              "text": "Ilse took the mark. From that night she was one of the Glasswrights, whatever came after."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001b",
+          "kind": "chapter",
+          "title": "The Night of Two Doors",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001b",
+          "words": 67,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Archive smelled of dust and lamp oil. Tamsin had the door open before Ilse finished reading the lock."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Ledger of Tides was lighter than either of them had thought. They argued about who would carry it, and then ran."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Across the square, Magistrate Hale counted the raised hands in Council Hall and smiled at the number."
+            },
+            {
+              "type": "paragraph",
+              "text": "He did not yet know the Archive stood open."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001e",
+          "kind": "chapter",
+          "title": "Roads Inland",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001e",
+          "words": 35,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "They left Port Calder by the salt road before dawn. Tamsin walked ahead; Ilse carried the ledger."
+            },
+            {
+              "type": "paragraph",
+              "text": "By the third night they had stopped arguing. By the fourth they were friends, though neither said it."
+            }
+          ]
+        },
+        {
+          "id": "00000000-0000-4000-8000-00000000001f",
+          "kind": "chapter",
+          "title": "Ashe House",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-00000000001f",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000020",
+          "kind": "chapter",
+          "title": "What the Fire Kept",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "00000000-0000-4000-8000-000000000020",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0.13596491228070176,
+          0.2719298245614035
+        ],
+        [
+          0.2719298245614035,
+          0.41228070175438597,
+          0.5526315789473685
+        ],
+        [
+          0.5526315789473685,
+          0.6995614035087719,
+          0.8464912280701754
+        ],
+        [
+          0.8464912280701754,
+          0.9232456140350878,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    }
+  },
+  "made-in-the-app": {
+    "novel": {
+      "title": "Made in the App",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "⁂",
+      "words": 26,
+      "chapters": 28,
+      "sections": [
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "copyright",
+          "kind": "copyright",
+          "title": "Copyright",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Copyright © 2026 R. G. Almonte",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dedication",
+          "kind": "dedication",
+          "title": "Dedication",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "For the patient.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "epigraph",
+          "kind": "epigraph",
+          "title": "Epigraph",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "All is ash.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "An old song",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The road ended at a wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Mira touched the gate."
+            },
+            {
+              "type": "paragraph",
+              "text": "Nobody answered. Then the wall fell."
+            }
+          ]
+        },
+        {
+          "id": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "words": 4,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Chapter One. Still writing."
+            }
+          ]
+        },
+        {
+          "id": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "kind": "chapter",
+          "title": "The Theft",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "kind": "chapter",
+          "title": "Prologue",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "kind": "chapter",
+          "title": "The Gate",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "kind": "chapter",
+          "title": "The Ring",
+          "label": "Chapter 7",
+          "showsLabel": true,
+          "number": 7,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b17a1622-b77b-4839-98cc-9c3436476d4c-v1",
+          "kind": "part",
+          "title": "The Ash",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b17a1622-b77b-4839-98cc-9c3436476d4c-v1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "kind": "chapter",
+          "title": "The Bell",
+          "label": "Chapter 8",
+          "showsLabel": true,
+          "number": 8,
+          "depth": 1,
+          "nodeId": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "words": 6,
+          "text": "",
+          "noteBefore": "Thank you for reading this far.\nThis one is short.",
+          "noteAfter": "Next chapter on Friday.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The bell rang once. Twice, then."
+            }
+          ]
+        },
+        {
+          "id": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 9",
+          "showsLabel": true,
+          "number": 9,
+          "depth": 0,
+          "nodeId": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "kind": "chapter",
+          "title": "The Vault",
+          "label": "Chapter 10",
+          "showsLabel": true,
+          "number": 10,
+          "depth": 0,
+          "nodeId": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-act2",
+          "kind": "part",
+          "title": "Act II",
+          "label": "Act 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-act2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "kind": "chapter",
+          "title": "Ambush",
+          "label": "Chapter 11",
+          "showsLabel": true,
+          "number": 11,
+          "depth": 1,
+          "nodeId": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "kind": "chapter",
+          "title": "The Reign",
+          "label": "Chapter 12",
+          "showsLabel": true,
+          "number": 12,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 13",
+          "showsLabel": true,
+          "number": 13,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "kind": "chapter",
+          "title": "Three",
+          "label": "Chapter 14",
+          "showsLabel": true,
+          "number": 14,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "kind": "chapter",
+          "title": "The War",
+          "label": "Chapter 15",
+          "showsLabel": true,
+          "number": 15,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "kind": "chapter",
+          "title": "The Tomb",
+          "label": "Chapter 16",
+          "showsLabel": true,
+          "number": 16,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "kind": "chapter",
+          "title": "The Seal",
+          "label": "Chapter 17",
+          "showsLabel": true,
+          "number": 17,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 18",
+          "showsLabel": true,
+          "number": 18,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 19",
+          "showsLabel": true,
+          "number": 19,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "kind": "chapter",
+          "title": "Five",
+          "label": "Chapter 20",
+          "showsLabel": true,
+          "number": 20,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 21",
+          "showsLabel": true,
+          "number": 21,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 22",
+          "showsLabel": true,
+          "number": 22,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "kind": "chapter",
+          "title": "Eight",
+          "label": "Chapter 23",
+          "showsLabel": true,
+          "number": 23,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "kind": "chapter",
+          "title": "Chapter 12",
+          "label": "Chapter 24",
+          "showsLabel": true,
+          "number": 24,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "kind": "chapter",
+          "title": "Chapter 18",
+          "label": "Chapter 25",
+          "showsLabel": true,
+          "number": 25,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "kind": "chapter",
+          "title": "Chapter 21",
+          "label": "Chapter 26",
+          "showsLabel": true,
+          "number": 26,
+          "depth": 0,
+          "nodeId": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "kind": "chapter",
+          "title": "Chapter 35",
+          "label": "Chapter 27",
+          "showsLabel": true,
+          "number": 27,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "kind": "chapter",
+          "title": "Chapter 36",
+          "label": "Chapter 28",
+          "showsLabel": true,
+          "number": 28,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "about",
+          "kind": "about",
+          "title": "About the author",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Writes at night.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.3076923076923077,
+          0.6153846153846154
+        ],
+        [
+          0.6153846153846154,
+          0.6923076923076923,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.8846153846153846,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "ebook": {
+      "title": "Made in the App",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "⁂",
+      "words": 26,
+      "chapters": 28,
+      "sections": [
+        {
+          "id": "cover",
+          "kind": "cover",
+          "title": "Cover",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "copyright",
+          "kind": "copyright",
+          "title": "Copyright",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Copyright © 2026 R. G. Almonte",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dedication",
+          "kind": "dedication",
+          "title": "Dedication",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "For the patient.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "epigraph",
+          "kind": "epigraph",
+          "title": "Epigraph",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "All is ash.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "An old song",
+          "pieces": []
+        },
+        {
+          "id": "contents",
+          "kind": "contents",
+          "title": "Contents",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The road ended at a wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Mira touched the gate."
+            },
+            {
+              "type": "paragraph",
+              "text": "Nobody answered. Then the wall fell."
+            }
+          ]
+        },
+        {
+          "id": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "words": 4,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Chapter One. Still writing."
+            }
+          ]
+        },
+        {
+          "id": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "kind": "chapter",
+          "title": "The Theft",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "kind": "chapter",
+          "title": "Prologue",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "kind": "chapter",
+          "title": "The Gate",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "kind": "chapter",
+          "title": "The Ring",
+          "label": "Chapter 7",
+          "showsLabel": true,
+          "number": 7,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b17a1622-b77b-4839-98cc-9c3436476d4c-v1",
+          "kind": "part",
+          "title": "The Ash",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "b17a1622-b77b-4839-98cc-9c3436476d4c-v1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "kind": "chapter",
+          "title": "The Bell",
+          "label": "Chapter 8",
+          "showsLabel": true,
+          "number": 8,
+          "depth": 1,
+          "nodeId": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "words": 6,
+          "text": "",
+          "noteBefore": "Thank you for reading this far.\nThis one is short.",
+          "noteAfter": "Next chapter on Friday.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The bell rang once. Twice, then."
+            }
+          ]
+        },
+        {
+          "id": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 9",
+          "showsLabel": true,
+          "number": 9,
+          "depth": 0,
+          "nodeId": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "kind": "chapter",
+          "title": "The Vault",
+          "label": "Chapter 10",
+          "showsLabel": true,
+          "number": 10,
+          "depth": 0,
+          "nodeId": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-act2",
+          "kind": "part",
+          "title": "Act II",
+          "label": "Act 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-act2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "kind": "chapter",
+          "title": "Ambush",
+          "label": "Chapter 11",
+          "showsLabel": true,
+          "number": 11,
+          "depth": 1,
+          "nodeId": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "kind": "chapter",
+          "title": "The Reign",
+          "label": "Chapter 12",
+          "showsLabel": true,
+          "number": 12,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 13",
+          "showsLabel": true,
+          "number": 13,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "kind": "chapter",
+          "title": "Three",
+          "label": "Chapter 14",
+          "showsLabel": true,
+          "number": 14,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "kind": "chapter",
+          "title": "The War",
+          "label": "Chapter 15",
+          "showsLabel": true,
+          "number": 15,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "kind": "chapter",
+          "title": "The Tomb",
+          "label": "Chapter 16",
+          "showsLabel": true,
+          "number": 16,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "kind": "chapter",
+          "title": "The Seal",
+          "label": "Chapter 17",
+          "showsLabel": true,
+          "number": 17,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 18",
+          "showsLabel": true,
+          "number": 18,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 19",
+          "showsLabel": true,
+          "number": 19,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "kind": "chapter",
+          "title": "Five",
+          "label": "Chapter 20",
+          "showsLabel": true,
+          "number": 20,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 21",
+          "showsLabel": true,
+          "number": 21,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 22",
+          "showsLabel": true,
+          "number": 22,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "kind": "chapter",
+          "title": "Eight",
+          "label": "Chapter 23",
+          "showsLabel": true,
+          "number": 23,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "kind": "chapter",
+          "title": "Chapter 12",
+          "label": "Chapter 24",
+          "showsLabel": true,
+          "number": 24,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "kind": "chapter",
+          "title": "Chapter 18",
+          "label": "Chapter 25",
+          "showsLabel": true,
+          "number": 25,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "kind": "chapter",
+          "title": "Chapter 21",
+          "label": "Chapter 26",
+          "showsLabel": true,
+          "number": 26,
+          "depth": 0,
+          "nodeId": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "kind": "chapter",
+          "title": "Chapter 35",
+          "label": "Chapter 27",
+          "showsLabel": true,
+          "number": 27,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "kind": "chapter",
+          "title": "Chapter 36",
+          "label": "Chapter 28",
+          "showsLabel": true,
+          "number": 28,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "about",
+          "kind": "about",
+          "title": "About the author",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "Writes at night.",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.3076923076923077,
+          0.6153846153846154
+        ],
+        [
+          0.6153846153846154,
+          0.6923076923076923,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.8846153846153846,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "serial": {
+      "title": "Made in the App",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "⁂",
+      "words": 26,
+      "chapters": 28,
+      "sections": [
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "4fee0c33-10ac-413e-a828-941049a681a0",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The road ended at a wall."
+            },
+            {
+              "type": "paragraph",
+              "text": "Mira touched the gate."
+            },
+            {
+              "type": "paragraph",
+              "text": "Nobody answered. Then the wall fell."
+            }
+          ]
+        },
+        {
+          "id": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "kind": "chapter",
+          "title": "One",
+          "label": "Chapter 3",
+          "showsLabel": true,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "70465ae9-f720-4346-8683-298ce006ed1a-c1",
+          "words": 4,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Chapter One. Still writing."
+            }
+          ]
+        },
+        {
+          "id": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "kind": "chapter",
+          "title": "The Theft",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "88334800-fff7-42c5-8fa1-6458d55100e8-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "kind": "chapter",
+          "title": "Prologue",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "kind": "chapter",
+          "title": "The Gate",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "kind": "chapter",
+          "title": "The Ring",
+          "label": "Chapter 7",
+          "showsLabel": true,
+          "number": 7,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "kind": "chapter",
+          "title": "The Bell",
+          "label": "Chapter 8",
+          "showsLabel": true,
+          "number": 8,
+          "depth": 1,
+          "nodeId": "b17a1622-b77b-4839-98cc-9c3436476d4c-c2",
+          "words": 6,
+          "text": "",
+          "noteBefore": "Thank you for reading this far.\nThis one is short.",
+          "noteAfter": "Next chapter on Friday.",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The bell rang once. Twice, then."
+            }
+          ]
+        },
+        {
+          "id": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 9",
+          "showsLabel": true,
+          "number": 9,
+          "depth": 0,
+          "nodeId": "e1228a80-f45f-4eb0-ad83-2fe742a948c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "kind": "chapter",
+          "title": "The Vault",
+          "label": "Chapter 10",
+          "showsLabel": true,
+          "number": 10,
+          "depth": 0,
+          "nodeId": "2b852e2e-b121-4e32-8291-5fab11d3723b-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "kind": "chapter",
+          "title": "Ambush",
+          "label": "Chapter 11",
+          "showsLabel": true,
+          "number": 11,
+          "depth": 1,
+          "nodeId": "90e3d9cf-1b19-43fa-b13d-d95e6fb05335-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "kind": "chapter",
+          "title": "The Reign",
+          "label": "Chapter 12",
+          "showsLabel": true,
+          "number": 12,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 13",
+          "showsLabel": true,
+          "number": 13,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "kind": "chapter",
+          "title": "Three",
+          "label": "Chapter 14",
+          "showsLabel": true,
+          "number": 14,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "kind": "chapter",
+          "title": "The War",
+          "label": "Chapter 15",
+          "showsLabel": true,
+          "number": 15,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "kind": "chapter",
+          "title": "The Tomb",
+          "label": "Chapter 16",
+          "showsLabel": true,
+          "number": 16,
+          "depth": 0,
+          "nodeId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "kind": "chapter",
+          "title": "The Seal",
+          "label": "Chapter 17",
+          "showsLabel": true,
+          "number": 17,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 18",
+          "showsLabel": true,
+          "number": 18,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c03",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 19",
+          "showsLabel": true,
+          "number": 19,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "kind": "chapter",
+          "title": "Five",
+          "label": "Chapter 20",
+          "showsLabel": true,
+          "number": 20,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "kind": "chapter",
+          "title": "The Feast",
+          "label": "Chapter 21",
+          "showsLabel": true,
+          "number": 21,
+          "depth": 0,
+          "nodeId": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-c5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "kind": "chapter",
+          "title": "The Well",
+          "label": "Chapter 22",
+          "showsLabel": true,
+          "number": 22,
+          "depth": 0,
+          "nodeId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "kind": "chapter",
+          "title": "Eight",
+          "label": "Chapter 23",
+          "showsLabel": true,
+          "number": 23,
+          "depth": 0,
+          "nodeId": "28004147-fb90-4d35-b257-3ef661907230-ch8",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "kind": "chapter",
+          "title": "Chapter 12",
+          "label": "Chapter 24",
+          "showsLabel": true,
+          "number": 24,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c12",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "kind": "chapter",
+          "title": "Chapter 18",
+          "label": "Chapter 25",
+          "showsLabel": true,
+          "number": 25,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c18",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "kind": "chapter",
+          "title": "Chapter 21",
+          "label": "Chapter 26",
+          "showsLabel": true,
+          "number": 26,
+          "depth": 0,
+          "nodeId": "93688d30-ad91-4362-920e-9df3e02a777a-c21",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "kind": "chapter",
+          "title": "Chapter 35",
+          "label": "Chapter 27",
+          "showsLabel": true,
+          "number": 27,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c35",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "kind": "chapter",
+          "title": "Chapter 36",
+          "label": "Chapter 28",
+          "showsLabel": true,
+          "number": 28,
+          "depth": 0,
+          "nodeId": "dcbc5685-2ab1-438b-99db-9dcab9adcd63-c36",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.3076923076923077,
+          0.6153846153846154
+        ],
+        [
+          0.6153846153846154,
+          0.6923076923076923,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.7692307692307693,
+          0.7692307692307693
+        ],
+        [
+          0.7692307692307693,
+          0.8846153846153846,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "minutes": 1
+    }
+  },
+  "analytics": {
+    "novel": {
+      "title": "Analytics",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 38,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "v1",
+          "kind": "part",
+          "title": "Book One",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "v1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "The Call",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "c1",
+          "words": 10,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira woke before the bells."
+            },
+            {
+              "type": "paragraph",
+              "text": "The road north was empty."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Crossing",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "c2",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira and Kai crossed at dawn."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Kai said nothing. Miracles were rare."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "c3",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Pell waited in the tower."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Quiet",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c5",
+          "kind": "chapter",
+          "title": "Ashes",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "c5",
+          "words": 8,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Ash fell over everything. Mira, Kai and Pell."
+            }
+          ]
+        },
+        {
+          "id": "c6",
+          "kind": "chapter",
+          "title": "Return",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "c6",
+          "words": 3,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Home, at last."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.13157894736842105,
+          0.2631578947368421
+        ],
+        [
+          0.2631578947368421,
+          0.42105263157894735,
+          0.5789473684210527
+        ],
+        [
+          0.5789473684210527,
+          0.6447368421052632,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.7105263157894737,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.8157894736842105,
+          0.9210526315789473
+        ],
+        [
+          0.9210526315789473,
+          0.9605263157894737,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "ebook": {
+      "title": "Analytics",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 38,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "cover",
+          "kind": "cover",
+          "title": "Cover",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "contents",
+          "kind": "contents",
+          "title": "Contents",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "v1",
+          "kind": "part",
+          "title": "Book One",
+          "label": "Volume 1",
+          "showsLabel": true,
+          "number": null,
+          "depth": 0,
+          "nodeId": "v1",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "The Call",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "c1",
+          "words": 10,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira woke before the bells."
+            },
+            {
+              "type": "paragraph",
+              "text": "The road north was empty."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Crossing",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "c2",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira and Kai crossed at dawn."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Kai said nothing. Miracles were rare."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "c3",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Pell waited in the tower."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Quiet",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c5",
+          "kind": "chapter",
+          "title": "Ashes",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "c5",
+          "words": 8,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Ash fell over everything. Mira, Kai and Pell."
+            }
+          ]
+        },
+        {
+          "id": "c6",
+          "kind": "chapter",
+          "title": "Return",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "c6",
+          "words": 3,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Home, at last."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.13157894736842105,
+          0.2631578947368421
+        ],
+        [
+          0.2631578947368421,
+          0.42105263157894735,
+          0.5789473684210527
+        ],
+        [
+          0.5789473684210527,
+          0.6447368421052632,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.7105263157894737,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.8157894736842105,
+          0.9210526315789473
+        ],
+        [
+          0.9210526315789473,
+          0.9605263157894737,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "serial": {
+      "title": "Analytics",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 38,
+      "chapters": 6,
+      "sections": [
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "The Call",
+          "label": "Chapter 1",
+          "showsLabel": true,
+          "number": 1,
+          "depth": 1,
+          "nodeId": "c1",
+          "words": 10,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira woke before the bells."
+            },
+            {
+              "type": "paragraph",
+              "text": "The road north was empty."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Crossing",
+          "label": "Chapter 2",
+          "showsLabel": true,
+          "number": 2,
+          "depth": 1,
+          "nodeId": "c2",
+          "words": 12,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira and Kai crossed at dawn."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Kai said nothing. Miracles were rare."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 1,
+          "nodeId": "c3",
+          "words": 5,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Pell waited in the tower."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Quiet",
+          "label": "Chapter 4",
+          "showsLabel": true,
+          "number": 4,
+          "depth": 1,
+          "nodeId": "c4",
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c5",
+          "kind": "chapter",
+          "title": "Ashes",
+          "label": "Chapter 5",
+          "showsLabel": true,
+          "number": 5,
+          "depth": 1,
+          "nodeId": "c5",
+          "words": 8,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Ash fell over everything. Mira, Kai and Pell."
+            }
+          ]
+        },
+        {
+          "id": "c6",
+          "kind": "chapter",
+          "title": "Return",
+          "label": "Chapter 6",
+          "showsLabel": true,
+          "number": 6,
+          "depth": 1,
+          "nodeId": "c6",
+          "words": 3,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Home, at last."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0.13157894736842105,
+          0.2631578947368421
+        ],
+        [
+          0.2631578947368421,
+          0.42105263157894735,
+          0.5789473684210527
+        ],
+        [
+          0.5789473684210527,
+          0.6447368421052632,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.7105263157894737,
+          0.7105263157894737
+        ],
+        [
+          0.7105263157894737,
+          0.8157894736842105,
+          0.9210526315789473
+        ],
+        [
+          0.9210526315789473,
+          0.9605263157894737,
+          1
+        ]
+      ],
+      "minutes": 1
+    }
+  },
+  "canon": {
+    "novel": {
+      "title": "Canon",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 116,
+      "chapters": 4,
+      "sections": [
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 1",
+          "showsLabel": false,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "c1",
+          "words": 44,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira drew the Sunblade and raised it high."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin was nineteen years old, and his hands were steady."
+            },
+            {
+              "type": "paragraph",
+              "text": "Her grey eyes shone with tears. Mira wept."
+            },
+            {
+              "type": "paragraph",
+              "text": "They travelled for two days to reach Saltport from Greykeep."
+            },
+            {
+              "type": "heading",
+              "text": "Interlude"
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin gripped the Sunblade with both hands."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "c2",
+          "words": 34,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira smiled at the guard."
+            },
+            {
+              "type": "paragraph",
+              "text": "They spoke of Mira often, and of the Sunblade."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Heiress said nothing."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Deep underground, the caves were cold."
+            },
+            {
+              "type": "paragraph",
+              "text": "Kai cast the fire spell anyway, half an hour later."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "c3",
+          "words": 22,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Sunblade lay forgotten."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin drew the Sunblade, the blade in his hand."
+            },
+            {
+              "type": "paragraph",
+              "text": "Pell, 23, laughed."
+            },
+            {
+              "type": "paragraph",
+              "text": "Alex’s hair was black as night."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Chapter 4",
+          "label": "Chapter 4",
+          "showsLabel": false,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "c4",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira returned, said nothing, and walked on."
+            },
+            {
+              "type": "paragraph",
+              "text": "It took a week to reach Saltport from Greykeep."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.1896551724137931,
+          0.3793103448275862
+        ],
+        [
+          0.3793103448275862,
+          0.5258620689655172,
+          0.6724137931034483
+        ],
+        [
+          0.6724137931034483,
+          0.7672413793103449,
+          0.8620689655172413
+        ],
+        [
+          0.8620689655172413,
+          0.9310344827586207,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "ebook": {
+      "title": "Canon",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 116,
+      "chapters": 4,
+      "sections": [
+        {
+          "id": "cover",
+          "kind": "cover",
+          "title": "Cover",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "title",
+          "kind": "title",
+          "title": "Title page",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "contents",
+          "kind": "contents",
+          "title": "Contents",
+          "label": "",
+          "showsLabel": false,
+          "number": null,
+          "depth": 0,
+          "nodeId": null,
+          "words": 0,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": []
+        },
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 1",
+          "showsLabel": false,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "c1",
+          "words": 44,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira drew the Sunblade and raised it high."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin was nineteen years old, and his hands were steady."
+            },
+            {
+              "type": "paragraph",
+              "text": "Her grey eyes shone with tears. Mira wept."
+            },
+            {
+              "type": "paragraph",
+              "text": "They travelled for two days to reach Saltport from Greykeep."
+            },
+            {
+              "type": "heading",
+              "text": "Interlude"
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin gripped the Sunblade with both hands."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "c2",
+          "words": 34,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira smiled at the guard."
+            },
+            {
+              "type": "paragraph",
+              "text": "They spoke of Mira often, and of the Sunblade."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Heiress said nothing."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Deep underground, the caves were cold."
+            },
+            {
+              "type": "paragraph",
+              "text": "Kai cast the fire spell anyway, half an hour later."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "c3",
+          "words": 22,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Sunblade lay forgotten."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin drew the Sunblade, the blade in his hand."
+            },
+            {
+              "type": "paragraph",
+              "text": "Pell, 23, laughed."
+            },
+            {
+              "type": "paragraph",
+              "text": "Alex’s hair was black as night."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Chapter 4",
+          "label": "Chapter 4",
+          "showsLabel": false,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "c4",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira returned, said nothing, and walked on."
+            },
+            {
+              "type": "paragraph",
+              "text": "It took a week to reach Saltport from Greykeep."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.1896551724137931,
+          0.3793103448275862
+        ],
+        [
+          0.3793103448275862,
+          0.5258620689655172,
+          0.6724137931034483
+        ],
+        [
+          0.6724137931034483,
+          0.7672413793103449,
+          0.8620689655172413
+        ],
+        [
+          0.8620689655172413,
+          0.9310344827586207,
+          1
+        ]
+      ],
+      "minutes": 1
+    },
+    "serial": {
+      "title": "Canon",
+      "subtitle": "",
+      "author": "",
+      "cover": null,
+      "accent": "#b4532a",
+      "sceneBreak": "* * *",
+      "words": 116,
+      "chapters": 4,
+      "sections": [
+        {
+          "id": "c1",
+          "kind": "chapter",
+          "title": "Chapter 1",
+          "label": "Chapter 1",
+          "showsLabel": false,
+          "number": 1,
+          "depth": 0,
+          "nodeId": "c1",
+          "words": 44,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira drew the Sunblade and raised it high."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin was nineteen years old, and his hands were steady."
+            },
+            {
+              "type": "paragraph",
+              "text": "Her grey eyes shone with tears. Mira wept."
+            },
+            {
+              "type": "paragraph",
+              "text": "They travelled for two days to reach Saltport from Greykeep."
+            },
+            {
+              "type": "heading",
+              "text": "Interlude"
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin gripped the Sunblade with both hands."
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "kind": "chapter",
+          "title": "Chapter 2",
+          "label": "Chapter 2",
+          "showsLabel": false,
+          "number": 2,
+          "depth": 0,
+          "nodeId": "c2",
+          "words": 34,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira smiled at the guard."
+            },
+            {
+              "type": "paragraph",
+              "text": "They spoke of Mira often, and of the Sunblade."
+            },
+            {
+              "type": "paragraph",
+              "text": "The Heiress said nothing."
+            },
+            "break",
+            {
+              "type": "paragraph",
+              "text": "Deep underground, the caves were cold."
+            },
+            {
+              "type": "paragraph",
+              "text": "Kai cast the fire spell anyway, half an hour later."
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "kind": "chapter",
+          "title": "Chapter 3",
+          "label": "Chapter 3",
+          "showsLabel": false,
+          "number": 3,
+          "depth": 0,
+          "nodeId": "c3",
+          "words": 22,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "The Sunblade lay forgotten."
+            },
+            {
+              "type": "paragraph",
+              "text": "Orrin drew the Sunblade, the blade in his hand."
+            },
+            {
+              "type": "paragraph",
+              "text": "Pell, 23, laughed."
+            },
+            {
+              "type": "paragraph",
+              "text": "Alex’s hair was black as night."
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "kind": "chapter",
+          "title": "Chapter 4",
+          "label": "Chapter 4",
+          "showsLabel": false,
+          "number": 4,
+          "depth": 0,
+          "nodeId": "c4",
+          "words": 16,
+          "text": "",
+          "noteBefore": "",
+          "noteAfter": "",
+          "source": "",
+          "pieces": [
+            {
+              "type": "paragraph",
+              "text": "Mira returned, said nothing, and walked on."
+            },
+            {
+              "type": "paragraph",
+              "text": "It took a week to reach Saltport from Greykeep."
+            }
+          ]
+        }
+      ],
+      "progress": [
+        [
+          0,
+          0.1896551724137931,
+          0.3793103448275862
+        ],
+        [
+          0.3793103448275862,
+          0.5258620689655172,
+          0.6724137931034483
+        ],
+        [
+          0.6724137931034483,
+          0.7672413793103449,
+          0.8620689655172413
+        ],
+        [
+          0.8620689655172413,
+          0.9310344827586207,
+          1
+        ]
+      ],
+      "minutes": 1
+    }
+  },
+  "breakLines": {
+    "***": true,
+    "* * *": true,
+    "*  *  *  *": true,
+    "#": true,
+    "---": true,
+    "-----": true,
+    "~~~": true,
+    "⁂": true,
+    " * * * ": true,
+    "**": false,
+    "- - -": false,
+    "##": false,
+    "—": false,
+    "text": false
+  }
+}

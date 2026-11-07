@@ -1,0 +1,8 @@
+{
+  "name": "novel-builder-desktop",
+  "productName": "Novel Builder",
+  "version": "0.1.0",
+  "description": "Novel Builder for the desktop",
+  "main": "main.cjs",
+  "private": true
+}

@@ -1,0 +1,2202 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "saga",
+  "title": "The Saga",
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "00000000-0000-4000-8000-v00000000000",
+    "projectId": "saga",
+    "parentId": null,
+    "kind": "volume",
+    "title": "Book One",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000000",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "act",
+    "title": "Act I",
+    "order": 0,
+    "summary": "About act i",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000001",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "act",
+    "title": "Act II",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "published",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000002",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "act",
+    "title": "Act III (empty)",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000000",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "planned",
+    "wordCount": 2984,
+    "charCount": 14920,
+    "mentions": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000001",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "summary": "About chapter 2",
+    "notes": "",
+    "status": "planned",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000002",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 2,
+    "summary": "About chapter 3",
+    "notes": "",
+    "status": "draft-complete",
+    "wordCount": 1622,
+    "charCount": 8110,
+    "mentions": [],
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000003",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "chapter",
+    "title": "",
+    "order": 3,
+    "summary": "",
+    "notes": "",
+    "status": "final",
+    "wordCount": 1633,
+    "charCount": 8165,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "createdAt": 3
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000004",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "chapter",
+    "title": "Chapter 5",
+    "order": 4,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 244,
+    "charCount": 1220,
+    "mentions": [],
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000005",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000001",
+    "kind": "chapter",
+    "title": "Chapter 6",
+    "order": 0,
+    "summary": "About chapter 6",
+    "notes": "",
+    "status": "final",
+    "wordCount": 3965,
+    "charCount": 19825,
+    "mentions": [],
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000006",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000001",
+    "kind": "chapter",
+    "title": "Chapter 7",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 2381,
+    "charCount": 11905,
+    "mentions": [],
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000007",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000001",
+    "kind": "chapter",
+    "title": "Chapter 8",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 1561,
+    "charCount": 7805,
+    "mentions": [],
+    "createdAt": 7
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000008",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-a00000000001",
+    "kind": "chapter",
+    "title": "Chapter 9",
+    "order": 3,
+    "summary": "",
+    "notes": "",
+    "status": "published",
+    "wordCount": 469,
+    "charCount": 2345,
+    "mentions": [],
+    "createdAt": 8
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000009",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 10",
+    "order": 10,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 3770,
+    "charCount": 18850,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "createdAt": 9
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000010",
+    "projectId": "saga",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 11",
+    "order": 10,
+    "summary": "",
+    "notes": "",
+    "status": "draft-complete",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "createdAt": 10
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000011",
+    "projectId": "saga",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 12",
+    "order": 11,
+    "summary": "",
+    "notes": "",
+    "status": "final",
+    "wordCount": 235,
+    "charCount": 1175,
+    "mentions": [],
+    "createdAt": 11
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000012",
+    "projectId": "saga",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 13",
+    "order": 12,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 3322,
+    "charCount": 16610,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "createdAt": 12
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000013",
+    "projectId": "saga",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 14",
+    "order": 13,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 3143,
+    "charCount": 15715,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "createdAt": 13
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000000",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000001",
+    "kind": "scene",
+    "title": "Scene 2.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "draft-complete",
+    "wordCount": 1435,
+    "charCount": 7175,
+    "mentions": [],
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000001",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000002",
+    "kind": "scene",
+    "title": "Scene 3.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000002",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000002",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 2
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000003",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000002",
+    "kind": "scene",
+    "title": "Scene 3.3",
+    "order": 2,
+    "summary": "About scene 3.3",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 2333,
+    "charCount": 11665,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "createdAt": 3
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000004",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000004",
+    "kind": "scene",
+    "title": "Scene 5.1",
+    "order": 0,
+    "summary": "About scene 5.1",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 492,
+    "charCount": 2460,
+    "mentions": [],
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000005",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000004",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 997,
+    "charCount": 4985,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000006",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000004",
+    "kind": "scene",
+    "title": "Scene 5.3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "final",
+    "wordCount": 2029,
+    "charCount": 10145,
+    "mentions": [],
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000007",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000005",
+    "kind": "scene",
+    "title": "Scene 6.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 7
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000008",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000005",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "About ",
+    "notes": "",
+    "status": "published",
+    "wordCount": 1762,
+    "charCount": 8810,
+    "mentions": [],
+    "createdAt": 8
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000009",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000007",
+    "kind": "scene",
+    "title": "Scene 8.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "planned",
+    "wordCount": 962,
+    "charCount": 4810,
+    "mentions": [],
+    "createdAt": 9
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000010",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000007",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 1255,
+    "charCount": 6275,
+    "mentions": [],
+    "createdAt": 10
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000011",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000007",
+    "kind": "scene",
+    "title": "Scene 8.3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 865,
+    "charCount": 4325,
+    "mentions": [],
+    "createdAt": 11
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000012",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000008",
+    "kind": "scene",
+    "title": "Scene 9.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "published",
+    "wordCount": 247,
+    "charCount": 1235,
+    "mentions": [],
+    "createdAt": 12
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000013",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000008",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "About ",
+    "notes": "",
+    "status": "revising",
+    "wordCount": 1221,
+    "charCount": 6105,
+    "mentions": [],
+    "createdAt": 13
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000014",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000008",
+    "kind": "scene",
+    "title": "Scene 9.3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 14
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000015",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000010",
+    "kind": "scene",
+    "title": "Scene 11.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "planned",
+    "wordCount": 2032,
+    "charCount": 10160,
+    "mentions": [],
+    "createdAt": 15
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000016",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000010",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 16
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000017",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000010",
+    "kind": "scene",
+    "title": "Scene 11.3",
+    "order": 2,
+    "summary": "About scene 11.3",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 1930,
+    "charCount": 9650,
+    "mentions": [],
+    "createdAt": 17
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000018",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000011",
+    "kind": "scene",
+    "title": "Scene 12.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "draft-complete",
+    "wordCount": 1368,
+    "charCount": 6840,
+    "mentions": [],
+    "createdAt": 18
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000019",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000011",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "final",
+    "wordCount": 943,
+    "charCount": 4715,
+    "mentions": [],
+    "createdAt": 19
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000020",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000011",
+    "kind": "scene",
+    "title": "Scene 12.3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 1111,
+    "charCount": 5555,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "createdAt": 20
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000021",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000013",
+    "kind": "scene",
+    "title": "Scene 14.1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 246,
+    "charCount": 1230,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "createdAt": 21
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000022",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000013",
+    "kind": "scene",
+    "title": "",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "drafting",
+    "wordCount": 1226,
+    "charCount": 6130,
+    "mentions": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "createdAt": 22
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000023",
+    "projectId": "saga",
+    "parentId": "00000000-0000-4000-8000-c00000000013",
+    "kind": "scene",
+    "title": "Scene 14.3",
+    "order": 2,
+    "summary": "About scene 14.3",
+    "notes": "",
+    "status": "published",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 23
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "00000000-0000-4000-8000-c00000000000",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000000",
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "labels": [
+     "Fight",
+     "Quiet moment"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000005",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000001",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Dialogue",
+     "Mystery clue",
+     "Action"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000003",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "mentionIds": [],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000003",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "action",
+     "Mystery clue"
+    ],
+    "appearIds": [],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000005",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000000",
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "labels": [
+     "Action",
+     "Fight",
+     "action"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000006",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000006",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Dialogue",
+     "action",
+     "Fight"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000007",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000004",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "mentionIds": [],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000010",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000001",
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "labels": [
+     "action",
+     "Mystery clue",
+     "Quiet moment"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000005",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000012",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000001",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "labels": [
+     "Dialogue",
+     "Quiet moment"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000005",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000013",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000000",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "mentionIds": [],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000000",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000001",
+     "00000000-0000-4000-8000-p00000000001"
+    ],
+    "labels": [
+     "heist",
+     "Mystery clue"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000001",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Fight",
+     "Quiet moment",
+     "action"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "mentionIds": [],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000003",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000006",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000001",
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "labels": [
+     "Action",
+     "Heist"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000007",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "heist"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000004",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000008",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000001",
+     "00000000-0000-4000-8000-p00000000001"
+    ],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "mentionIds": [],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000009",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000002",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "labels": [
+     "Dialogue",
+     "Quiet moment",
+     "Fight"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000004",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000011",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Action"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000012",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Dialogue"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000013",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "Action",
+     "Heist"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000014",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000004"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000002"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000017",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000000",
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "labels": [],
+    "appearIds": [],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000020",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "00000000-0000-4000-8000-l00000000000",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "labels": [
+     "Fight"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000004",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "povIds": [],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000021",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000002",
+     "00000000-0000-4000-8000-p00000000006",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000003"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000023",
+    "projectId": "saga",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "labels": [
+     "action",
+     "Heist"
+    ],
+    "appearIds": [
+     "00000000-0000-4000-8000-p00000000000",
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "mentionIds": [
+     "00000000-0000-4000-8000-p00000000001",
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "conflict": "",
+    "emotionalArc": "",
+    "dialogue": "",
+    "foreshadowing": "",
+    "reveals": "",
+    "openQuestions": "",
+    "ending": "",
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "00000000-0000-4000-8000-p00000000000",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero A",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 100
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000001",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero B",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 101
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000002",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero C",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 102
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000003",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero D",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 103
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000004",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero E",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 104
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000005",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero F",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 105
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000006",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero G",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 106
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000007",
+    "projectId": "saga",
+    "category": "character",
+    "name": "Hero H",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 107
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000000",
+    "projectId": "saga",
+    "category": "location",
+    "name": "Town 0",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 200
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000001",
+    "projectId": "saga",
+    "category": "location",
+    "name": "Town 1",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 201
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000002",
+    "projectId": "saga",
+    "category": "location",
+    "name": "Town 2",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 202
+   }
+  ],
+  "plotThreads": [
+   {
+    "id": "00000000-0000-4000-8000-t00000000000",
+    "projectId": "saga",
+    "title": "Thread F",
+    "premise": "",
+    "category": "main",
+    "customCategory": "",
+    "status": "active",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "locationIds": [],
+    "targetNodeId": "00000000-0000-4000-8000-a00000000000",
+    "targetNote": "",
+    "notes": "",
+    "muted": false,
+    "createdAt": 0,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "00000000-0000-4000-8000-t00000000000-b0",
+      "nodeId": null,
+      "title": "",
+      "note": "",
+      "createdAt": 0,
+      "role": "appears"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000000-b1",
+      "nodeId": "00000000-0000-4000-8000-c00000000009",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000000-b2",
+      "nodeId": "00000000-0000-4000-8000-c00000000010",
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000001",
+       "gone"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000001",
+    "projectId": "saga",
+    "title": "Thread E",
+    "premise": "",
+    "category": "custom",
+    "customCategory": "",
+    "status": "custom",
+    "customStatus": "Simmering",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "muted": false,
+    "createdAt": 1,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b0",
+      "nodeId": "00000000-0000-4000-8000-s00000000023",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0,
+      "role": "development"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b1",
+      "nodeId": "00000000-0000-4000-8000-s00000000003",
+      "title": "",
+      "note": "",
+      "createdAt": 1,
+      "role": "appears"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b2",
+      "nodeId": "00000000-0000-4000-8000-s00000000003",
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000002",
+       "gone"
+      ]
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b3",
+      "nodeId": "00000000-0000-4000-8000-z00000000003",
+      "title": "Beat 4",
+      "note": "",
+      "createdAt": 3,
+      "role": "development"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b4",
+      "nodeId": "00000000-0000-4000-8000-z00000000004",
+      "title": "Beat 5",
+      "note": "A note",
+      "createdAt": 4,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000002",
+       "gone"
+      ]
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000001-b5",
+      "nodeId": "00000000-0000-4000-8000-s00000000016",
+      "title": "Beat 6",
+      "note": "",
+      "createdAt": 5,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000002",
+       "gone"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000002",
+    "projectId": "saga",
+    "title": "Thread D",
+    "premise": "",
+    "category": "mystery",
+    "customCategory": "Prophecy",
+    "status": "active",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000006"
+    ],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "muted": false,
+    "createdAt": 2,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "00000000-0000-4000-8000-t00000000002-b0",
+      "nodeId": "00000000-0000-4000-8000-s00000000021",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000002-b1",
+      "nodeId": "00000000-0000-4000-8000-s00000000005",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1,
+      "role": "appears"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000003",
+    "projectId": "saga",
+    "title": "Thread C",
+    "premise": "",
+    "category": "mystery",
+    "customCategory": "",
+    "status": "paused",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000007"
+    ],
+    "locationIds": [],
+    "targetNodeId": "00000000-0000-4000-8000-c00000000002",
+    "targetNote": "",
+    "notes": "",
+    "muted": false,
+    "createdAt": 3,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b0",
+      "nodeId": "00000000-0000-4000-8000-c00000000005",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b1",
+      "nodeId": "00000000-0000-4000-8000-s00000000014",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1,
+      "role": "introduction"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b2",
+      "nodeId": "00000000-0000-4000-8000-s00000000009",
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000004",
+       "gone"
+      ]
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b3",
+      "nodeId": null,
+      "title": "Beat 4",
+      "note": "",
+      "createdAt": 3,
+      "role": "introduction"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b4",
+      "nodeId": "00000000-0000-4000-8000-s00000000009",
+      "title": "Beat 5",
+      "note": "",
+      "createdAt": 4,
+      "role": "appears"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000003-b5",
+      "nodeId": "00000000-0000-4000-8000-s00000000014",
+      "title": "Beat 6",
+      "note": "",
+      "createdAt": 5,
+      "role": "introduction"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000004",
+    "projectId": "saga",
+    "title": "A thread",
+    "premise": "",
+    "category": "custom",
+    "customCategory": "",
+    "status": "custom",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000005"
+    ],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "muted": false,
+    "createdAt": 4,
+    "updatedAt": 0,
+    "beats": []
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000005",
+    "projectId": "saga",
+    "title": "Thread A",
+    "premise": "",
+    "category": "subplot",
+    "customCategory": "",
+    "status": "active",
+    "characterIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "locationIds": [],
+    "targetNodeId": null,
+    "targetNote": "",
+    "notes": "",
+    "muted": true,
+    "createdAt": 5,
+    "updatedAt": 0,
+    "beats": [
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b0",
+      "nodeId": "00000000-0000-4000-8000-s00000000013",
+      "title": "Beat 1",
+      "note": "",
+      "createdAt": 0,
+      "role": "development"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b1",
+      "nodeId": "00000000-0000-4000-8000-s00000000020",
+      "title": "Beat 2",
+      "note": "",
+      "createdAt": 1,
+      "role": "introduction"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b2",
+      "nodeId": "00000000-0000-4000-8000-s00000000006",
+      "title": "Beat 3",
+      "note": "",
+      "createdAt": 2,
+      "role": "introduction"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b3",
+      "nodeId": "00000000-0000-4000-8000-s00000000004",
+      "title": "",
+      "note": "A note",
+      "createdAt": 3,
+      "role": "appears"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b4",
+      "nodeId": "00000000-0000-4000-8000-c00000000010",
+      "title": "Beat 5",
+      "note": "",
+      "createdAt": 4,
+      "role": "introduction"
+     },
+     {
+      "id": "00000000-0000-4000-8000-t00000000005-b5",
+      "nodeId": "00000000-0000-4000-8000-c00000000005",
+      "title": "Beat 6",
+      "note": "A note",
+      "createdAt": 5,
+      "role": "intersection",
+      "withThreadIds": [
+       "00000000-0000-4000-8000-t00000000000",
+       "gone"
+      ]
+     }
+    ]
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "00000000-0000-4000-8000-e00000000000",
+    "projectId": "saga",
+    "name": "Event 0",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 100,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000007"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "labels": [
+     "FIGHT"
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000001",
+    "projectId": "saga",
+    "name": "Event 1",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 101,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000010"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "labels": [],
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000002",
+    "projectId": "saga",
+    "name": "Event 2",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 102,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000003"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "labels": [],
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000003",
+    "projectId": "saga",
+    "name": "Event 3",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 103,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000008"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000003"
+    ],
+    "labels": [],
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000004",
+    "projectId": "saga",
+    "name": "Event 4",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 104,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "labels": [],
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000005",
+    "projectId": "saga",
+    "name": "Event 5",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 105,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000008"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000006",
+    "projectId": "saga",
+    "name": "Event 6",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 106,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000010"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000007",
+    "projectId": "saga",
+    "name": "Event 7",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 107,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000011"
+    ],
+    "afterId": null,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "labels": [],
+    "createdAt": 7,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000008",
+    "projectId": "saga",
+    "name": "Event 8",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 108,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 8,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000009",
+    "projectId": "saga",
+    "name": "Event 9",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 109,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000005"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [
+     "FIGHT"
+    ],
+    "createdAt": 9,
+    "updatedAt": 0
+   }
+  ],
+  "structureMarkers": [
+   {
+    "id": "00000000-0000-4000-8000-m00000000000",
+    "projectId": "saga",
+    "kind": "Inciting incident",
+    "title": "The call",
+    "nodeId": "00000000-0000-4000-8000-c00000000001",
+    "eventId": null,
+    "note": "",
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000001",
+    "projectId": "saga",
+    "kind": "Midpoint",
+    "title": "",
+    "nodeId": null,
+    "eventId": "00000000-0000-4000-8000-e00000000000",
+    "note": "",
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000002",
+    "projectId": "saga",
+    "kind": "Climax",
+    "title": "Gone chapter",
+    "nodeId": "00000000-0000-4000-8000-z00000000009",
+    "eventId": null,
+    "note": "",
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000003",
+    "projectId": "saga",
+    "kind": "My own",
+    "title": "Nowhere yet",
+    "nodeId": null,
+    "eventId": null,
+    "note": "",
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-m00000000004",
+    "projectId": "saga",
+    "kind": "Act break",
+    "title": "",
+    "nodeId": "00000000-0000-4000-8000-s00000000002",
+    "eventId": null,
+    "note": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

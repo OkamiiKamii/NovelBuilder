@@ -1,0 +1,3616 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "chronicle",
+  "title": "The Chronicle",
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "00000000-0000-4000-8000-v00000000000",
+    "projectId": "chronicle",
+    "parentId": null,
+    "kind": "volume",
+    "title": "Book One",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 0,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000000",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 1,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 1234
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000001",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "mentions": [],
+    "createdAt": 2,
+    "summary": "",
+    "status": "final",
+    "wordCount": 2468
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000002",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 2,
+    "mentions": [],
+    "createdAt": 3,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 3702
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000003",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 4",
+    "order": 3,
+    "mentions": [],
+    "createdAt": 4,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 4936
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000004",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "",
+    "order": 4,
+    "mentions": [],
+    "createdAt": 5,
+    "summary": "",
+    "status": "final",
+    "wordCount": 6170
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000005",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 6",
+    "order": 5,
+    "mentions": [],
+    "createdAt": 6,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 7404
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000006",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 7",
+    "order": 6,
+    "mentions": [],
+    "createdAt": 7,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 8638
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000007",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 8",
+    "order": 7,
+    "mentions": [],
+    "createdAt": 8,
+    "summary": "",
+    "status": "final",
+    "wordCount": 9872
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000008",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 9",
+    "order": 8,
+    "mentions": [],
+    "createdAt": 9,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 11106
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000009",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 10",
+    "order": 9,
+    "mentions": [],
+    "createdAt": 10,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 12340
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000010",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 11",
+    "order": 10,
+    "mentions": [],
+    "createdAt": 11,
+    "summary": "",
+    "status": "final",
+    "wordCount": 13574
+   },
+   {
+    "id": "00000000-0000-4000-8000-c00000000011",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-v00000000000",
+    "kind": "chapter",
+    "title": "Chapter 12",
+    "order": 11,
+    "mentions": [],
+    "createdAt": 12,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 14808
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000000",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000000",
+    "kind": "scene",
+    "title": "Scene 1",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 50,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 16042
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000001",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000002",
+    "kind": "scene",
+    "title": "Scene 2",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 51,
+    "summary": "",
+    "status": "final",
+    "wordCount": 17276
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000002",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000004",
+    "kind": "scene",
+    "title": "Scene 3",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 52,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 18510
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000003",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000006",
+    "kind": "scene",
+    "title": "Scene 4",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 53,
+    "summary": "",
+    "status": "drafting",
+    "wordCount": 19744
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000004",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000008",
+    "kind": "scene",
+    "title": "Scene 5",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 54,
+    "summary": "",
+    "status": "final",
+    "wordCount": 20978
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000005",
+    "projectId": "chronicle",
+    "parentId": "00000000-0000-4000-8000-c00000000010",
+    "kind": "scene",
+    "title": "Scene 6",
+    "order": 0,
+    "mentions": [],
+    "createdAt": 55,
+    "summary": "What happens here.",
+    "status": "idea",
+    "wordCount": 22212
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "00000000-0000-4000-8000-n00000000000",
+    "projectId": "chronicle",
+    "nodeId": "00000000-0000-4000-8000-c00000000002",
+    "summary": "",
+    "goals": "",
+    "presentIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "povIds": [
+     "00000000-0000-4000-8000-p00000000000"
+    ],
+    "appearanceIds": [],
+    "mentionedIds": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "00000000-0000-4000-8000-p00000000000",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person A",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "f0",
+      "key": "Date of Birth",
+      "value": "1000-3-1"
+     }
+    ],
+    "createdAt": 100
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000001",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person B",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "f1",
+      "key": "Born",
+      "value": "the year of the comet"
+     }
+    ],
+    "createdAt": 101
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000002",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person C",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "f2",
+      "key": "Birth date",
+      "value": "990"
+     }
+    ],
+    "createdAt": 102
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000003",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person D",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "f3",
+      "key": "born",
+      "value": "Second Age 2"
+     }
+    ],
+    "createdAt": 103
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000004",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person E",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 104
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000005",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person F",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 105
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000006",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person G",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 106
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000007",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person H",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 107
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000008",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person I",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 108
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000009",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person J",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 109
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000010",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person K",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 110
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000011",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person L",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 111
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000012",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person M",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 112
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000013",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person N",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 113
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000014",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person O",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 114
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000015",
+    "projectId": "chronicle",
+    "category": "character",
+    "name": "Person P",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 115
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000000",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 0",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 200
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000001",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 1",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 201
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000002",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 2",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 202
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000003",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 3",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 203
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000004",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 4",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 204
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000005",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 5",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 205
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000006",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 6",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 206
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000007",
+    "projectId": "chronicle",
+    "category": "location",
+    "name": "Place 7",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 207
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000000",
+    "projectId": "chronicle",
+    "category": "faction",
+    "name": "Order 0",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 300
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000001",
+    "projectId": "chronicle",
+    "category": "faction",
+    "name": "Order 1",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 301
+   },
+   {
+    "id": "00000000-0000-4000-8000-f00000000002",
+    "projectId": "chronicle",
+    "category": "faction",
+    "name": "Order 2",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 302
+   },
+   {
+    "id": "00000000-0000-4000-8000-x00000000000",
+    "projectId": "chronicle",
+    "category": "ship",
+    "name": "Ship 0",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 400
+   },
+   {
+    "id": "00000000-0000-4000-8000-x00000000001",
+    "projectId": "chronicle",
+    "category": "ship",
+    "name": "Ship 1",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 401
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "00000000-0000-4000-8000-k00000000000",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-l00000000002",
+    "toId": "00000000-0000-4000-8000-l00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "located-in",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000001",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-l00000000005",
+    "toId": "00000000-0000-4000-8000-l00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "located-in",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000002",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-f00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 2,
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "00000000-0000-4000-8000-e00000000094"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000003",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-l00000000006",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "lives-in",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 3,
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "00000000-0000-4000-8000-c00000000003"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000004",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-l00000000007",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "related",
+    "fromLabel": "Born near",
+    "toLabel": "",
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000005",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-e00000000003",
+    "toId": "00000000-0000-4000-8000-x00000000000",
+    "fromType": "event",
+    "toType": "entry",
+    "type": "related",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000006",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-f00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "member-of",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 6,
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 1015,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "event",
+      "eventId": "00000000-0000-4000-8000-e00000000096"
+     }
+    }
+   }
+  ],
+  "plotThreads": [
+   {
+    "id": "00000000-0000-4000-8000-t00000000000",
+    "projectId": "chronicle",
+    "title": "Thread 0",
+    "description": "",
+    "color": "#888888",
+    "status": "open",
+    "beats": [],
+    "createdAt": 500
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000001",
+    "projectId": "chronicle",
+    "title": "Thread 1",
+    "description": "",
+    "color": "#888888",
+    "status": "open",
+    "beats": [],
+    "createdAt": 501
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000002",
+    "projectId": "chronicle",
+    "title": "Thread 2",
+    "description": "",
+    "color": "#888888",
+    "status": "open",
+    "beats": [],
+    "createdAt": 502
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "00000000-0000-4000-8000-e00000000000",
+    "projectId": "chronicle",
+    "name": "Event 00 at night",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1002,
+     "month": 10,
+     "season": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000010",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000000",
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "end": {
+     "precision": "approximate",
+     "year": 980,
+     "month": 12,
+     "season": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000001",
+    "projectId": "chronicle",
+    "name": "Event 01",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 997,
+     "month": 7,
+     "season": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": 8
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1001,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000002",
+    "projectId": "chronicle",
+    "name": "Event 02",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 996,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000005"
+    ],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "end": {
+     "precision": "approximate",
+     "year": 1034,
+     "month": null,
+     "season": "autumn"
+    },
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000005",
+      "role": "flashback"
+     }
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000003",
+    "projectId": "chronicle",
+    "name": "Event 03",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1033,
+     "month": 7,
+     "day": 18,
+     "hour": 9,
+     "minute": 20
+    },
+    "duration": {
+     "amount": 7,
+     "unit": "minutes"
+    },
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000004",
+    "projectId": "chronicle",
+    "name": "Event 04",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000006",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000010",
+     "00000000-0000-4000-8000-s00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000010",
+      "role": "told"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000005",
+    "projectId": "chronicle",
+    "name": "Event 05",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000002",
+     "amount": 8,
+     "unit": "years",
+     "direction": "before"
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": 41
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-x00000000001"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000003",
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000002",
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000003",
+      "role": "flashback"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000006",
+    "projectId": "chronicle",
+    "name": "Event 06",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1004,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000004"
+    ],
+    "afterId": null,
+    "createdAt": 1006,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000004",
+      "role": "revealed"
+     }
+    ],
+    "status": "idea"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000007",
+    "projectId": "chronicle",
+    "name": "Event 07 at night",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1032,
+     "month": 5,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": 25
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1007,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000008",
+    "projectId": "chronicle",
+    "name": "Event 08",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1013,
+     "month": null,
+     "season": "winter"
+    },
+    "duration": {
+     "amount": 6,
+     "unit": "hours"
+    },
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000008"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000002",
+    "createdAt": 1008,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000008",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000009",
+    "projectId": "chronicle",
+    "name": "Event 09",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1029,
+     "month": 5,
+     "day": 30,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000003",
+     "00000000-0000-4000-8000-c00000000010"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000003",
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000003",
+      "role": "revealed"
+     }
+    ],
+    "status": "idea"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000010",
+    "projectId": "chronicle",
+    "name": "Event 10",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 997,
+     "month": 2,
+     "season": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": 38
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000005",
+     "00000000-0000-4000-8000-c00000000007"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000007",
+    "createdAt": 1001,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000005",
+      "role": "told"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000011",
+    "projectId": "chronicle",
+    "name": "Event 11",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1014,
+     "month": 1,
+     "day": 6,
+     "hour": 18,
+     "minute": 48
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000015",
+      "age": 14
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000012",
+    "projectId": "chronicle",
+    "name": "Event 12",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1032,
+     "month": 13,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000004",
+     "00000000-0000-4000-8000-s00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000013",
+    "projectId": "chronicle",
+    "name": "Event 13",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 985,
+     "month": 4,
+     "day": 3,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000010",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": 7
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000002",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000014",
+    "projectId": "chronicle",
+    "name": "Event 14 at night",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 982,
+     "month": 12,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000002",
+     "00000000-0000-4000-8000-s00000000004"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000015",
+    "projectId": "chronicle",
+    "name": "Event 15",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 983,
+     "month": 9,
+     "season": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": 40
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000005"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000006",
+    "createdAt": 1006,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000016",
+    "projectId": "chronicle",
+    "name": "Event 16",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000003",
+     "00000000-0000-4000-8000-s00000000004"
+    ],
+    "afterId": null,
+    "createdAt": 1007,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000017",
+    "projectId": "chronicle",
+    "name": "Event 17",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1016,
+     "month": null,
+     "season": "autumn"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000010",
+     "00000000-0000-4000-8000-c00000000007"
+    ],
+    "afterId": null,
+    "createdAt": 1008,
+    "updatedAt": 0,
+    "end": {
+     "precision": "unknown"
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000018",
+    "projectId": "chronicle",
+    "name": "Event 18",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1034,
+     "month": 5,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000010",
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000019",
+    "projectId": "chronicle",
+    "name": "Event 19",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1007,
+     "month": 9,
+     "day": 29,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000000",
+    "createdAt": 1001,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000020",
+    "projectId": "chronicle",
+    "name": "Event 20",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 984,
+     "month": null,
+     "season": null
+    },
+    "duration": {
+     "amount": 5,
+     "unit": "years"
+    },
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-x00000000000"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000004"
+    ],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000021",
+    "projectId": "chronicle",
+    "name": "Event 21 at night",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000018",
+     "amount": 6,
+     "unit": "minutes",
+     "direction": "before"
+    },
+    "duration": {
+     "amount": 2,
+     "unit": "minutes"
+    },
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000009",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000001",
+     "00000000-0000-4000-8000-s00000000005"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000018",
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000001",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000022",
+    "projectId": "chronicle",
+    "name": "Event 22",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000004",
+     "00000000-0000-4000-8000-c00000000009"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000004",
+      "role": "flashback"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000023",
+    "projectId": "chronicle",
+    "name": "Event 23",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1018,
+     "month": 2,
+     "day": 16,
+     "hour": 20,
+     "minute": 51
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000024",
+    "projectId": "chronicle",
+    "name": "Event 24",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1032,
+     "month": 10,
+     "day": 8,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000001"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1006,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000025",
+    "projectId": "chronicle",
+    "name": "Event 25",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1002,
+     "month": 6,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1007,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000026",
+    "projectId": "chronicle",
+    "name": "Event 26",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1004,
+     "month": 11,
+     "day": 8,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000015",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000004",
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": null,
+    "createdAt": 1008,
+    "updatedAt": 0,
+    "end": {
+     "precision": "approximate",
+     "year": 990,
+     "month": 3,
+     "season": null
+    },
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000027",
+    "projectId": "chronicle",
+    "name": "Event 27",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 997,
+     "month": 4,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": 39
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000002",
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000002",
+      "role": "flashforward"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000028",
+    "projectId": "chronicle",
+    "name": "Event 28 at night",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 990,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000015",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000001"
+    ],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1001,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000029",
+    "projectId": "chronicle",
+    "name": "Event 29",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000025",
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000030",
+    "projectId": "chronicle",
+    "name": "Event 30",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 991,
+     "month": 6,
+     "day": 9,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": 4
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000002"
+    ],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000031",
+    "projectId": "chronicle",
+    "name": "Event 31",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1012,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000014",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000005",
+     "00000000-0000-4000-8000-s00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000032",
+    "projectId": "chronicle",
+    "name": "Event 32",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1015,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000001",
+     "00000000-0000-4000-8000-c00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000033",
+    "projectId": "chronicle",
+    "name": "Event 33",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 998,
+     "month": 4,
+     "day": 6,
+     "hour": 14,
+     "minute": 2
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": 8
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000000",
+     "00000000-0000-4000-8000-c00000000009"
+    ],
+    "afterId": null,
+    "createdAt": 1006,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000000",
+      "role": "mentioned"
+     }
+    ],
+    "status": "idea"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000034",
+    "projectId": "chronicle",
+    "name": "Event 34",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 990,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": 11
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": 33
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1007,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000035",
+    "projectId": "chronicle",
+    "name": "Event 35 at night",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 981,
+     "month": 1,
+     "season": null
+    },
+    "duration": {
+     "amount": 7,
+     "unit": "hours"
+    },
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000005"
+    ],
+    "afterId": null,
+    "createdAt": 1008,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000005",
+      "role": "flashforward"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000036",
+    "projectId": "chronicle",
+    "name": "Event 36",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1000,
+     "month": 6,
+     "day": 2,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000009",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000033",
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "ongoing": true,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000037",
+    "projectId": "chronicle",
+    "name": "Event 37",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000010",
+     "amount": 12,
+     "unit": "years",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [],
+    "entryIds": [
+     "00000000-0000-4000-8000-x00000000001"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000000"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000028",
+    "createdAt": 1001,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000000",
+      "role": "mentioned"
+     }
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000038",
+    "projectId": "chronicle",
+    "name": "Event 38",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 986,
+     "month": 5,
+     "season": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000007",
+     "00000000-0000-4000-8000-c00000000003"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000019",
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000007",
+      "role": "flashforward"
+     }
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000039",
+    "projectId": "chronicle",
+    "name": "Event 39",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 981,
+     "month": 9,
+     "day": 5,
+     "hour": 3,
+     "minute": 22
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000040",
+    "projectId": "chronicle",
+    "name": "Event 40",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1017,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000011",
+     "00000000-0000-4000-8000-c00000000005"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000041",
+    "projectId": "chronicle",
+    "name": "Event 41",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1019,
+     "month": 2,
+     "day": 4,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000008",
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000008",
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000008",
+      "role": "told"
+     }
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000042",
+    "projectId": "chronicle",
+    "name": "Event 42 at night",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1012,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000014",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-x00000000000"
+    ],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1006,
+    "updatedAt": 0,
+    "status": "idea"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000043",
+    "projectId": "chronicle",
+    "name": "Event 43",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1007,
+     "month": 8,
+     "day": 5,
+     "hour": 8,
+     "minute": 53
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000002"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000011"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000000",
+    "createdAt": 1007,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000011",
+      "role": "flashforward"
+     }
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000044",
+    "projectId": "chronicle",
+    "name": "Event 44",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1000,
+     "month": 10,
+     "season": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1008,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000045",
+    "projectId": "chronicle",
+    "name": "Event 45",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 985,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000007",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000015",
+      "age": 27
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": 33
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000005",
+     "00000000-0000-4000-8000-c00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000005",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000046",
+    "projectId": "chronicle",
+    "name": "Event 46",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1032,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000010",
+      "age": 40
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000005",
+    "createdAt": 1001,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000047",
+    "projectId": "chronicle",
+    "name": "Event 47",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1026,
+     "month": null,
+     "season": "summer"
+    },
+    "duration": {
+     "amount": 9,
+     "unit": "years"
+    },
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000006",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": 20
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000002"
+    ],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000048",
+    "projectId": "chronicle",
+    "name": "Event 48",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1012,
+     "month": null,
+     "season": "summer"
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000014",
+      "age": 39
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000001"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000009",
+     "00000000-0000-4000-8000-s00000000000"
+    ],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000009",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000049",
+    "projectId": "chronicle",
+    "name": "Event 49 at night",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1024,
+     "month": 5,
+     "season": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000009",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000000"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000001"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000050",
+    "projectId": "chronicle",
+    "name": "Event 50",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000031",
+     "amount": 12,
+     "unit": "weeks",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": 34
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000003"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000051",
+    "projectId": "chronicle",
+    "name": "Event 51",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1002,
+     "month": 5,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": {
+     "amount": 7,
+     "unit": "months"
+    },
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-x00000000000"
+    ],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000011",
+    "createdAt": 1006,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000052",
+    "projectId": "chronicle",
+    "name": "Event 52",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 992,
+     "month": 8,
+     "day": 14,
+     "hour": 17,
+     "minute": 40
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000017",
+    "createdAt": 1007,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000053",
+    "projectId": "chronicle",
+    "name": "Event 53",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000028",
+     "amount": 1,
+     "unit": "hours",
+     "direction": "after"
+    },
+    "duration": {
+     "amount": 7,
+     "unit": "days"
+    },
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000008",
+    "createdAt": 1008,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000054",
+    "projectId": "chronicle",
+    "name": "Event 54",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1003,
+     "month": 1,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": 17
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": 7
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000004",
+      "age": 37
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000004",
+     "00000000-0000-4000-8000-c00000000008"
+    ],
+    "afterId": null,
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000004",
+      "role": "mentioned"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000055",
+    "projectId": "chronicle",
+    "name": "Event 55",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 988,
+     "month": 11,
+     "day": 17,
+     "hour": 14,
+     "minute": 15
+    },
+    "duration": {
+     "amount": 10,
+     "unit": "minutes"
+    },
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000013",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000003"
+    ],
+    "afterId": null,
+    "createdAt": 1001,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000056",
+    "projectId": "chronicle",
+    "name": "Event 56 at night",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000006",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000006",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000010",
+     "00000000-0000-4000-8000-c00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000057",
+    "projectId": "chronicle",
+    "name": "Event 57",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": {
+     "amount": 10,
+     "unit": "minutes"
+    },
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000009",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000002"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000004",
+     "00000000-0000-4000-8000-s00000000002"
+    ],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000004",
+      "role": "flashback"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000058",
+    "projectId": "chronicle",
+    "name": "Event 58",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1026,
+     "month": 10,
+     "season": null
+    },
+    "duration": {
+     "amount": 5,
+     "unit": "minutes"
+    },
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000000",
+     "00000000-0000-4000-8000-s00000000005"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-s00000000000",
+      "role": "mentioned"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000059",
+    "projectId": "chronicle",
+    "name": "Event 59",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 1027,
+     "month": 1,
+     "season": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000014",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000002",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-s00000000003"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000060",
+    "projectId": "chronicle",
+    "name": "Event 60",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000027",
+     "amount": 5,
+     "unit": "years",
+     "direction": "before"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000007",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000002"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000048",
+    "createdAt": 1006,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000002",
+      "role": "flashforward"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000061",
+    "projectId": "chronicle",
+    "name": "Event 61",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000024",
+     "amount": 2,
+     "unit": "months",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": 30
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000010",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000010"
+    ],
+    "afterId": "00000000-0000-4000-8000-e00000000047",
+    "createdAt": 1007,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000010",
+      "role": "told"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000062",
+    "projectId": "chronicle",
+    "name": "Event 62",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1029,
+     "month": 5,
+     "day": 4,
+     "hour": null,
+     "minute": null
+    },
+    "duration": {
+     "amount": 7,
+     "unit": "weeks"
+    },
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000007",
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000055",
+    "createdAt": 1008,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000063",
+    "projectId": "chronicle",
+    "name": "Event 63 at night",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000027",
+     "amount": 8,
+     "unit": "years",
+     "direction": "before"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000015",
+      "age": 40
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1000,
+    "updatedAt": 0,
+    "end": {
+     "precision": "approximate",
+     "year": 995,
+     "month": null,
+     "season": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000064",
+    "projectId": "chronicle",
+    "name": "Event 64",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1039,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "climax",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000003",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000004",
+     "00000000-0000-4000-8000-c00000000007"
+    ],
+    "afterId": null,
+    "createdAt": 1001,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000065",
+    "projectId": "chronicle",
+    "name": "Event 65",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000001",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000012",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1002,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000066",
+    "projectId": "chronicle",
+    "name": "Event 66",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1004,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 1003,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000002"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000067",
+    "projectId": "chronicle",
+    "name": "Event 67",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1017,
+     "month": 9,
+     "day": 30,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000004"
+    ],
+    "afterId": null,
+    "createdAt": 1004,
+    "updatedAt": 0,
+    "reveals": [
+     {
+      "nodeId": "00000000-0000-4000-8000-c00000000004",
+      "role": "revealed"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000068",
+    "projectId": "chronicle",
+    "name": "Event 68",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1027,
+     "month": 7,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000007",
+      "age": 19
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000011"
+    ],
+    "afterId": null,
+    "createdAt": 1005,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000001"
+    ],
+    "status": "planned"
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000069",
+    "projectId": "chronicle",
+    "name": "Event 69",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 999,
+     "month": 3,
+     "day": 24,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000005",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000011",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000008",
+      "age": null
+     }
+    ],
+    "entryIds": [
+     "00000000-0000-4000-8000-f00000000000"
+    ],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000009",
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": null,
+    "createdAt": 1006,
+    "updatedAt": 0,
+    "threadIds": [
+     "00000000-0000-4000-8000-t00000000000"
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000090",
+    "projectId": "chronicle",
+    "name": "A is born",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1000,
+     "month": 3,
+     "day": 1,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000000",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": 0
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000000"
+    ],
+    "afterId": null,
+    "createdAt": 2000,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000091",
+    "projectId": "chronicle",
+    "name": "Loop one",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000092",
+     "amount": 2,
+     "unit": "days",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 2001,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000092",
+    "projectId": "chronicle",
+    "name": "Loop two",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000091",
+     "amount": 2,
+     "unit": "days",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 2002,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000093",
+    "projectId": "chronicle",
+    "name": "Orphan",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "00000000-0000-4000-8000-e00000000999",
+     "amount": 3,
+     "unit": "weeks",
+     "direction": "before"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000998",
+    "createdAt": 2003,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000094",
+    "projectId": "chronicle",
+    "name": "Council",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1020,
+     "month": 5,
+     "day": 4,
+     "hour": null,
+     "minute": null
+    },
+    "duration": {
+     "amount": 2,
+     "unit": "days"
+    },
+    "importance": "major",
+    "locationId": "00000000-0000-4000-8000-l00000000001",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": 20
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000006"
+    ],
+    "afterId": null,
+    "createdAt": 2004,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000095",
+    "projectId": "chronicle",
+    "name": "Ride",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1020,
+     "month": 5,
+     "day": 7,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000002",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "00000000-0000-4000-8000-c00000000005"
+    ],
+    "afterId": null,
+    "createdAt": 2005,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000096",
+    "projectId": "chronicle",
+    "name": "Feast",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1020,
+     "month": 5,
+     "day": 5,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000003",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000005",
+      "age": null
+     },
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": 40
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "00000000-0000-4000-8000-e00000000094",
+    "createdAt": 2006,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-e00000000097",
+    "projectId": "chronicle",
+    "name": "Before birth",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 990,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": "00000000-0000-4000-8000-l00000000004",
+    "characters": [
+     {
+      "id": "00000000-0000-4000-8000-p00000000000",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "createdAt": 2007,
+    "updatedAt": 0
+   }
+  ],
+  "continuityRules": [
+   {
+    "id": "00000000-0000-4000-8000-r00000000000",
+    "projectId": "chronicle",
+    "kind": "travel",
+    "entryId": "00000000-0000-4000-8000-l00000000001",
+    "toEntryId": "00000000-0000-4000-8000-l00000000003",
+    "amount": 5,
+    "unit": "days",
+    "createdAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000001",
+    "projectId": "chronicle",
+    "kind": "travel",
+    "entryId": "00000000-0000-4000-8000-l00000000003",
+    "toEntryId": "00000000-0000-4000-8000-l00000000002",
+    "amount": 1,
+    "unit": "weeks",
+    "createdAt": 1
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000002",
+    "projectId": "chronicle",
+    "kind": "travel",
+    "entryId": "00000000-0000-4000-8000-l00000000000",
+    "toEntryId": "00000000-0000-4000-8000-l00000000004",
+    "amount": 0,
+    "unit": "days",
+    "createdAt": 2
+   }
+  ],
+  "characterRelations": [
+   {
+    "id": "00000000-0000-4000-8000-q00000000000",
+    "projectId": "chronicle",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-p00000000005",
+    "stages": [
+     {
+      "id": "s0",
+      "startNodeId": null,
+      "preset": "friends",
+      "category": "social",
+      "label": "Friends",
+      "fromRole": "friend",
+      "toRole": "friend",
+      "directional": false,
+      "title": "",
+      "affinity": "friendly",
+      "event": "",
+      "notes": ""
+     },
+     {
+      "id": "s1",
+      "startNodeId": "00000000-0000-4000-8000-c00000000007",
+      "preset": "rivals",
+      "category": "social",
+      "label": "Rivals",
+      "fromRole": "rival",
+      "toRole": "rival",
+      "directional": false,
+      "title": "The falling out",
+      "affinity": "hostile",
+      "event": "",
+      "notes": ""
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "characterHistory": [
+   {
+    "id": "00000000-0000-4000-8000-h00000000000",
+    "projectId": "chronicle",
+    "entryId": "00000000-0000-4000-8000-p00000000000",
+    "kind": "story",
+    "text": "Takes the oath",
+    "nodeId": "00000000-0000-4000-8000-c00000000008",
+    "at": 0
+   }
+  ],
+  "alternateHistories": [
+   {
+    "id": "00000000-0000-4000-8000-a00000000000",
+    "projectId": "chronicle",
+    "name": "If the council failed",
+    "baseId": null,
+    "kind": "hypothetical",
+    "status": "experimental",
+    "originEventId": "00000000-0000-4000-8000-e00000000094",
+    "causeEventId": null,
+    "note": "",
+    "changed": {
+     "00000000-0000-4000-8000-e00000000094": {
+      "when": {
+       "precision": "exact",
+       "year": 1021,
+       "month": 5,
+       "day": 4,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "00000000-0000-4000-8000-e00000000003": {
+      "name": "Event 03, otherwise"
+     },
+     "00000000-0000-4000-8000-e00000000999": {
+      "name": "Gone"
+     }
+    },
+    "removed": [
+     "00000000-0000-4000-8000-e00000000010"
+    ],
+    "added": [
+     {
+      "id": "00000000-0000-4000-8000-e00000000080",
+      "projectId": "chronicle",
+      "name": "Only here",
+      "description": "",
+      "when": {
+       "precision": "approximate",
+       "year": 1022,
+       "month": null,
+       "season": "autumn"
+      },
+      "duration": null,
+      "importance": "major",
+      "locationId": "00000000-0000-4000-8000-l00000000000",
+      "characters": [
+       {
+        "id": "00000000-0000-4000-8000-p00000000001",
+        "age": 30
+       }
+      ],
+      "entryIds": [],
+      "nodeIds": [],
+      "afterId": null,
+      "createdAt": 3000,
+      "updatedAt": 0
+     }
+    ],
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000001",
+    "projectId": "chronicle",
+    "name": "Further still",
+    "baseId": "00000000-0000-4000-8000-a00000000000",
+    "kind": "time-travel",
+    "status": "alternate",
+    "originEventId": null,
+    "causeEventId": "00000000-0000-4000-8000-e00000000080",
+    "note": "",
+    "changed": {
+     "00000000-0000-4000-8000-e00000000080": {
+      "importance": "minor"
+     }
+    },
+    "removed": [
+     "00000000-0000-4000-8000-e00000000020"
+    ],
+    "added": [],
+    "createdAt": 2,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

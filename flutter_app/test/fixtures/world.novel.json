@@ -1,0 +1,1766 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "world",
+  "title": "World",
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "n1",
+    "projectId": "world",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [
+     "keep"
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "n2",
+    "projectId": "world",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "n3",
+    "projectId": "world",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 2,
+    "updatedAt": 0
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "n2",
+    "projectId": "world",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "keep",
+     "mira"
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "world",
+    "projectId": "world",
+    "category": "location",
+    "name": "The World",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L1",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "north",
+    "projectId": "world",
+    "category": "location",
+    "name": "Northreach",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L2",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "south",
+    "projectId": "world",
+    "category": "location",
+    "name": "Southmarch",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L2",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "keep",
+    "projectId": "world",
+    "category": "location",
+    "name": "Greykeep",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L3",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "hall",
+    "projectId": "world",
+    "category": "location",
+    "name": "Great Hall",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L4",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "port",
+    "projectId": "world",
+    "category": "location",
+    "name": "Saltport",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L3",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "loopA",
+    "projectId": "world",
+    "category": "location",
+    "name": "Loop A",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "loopB",
+    "projectId": "world",
+    "category": "location",
+    "name": "Loop B",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "village",
+    "projectId": "world",
+    "category": "location",
+    "name": "Upside Village",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L3",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "county",
+    "projectId": "world",
+    "category": "location",
+    "name": "Inner County",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "L2",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "ruins",
+    "projectId": "world",
+    "category": "location",
+    "name": "Old Ruins",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "placeLevel": "gone-level",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "mira",
+    "projectId": "world",
+    "category": "character",
+    "name": "Mira",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "orrin",
+    "projectId": "world",
+    "category": "character",
+    "name": "Orrin",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "pell",
+    "projectId": "world",
+    "category": "character",
+    "name": "Pell",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "guild",
+    "projectId": "world",
+    "category": "faction",
+    "name": "Thieves Guild",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "crown",
+    "projectId": "world",
+    "category": "faction",
+    "name": "The Crown",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "rebels",
+    "projectId": "world",
+    "category": "faction",
+    "name": "The Rebels",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "order",
+    "projectId": "world",
+    "category": "lore",
+    "name": "Order of Dawn",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "sword",
+    "projectId": "world",
+    "category": "item",
+    "name": "Greysword",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "ring",
+    "projectId": "world",
+    "category": "item",
+    "name": "Signet Ring",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "relic",
+    "projectId": "world",
+    "category": "lore",
+    "name": "Dawn Relic",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "cup",
+    "projectId": "world",
+    "category": "item",
+    "name": "Empty Cup",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "p1",
+    "projectId": "world",
+    "fromId": "north",
+    "toId": "world",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 1,
+    "type": "located-in"
+   },
+   {
+    "id": "p2",
+    "projectId": "world",
+    "fromId": "south",
+    "toId": "world",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 2,
+    "type": "located-in"
+   },
+   {
+    "id": "p3",
+    "projectId": "world",
+    "fromId": "keep",
+    "toId": "north",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 3,
+    "type": "located-in"
+   },
+   {
+    "id": "p4",
+    "projectId": "world",
+    "fromId": "hall",
+    "toId": "keep",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 4,
+    "type": "located-in"
+   },
+   {
+    "id": "p5",
+    "projectId": "world",
+    "fromId": "port",
+    "toId": "south",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 5,
+    "type": "located-in"
+   },
+   {
+    "id": "p6",
+    "projectId": "world",
+    "fromId": "port",
+    "toId": "north",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 6,
+    "type": "located-in"
+   },
+   {
+    "id": "p7",
+    "projectId": "world",
+    "fromId": "loopA",
+    "toId": "loopB",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 7,
+    "type": "located-in"
+   },
+   {
+    "id": "p8",
+    "projectId": "world",
+    "fromId": "loopB",
+    "toId": "loopA",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 8,
+    "type": "located-in"
+   },
+   {
+    "id": "p9",
+    "projectId": "world",
+    "fromId": "county",
+    "toId": "village",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 9,
+    "type": "located-in"
+   },
+   {
+    "id": "p10",
+    "projectId": "world",
+    "fromId": "village",
+    "toId": "north",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 10,
+    "type": "located-in"
+   },
+   {
+    "id": "p11",
+    "projectId": "world",
+    "fromId": "ruins",
+    "toId": "south",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 11,
+    "type": "located-in",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 1,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 5,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    }
+   },
+   {
+    "id": "c1",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "keep",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 12,
+    "type": "located-in",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 9,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 12,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    }
+   },
+   {
+    "id": "c2",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "hall",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 13,
+    "type": "located-in",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 10,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "c3",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "north",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 14,
+    "type": "located-in"
+   },
+   {
+    "id": "c4",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "south",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 15,
+    "type": "located-in",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 11,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "c5",
+    "projectId": "world",
+    "fromId": "pell",
+    "toId": "loopA",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 16,
+    "type": "located-in",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "n1"
+     },
+     "until": {
+      "kind": "node",
+      "nodeId": "n3"
+     }
+    }
+   },
+   {
+    "id": "c6",
+    "projectId": "world",
+    "fromId": "pell",
+    "toId": "port",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 17,
+    "type": "related"
+   },
+   {
+    "id": "f1",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 18,
+    "type": "member-of",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "n1"
+     },
+     "until": {
+      "kind": "node",
+      "nodeId": "n3"
+     }
+    },
+    "how": "joined",
+    "endHow": "expelled"
+   },
+   {
+    "id": "f2",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 19,
+    "type": "leads"
+   },
+   {
+    "id": "f3",
+    "projectId": "world",
+    "fromId": "guild",
+    "toId": "crown",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 20,
+    "type": "allied-with",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 10,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "f4",
+    "projectId": "world",
+    "fromId": "guild",
+    "toId": "rebels",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 21,
+    "type": "at-war-with",
+    "validity": {
+     "from": null,
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 12,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    }
+   },
+   {
+    "id": "f5",
+    "projectId": "world",
+    "fromId": "crown",
+    "toId": "north",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 22,
+    "type": "controls"
+   },
+   {
+    "id": "f6",
+    "projectId": "world",
+    "fromId": "guild",
+    "toId": "port",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 23,
+    "type": "influences"
+   },
+   {
+    "id": "f7",
+    "projectId": "world",
+    "fromId": "guild",
+    "toId": "keep",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 24,
+    "type": "located-in"
+   },
+   {
+    "id": "f8",
+    "projectId": "world",
+    "fromId": "guild",
+    "toId": "crown",
+    "fromLabel": "Owes a debt to",
+    "toLabel": "",
+    "createdAt": 25,
+    "type": "owes-a-debt-to"
+   },
+   {
+    "id": "f9",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "order",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 26,
+    "type": "member-of"
+   },
+   {
+    "id": "f10",
+    "projectId": "world",
+    "fromId": "crown",
+    "toId": "south",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 27,
+    "type": "controls",
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "e2"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "f11",
+    "projectId": "world",
+    "fromId": "crown",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 28,
+    "type": "leads"
+   },
+   {
+    "id": "f12",
+    "projectId": "world",
+    "fromId": "rebels",
+    "toId": "pell",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 29,
+    "type": "member-of"
+   },
+   {
+    "id": "o1",
+    "projectId": "world",
+    "fromId": "sword",
+    "toId": "orrin",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 30,
+    "type": "created-by",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 8,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "o2",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "sword",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 31,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 9,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 11,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    },
+    "how": "made"
+   },
+   {
+    "id": "o3",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "sword",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 32,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 11,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 13,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    },
+    "how": "stolen",
+    "endHow": "lost"
+   },
+   {
+    "id": "o4",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "ring",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 33,
+    "type": "owns"
+   },
+   {
+    "id": "o5",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "ring",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 34,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "gone-event"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "o6",
+    "projectId": "world",
+    "fromId": "orrin",
+    "toId": "relic",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 35,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "n1"
+     },
+     "until": {
+      "kind": "node",
+      "nodeId": "n2"
+     }
+    }
+   },
+   {
+    "id": "o7",
+    "projectId": "world",
+    "fromId": "mira",
+    "toId": "relic",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 36,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "n3"
+     },
+     "until": null
+    },
+    "how": "found"
+   },
+   {
+    "id": "o8",
+    "projectId": "world",
+    "fromId": "pell",
+    "toId": "cup",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 37,
+    "type": "owns",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 10,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": {
+      "kind": "event",
+      "eventId": "gone-event"
+     }
+    }
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "e1",
+    "projectId": "world",
+    "name": "The muster",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 10,
+     "month": 6,
+     "day": 1,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "keep",
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 38
+   },
+   {
+    "id": "e2",
+    "projectId": "world",
+    "name": "The landing",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 12,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "port",
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     },
+     {
+      "id": "orrin",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "n3"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 39
+   },
+   {
+    "id": "e3",
+    "projectId": "world",
+    "name": "A feast",
+    "description": "",
+    "when": {
+     "precision": "approximate",
+     "year": 11,
+     "month": null,
+     "season": null
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "hall",
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 40
+   },
+   {
+    "id": "e4",
+    "projectId": "world",
+    "name": "Somewhen",
+    "description": "",
+    "when": {
+     "precision": "unknown"
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "world",
+    "characters": [
+     {
+      "id": "orrin",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 41
+   },
+   {
+    "id": "e5",
+    "projectId": "world",
+    "name": "The ambush",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 11,
+     "month": 1,
+     "day": 15,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "loopA",
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 42
+   },
+   {
+    "id": "e6",
+    "projectId": "world",
+    "name": "A quiet market",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 10,
+     "month": 2,
+     "day": 10,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "normal",
+    "locationId": "village",
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 43
+   }
+  ],
+  "journeys": [
+   {
+    "id": "j1",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "keep",
+    "toId": "port",
+    "via": [],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 10,
+      "month": 1,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 10,
+      "month": 1,
+      "day": 2,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": "horse",
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 44,
+    "updatedAt": 0
+   },
+   {
+    "id": "j2",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "port",
+    "toId": "keep",
+    "via": [],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 10,
+      "month": 3,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 10,
+      "month": 2,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 45,
+    "updatedAt": 0
+   },
+   {
+    "id": "j3",
+    "projectId": "world",
+    "travellerIds": [
+     "orrin"
+    ],
+    "fromId": "north",
+    "toId": "south",
+    "via": [],
+    "departure": {
+     "kind": "event",
+     "eventId": "e1"
+    },
+    "arrival": {
+     "kind": "event",
+     "eventId": "e2"
+    },
+    "afterId": null,
+    "method": "on foot",
+    "methodId": null,
+    "duration": {
+     "amount": 5,
+     "unit": "years"
+    },
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 46,
+    "updatedAt": 0
+   },
+   {
+    "id": "j4",
+    "projectId": "world",
+    "travellerIds": [
+     "orrin"
+    ],
+    "fromId": "port",
+    "toId": "hall",
+    "via": [],
+    "departure": null,
+    "arrival": null,
+    "afterId": "j5",
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 47,
+    "updatedAt": 0
+   },
+   {
+    "id": "j5",
+    "projectId": "world",
+    "travellerIds": [
+     "orrin"
+    ],
+    "fromId": "hall",
+    "toId": "keep",
+    "via": [],
+    "departure": null,
+    "arrival": null,
+    "afterId": "j3",
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 48,
+    "updatedAt": 0
+   },
+   {
+    "id": "j6",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "keep",
+    "toId": "hall",
+    "via": [
+     "north"
+    ],
+    "departure": {
+     "kind": "node",
+     "nodeId": "n1"
+    },
+    "arrival": {
+     "kind": "node",
+     "nodeId": "n2"
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 49,
+    "updatedAt": 0
+   },
+   {
+    "id": "j7",
+    "projectId": "world",
+    "travellerIds": [
+     "mira",
+     "orrin"
+    ],
+    "fromId": "world",
+    "toId": "south",
+    "via": [],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "approximate",
+      "year": 10,
+      "month": null,
+      "season": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "approximate",
+      "year": 10,
+      "month": null,
+      "season": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 50,
+    "updatedAt": 0
+   },
+   {
+    "id": "j8",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "hall",
+    "toId": "port",
+    "via": [],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 1,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 2,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": "ship",
+    "duration": {
+     "amount": 10,
+     "unit": "hours"
+    },
+    "distance": 100,
+    "distanceUnit": "leagues",
+    "eventIds": [
+     "e2"
+    ],
+    "note": "",
+    "createdAt": 51,
+    "updatedAt": 0
+   },
+   {
+    "id": "j9",
+    "projectId": "world",
+    "travellerIds": [
+     "pell"
+    ],
+    "fromId": "keep",
+    "toId": "port",
+    "via": [],
+    "departure": null,
+    "arrival": null,
+    "afterId": null,
+    "method": "",
+    "methodId": "horse",
+    "duration": null,
+    "distance": 10,
+    "distanceUnit": "km",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 52,
+    "updatedAt": 0
+   },
+   {
+    "id": "j10",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "village",
+    "toId": "keep",
+    "via": [],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 5,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 5,
+      "day": 3,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": "walk",
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 53,
+    "updatedAt": 0
+   },
+   {
+    "id": "j11",
+    "projectId": "world",
+    "travellerIds": [
+     "mira"
+    ],
+    "fromId": "port",
+    "toId": "hall",
+    "via": [
+     "south",
+     "north"
+    ],
+    "departure": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 3,
+      "day": 1,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "arrival": {
+     "kind": "date",
+     "when": {
+      "precision": "exact",
+      "year": 11,
+      "month": 3,
+      "day": 20,
+      "hour": null,
+      "minute": null
+     }
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 54,
+    "updatedAt": 0
+   },
+   {
+    "id": "j12",
+    "projectId": "world",
+    "travellerIds": [
+     "pell"
+    ],
+    "fromId": null,
+    "toId": null,
+    "via": [],
+    "departure": {
+     "kind": "node",
+     "nodeId": "n2"
+    },
+    "arrival": {
+     "kind": "event",
+     "eventId": "e1"
+    },
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 55,
+    "updatedAt": 0
+   }
+  ],
+  "travelSettings": [
+   {
+    "id": "ts",
+    "projectId": "world",
+    "methods": [
+     {
+      "id": "horse",
+      "name": "By horse",
+      "speed": 30,
+      "distanceUnit": "leagues",
+      "per": "days"
+     },
+     {
+      "id": "ship",
+      "name": "By ship",
+      "speed": 5,
+      "distanceUnit": "leagues",
+      "per": "hours"
+     },
+     {
+      "id": "walk",
+      "name": "On foot",
+      "speed": null,
+      "distanceUnit": "",
+      "per": "days"
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "placeSettings": [
+   {
+    "id": "ps",
+    "projectId": "world",
+    "levels": [
+     {
+      "id": "L1",
+      "name": "World"
+     },
+     {
+      "id": "L2",
+      "name": "Kingdom"
+     },
+     {
+      "id": "L3",
+      "name": "City"
+     },
+     {
+      "id": "L4",
+      "name": "Room"
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "worldMaps": [
+   {
+    "id": "m1",
+    "projectId": "world",
+    "name": "The Known World",
+    "placeId": null,
+    "width": 100,
+    "height": 80,
+    "unit": "leagues",
+    "grid": 10,
+    "image": null,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "m2",
+    "projectId": "world",
+    "name": "Northreach",
+    "placeId": "north",
+    "width": 50,
+    "height": 50,
+    "unit": "miles",
+    "grid": 0,
+    "image": null,
+    "createdAt": 1,
+    "updatedAt": 0
+   }
+  ],
+  "mapPins": [
+   {
+    "id": "a",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "world",
+    "x": 50,
+    "y": 40,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "b",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "keep",
+    "x": 10,
+    "y": 10,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "c",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "port",
+    "x": 80,
+    "y": 70,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "d",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "hall",
+    "x": -5,
+    "y": 5,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "e",
+    "projectId": "world",
+    "mapId": "m2",
+    "entryId": "keep",
+    "x": 25,
+    "y": 25,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "f",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "south",
+    "x": 60,
+    "y": 75,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "g",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "north",
+    "x": 20,
+    "y": 15,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "h",
+    "projectId": "world",
+    "mapId": "m1",
+    "entryId": "village",
+    "x": 15,
+    "y": 30,
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

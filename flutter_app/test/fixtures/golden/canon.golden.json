@@ -1,0 +1,5899 @@
+{
+ "qa-sample": {
+  "records": [],
+  "canon": {
+   "reviews": [],
+   "pairs": []
+  },
+  "audit": {
+   "open": [],
+   "resolved": [],
+   "stale": [],
+   "scanned": {
+    "documents": 8,
+    "paragraphs": 12,
+    "rules": 0
+   }
+  },
+  "knowledge": [],
+  "spread": {},
+  "overlay": {},
+  "merged": null,
+  "warnings": [],
+  "status": {
+   "items": [],
+   "gone": [],
+   "goneUnchecked": []
+  }
+ },
+ "made-in-the-app": {
+  "records": [
+   {
+    "key": "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "“The feast” is set to come after “The false coronation”, which is marked Retconned.",
+    "because": "“The feast” is Canon, and its “Comes after” is “The false coronation”, whose canon status is Retconned.",
+    "on": [
+     "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast",
+     "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast"
+     },
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+     }
+    ]
+   },
+   {
+    "key": "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+    "rule": "still-told",
+    "severity": "info",
+    "message": "“The false coronation” is marked Retconned, but is still recorded as told in Ch 9: The Gate.",
+    "because": "Its canon status is Retconned, and its chapters and scenes list one.",
+    "on": [
+     "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+     "node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+     },
+     {
+      "type": "node",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1"
+     }
+    ]
+   },
+   {
+    "key": "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2",
+    "rule": "opposed",
+    "severity": "warning",
+    "message": "The Guild and The Crown are recorded as allied and at war at the same time.",
+    "because": "“Allied with”: no time given (Confirmed). “At war with”: from Year 3 until Year 5 (Confirmed).",
+    "on": [
+     "link:9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1",
+     "link:9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2",
+     "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+     "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown"
+     }
+    ]
+   },
+   {
+    "key": "records|after-death|9d451702-6dc3-417a-af3c-0bcafd2fcc64-dead|event|9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting",
+    "rule": "after-death",
+    "severity": "critical",
+    "message": "Mira takes part in “The haunting”, told only after their recorded death.",
+    "because": "Continuity → Tracked: Mira is “killed at the gate” (Deceased) from Ch 9: The Gate. “The haunting” lists them as taking part, and is told in Ch 18: The Tomb.",
+    "on": [
+     "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     },
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting"
+     }
+    ]
+   },
+   {
+    "key": "records|replacement|9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1",
+    "rule": "replacement",
+    "severity": "info",
+    "message": "The statement “The crown: Was forged in Year 1” is marked Retconned, but names no statement that replaced it.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is empty.",
+    "on": [
+     "fact:9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1",
+     "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ]
+   }
+  ],
+  "canon": {
+   "reviews": [
+    {
+     "fact": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1",
+     "flags": []
+    },
+    {
+     "fact": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-fact",
+     "flags": []
+    },
+    {
+     "fact": "159e059e-6151-43f2-b804-ab838deddc3d",
+     "flags": []
+    },
+    {
+     "fact": "1c9fbaae-522f-45db-81e3-35ce28d7cea6",
+     "flags": []
+    }
+   ],
+   "pairs": []
+  },
+  "audit": {
+   "open": [],
+   "resolved": [],
+   "stale": [],
+   "scanned": {
+    "documents": 29,
+    "paragraphs": 5,
+    "rules": 2
+   }
+  },
+  "knowledge": [
+   {
+    "key": "knowledge|needs|a3547ddd-10c9-480d-b98c-c6dd71e5515f|5ab0a780-77ed-4c5f-b528-ddcb4c25abf9|reading",
+    "rule": "needs",
+    "secretId": "a3547ddd-10c9-480d-b98c-c6dd71e5515f",
+    "ownerId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen",
+    "message": "Mira acts on “True heir” in Ch 11: The Feast, but is recorded as unaware of it there.",
+    "because": "Your mark: “blackmails the steward”, in Ch 11: The Feast. Their record: Mira is unaware in Ch 6: The Ring. No later record of theirs is placed at or before it.",
+    "characterIds": [
+     "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+    ]
+   }
+  ],
+  "spread": {
+   "a3547ddd-10c9-480d-b98c-c6dd71e5515f/reading": {
+    "points": [
+     {
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch1",
+      "label": "Ch 6: The Ring",
+      "marks": []
+     },
+     {
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch2",
+      "label": "Ch 11: The Feast",
+      "marks": []
+     },
+     {
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch3",
+      "label": "Ch 16: The Seal",
+      "marks": []
+     },
+     {
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-ch5",
+      "label": "Ch 21: The Well",
+      "marks": []
+     }
+    ],
+    "rows": [
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen",
+      "name": "Kaelen",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+      "name": "Mira",
+      "cells": [
+       {
+        "record": "79f49612-e00b-44ab-a166-828cf36d5562",
+        "here": [
+         "79f49612-e00b-44ab-a166-828cf36d5562"
+        ],
+        "needs": []
+       },
+       {
+        "record": "79f49612-e00b-44ab-a166-828cf36d5562",
+        "here": [],
+        "needs": [
+         "5ab0a780-77ed-4c5f-b528-ddcb4c25abf9"
+        ]
+       },
+       {
+        "record": "9a314bef-1957-46d6-97dd-825c9bc66b18",
+        "here": [
+         "9a314bef-1957-46d6-97dd-825c9bc66b18"
+        ],
+        "needs": []
+       },
+       {
+        "record": "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef",
+        "here": [
+         "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef"
+        ],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef",
+       "source": "records"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-tam",
+      "name": "Tam",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-oren",
+      "name": "Oren",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "95c6288e-bb28-46a6-be34-0686e70a00f0",
+        "here": [
+         "95c6288e-bb28-46a6-be34-0686e70a00f0"
+        ],
+        "needs": []
+       },
+       {
+        "record": "95c6288e-bb28-46a6-be34-0686e70a00f0",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "95c6288e-bb28-46a6-be34-0686e70a00f0",
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "partial",
+       "record": "95c6288e-bb28-46a6-be34-0686e70a00f0",
+       "source": "records"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+      "name": "Bren",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+        "here": [
+         "c4650bfc-e3ad-4c9a-8749-cb50fa470f98"
+        ],
+        "needs": []
+       },
+       {
+        "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "false",
+       "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+       "source": "records"
+      },
+      "unplaced": [
+       "86d36659-d1a5-46f0-9b5e-b9016b82d5ec"
+      ]
+     }
+    ],
+    "tellings": [
+     {
+      "recordId": "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef",
+      "fromId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-tam",
+      "toId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+      "point": 3
+     }
+    ]
+   },
+   "a3547ddd-10c9-480d-b98c-c6dd71e5515f/story": {
+    "points": [
+     {
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-feast",
+      "label": "The feast",
+      "marks": []
+     }
+    ],
+    "rows": [
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen",
+      "name": "Kaelen",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+      "name": "Mira",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef",
+       "source": "records"
+      },
+      "unplaced": [
+       "79f49612-e00b-44ab-a166-828cf36d5562",
+       "9a314bef-1957-46d6-97dd-825c9bc66b18",
+       "da74f8ff-fd1c-47ee-9b02-a1eecd1b7cef"
+      ]
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-tam",
+      "name": "Tam",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-oren",
+      "name": "Oren",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "partial",
+       "record": "95c6288e-bb28-46a6-be34-0686e70a00f0",
+       "source": "records"
+      },
+      "unplaced": [
+       "95c6288e-bb28-46a6-be34-0686e70a00f0"
+      ]
+     },
+     {
+      "characterId": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+      "name": "Bren",
+      "cells": [
+       {
+        "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+        "here": [
+         "c4650bfc-e3ad-4c9a-8749-cb50fa470f98"
+        ],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "false",
+       "record": "c4650bfc-e3ad-4c9a-8749-cb50fa470f98",
+       "source": "records"
+      },
+      "unplaced": [
+       "86d36659-d1a5-46f0-9b5e-b9016b82d5ec"
+      ]
+     }
+    ],
+    "tellings": []
+   }
+  },
+  "overlay": {
+   "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake": {
+    "status": {
+     "key": "retconned",
+     "label": "Retconned",
+     "hint": "Was true once, and has been officially replaced.",
+     "glyph": "↺"
+    },
+    "warnings": [
+     "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+     "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+    ],
+    "badge": {
+     "glyph": "↺!2",
+     "tone": "warning"
+    },
+    "words": "Canon status: Retconned. 2 to check."
+   },
+   "link:9d451702-6dc3-417a-af3c-0bcafd2fcc64-l3": {
+    "status": {
+     "key": "conflicting",
+     "label": "Disputed",
+     "hint": "Contradicts another statement, and is waiting for your decision.",
+     "glyph": "≠"
+    },
+    "warnings": [],
+    "badge": {
+     "glyph": "≠",
+     "tone": "status"
+    },
+    "words": "Canon status: Disputed."
+   },
+   "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1": {
+    "status": null,
+    "warnings": [
+     "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "info"
+    },
+    "words": "1 to check."
+   },
+   "link:9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1": {
+    "status": null,
+    "warnings": [
+     "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "link:9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2": {
+    "status": null,
+    "warnings": [
+     "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild": {
+    "status": null,
+    "warnings": [
+     "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown": {
+    "status": null,
+    "warnings": [
+     "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira": {
+    "status": null,
+    "warnings": [
+     "records|after-death|9d451702-6dc3-417a-af3c-0bcafd2fcc64-dead|event|9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting",
+     "records|replacement|9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1"
+    ],
+    "badge": {
+     "glyph": "!2",
+     "tone": "critical"
+    },
+    "words": "2 to check, 1 critical."
+   },
+   "event:9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting": {
+    "status": null,
+    "warnings": [
+     "records|after-death|9d451702-6dc3-417a-af3c-0bcafd2fcc64-dead|event|9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "critical"
+    },
+    "words": "1 to check, 1 critical."
+   },
+   "fact:9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1": {
+    "status": null,
+    "warnings": [
+     "records|replacement|9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "info"
+    },
+    "words": "1 to check."
+   },
+   "event:3188de6b-7681-4e9a-9fd8-49d67e8d1f1c": {
+    "status": null,
+    "warnings": [
+     "timeline|anchor|3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|start"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "event:9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball": {
+    "status": null,
+    "warnings": [
+     "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "event:9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid": {
+    "status": null,
+    "warnings": [
+     "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren": {
+    "status": null,
+    "warnings": [
+     "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9b149a4b-9c56-44d6-bb6c-a0e18aa36220-keep": {
+    "status": null,
+    "warnings": [
+     "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:9b149a4b-9c56-44d6-bb6c-a0e18aa36220-docks": {
+    "status": null,
+    "warnings": [
+     "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   }
+  },
+  "merged": {
+   "status": {
+    "key": "conflicting",
+    "label": "Disputed",
+    "hint": "Contradicts another statement, and is waiting for your decision.",
+    "glyph": "≠"
+   },
+   "warnings": [
+    "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2",
+    "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+    "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+   ],
+   "badge": {
+    "glyph": "≠!3",
+    "tone": "warning"
+   },
+   "words": "Canon status: Disputed. 3 to check."
+  },
+  "warnings": [
+   {
+    "key": "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "“The feast” is set to come after “The false coronation”, which is marked Retconned.",
+    "because": "“The feast” is Canon, and its “Comes after” is “The false coronation”, whose canon status is Retconned.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast"
+     },
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast"
+    }
+   },
+   {
+    "key": "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+    "source": "records",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Set aside, but still told",
+    "rule": "An event marked Retconned or Non-Canon is not part of the story as it stands, so no chapter or scene is recorded as telling it.",
+    "message": "“The false coronation” is marked Retconned, but is still recorded as told in Ch 9: The Gate.",
+    "because": "Its canon status is Retconned, and its chapters and scenes list one.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+     },
+     {
+      "type": "node",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c1"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake"
+    }
+   },
+   {
+    "key": "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "connections",
+    "title": "Allied and at war at once",
+    "rule": "Two records cannot be allied with each other and at war with each other at the same time.",
+    "message": "The Guild and The Crown are recorded as allied and at war at the same time.",
+    "because": "“Allied with”: no time given (Confirmed). “At war with”: from Year 3 until Year 5 (Confirmed).",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-crown"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild"
+    }
+   },
+   {
+    "key": "records|after-death|9d451702-6dc3-417a-af3c-0bcafd2fcc64-dead|event|9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting",
+    "source": "records",
+    "severity": "critical",
+    "certainty": "error",
+    "category": "characters",
+    "title": "Appears after their recorded death",
+    "rule": "A character tracked as deceased from a chapter on does not appear in a later chapter or scene, take part in an event told only there, or have a relationship change there, until the tracked status says they return.",
+    "message": "Mira takes part in “The haunting”, told only after their recorded death.",
+    "because": "Continuity → Tracked: Mira is “killed at the gate” (Deceased) from Ch 9: The Gate. “The haunting” lists them as taking part, and is told in Ch 18: The Tomb.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     },
+     {
+      "type": "event",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the tracked status",
+      "to": "/project/P/continuity?tab=tracked"
+     }
+    ],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting"
+    }
+   },
+   {
+    "key": "records|replacement|9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1",
+    "source": "records",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Retconned with nothing in its place",
+    "rule": "A statement marked Retconned has been officially replaced, so it names the statement that replaced it, and that one is not itself set aside.",
+    "message": "The statement “The crown: Was forged in Year 1” is marked Retconned, but names no statement that replaced it.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is empty.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the canon statement",
+      "to": "/project/P/canon?fact=9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+    }
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "a record that is gone: “Present in” points at a chapter or scene that no longer exists.",
+    "because": "Kept in a chapter’s or scene’s plan; the chapter or scene it names has been deleted.",
+    "refs": [],
+    "links": [],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|entry:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "a record that is gone: “Present in” points at a codex entry that no longer exists.",
+    "because": "Kept in a chapter’s or scene’s plan; the codex entry it names has been deleted.",
+    "refs": [],
+    "links": [],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "Emberfang: “Present in” points at a chapter or scene that no longer exists.",
+    "because": "Kept in a chapter’s or scene’s plan; the chapter or scene it names has been deleted.",
+    "refs": [],
+    "links": [],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|appearance:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "Mira: “Appears in” points at a chapter or scene that no longer exists.",
+    "because": "Kept in a chapter’s or scene’s plan; the chapter or scene it names has been deleted.",
+    "refs": [],
+    "links": [],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|appearance:578d5618-2850-48cf-95cc-6b7be03789f7-talk:578d5618-2850-48cf-95cc-6b7be03789f7-mira|node:578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "Mira: “Mentioned in, not on the page” points at a chapter or scene that no longer exists.",
+    "because": "Kept in a chapter’s or scene’s plan; the chapter or scene it names has been deleted.",
+    "refs": [],
+    "links": [],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|dated-from:3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|event:05c38dda-ec27-444d-8d1c-ce8713ef498b",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "The Burning: “Dated from” points at a event that no longer exists.",
+    "because": "Kept in a timeline event; the event it names has been deleted.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "3188de6b-7681-4e9a-9fd8-49d67e8d1f1c"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A3188de6b-7681-4e9a-9fd8-49d67e8d1f1c"
+    }
+   },
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Alex and Alex may be the same.",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex"
+     },
+     {
+      "type": "entry",
+      "id": "ea77d958-5322-4b96-a2e0-5716ef1b2839"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Ad036b962-7224-4c8f-bd74-fd3bc106298e-alex"
+    }
+   },
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Alex and Alex may be the same.",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex"
+     },
+     {
+      "type": "entry",
+      "id": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Ad036b962-7224-4c8f-bd74-fd3bc106298e-alex"
+    }
+   },
+   {
+    "key": "integrity|duplicate|ea77d958-5322-4b96-a2e0-5716ef1b2839|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Alex and Alex may be the same.",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "ea77d958-5322-4b96-a2e0-5716ef1b2839"
+     },
+     {
+      "type": "entry",
+      "id": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aea77d958-5322-4b96-a2e0-5716ef1b2839"
+    }
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Bren and Bren may be the same.",
+    "because": "“Bren” and “Bren” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-crown|72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Ember Crown and The Ember Crown may be the same.",
+    "because": "“Ember Crown” and “The Ember Crown” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-crown"
+     },
+     {
+      "type": "entry",
+      "id": "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-crown"
+    }
+   },
+   {
+    "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Kai and Kai may be the same.",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "70465ae9-f720-4346-8683-298ce006ed1a-kai"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A70465ae9-f720-4346-8683-298ce006ed1a-kai"
+    }
+   },
+   {
+    "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Kai and Kai may be the same.",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "70465ae9-f720-4346-8683-298ce006ed1a-kai"
+     },
+     {
+      "type": "entry",
+      "id": "b99120ca-bbde-411a-a568-df285a9649d7"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A70465ae9-f720-4346-8683-298ce006ed1a-kai"
+    }
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Kai and Kai may be the same.",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai"
+     },
+     {
+      "type": "entry",
+      "id": "b99120ca-bbde-411a-a568-df285a9649d7"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A01ac40fa-82f4-4e46-848d-2039d865984c-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A2b852e2e-b121-4e32-8291-5fab11d3723b-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     },
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     },
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A578d5618-2850-48cf-95cc-6b7be03789f7-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     },
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A88334800-fff7-42c5-8fa1-6458d55100e8-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A89342824-f943-42b5-8266-2e629dad4fe4"
+    }
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A89342824-f943-42b5-8266-2e629dad4fe4"
+    }
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "89342824-f943-42b5-8266-2e629dad4fe4"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A89342824-f943-42b5-8266-2e629dad4fe4"
+    }
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and Mira may be the same.",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira"
+    }
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Orrin and Orrin may be the same.",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin"
+     },
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin"
+    }
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Orrin and Orrin may be the same.",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin"
+    }
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Orrin and Orrin may be the same.",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A88334800-fff7-42c5-8fa1-6458d55100e8-orrin"
+    }
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-guild|9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "The Guild and The Guild may be the same.",
+    "because": "“The Guild” and “The Guild” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild"
+     },
+     {
+      "type": "entry",
+      "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3A72fe506d-41d3-4042-b69a-52075a1ee7ee-guild"
+    }
+   },
+   {
+    "key": "timeline|anchor|3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|start",
+    "source": "timeline",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "Dated from an event that is gone",
+    "rule": "A date given relative to another event (“two days after the siege”) needs that event to exist.",
+    "message": "“The Burning”: its date is given from an event that no longer exists.",
+    "because": "It reads “about 20 years before” an event that has been deleted, so it cannot be placed.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "3188de6b-7681-4e9a-9fd8-49d67e8d1f1c"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A3188de6b-7681-4e9a-9fd8-49d67e8d1f1c"
+    }
+   },
+   {
+    "key": "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid",
+    "source": "timeline",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "places",
+    "title": "In two places at once",
+    "rule": "A character cannot be at two events at the same time in two different places, unless one place lies inside the other.",
+    "message": "Bren is at Ashen Keep and at The Docks at the same time.",
+    "because": "“The ball” (Year 10, March 3) is at Ashen Keep; “The raid” (Year 10, March 3) is at The Docks; the dates put both at once, and neither place lies inside the other.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball"
+     },
+     {
+      "type": "event",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-keep"
+     },
+     {
+      "type": "entry",
+      "id": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-docks"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3A9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball"
+    }
+   },
+   {
+    "key": "knowledge|needs|a3547ddd-10c9-480d-b98c-c6dd71e5515f|5ab0a780-77ed-4c5f-b528-ddcb4c25abf9|reading",
+    "source": "knowledge",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "knowledge",
+    "title": "Acts on it while not knowing it",
+    "rule": "A character you mark as acting on a secret at a point must not be recorded there as unaware of it, or as believing something false instead.",
+    "message": "Mira acts on “True heir” in Ch 11: The Feast, but is recorded as unaware of it there.",
+    "because": "Your mark: “blackmails the steward”, in Ch 11: The Feast. Their record: Mira is unaware in Ch 6: The Ring. No later record of theirs is placed at or before it.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen"
+     },
+     {
+      "type": "entry",
+      "id": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open Kaelen’s secrets",
+      "to": "/project/P/characters/a1bc3bba-f37e-47d8-90de-0198e8d61bb3-kaelen/secrets"
+     }
+    ],
+    "context": {
+     "label": "See it in Secrets and knowledge",
+     "to": "/project/P/visualize/knowledge?ksecret=a3547ddd-10c9-480d-b98c-c6dd71e5515f"
+    }
+   }
+  ],
+  "status": {
+   "items": [
+    {
+     "key": "records|rests-on|9d451702-6dc3-417a-af3c-0bcafd2fcc64-feast|after|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|still-told|9d451702-6dc3-417a-af3c-0bcafd2fcc64-fake",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|opposed|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l1|9d451702-6dc3-417a-af3c-0bcafd2fcc64-l2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|after-death|9d451702-6dc3-417a-af3c-0bcafd2fcc64-dead|event|9d451702-6dc3-417a-af3c-0bcafd2fcc64-haunting",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|replacement|9d451702-6dc3-417a-af3c-0bcafd2fcc64-f1",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|entry:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|appearance:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|appearance:578d5618-2850-48cf-95cc-6b7be03789f7-talk:578d5618-2850-48cf-95cc-6b7be03789f7-mira|node:578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|dated-from:3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|event:05c38dda-ec27-444d-8d1c-ce8713ef498b",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ea77d958-5322-4b96-a2e0-5716ef1b2839",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|ea77d958-5322-4b96-a2e0-5716ef1b2839|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-crown|72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-guild|9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "timeline|anchor|3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|start",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "timeline|two-places|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-ball|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-raid",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "knowledge|needs|a3547ddd-10c9-480d-b98c-c6dd71e5515f|5ab0a780-77ed-4c5f-b528-ddcb4c25abf9|reading",
+     "status": "open",
+     "decision": null
+    }
+   ],
+   "gone": [
+    "608e1e5e-dce6-4974-9575-a01e09a584f4"
+   ],
+   "goneUnchecked": [
+    "608e1e5e-dce6-4974-9575-a01e09a584f4"
+   ]
+  }
+ },
+ "canon": {
+  "records": [
+   {
+    "key": "records|rests-on|e2|after|e-retcon",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "“The aftermath” is set to come after “The false dawn”, which is marked Retconned.",
+    "because": "“The aftermath” is Canon, and its “Comes after” is “The false dawn”, whose canon status is Retconned.",
+    "on": [
+     "event:e2",
+     "event:e-retcon"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "e2"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ]
+   },
+   {
+    "key": "records|rests-on|e3|start|e-retcon",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "“Two days on” is dated from “The false dawn”, which is marked Retconned.",
+    "because": "Its date reads “About 2 days after The false dawn”; “The false dawn” has the canon status Retconned.",
+    "on": [
+     "event:e3",
+     "event:e-retcon"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "e3"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ]
+   },
+   {
+    "key": "records|rests-on|fact:f10|src2",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "The provisional statement “Dawn: The dawn was false” is established at “The false dawn”, which is marked Retconned.",
+    "because": "One of its sources is the timeline event “The false dawn”, whose canon status is Retconned.",
+    "on": [
+     "fact:f10",
+     "event:e-retcon"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ]
+   },
+   {
+    "key": "records|rests-on|link:l6:start|e-retcon",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "The connection “Kai member of Crown” has its start at “The false dawn”, which is marked Retconned.",
+    "because": "The connection is Confirmed; “The false dawn” has the canon status Retconned.",
+    "on": [
+     "link:l6",
+     "event:e-retcon"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "kai"
+     },
+     {
+      "type": "entry",
+      "id": "crown"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ]
+   },
+   {
+    "key": "records|rests-on|progress:p1|e-retcon",
+    "rule": "rests-on",
+    "severity": "warning",
+    "message": "A progression change for Pell has its time at “The false dawn”, which is marked Retconned.",
+    "because": "“The false dawn” has the canon status Retconned.",
+    "on": [
+     "entry:pell",
+     "event:e-retcon"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "pell"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ]
+   },
+   {
+    "key": "records|still-told|e-retcon",
+    "rule": "still-told",
+    "severity": "info",
+    "message": "“The false dawn” is marked Retconned, but is still recorded as told in Ch 3: Chapter 3.",
+    "because": "Its canon status is Retconned, and its chapters and scenes list one.",
+    "on": [
+     "event:e-retcon",
+     "node:c3"
+    ],
+    "refs": [
+     {
+      "type": "event",
+      "id": "e-retcon"
+     },
+     {
+      "type": "node",
+      "id": "c3"
+     }
+    ]
+   },
+   {
+    "key": "records|opposed|l1|l2",
+    "rule": "opposed",
+    "severity": "warning",
+    "message": "Guild and Crown are recorded as allied and at war at the same time.",
+    "because": "“Allied with”: no time given (Confirmed). “At war with”: no time given (Confirmed).",
+    "on": [
+     "link:l1",
+     "link:l2",
+     "entry:guild",
+     "entry:crown"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "guild"
+     },
+     {
+      "type": "entry",
+      "id": "crown"
+     }
+    ]
+   },
+   {
+    "key": "records|after-death|r1|appears|c3",
+    "rule": "after-death",
+    "severity": "critical",
+    "message": "Mira appears in Ch 3: Chapter 3, after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. The appearance record of Ch 3: Chapter 3 lists them as on the page.",
+    "on": [
+     "entry:mira",
+     "node:c3"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "node",
+      "id": "c3"
+     }
+    ]
+   },
+   {
+    "key": "records|after-death|r1|event|e4",
+    "rule": "after-death",
+    "severity": "critical",
+    "message": "Mira takes part in “The vigil”, told only after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. “The vigil” lists them as taking part, and is told in Ch 3: Chapter 3.",
+    "on": [
+     "entry:mira",
+     "event:e4"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "event",
+      "id": "e4"
+     }
+    ]
+   },
+   {
+    "key": "records|after-death|r1|relation|rel1|st1",
+    "rule": "after-death",
+    "severity": "critical",
+    "message": "Mira’s relationship with Orrin changes to “Rivals” in Ch 2: Chapter 2, after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. That stage of the relationship starts at Ch 2: Chapter 2.",
+    "on": [
+     "entry:mira",
+     "relation:rel1"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "relation",
+      "id": "rel1"
+     }
+    ]
+   },
+   {
+    "key": "records|ends-first|l3",
+    "rule": "ends-first",
+    "severity": "warning",
+    "message": "The connection “Mira member of Guild” stops before it starts.",
+    "because": "It starts Ch 3: Chapter 3 and stops Ch 1: Chapter 1, which comes earlier.",
+    "on": [
+     "link:l3"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ]
+   },
+   {
+    "key": "records|calendar|link:l4:start",
+    "rule": "calendar",
+    "severity": "warning",
+    "message": "The connection “Orrin member of Guild”: its start is not in the calendar.",
+    "because": "Month 13 is not in the calendar.",
+    "on": [
+     "link:l4"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "orrin"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ]
+   },
+   {
+    "key": "records|gone|journey:j1:departure",
+    "rule": "gone",
+    "severity": "warning",
+    "message": "The journey of Kai has its departure at a chapter or scene that no longer exists.",
+    "because": "Its departure pointed at a chapter or scene that has been deleted, so when it holds cannot be worked out.",
+    "on": [
+     "entry:kai"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "kai"
+     }
+    ]
+   },
+   {
+    "key": "records|gone|link:l5:start",
+    "rule": "gone",
+    "severity": "warning",
+    "message": "The connection “Pell member of Guild” has its start at a chapter or scene that no longer exists.",
+    "because": "Its start pointed at a chapter or scene that has been deleted, so when it holds cannot be worked out.",
+    "on": [
+     "link:l5"
+    ],
+    "refs": [
+     {
+      "type": "entry",
+      "id": "pell"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ]
+   },
+   {
+    "key": "records|replacement|f5",
+    "rule": "replacement",
+    "severity": "info",
+    "message": "The statement “Old name: Called Westhold” is marked Retconned, but names no statement that replaced it.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is empty.",
+    "on": [
+     "fact:f5"
+    ],
+    "refs": []
+   },
+   {
+    "key": "records|replacement|f6",
+    "rule": "replacement",
+    "severity": "info",
+    "message": "The statement “Older name: Called Easthold” is marked Retconned, but is replaced by “Newer name: Called Northhold”, which is itself marked Non-Canon.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is “Newer name: Called Northhold”.",
+    "on": [
+     "fact:f6"
+    ],
+    "refs": []
+   }
+  ],
+  "canon": {
+   "reviews": [
+    {
+     "fact": "f1",
+     "flags": [
+      {
+       "key": "fact:f2",
+       "kind": "fact",
+       "otherId": "f2",
+       "message": "A provisional statement appears to differ from this one: “Founded 500 years ago”.",
+       "dismiss": {
+        "factId": "f2"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f2",
+     "flags": [
+      {
+       "key": "fact:f1",
+       "kind": "fact",
+       "otherId": "f1",
+       "message": "This statement appears to conflict with established canon in Chapter 1: “Founded 1,000 years ago”.",
+       "dismiss": {
+        "factId": "f1"
+       }
+      },
+      {
+       "key": "fact:f11",
+       "kind": "fact",
+       "otherId": "f11",
+       "message": "This statement appears to conflict with another statement marked Canon: “Founded long ago”.",
+       "dismiss": {
+        "factId": "f11"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f3",
+     "flags": [
+      {
+       "key": "unpaired",
+       "kind": "unpaired",
+       "message": "Marked Conflicting, with no other statement linked or noticed as the one it contradicts."
+      }
+     ]
+    },
+    {
+     "fact": "f4",
+     "flags": [
+      {
+       "key": "fact:f12",
+       "kind": "fact",
+       "otherId": "f12",
+       "message": "This statement appears to conflict with another statement marked Canon: “Orrin is 20”.",
+       "dismiss": {
+        "factId": "f12"
+       }
+      },
+      {
+       "key": "field:orrin:age",
+       "kind": "field",
+       "message": "This statement appears to differ from Orrin's codex profile, which gives Age as “20”.",
+       "dismiss": {
+        "entryId": "orrin",
+        "field": "Age"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f5",
+     "flags": []
+    },
+    {
+     "fact": "f6",
+     "flags": []
+    },
+    {
+     "fact": "f7",
+     "flags": []
+    },
+    {
+     "fact": "f8",
+     "flags": [
+      {
+       "key": "fact:f9",
+       "kind": "fact",
+       "otherId": "f9",
+       "message": "This statement appears to conflict with another statement marked Canon: “One moon”."
+      }
+     ]
+    },
+    {
+     "fact": "f9",
+     "flags": [
+      {
+       "key": "fact:f8",
+       "kind": "fact",
+       "otherId": "f8",
+       "message": "This statement appears to conflict with another statement marked Canon: “Two moons”."
+      }
+     ]
+    },
+    {
+     "fact": "f10",
+     "flags": []
+    },
+    {
+     "fact": "f11",
+     "flags": [
+      {
+       "key": "fact:f2",
+       "kind": "fact",
+       "otherId": "f2",
+       "message": "A provisional statement appears to differ from this one: “Founded 500 years ago”.",
+       "dismiss": {
+        "factId": "f2"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f12",
+     "flags": [
+      {
+       "key": "fact:f4",
+       "kind": "fact",
+       "otherId": "f4",
+       "message": "This statement appears to conflict with another statement marked Canon: “21”.",
+       "dismiss": {
+        "factId": "f4"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f13",
+     "flags": [
+      {
+       "key": "field:mira:eyes",
+       "kind": "field",
+       "message": "This statement appears to differ from Mira's codex profile, which gives Eyes as “Blue”.",
+       "dismiss": {
+        "entryId": "mira",
+        "field": "Eyes"
+       }
+      }
+     ]
+    },
+    {
+     "fact": "f14",
+     "flags": []
+    },
+    {
+     "fact": "f15",
+     "flags": []
+    }
+   ],
+   "pairs": [
+    {
+     "a": "f1",
+     "b": "f2",
+     "stated": false
+    },
+    {
+     "a": "f2",
+     "b": "f11",
+     "stated": false
+    },
+    {
+     "a": "f4",
+     "b": "f12",
+     "stated": false
+    },
+    {
+     "a": "f8",
+     "b": "f9",
+     "stated": true
+    }
+   ]
+  },
+  "audit": {
+   "open": [
+    {
+     "key": "status|r1|c2|6acoml",
+     "severity": "critical",
+     "category": "status",
+     "nodeId": "c2",
+     "nodeTitle": "Chapter 2",
+     "block": 0,
+     "excerpt": "Mira smiled at the guard.",
+     "match": "Mira",
+     "message": "Mira is recorded as deceased from Chapter 1, and appears to speak or act in Chapter 2.",
+     "entryIds": [
+      "mira"
+     ],
+     "ruleId": "r1",
+     "fix": {
+      "type": "end-rule",
+      "ruleId": "r1",
+      "nodeId": "c2"
+     },
+     "fixSummary": "Record that Mira is no longer deceased from “Chapter 2” onwards."
+    },
+    {
+     "key": "status|r1|c2|10gw85r",
+     "severity": "critical",
+     "category": "status",
+     "nodeId": "c2",
+     "nodeTitle": "Chapter 2",
+     "block": 2,
+     "excerpt": "The Heiress said nothing.",
+     "match": "The Heiress",
+     "message": "Mira is recorded as deceased from Chapter 1, and appears to speak or act in Chapter 2.",
+     "entryIds": [
+      "mira"
+     ],
+     "ruleId": "r1",
+     "fix": {
+      "type": "end-rule",
+      "ruleId": "r1",
+      "nodeId": "c2"
+     },
+     "fixSummary": "Record that Mira is no longer deceased from “Chapter 2” onwards."
+    },
+    {
+     "key": "trait|mira|eyes|c1|1rrlt3s",
+     "severity": "warning",
+     "category": "trait",
+     "nodeId": "c1",
+     "nodeTitle": "Chapter 1",
+     "block": 2,
+     "excerpt": "Her grey eyes shone with tears. Mira wept.",
+     "match": "Her grey eyes",
+     "entryIds": [
+      "mira"
+     ],
+     "ruleId": null,
+     "message": "Mira's eyes are “Blue” on their profile; Chapter 1 describes them as grey.",
+     "fix": {
+      "type": "field",
+      "entryId": "mira",
+      "fieldId": "mira-eyes",
+      "value": "Grey"
+     },
+     "fixSummary": "Change Mira's Eyes on their profile from “Blue” to “Grey”."
+    },
+    {
+     "key": "travel|r3|c1|zdqheh",
+     "severity": "warning",
+     "category": "travel",
+     "nodeId": "c1",
+     "nodeTitle": "Chapter 1",
+     "block": 3,
+     "excerpt": "They travelled for two days to reach Saltport from Greykeep.",
+     "match": "two days",
+     "entryIds": [
+      "greykeep",
+      "saltport"
+     ],
+     "ruleId": "r3",
+     "message": "Travel between Greykeep and Saltport is recorded as 10 days; Chapter 1 appears to cover it in 2 days.",
+     "fix": {
+      "type": "travel",
+      "ruleId": "r3",
+      "amount": 2,
+      "unit": "days"
+     },
+     "fixSummary": "Change the recorded travel time between Greykeep and Saltport from 10 days to 2 days."
+    },
+    {
+     "key": "status|r5|c1|12wdjay",
+     "severity": "warning",
+     "category": "status",
+     "nodeId": "c1",
+     "nodeTitle": "Chapter 1",
+     "block": 5,
+     "excerpt": "Orrin gripped the Sunblade with both hands.",
+     "match": "both hands",
+     "message": "Orrin is recorded as “lost his left hand” from the start of the story; “both hands” in Chapter 1 may not fit.",
+     "entryIds": [
+      "orrin"
+     ],
+     "ruleId": "r5",
+     "fix": {
+      "type": "end-rule",
+      "ruleId": "r5",
+      "nodeId": "c1"
+     },
+     "fixSummary": "Record that Orrin is no longer lost his left hand from “Chapter 1” onwards."
+    },
+    {
+     "key": "power|r4|s2a|1uuj32b",
+     "severity": "warning",
+     "category": "power",
+     "nodeId": "s2a",
+     "nodeTitle": "The duel",
+     "block": 1,
+     "excerpt": "Kai cast the fire spell anyway, half an hour later.",
+     "match": "fire spell",
+     "entryIds": [
+      "spell"
+     ],
+     "ruleId": "r4",
+     "message": "Fire Spell has the rule “cannot be used near: underground”. It appears to be used in The duel, where “underground” is mentioned (paragraph 1).",
+     "fix": {
+      "type": "unblock",
+      "ruleId": "r4",
+      "word": "underground"
+     },
+     "fixSummary": "Remove “underground” from the conditions that block Fire Spell."
+    },
+    {
+     "key": "possession|r2|c3|1txbden",
+     "severity": "warning",
+     "category": "possession",
+     "nodeId": "c3",
+     "nodeTitle": "Chapter 3",
+     "block": 1,
+     "excerpt": "Orrin drew the Sunblade, the blade in his hand.",
+     "match": "Sunblade",
+     "entryIds": [
+      "sunblade",
+      "mira",
+      "orrin"
+     ],
+     "ruleId": "r2",
+     "fix": {
+      "type": "end-rule",
+      "ruleId": "r2",
+      "nodeId": "c3"
+     },
+     "message": "Sunblade is recorded as held by Mira from Chapter 2; in Chapter 3 it appears to be used in a passage that names Orrin and not Mira.",
+     "fixSummary": "Record that Sunblade is no longer held by Mira from “Chapter 3” onwards."
+    },
+    {
+     "key": "trait|alex|hair|c3|dis0ut",
+     "severity": "warning",
+     "category": "trait",
+     "nodeId": "c3",
+     "nodeTitle": "Chapter 3",
+     "block": 3,
+     "excerpt": "Alex’s hair was black as night.",
+     "match": "Alex’s hair was black",
+     "entryIds": [
+      "alex"
+     ],
+     "ruleId": null,
+     "message": "Alex's hair is “Blonde” on their profile; Chapter 3 describes it as black.",
+     "fix": {
+      "type": "field",
+      "entryId": "alex",
+      "fieldId": "alex-hair",
+      "value": "Black"
+     },
+     "fixSummary": "Change Alex's Hair on their profile from “Blonde” to “Black”."
+    },
+    {
+     "key": "trait|orrin|age|c1|uszfgz",
+     "severity": "info",
+     "category": "trait",
+     "nodeId": "c1",
+     "nodeTitle": "Chapter 1",
+     "block": 1,
+     "excerpt": "Orrin was nineteen years old, and his hands were steady.",
+     "match": "Orrin was nineteen years old",
+     "entryIds": [
+      "orrin"
+     ],
+     "ruleId": null,
+     "message": "Orrin's age is 20 on their profile; Chapter 1 gives it as 19.",
+     "fix": {
+      "type": "field",
+      "entryId": "orrin",
+      "fieldId": "orrin-age",
+      "value": "19"
+     },
+     "fixSummary": "Change Orrin's Age on their profile from “20” to “19”."
+    },
+    {
+     "key": "trait|pell|age|c3|1oqx3nf",
+     "severity": "info",
+     "category": "trait",
+     "nodeId": "c3",
+     "nodeTitle": "Chapter 3",
+     "block": 2,
+     "excerpt": "Pell, 23, laughed.",
+     "match": "Pell, 23,",
+     "entryIds": [
+      "pell"
+     ],
+     "ruleId": null,
+     "message": "Pell's age is 25 on their profile; Chapter 3 gives it as 23.",
+     "fix": {
+      "type": "field",
+      "entryId": "pell",
+      "fieldId": "pell-age",
+      "value": "23"
+     },
+     "fixSummary": "Change Pell's Age on their profile from “25” to “23”."
+    }
+   ],
+   "resolved": [],
+   "stale": [
+    "d1",
+    "d2"
+   ],
+   "scanned": {
+    "documents": 5,
+    "paragraphs": 17,
+    "rules": 7
+   }
+  },
+  "knowledge": [
+   {
+    "key": "knowledge|needs|s1|n1|reading",
+    "rule": "needs",
+    "secretId": "s1",
+    "ownerId": "mira",
+    "message": "Orrin acts on “The heir” in Ch 2: Chapter 2, but is recorded as unaware of it there.",
+    "because": "Your mark: “uses it”, in Ch 2: Chapter 2. Their record: Orrin is unaware in Ch 1: Chapter 1, at “The coronation”. No later record of theirs is placed at or before it.",
+    "characterIds": [
+     "orrin"
+    ]
+   },
+   {
+    "key": "knowledge|told|s1|k2|reading",
+    "rule": "told",
+    "secretId": "s1",
+    "ownerId": "mira",
+    "message": "Pell learns “The heir” from Orrin in Ch 2: Chapter 2, but Orrin is recorded as unaware of it there.",
+    "because": "Learning it: Pell knows in Ch 2: Chapter 2: overheard, from Orrin. The teller’s record: Orrin is unaware in Ch 1: Chapter 1, at “The coronation”. No later record of the teller’s is placed at or before it.",
+    "characterIds": [
+     "pell",
+     "orrin"
+    ]
+   }
+  ],
+  "spread": {
+   "s1/reading": {
+    "points": [
+     {
+      "id": "c1",
+      "label": "Ch 1: Chapter 1",
+      "marks": [
+       "first"
+      ]
+     },
+     {
+      "id": "c2",
+      "label": "Ch 2: Chapter 2",
+      "marks": []
+     },
+     {
+      "id": "c3",
+      "label": "Ch 3: Chapter 3",
+      "marks": []
+     },
+     {
+      "id": "c4",
+      "label": "Ch 4: Chapter 4",
+      "marks": [
+       "reveal"
+      ]
+     }
+    ],
+    "rows": [
+     {
+      "characterId": "mira",
+      "name": "Mira",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "orrin",
+      "name": "Orrin",
+      "cells": [
+       {
+        "record": "k1",
+        "here": [
+         "k1"
+        ],
+        "needs": []
+       },
+       {
+        "record": "k1",
+        "here": [],
+        "needs": [
+         "n1"
+        ]
+       },
+       {
+        "record": "k1",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k4",
+        "here": [
+         "k4"
+        ],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "k4",
+       "source": "records"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "pell",
+      "name": "Pell",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k2",
+        "here": [
+         "k2"
+        ],
+        "needs": []
+       },
+       {
+        "record": "k2",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k2",
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "k2",
+       "source": "records"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "kai",
+      "name": "Kai",
+      "cells": [
+       {
+        "record": "k3",
+        "here": [
+         "k3"
+        ],
+        "needs": []
+       },
+       {
+        "record": "k3",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k3",
+        "here": [],
+        "needs": [
+         "n2"
+        ]
+       },
+       {
+        "record": "k3",
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "partial",
+       "record": "k5",
+       "source": "records"
+      },
+      "unplaced": [
+       "k5"
+      ]
+     },
+     {
+      "characterId": "alex",
+      "name": "Alex",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "suspects",
+       "record": "k6",
+       "source": "records"
+      },
+      "unplaced": [
+       "k6"
+      ]
+     }
+    ],
+    "tellings": [
+     {
+      "recordId": "k2",
+      "fromId": "orrin",
+      "toId": "pell",
+      "point": 1
+     }
+    ]
+   },
+   "s1/story": {
+    "points": [
+     {
+      "id": "e1",
+      "label": "The coronation",
+      "marks": [
+       "reveal"
+      ]
+     },
+     {
+      "id": "e2",
+      "label": "The aftermath",
+      "marks": []
+     },
+     {
+      "id": "e4",
+      "label": "The vigil",
+      "marks": []
+     }
+    ],
+    "rows": [
+     {
+      "characterId": "mira",
+      "name": "Mira",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "orrin",
+      "name": "Orrin",
+      "cells": [
+       {
+        "record": "k1",
+        "here": [
+         "k1"
+        ],
+        "needs": []
+       },
+       {
+        "record": "k1",
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k4",
+        "here": [
+         "k4"
+        ],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "k4",
+       "source": "records"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "pell",
+      "name": "Pell",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "knows",
+       "record": "k2",
+       "source": "records"
+      },
+      "unplaced": [
+       "k2"
+      ]
+     },
+     {
+      "characterId": "kai",
+      "name": "Kai",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": [
+         "n2"
+        ]
+       },
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "partial",
+       "record": "k5",
+       "source": "records"
+      },
+      "unplaced": [
+       "k3",
+       "k5"
+      ]
+     },
+     {
+      "characterId": "alex",
+      "name": "Alex",
+      "cells": [
+       {
+        "record": null,
+        "here": [],
+        "needs": []
+       },
+       {
+        "record": "k6",
+        "here": [
+         "k6"
+        ],
+        "needs": []
+       },
+       {
+        "record": "k6",
+        "here": [],
+        "needs": []
+       }
+      ],
+      "now": {
+       "state": "suspects",
+       "record": "k6",
+       "source": "records"
+      },
+      "unplaced": []
+     }
+    ],
+    "tellings": []
+   },
+   "s2/reading": {
+    "points": [],
+    "rows": [
+     {
+      "characterId": "pell",
+      "name": "Pell",
+      "cells": [],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "orrin",
+      "name": "Orrin",
+      "cells": [],
+      "now": {
+       "state": "suspects",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "mira",
+      "name": "Mira",
+      "cells": [],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     }
+    ],
+    "tellings": []
+   },
+   "s2/story": {
+    "points": [],
+    "rows": [
+     {
+      "characterId": "pell",
+      "name": "Pell",
+      "cells": [],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "orrin",
+      "name": "Orrin",
+      "cells": [],
+      "now": {
+       "state": "suspects",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     },
+     {
+      "characterId": "mira",
+      "name": "Mira",
+      "cells": [],
+      "now": {
+       "state": "unaware",
+       "record": null,
+       "source": "summary"
+      },
+      "unplaced": []
+     }
+    ],
+    "tellings": []
+   }
+  },
+  "overlay": {
+   "event:e-retcon": {
+    "status": {
+     "key": "retconned",
+     "label": "Retconned",
+     "hint": "Was true once, and has been officially replaced.",
+     "glyph": "↺"
+    },
+    "warnings": [
+     "records|rests-on|e2|after|e-retcon",
+     "records|rests-on|e3|start|e-retcon",
+     "records|rests-on|fact:f10|src2",
+     "records|rests-on|link:l6:start|e-retcon",
+     "records|rests-on|progress:p1|e-retcon",
+     "records|still-told|e-retcon"
+    ],
+    "badge": {
+     "glyph": "↺!6",
+     "tone": "warning"
+    },
+    "words": "Canon status: Retconned. 6 to check."
+   },
+   "event:e5": {
+    "status": {
+     "key": "non-canon",
+     "label": "Non-Canon",
+     "hint": "Deliberately left out: a discarded draft or alternate version.",
+     "glyph": "✕"
+    },
+    "warnings": [],
+    "badge": {
+     "glyph": "✕",
+     "tone": "status"
+    },
+    "words": "Canon status: Non-Canon."
+   },
+   "link:l7": {
+    "status": {
+     "key": "non-canon",
+     "label": "Invalid: not canon",
+     "hint": "Deliberately left out: a discarded draft or alternate version.",
+     "glyph": "✕"
+    },
+    "warnings": [],
+    "badge": {
+     "glyph": "✕",
+     "tone": "status"
+    },
+    "words": "Canon status: Invalid: not canon."
+   },
+   "link:l8": {
+    "status": {
+     "key": "provisional",
+     "label": "Provisional",
+     "hint": "A working idea, not settled yet.",
+     "glyph": "?"
+    },
+    "warnings": [],
+    "badge": {
+     "glyph": "?",
+     "tone": "status"
+    },
+    "words": "Canon status: Provisional."
+   },
+   "event:e2": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|e2|after|e-retcon"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "event:e3": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|e3|start|e-retcon"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f10": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|fact:f10|src2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "link:l6": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|link:l6:start|e-retcon"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:pell": {
+    "status": null,
+    "warnings": [
+     "records|rests-on|progress:p1|e-retcon",
+     "trait|pell|age|c3|1oqx3nf"
+    ],
+    "badge": {
+     "glyph": "!2",
+     "tone": "warning"
+    },
+    "words": "2 to check."
+   },
+   "node:c3": {
+    "status": null,
+    "warnings": [
+     "records|after-death|r1|appears|c3",
+     "possession|r2|c3|1txbden",
+     "trait|alex|hair|c3|dis0ut",
+     "records|still-told|e-retcon",
+     "trait|pell|age|c3|1oqx3nf"
+    ],
+    "badge": {
+     "glyph": "!5",
+     "tone": "critical"
+    },
+    "words": "5 to check, 1 critical."
+   },
+   "link:l1": {
+    "status": null,
+    "warnings": [
+     "records|opposed|l1|l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "link:l2": {
+    "status": null,
+    "warnings": [
+     "records|opposed|l1|l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:guild": {
+    "status": null,
+    "warnings": [
+     "records|opposed|l1|l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:crown": {
+    "status": null,
+    "warnings": [
+     "records|opposed|l1|l2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:mira": {
+    "status": null,
+    "warnings": [
+     "records|after-death|r1|appears|c3",
+     "records|after-death|r1|event|e4",
+     "records|after-death|r1|relation|rel1|st1",
+     "status|r1|c2|10gw85r",
+     "status|r1|c2|6acoml",
+     "canon|f13|field|mira|eyes",
+     "possession|r2|c3|1txbden",
+     "trait|mira|eyes|c1|1rrlt3s"
+    ],
+    "badge": {
+     "glyph": "!8",
+     "tone": "critical"
+    },
+    "words": "8 to check, 5 critical."
+   },
+   "event:e4": {
+    "status": null,
+    "warnings": [
+     "records|after-death|r1|event|e4"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "critical"
+    },
+    "words": "1 to check, 1 critical."
+   },
+   "relation:rel1": {
+    "status": null,
+    "warnings": [
+     "records|after-death|r1|relation|rel1|st1"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "critical"
+    },
+    "words": "1 to check, 1 critical."
+   },
+   "link:l3": {
+    "status": null,
+    "warnings": [
+     "records|ends-first|l3"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "link:l4": {
+    "status": null,
+    "warnings": [
+     "records|calendar|link:l4:start"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:kai": {
+    "status": null,
+    "warnings": [
+     "records|gone|journey:j1:departure"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "link:l5": {
+    "status": null,
+    "warnings": [
+     "records|gone|link:l5:start"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f5": {
+    "status": null,
+    "warnings": [
+     "records|replacement|f5"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "info"
+    },
+    "words": "1 to check."
+   },
+   "fact:f6": {
+    "status": null,
+    "warnings": [
+     "records|replacement|f6"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "info"
+    },
+    "words": "1 to check."
+   },
+   "fact:f1": {
+    "status": null,
+    "warnings": [
+     "canon|f1|fact|f2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "node:c1": {
+    "status": null,
+    "warnings": [
+     "canon|f1|fact|f2",
+     "status|r5|c1|12wdjay",
+     "trait|mira|eyes|c1|1rrlt3s",
+     "travel|r3|c1|zdqheh",
+     "trait|orrin|age|c1|uszfgz"
+    ],
+    "badge": {
+     "glyph": "!5",
+     "tone": "warning"
+    },
+    "words": "5 to check."
+   },
+   "fact:f2": {
+    "status": null,
+    "warnings": [
+     "canon|f2|fact|f1",
+     "canon|f2|fact|f11"
+    ],
+    "badge": {
+     "glyph": "!2",
+     "tone": "warning"
+    },
+    "words": "2 to check."
+   },
+   "fact:f3": {
+    "status": null,
+    "warnings": [
+     "canon|f3|unpaired"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "info"
+    },
+    "words": "1 to check."
+   },
+   "fact:f4": {
+    "status": null,
+    "warnings": [
+     "canon|f4|fact|f12",
+     "canon|f4|field|orrin|age"
+    ],
+    "badge": {
+     "glyph": "!2",
+     "tone": "warning"
+    },
+    "words": "2 to check."
+   },
+   "entry:orrin": {
+    "status": null,
+    "warnings": [
+     "canon|f12|fact|f4",
+     "canon|f4|fact|f12",
+     "canon|f4|field|orrin|age",
+     "possession|r2|c3|1txbden",
+     "status|r5|c1|12wdjay",
+     "trait|orrin|age|c1|uszfgz"
+    ],
+    "badge": {
+     "glyph": "!6",
+     "tone": "warning"
+    },
+    "words": "6 to check."
+   },
+   "fact:f8": {
+    "status": null,
+    "warnings": [
+     "canon|f8|fact|f9"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f9": {
+    "status": null,
+    "warnings": [
+     "canon|f9|fact|f8"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f11": {
+    "status": null,
+    "warnings": [
+     "canon|f11|fact|f2"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f12": {
+    "status": null,
+    "warnings": [
+     "canon|f12|fact|f4"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "fact:f13": {
+    "status": null,
+    "warnings": [
+     "canon|f13|field|mira|eyes"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "node:c2": {
+    "status": null,
+    "warnings": [
+     "status|r1|c2|10gw85r",
+     "status|r1|c2|6acoml"
+    ],
+    "badge": {
+     "glyph": "!2",
+     "tone": "critical"
+    },
+    "words": "2 to check, 2 critical."
+   },
+   "entry:greykeep": {
+    "status": null,
+    "warnings": [
+     "travel|r3|c1|zdqheh"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:saltport": {
+    "status": null,
+    "warnings": [
+     "travel|r3|c1|zdqheh"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "node:s2a": {
+    "status": null,
+    "warnings": [
+     "power|r4|s2a|1uuj32b"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:spell": {
+    "status": null,
+    "warnings": [
+     "power|r4|s2a|1uuj32b"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:sunblade": {
+    "status": null,
+    "warnings": [
+     "possession|r2|c3|1txbden"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   },
+   "entry:alex": {
+    "status": null,
+    "warnings": [
+     "trait|alex|hair|c3|dis0ut"
+    ],
+    "badge": {
+     "glyph": "!",
+     "tone": "warning"
+    },
+    "words": "1 to check."
+   }
+  },
+  "merged": {
+   "status": {
+    "key": "retconned",
+    "label": "Retconned",
+    "hint": "Was true once, and has been officially replaced.",
+    "glyph": "↺"
+   },
+   "warnings": [
+    "records|rests-on|e2|after|e-retcon",
+    "records|rests-on|e3|start|e-retcon",
+    "records|rests-on|fact:f10|src2",
+    "records|rests-on|link:l6:start|e-retcon",
+    "records|rests-on|progress:p1|e-retcon",
+    "records|still-told|e-retcon"
+   ],
+   "badge": {
+    "glyph": "↺!6",
+    "tone": "warning"
+   },
+   "words": "Canon status: Retconned. 6 to check."
+  },
+  "warnings": [
+   {
+    "key": "records|rests-on|e2|after|e-retcon",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "“The aftermath” is set to come after “The false dawn”, which is marked Retconned.",
+    "because": "“The aftermath” is Canon, and its “Comes after” is “The false dawn”, whose canon status is Retconned.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "e2"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae2"
+    }
+   },
+   {
+    "key": "records|rests-on|e3|start|e-retcon",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "“Two days on” is dated from “The false dawn”, which is marked Retconned.",
+    "because": "Its date reads “About 2 days after The false dawn”; “The false dawn” has the canon status Retconned.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "e3"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae3"
+    }
+   },
+   {
+    "key": "records|rests-on|fact:f10|src2",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "The provisional statement “Dawn: The dawn was false” is established at “The false dawn”, which is marked Retconned.",
+    "because": "One of its sources is the timeline event “The false dawn”, whose canon status is Retconned.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the canon statement",
+      "to": "/project/P/canon?fact=f10"
+     }
+    ],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae-retcon"
+    }
+   },
+   {
+    "key": "records|rests-on|link:l6:start|e-retcon",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "The connection “Kai member of Crown” has its start at “The false dawn”, which is marked Retconned.",
+    "because": "The connection is Confirmed; “The false dawn” has the canon status Retconned.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "kai"
+     },
+     {
+      "type": "entry",
+      "id": "crown"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae-retcon"
+    }
+   },
+   {
+    "key": "records|rests-on|progress:p1|e-retcon",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Rests on a set-aside event",
+    "rule": "What is part of the story as it stands (Canon, Provisional or Conflicting) cannot rest on an event marked Retconned or Non-Canon: come after it, be dated from it, begin or end at it, or cite it as where it was established.",
+    "message": "A progression change for Pell has its time at “The false dawn”, which is marked Retconned.",
+    "because": "“The false dawn” has the canon status Retconned.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "pell"
+     },
+     {
+      "type": "event",
+      "id": "e-retcon"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae-retcon"
+    }
+   },
+   {
+    "key": "records|still-told|e-retcon",
+    "source": "records",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Set aside, but still told",
+    "rule": "An event marked Retconned or Non-Canon is not part of the story as it stands, so no chapter or scene is recorded as telling it.",
+    "message": "“The false dawn” is marked Retconned, but is still recorded as told in Ch 3: Chapter 3.",
+    "because": "Its canon status is Retconned, and its chapters and scenes list one.",
+    "refs": [
+     {
+      "type": "event",
+      "id": "e-retcon"
+     },
+     {
+      "type": "node",
+      "id": "c3"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae-retcon"
+    }
+   },
+   {
+    "key": "records|opposed|l1|l2",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "connections",
+    "title": "Allied and at war at once",
+    "rule": "Two records cannot be allied with each other and at war with each other at the same time.",
+    "message": "Guild and Crown are recorded as allied and at war at the same time.",
+    "because": "“Allied with”: no time given (Confirmed). “At war with”: no time given (Confirmed).",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "guild"
+     },
+     {
+      "type": "entry",
+      "id": "crown"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aguild"
+    }
+   },
+   {
+    "key": "records|after-death|r1|appears|c3",
+    "source": "records",
+    "severity": "critical",
+    "certainty": "error",
+    "category": "characters",
+    "title": "Appears after their recorded death",
+    "rule": "A character tracked as deceased from a chapter on does not appear in a later chapter or scene, take part in an event told only there, or have a relationship change there, until the tracked status says they return.",
+    "message": "Mira appears in Ch 3: Chapter 3, after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. The appearance record of Ch 3: Chapter 3 lists them as on the page.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "node",
+      "id": "c3"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the tracked status",
+      "to": "/project/P/continuity?tab=tracked"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Amira"
+    }
+   },
+   {
+    "key": "records|after-death|r1|event|e4",
+    "source": "records",
+    "severity": "critical",
+    "certainty": "error",
+    "category": "characters",
+    "title": "Appears after their recorded death",
+    "rule": "A character tracked as deceased from a chapter on does not appear in a later chapter or scene, take part in an event told only there, or have a relationship change there, until the tracked status says they return.",
+    "message": "Mira takes part in “The vigil”, told only after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. “The vigil” lists them as taking part, and is told in Ch 3: Chapter 3.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "event",
+      "id": "e4"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the tracked status",
+      "to": "/project/P/continuity?tab=tracked"
+     }
+    ],
+    "context": {
+     "label": "See it on the timeline",
+     "to": "/project/P/visualize/timeline?marks=1&select=event%3Ae4"
+    }
+   },
+   {
+    "key": "records|after-death|r1|relation|rel1|st1",
+    "source": "records",
+    "severity": "critical",
+    "certainty": "error",
+    "category": "characters",
+    "title": "Appears after their recorded death",
+    "rule": "A character tracked as deceased from a chapter on does not appear in a later chapter or scene, take part in an event told only there, or have a relationship change there, until the tracked status says they return.",
+    "message": "Mira’s relationship with Orrin changes to “Rivals” in Ch 2: Chapter 2, after their recorded death.",
+    "because": "Continuity → Tracked: Mira is Deceased from Ch 1: Chapter 1 until Ch 4: Chapter 4. That stage of the relationship starts at Ch 2: Chapter 2.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "relation",
+      "id": "rel1"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the tracked status",
+      "to": "/project/P/continuity?tab=tracked"
+     }
+    ],
+    "context": {
+     "label": "See it on the relationship map",
+     "to": "/project/P/visualize/relationships?marks=1&select=relation%3Arel1"
+    }
+   },
+   {
+    "key": "records|ends-first|l3",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "dates",
+    "title": "Ends before it begins",
+    "rule": "A connection cannot stop holding before it starts.",
+    "message": "The connection “Mira member of Guild” stops before it starts.",
+    "because": "It starts Ch 3: Chapter 3 and stops Ch 1: Chapter 1, which comes earlier.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Amira"
+    }
+   },
+   {
+    "key": "records|calendar|link:l4:start",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "dates",
+    "title": "Date not in the calendar",
+    "rule": "A date must exist in the novel’s calendar: a month it has, a day that month has, an hour its days have.",
+    "message": "The connection “Orrin member of Guild”: its start is not in the calendar.",
+    "because": "Month 13 is not in the calendar.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "orrin"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aorrin"
+    }
+   },
+   {
+    "key": "records|gone|journey:j1:departure",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "Timed by something that is gone",
+    "rule": "When a connection, a progression change or a journey is timed by a chapter, scene or event, that record must exist.",
+    "message": "The journey of Kai has its departure at a chapter or scene that no longer exists.",
+    "because": "Its departure pointed at a chapter or scene that has been deleted, so when it holds cannot be worked out.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "kai"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Akai"
+    }
+   },
+   {
+    "key": "records|gone|link:l5:start",
+    "source": "records",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "Timed by something that is gone",
+    "rule": "When a connection, a progression change or a journey is timed by a chapter, scene or event, that record must exist.",
+    "message": "The connection “Pell member of Guild” has its start at a chapter or scene that no longer exists.",
+    "because": "Its start pointed at a chapter or scene that has been deleted, so when it holds cannot be worked out.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "pell"
+     },
+     {
+      "type": "entry",
+      "id": "guild"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Apell"
+    }
+   },
+   {
+    "key": "records|replacement|f5",
+    "source": "records",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Retconned with nothing in its place",
+    "rule": "A statement marked Retconned has been officially replaced, so it names the statement that replaced it, and that one is not itself set aside.",
+    "message": "The statement “Old name: Called Westhold” is marked Retconned, but names no statement that replaced it.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is empty.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the canon statement",
+      "to": "/project/P/canon?fact=f5"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "records|replacement|f6",
+    "source": "records",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Retconned with nothing in its place",
+    "rule": "A statement marked Retconned has been officially replaced, so it names the statement that replaced it, and that one is not itself set aside.",
+    "message": "The statement “Older name: Called Easthold” is marked Retconned, but is replaced by “Newer name: Called Northhold”, which is itself marked Non-Canon.",
+    "because": "Retconned means it was true once and has been officially replaced. Its “Replaced by” is “Newer name: Called Northhold”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the canon statement",
+      "to": "/project/P/canon?fact=f6"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "integrity|broken|travel-leaves:j1:kai|node:gone-node2",
+    "source": "integrity",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "references",
+    "title": "A reference to a record that no longer exists",
+    "rule": "A reference must name a record that exists.",
+    "message": "Kai: “Sets out in” points at a chapter or scene that no longer exists.",
+    "because": "Kept in a journey; the chapter or scene it names has been deleted.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "kai"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Akai"
+    }
+   },
+   {
+    "key": "integrity|duplicate|mira|mira2",
+    "source": "integrity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "duplicates",
+    "title": "Records that look like duplicates",
+    "rule": "Two entries of the same kind whose names are the same once capitals, accents, punctuation and a leading “The” are set aside, or one named as the other’s alias.",
+    "message": "Mira and mira may be the same.",
+    "because": "“Mira” and “mira” are the same name, apart from capitals, accents, punctuation or a leading “The”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "mira2"
+     }
+    ],
+    "links": [],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Amira"
+    }
+   },
+   {
+    "key": "canon|f1|fact|f2",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "A provisional statement appears to differ from this one: “Founded 500 years ago”.",
+    "because": "The canon statement “Royal Academy: Founded 1,000 years ago”.",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c1"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f1"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac1"
+    }
+   },
+   {
+    "key": "canon|f2|fact|f1",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with established canon in Chapter 1: “Founded 1,000 years ago”.",
+    "because": "The provisional statement “royal academy: Founded 500 years ago”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f2"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f2|fact|f11",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with another statement marked Canon: “Founded long ago”.",
+    "because": "The provisional statement “royal academy: Founded 500 years ago”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f2"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f3|unpaired",
+    "source": "canon",
+    "severity": "info",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Conflicting, with nothing paired",
+    "rule": "A statement marked Conflicting contradicts another, so the other one is linked, or noticed.",
+    "message": "Marked Conflicting, with no other statement linked or noticed as the one it contradicts.",
+    "because": "The conflicting statement “Weather: It always rains”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f3"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f4|fact|f12",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with another statement marked Canon: “Orrin is 20”.",
+    "because": "The canon statement “Age: 21”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f4"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aorrin"
+    }
+   },
+   {
+    "key": "canon|f4|field|orrin|age",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "A statement that may differ from a codex field",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to differ from Orrin's codex profile, which gives Age as “20”.",
+    "because": "The canon statement “Age: 21”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f4"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aorrin"
+    }
+   },
+   {
+    "key": "canon|f8|fact|f9",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Statements you linked as contradicting",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with another statement marked Canon: “One moon”.",
+    "because": "The canon statement “Moons: Two moons”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f8"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f9|fact|f8",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "canon",
+    "title": "Statements you linked as contradicting",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with another statement marked Canon: “Two moons”.",
+    "because": "The canon statement “Sky: One moon”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f9"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f11|fact|f2",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "A provisional statement appears to differ from this one: “Founded 500 years ago”.",
+    "because": "The canon statement “Royal Academy: Founded long ago”.",
+    "refs": [],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f11"
+     }
+    ],
+    "context": null
+   },
+   {
+    "key": "canon|f12|fact|f4",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "Statements that may disagree",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to conflict with another statement marked Canon: “21”.",
+    "because": "The canon statement “Age: Orrin is 20”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f12"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Aorrin"
+    }
+   },
+   {
+    "key": "canon|f13|field|mira|eyes",
+    "source": "canon",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "canon",
+    "title": "A statement that may differ from a codex field",
+    "rule": "Statements in play about the same subject should agree with each other and with the codex field they name. Only you decide which one stands.",
+    "message": "This statement appears to differ from Mira's codex profile, which gives Eyes as “Blue”.",
+    "because": "The provisional statement “Eyes: Green”.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the statement",
+      "to": "/project/P/canon?fact=f13"
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=entry%3Amira"
+    }
+   },
+   {
+    "key": "knowledge|needs|s1|n1|reading",
+    "source": "knowledge",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "knowledge",
+    "title": "Acts on it while not knowing it",
+    "rule": "A character you mark as acting on a secret at a point must not be recorded there as unaware of it, or as believing something false instead.",
+    "message": "Orrin acts on “The heir” in Ch 2: Chapter 2, but is recorded as unaware of it there.",
+    "because": "Your mark: “uses it”, in Ch 2: Chapter 2. Their record: Orrin is unaware in Ch 1: Chapter 1, at “The coronation”. No later record of theirs is placed at or before it.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open Mira’s secrets",
+      "to": "/project/P/characters/mira/secrets"
+     }
+    ],
+    "context": {
+     "label": "See it in Secrets and knowledge",
+     "to": "/project/P/visualize/knowledge?ksecret=s1"
+    }
+   },
+   {
+    "key": "knowledge|told|s1|k2|reading",
+    "source": "knowledge",
+    "severity": "warning",
+    "certainty": "error",
+    "category": "knowledge",
+    "title": "Learns it from someone who did not know",
+    "rule": "A character recorded as learning a secret from someone cannot learn it from a person recorded as unaware of it at that point.",
+    "message": "Pell learns “The heir” from Orrin in Ch 2: Chapter 2, but Orrin is recorded as unaware of it there.",
+    "because": "Learning it: Pell knows in Ch 2: Chapter 2: overheard, from Orrin. The teller’s record: Orrin is unaware in Ch 1: Chapter 1, at “The coronation”. No later record of the teller’s is placed at or before it.",
+    "refs": [
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "pell"
+     },
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open Mira’s secrets",
+      "to": "/project/P/characters/mira/secrets"
+     }
+    ],
+    "context": {
+     "label": "See it in Secrets and knowledge",
+     "to": "/project/P/visualize/knowledge?ksecret=s1"
+    }
+   },
+   {
+    "key": "status|r1|c2|6acoml",
+    "source": "continuity",
+    "severity": "critical",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a tracked rule: character status",
+    "rule": "A character dies, leaves, or is changed from a chapter onwards.",
+    "message": "Mira is recorded as deceased from Chapter 1, and appears to speak or act in Chapter 2.",
+    "because": "Chapter 2, paragraph 1: “Mira smiled at the guard.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c2"
+     },
+     {
+      "type": "entry",
+      "id": "mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c2",
+      "state": {
+       "jump": {
+        "term": "Mira",
+        "block": 0
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac2"
+    }
+   },
+   {
+    "key": "status|r1|c2|10gw85r",
+    "source": "continuity",
+    "severity": "critical",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a tracked rule: character status",
+    "rule": "A character dies, leaves, or is changed from a chapter onwards.",
+    "message": "Mira is recorded as deceased from Chapter 1, and appears to speak or act in Chapter 2.",
+    "because": "Chapter 2, paragraph 3: “The Heiress said nothing.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c2"
+     },
+     {
+      "type": "entry",
+      "id": "mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c2",
+      "state": {
+       "jump": {
+        "term": "The Heiress",
+        "block": 2
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac2"
+    }
+   },
+   {
+    "key": "trait|mira|eyes|c1|1rrlt3s",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a codex field",
+    "rule": "How the text describes a character should match their codex fields (age, eyes, hair).",
+    "message": "Mira's eyes are “Blue” on their profile; Chapter 1 describes them as grey.",
+    "because": "Chapter 1, paragraph 3: “Her grey eyes shone with tears. Mira wept.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c1"
+     },
+     {
+      "type": "entry",
+      "id": "mira"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c1",
+      "state": {
+       "jump": {
+        "term": "Her grey eyes",
+        "block": 2
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac1"
+    }
+   },
+   {
+    "key": "travel|r3|c1|zdqheh",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "places",
+    "title": "The text and a tracked rule: travel time",
+    "rule": "How long it takes to get from one place to another.",
+    "message": "Travel between Greykeep and Saltport is recorded as 10 days; Chapter 1 appears to cover it in 2 days.",
+    "because": "Chapter 1, paragraph 4: “They travelled for two days to reach Saltport from Greykeep.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c1"
+     },
+     {
+      "type": "entry",
+      "id": "greykeep"
+     },
+     {
+      "type": "entry",
+      "id": "saltport"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c1",
+      "state": {
+       "jump": {
+        "term": "two days",
+        "block": 3
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac1"
+    }
+   },
+   {
+    "key": "status|r5|c1|12wdjay",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a tracked rule: character status",
+    "rule": "A character dies, leaves, or is changed from a chapter onwards.",
+    "message": "Orrin is recorded as “lost his left hand” from the start of the story; “both hands” in Chapter 1 may not fit.",
+    "because": "Chapter 1, paragraph 6: “Orrin gripped the Sunblade with both hands.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c1"
+     },
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c1",
+      "state": {
+       "jump": {
+        "term": "both hands",
+        "block": 5
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac1"
+    }
+   },
+   {
+    "key": "power|r4|s2a|1uuj32b",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "abilities",
+    "title": "The text and a tracked rule: power or magic",
+    "rule": "Conditions under which an ability cannot be used.",
+    "message": "Fire Spell has the rule “cannot be used near: underground”. It appears to be used in The duel, where “underground” is mentioned (paragraph 1).",
+    "because": "The duel, paragraph 2: “Kai cast the fire spell anyway, half an hour later.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "s2a"
+     },
+     {
+      "type": "entry",
+      "id": "spell"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/s2a",
+      "state": {
+       "jump": {
+        "term": "fire spell",
+        "block": 1
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3As2a"
+    }
+   },
+   {
+    "key": "possession|r2|c3|1txbden",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "items",
+    "title": "The text and a tracked rule: item possession",
+    "rule": "An item is lost, destroyed, or held by someone from a chapter onwards.",
+    "message": "Sunblade is recorded as held by Mira from Chapter 2; in Chapter 3 it appears to be used in a passage that names Orrin and not Mira.",
+    "because": "Chapter 3, paragraph 2: “Orrin drew the Sunblade, the blade in his hand.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c3"
+     },
+     {
+      "type": "entry",
+      "id": "sunblade"
+     },
+     {
+      "type": "entry",
+      "id": "mira"
+     },
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c3",
+      "state": {
+       "jump": {
+        "term": "Sunblade",
+        "block": 1
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac3"
+    }
+   },
+   {
+    "key": "trait|alex|hair|c3|dis0ut",
+    "source": "continuity",
+    "severity": "warning",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a codex field",
+    "rule": "How the text describes a character should match their codex fields (age, eyes, hair).",
+    "message": "Alex's hair is “Blonde” on their profile; Chapter 3 describes it as black.",
+    "because": "Chapter 3, paragraph 4: “Alex’s hair was black as night.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c3"
+     },
+     {
+      "type": "entry",
+      "id": "alex"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c3",
+      "state": {
+       "jump": {
+        "term": "Alex’s hair was black",
+        "block": 3
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac3"
+    }
+   },
+   {
+    "key": "trait|orrin|age|c1|uszfgz",
+    "source": "continuity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a codex field",
+    "rule": "How the text describes a character should match their codex fields (age, eyes, hair).",
+    "message": "Orrin's age is 20 on their profile; Chapter 1 gives it as 19.",
+    "because": "Chapter 1, paragraph 2: “Orrin was nineteen years old, and his hands were steady.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c1"
+     },
+     {
+      "type": "entry",
+      "id": "orrin"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c1",
+      "state": {
+       "jump": {
+        "term": "Orrin was nineteen years old",
+        "block": 1
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac1"
+    }
+   },
+   {
+    "key": "trait|pell|age|c3|1oqx3nf",
+    "source": "continuity",
+    "severity": "info",
+    "certainty": "possible",
+    "category": "characters",
+    "title": "The text and a codex field",
+    "rule": "How the text describes a character should match their codex fields (age, eyes, hair).",
+    "message": "Pell's age is 25 on their profile; Chapter 3 gives it as 23.",
+    "because": "Chapter 3, paragraph 3: “Pell, 23, laughed.”",
+    "refs": [
+     {
+      "type": "node",
+      "id": "c3"
+     },
+     {
+      "type": "entry",
+      "id": "pell"
+     }
+    ],
+    "links": [
+     {
+      "label": "Open the passage",
+      "to": "/project/P/manuscript/c3",
+      "state": {
+       "jump": {
+        "term": "Pell, 23,",
+        "block": 2
+       }
+      }
+     }
+    ],
+    "context": {
+     "label": "See it on the knowledge graph",
+     "to": "/project/P/visualize/graph?marks=1&select=node%3Ac3"
+    }
+   }
+  ],
+  "status": {
+   "items": [
+    {
+     "key": "records|rests-on|e2|after|e-retcon",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|rests-on|e3|start|e-retcon",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|rests-on|fact:f10|src2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|rests-on|link:l6:start|e-retcon",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|rests-on|progress:p1|e-retcon",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|still-told|e-retcon",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|opposed|l1|l2",
+     "status": "review",
+     "decision": "d4"
+    },
+    {
+     "key": "records|after-death|r1|appears|c3",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|after-death|r1|event|e4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|after-death|r1|relation|rel1|st1",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|ends-first|l3",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|calendar|link:l4:start",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|gone|journey:j1:departure",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|gone|link:l5:start",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|replacement|f5",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "records|replacement|f6",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|broken|travel-leaves:j1:kai|node:gone-node2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "integrity|duplicate|mira|mira2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f1|fact|f2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f2|fact|f1",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f2|fact|f11",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f3|unpaired",
+     "status": "dismissed",
+     "decision": "d5"
+    },
+    {
+     "key": "canon|f4|fact|f12",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f4|field|orrin|age",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f8|fact|f9",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f9|fact|f8",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f11|fact|f2",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f12|fact|f4",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "canon|f13|field|mira|eyes",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "knowledge|needs|s1|n1|reading",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "knowledge|told|s1|k2|reading",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "status|r1|c2|6acoml",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "status|r1|c2|10gw85r",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "trait|mira|eyes|c1|1rrlt3s",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "travel|r3|c1|zdqheh",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "status|r5|c1|12wdjay",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "power|r4|s2a|1uuj32b",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "possession|r2|c3|1txbden",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "trait|alex|hair|c3|dis0ut",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "trait|orrin|age|c1|uszfgz",
+     "status": "open",
+     "decision": null
+    },
+    {
+     "key": "trait|pell|age|c3|1oqx3nf",
+     "status": "open",
+     "decision": null
+    }
+   ],
+   "gone": [
+    "d1",
+    "d2",
+    "d3"
+   ],
+   "goneUnchecked": [
+    "d3"
+   ]
+  }
+ },
+ "text": {
+  "find": [
+   [
+    [
+     {
+      "index": 0,
+      "text": "Mira"
+     },
+     {
+      "index": 14,
+      "text": "Sunblade"
+     }
+    ],
+    []
+   ],
+   [
+    [
+     {
+      "index": 0,
+      "text": "Mira"
+     },
+     {
+      "index": 37,
+      "text": "Mira"
+     }
+    ],
+    [
+     {
+      "index": 14,
+      "text": "nothing"
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "index": 5,
+      "text": "Mira"
+     },
+     {
+      "index": 15,
+      "text": "Mira"
+     }
+    ],
+    []
+   ],
+   [
+    [
+     {
+      "index": 4,
+      "text": "Sunblade"
+     },
+     {
+      "index": 51,
+      "text": "Sunblade"
+     }
+    ],
+    []
+   ],
+   [
+    [],
+    [
+     {
+      "index": 14,
+      "text": "two days"
+     },
+     {
+      "index": 95,
+      "text": "nothing"
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "index": 0,
+      "text": "Alex"
+     },
+     {
+      "index": 45,
+      "text": "Alex"
+     },
+     {
+      "index": 59,
+      "text": "Alex"
+     },
+     {
+      "index": 74,
+      "text": "Alex"
+     }
+    ],
+    []
+   ],
+   [
+    [
+     {
+      "index": 21,
+      "text": "Alex"
+     }
+    ],
+    []
+   ],
+   [
+    [],
+    [
+     {
+      "index": 32,
+      "text": "nothing"
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "index": 15,
+      "text": "Zoë"
+     },
+     {
+      "index": 41,
+      "text": "Zoë"
+     }
+    ],
+    [
+     {
+      "index": 35,
+      "text": "Café"
+     }
+    ]
+   ]
+  ],
+  "acting": [
+   [
+    true
+   ],
+   [
+    false,
+    false
+   ],
+   [
+    true,
+    true
+   ],
+   [],
+   [],
+   [
+    false,
+    true,
+    false,
+    false
+   ],
+   [
+    false
+   ],
+   [],
+   [
+    false,
+    false
+   ]
+  ],
+  "used": [
+   [
+    true
+   ],
+   [],
+   [],
+   [
+    true,
+    true
+   ],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "durations": [
+   [],
+   [],
+   [],
+   [],
+   [
+    {
+     "amount": 2,
+     "unit": "days",
+     "hours": 48,
+     "text": "two days"
+    },
+    {
+     "amount": 0.5,
+     "unit": "hours",
+     "hours": 0.5,
+     "text": "half an hour"
+    },
+    {
+     "amount": 3,
+     "unit": "weeks",
+     "hours": 504,
+     "text": "3 weeks"
+    },
+    {
+     "amount": 1,
+     "unit": "months",
+     "hours": 720,
+     "text": "a month"
+    },
+    {
+     "amount": 22,
+     "unit": "minutes",
+     "hours": 0.36666666666666664,
+     "text": "Twenty-two minutes"
+    }
+   ],
+   [],
+   [],
+   [],
+   []
+  ],
+  "numbers": [
+   19,
+   19,
+   22,
+   1,
+   100,
+   22,
+   null,
+   2.5,
+   null
+  ],
+  "colours": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [
+    "grey",
+    "black",
+    "golden",
+    "brown",
+    "blue",
+    "green"
+   ],
+   [],
+   [
+    "violet"
+   ]
+  ],
+  "colourOf": [
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    {
+     "index": 0,
+     "text": "Her grey eyes"
+    },
+    {
+     "index": 21,
+     "text": "Alex’s hair was black"
+    }
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    {
+     "index": 41,
+     "text": "Zoë’s eyes were violet"
+    },
+    null
+   ]
+  ],
+  "ages": [
+   [
+    null
+   ],
+   [
+    null
+   ],
+   [
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    {
+     "age": 19,
+     "text": "Alex was nineteen years old"
+    },
+    {
+     "age": 20,
+     "text": "Twenty-year-old Alex"
+    },
+    {
+     "age": 19,
+     "text": "Alex, 19,"
+    },
+    {
+     "age": 21,
+     "text": "Alex is 21"
+    }
+   ],
+   [
+    null,
+    null,
+    null,
+    null
+   ],
+   [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ]
+  ],
+  "sentences": [
+   [
+    "Mira drew the Sunblade and raised it high."
+   ],
+   [
+    "Mira had said nothing; they spoke of Mira."
+   ],
+   [
+    "said Mira, and Mira quietly smiled."
+   ],
+   [
+    "The Sunblade in her hand gleamed.",
+    "She pocketed the Sunblade."
+   ],
+   [
+    "They rode for two days, then half an hour, then 3 weeks and a month.",
+    "Twenty-two minutes later, nothing."
+   ],
+   [
+    "Alex was nineteen years old.",
+    "Twenty-year-old Alex laughed.",
+    "Alex, 19, ran.",
+    "Alex is 21 and tall."
+   ],
+   [
+    "Her grey eyes shone.",
+    "Alex’s hair was black.",
+    "His hair is golden-brown.",
+    "Whose blue-green eyes?"
+   ],
+   [
+    "“Run!”",
+    "she cried.",
+    "He ran…",
+    "Then: nothing?",
+    "Yes.",
+    "“Done.”",
+    "And so on."
+   ],
+   [
+    "Ünïcödé names: Zoë met Éric at the Café.",
+    "Zoë’s eyes were violet."
+   ]
+  ],
+  "fingerprints": [
+   "48e373",
+   "1chwqe6",
+   "fikqfe",
+   "1c8ae6e",
+   "1sh859n",
+   "172jmdy",
+   "1jouauv",
+   "axsc9a",
+   "1lve6k4",
+   "ztntfp",
+   "f43rbo",
+   "485ijx"
+  ],
+  "excerpts": [
+   "short",
+   "…xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MATCH yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy…",
+   "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a…",
+   "…b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b"
+  ],
+  "normalize": [
+   "re al cafe",
+   "e lan vital",
+   "spaced out",
+   "nai ve fine",
+   "a ngstro m 1 000",
+   "œuvre"
+  ]
+ }
+}

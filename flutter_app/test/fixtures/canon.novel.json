@@ -1,0 +1,1539 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "canon",
+  "title": "Canon",
+  "createdAt": 0,
+  "updatedAt": 0
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "c1",
+    "projectId": "canon",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 0
+   },
+   {
+    "id": "c2",
+    "projectId": "canon",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 2",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 2,
+    "updatedAt": 0
+   },
+   {
+    "id": "s2a",
+    "projectId": "canon",
+    "parentId": "c2",
+    "kind": "scene",
+    "title": "The duel",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 3,
+    "updatedAt": 0
+   },
+   {
+    "id": "c3",
+    "projectId": "canon",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 3",
+    "order": 3,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 4,
+    "updatedAt": 0
+   },
+   {
+    "id": "c4",
+    "projectId": "canon",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Chapter 4",
+    "order": 4,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 5,
+    "updatedAt": 0
+   }
+  ],
+  "chapterContents": [
+   {
+    "id": "c1",
+    "projectId": "canon",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira drew the Sunblade and raised it high."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Orrin was nineteen years old, and his hands were steady."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Her grey eyes shone with tears. Mira wept."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "They travelled for two days to reach Saltport from Greykeep."
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "content": [
+        {
+         "type": "text",
+         "text": "Interlude"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Orrin gripped the Sunblade with both hands."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "c2",
+    "projectId": "canon",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira smiled at the guard."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "They spoke of Mira often, and of the Sunblade."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "The Heiress",
+         "marks": [
+          {
+           "type": "entityLink",
+           "attrs": {
+            "entryId": "mira"
+           }
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": " said nothing."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "s2a",
+    "projectId": "canon",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Deep underground, the caves were cold."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Kai cast the fire spell anyway, half an hour later."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "c3",
+    "projectId": "canon",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "The Sunblade lay forgotten."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Orrin drew the Sunblade, the blade in his hand."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Pell, 23, laughed."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Alex’s hair was black as night."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   },
+   {
+    "id": "c4",
+    "projectId": "canon",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira returned, said nothing, and walked on."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "It took a week to reach Saltport from Greykeep."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 0
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "mira",
+    "projectId": "canon",
+    "category": "character",
+    "name": "Mira",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "mira-eyes",
+      "key": "Eyes",
+      "value": "Blue",
+      "type": "text"
+     },
+     {
+      "id": "mira-age",
+      "key": "Age",
+      "value": "19",
+      "type": "text"
+     }
+    ],
+    "createdAt": 5,
+    "updatedAt": 0
+   },
+   {
+    "id": "orrin",
+    "projectId": "canon",
+    "category": "character",
+    "name": "Orrin",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "orrin-age",
+      "key": "Age",
+      "value": "20",
+      "type": "text"
+     }
+    ],
+    "createdAt": 6,
+    "updatedAt": 0
+   },
+   {
+    "id": "pell",
+    "projectId": "canon",
+    "category": "character",
+    "name": "Pell",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "pell-age",
+      "key": "Age",
+      "value": "25",
+      "type": "text"
+     }
+    ],
+    "createdAt": 7,
+    "updatedAt": 0
+   },
+   {
+    "id": "alex",
+    "projectId": "canon",
+    "category": "character",
+    "name": "Alex",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [
+     {
+      "id": "alex-hair",
+      "key": "Hair",
+      "value": "Blonde",
+      "type": "text"
+     }
+    ],
+    "createdAt": 8,
+    "updatedAt": 0
+   },
+   {
+    "id": "kai",
+    "projectId": "canon",
+    "category": "character",
+    "name": "Kai",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 9,
+    "updatedAt": 0
+   },
+   {
+    "id": "sunblade",
+    "projectId": "canon",
+    "category": "item",
+    "name": "Sunblade",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 10,
+    "updatedAt": 0
+   },
+   {
+    "id": "greykeep",
+    "projectId": "canon",
+    "category": "location",
+    "name": "Greykeep",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 11,
+    "updatedAt": 0
+   },
+   {
+    "id": "saltport",
+    "projectId": "canon",
+    "category": "location",
+    "name": "Saltport",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 12,
+    "updatedAt": 0
+   },
+   {
+    "id": "spell",
+    "projectId": "canon",
+    "category": "lore",
+    "name": "Fire Spell",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 13,
+    "updatedAt": 0
+   },
+   {
+    "id": "guild",
+    "projectId": "canon",
+    "category": "faction",
+    "name": "Guild",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 14,
+    "updatedAt": 0
+   },
+   {
+    "id": "crown",
+    "projectId": "canon",
+    "category": "faction",
+    "name": "Crown",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 15,
+    "updatedAt": 0
+   },
+   {
+    "id": "mira2",
+    "projectId": "canon",
+    "category": "character",
+    "name": "mira",
+    "summary": "",
+    "description": "",
+    "image": null,
+    "notes": "",
+    "tags": [],
+    "fields": [],
+    "createdAt": 52,
+    "updatedAt": 0
+   }
+  ],
+  "continuityRules": [
+   {
+    "id": "r1",
+    "projectId": "canon",
+    "kind": "status",
+    "entryId": "mira",
+    "aliases": [],
+    "state": "deceased",
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c1",
+    "untilNodeId": "c4",
+    "note": "",
+    "createdAt": 16,
+    "updatedAt": 0
+   },
+   {
+    "id": "r2",
+    "projectId": "canon",
+    "kind": "possession",
+    "entryId": "sunblade",
+    "aliases": [],
+    "state": "held",
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": "mira",
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c2",
+    "untilNodeId": null,
+    "note": "",
+    "createdAt": 17,
+    "updatedAt": 0
+   },
+   {
+    "id": "r3",
+    "projectId": "canon",
+    "kind": "travel",
+    "entryId": "greykeep",
+    "aliases": [],
+    "state": null,
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": "saltport",
+    "amount": 10,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "createdAt": 18,
+    "updatedAt": 0
+   },
+   {
+    "id": "r4",
+    "projectId": "canon",
+    "kind": "power",
+    "entryId": "spell",
+    "aliases": [
+     "fire spell"
+    ],
+    "state": null,
+    "label": "",
+    "words": [
+     "underground"
+    ],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "createdAt": 19,
+    "updatedAt": 0
+   },
+   {
+    "id": "r5",
+    "projectId": "canon",
+    "kind": "status",
+    "entryId": "orrin",
+    "aliases": [],
+    "state": "condition",
+    "label": "lost his left hand",
+    "words": [
+     "both hands"
+    ],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "createdAt": 20,
+    "updatedAt": 0
+   },
+   {
+    "id": "r6",
+    "projectId": "canon",
+    "kind": "status",
+    "entryId": "pell",
+    "aliases": [],
+    "state": "absent",
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c2",
+    "untilNodeId": null,
+    "note": "",
+    "createdAt": 21,
+    "updatedAt": 0
+   },
+   {
+    "id": "r7",
+    "projectId": "canon",
+    "kind": "possession",
+    "entryId": "sunblade",
+    "aliases": [],
+    "state": "lost",
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c2",
+    "untilNodeId": "c3",
+    "note": "",
+    "createdAt": 22,
+    "updatedAt": 0
+   }
+  ],
+  "continuityResolutions": [
+   {
+    "id": "d1",
+    "projectId": "canon",
+    "key": "status|r1|c2|mentioned",
+    "kind": "intentional",
+    "note": "Remembered",
+    "message": "m",
+    "nodeId": "c2",
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "d2",
+    "projectId": "canon",
+    "key": "status|r9|gone|x",
+    "kind": "dismissed",
+    "note": "Remembered",
+    "message": "m",
+    "nodeId": null,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "d3",
+    "projectId": "canon",
+    "key": "timeline|dates|nothing",
+    "kind": "resolved",
+    "note": "Remembered",
+    "message": "m",
+    "nodeId": null,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "d4",
+    "projectId": "canon",
+    "key": "records|opposed|l1|l2",
+    "kind": "review",
+    "note": "Remembered",
+    "message": "m",
+    "nodeId": null,
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "d5",
+    "projectId": "canon",
+    "key": "canon|f3|unpaired",
+    "kind": "dismissed",
+    "note": "Remembered",
+    "message": "m",
+    "nodeId": null,
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "canonFacts": [
+   {
+    "id": "f1",
+    "projectId": "canon",
+    "subject": "Royal Academy",
+    "statement": "Founded 1,000 years ago",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [],
+    "sources": [
+     {
+      "id": "src1",
+      "type": "chapter",
+      "refId": "c1",
+      "block": null,
+      "quote": "founded",
+      "note": "",
+      "createdAt": 0
+     }
+    ],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 23,
+    "updatedAt": 0
+   },
+   {
+    "id": "f2",
+    "projectId": "canon",
+    "subject": "royal academy",
+    "statement": "Founded 500 years ago",
+    "kind": "lore",
+    "status": "provisional",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 24,
+    "updatedAt": 0
+   },
+   {
+    "id": "f3",
+    "projectId": "canon",
+    "subject": "Weather",
+    "statement": "It always rains",
+    "kind": "lore",
+    "status": "conflicting",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 25,
+    "updatedAt": 0
+   },
+   {
+    "id": "f4",
+    "projectId": "canon",
+    "subject": "Age",
+    "statement": "21",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [
+     "orrin"
+    ],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 26,
+    "updatedAt": 0
+   },
+   {
+    "id": "f5",
+    "projectId": "canon",
+    "subject": "Old name",
+    "statement": "Called Westhold",
+    "kind": "lore",
+    "status": "retconned",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 27,
+    "updatedAt": 0
+   },
+   {
+    "id": "f6",
+    "projectId": "canon",
+    "subject": "Older name",
+    "statement": "Called Easthold",
+    "kind": "lore",
+    "status": "retconned",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": "f7",
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 28,
+    "updatedAt": 0
+   },
+   {
+    "id": "f7",
+    "projectId": "canon",
+    "subject": "Newer name",
+    "statement": "Called Northhold",
+    "kind": "lore",
+    "status": "non-canon",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 29,
+    "updatedAt": 0
+   },
+   {
+    "id": "f8",
+    "projectId": "canon",
+    "subject": "Moons",
+    "statement": "Two moons",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [
+     "f9"
+    ],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 30,
+    "updatedAt": 0
+   },
+   {
+    "id": "f9",
+    "projectId": "canon",
+    "subject": "Sky",
+    "statement": "One moon",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 31,
+    "updatedAt": 0
+   },
+   {
+    "id": "f10",
+    "projectId": "canon",
+    "subject": "Dawn",
+    "statement": "The dawn was false",
+    "kind": "lore",
+    "status": "provisional",
+    "entryIds": [],
+    "sources": [
+     {
+      "id": "src2",
+      "type": "event",
+      "refId": "e-retcon",
+      "block": null,
+      "quote": "",
+      "note": "",
+      "createdAt": 0
+     },
+     {
+      "id": "src3",
+      "type": "note",
+      "refId": null,
+      "block": null,
+      "quote": "",
+      "note": "",
+      "createdAt": 0
+     }
+    ],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 32,
+    "updatedAt": 0
+   },
+   {
+    "id": "f11",
+    "projectId": "canon",
+    "subject": "Royal Academy",
+    "statement": "Founded long ago",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [
+     {
+      "factId": "f1"
+     }
+    ],
+    "history": [],
+    "notes": "",
+    "createdAt": 33,
+    "updatedAt": 0
+   },
+   {
+    "id": "f12",
+    "projectId": "canon",
+    "subject": "Age",
+    "statement": "Orrin is 20",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [
+     "orrin"
+    ],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 34,
+    "updatedAt": 0
+   },
+   {
+    "id": "f13",
+    "projectId": "canon",
+    "subject": "Eyes",
+    "statement": "Green",
+    "kind": "lore",
+    "status": "provisional",
+    "entryIds": [
+     "mira"
+    ],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 35,
+    "updatedAt": 0
+   },
+   {
+    "id": "f14",
+    "projectId": "canon",
+    "subject": "Réal",
+    "statement": "Café crème",
+    "kind": "lore",
+    "status": "canon",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 36,
+    "updatedAt": 0
+   },
+   {
+    "id": "f15",
+    "projectId": "canon",
+    "subject": "Real",
+    "statement": "Cafe creme",
+    "kind": "lore",
+    "status": "provisional",
+    "entryIds": [],
+    "sources": [],
+    "conflictsWith": [],
+    "replacedById": null,
+    "dismissed": [],
+    "history": [],
+    "notes": "",
+    "createdAt": 37,
+    "updatedAt": 0
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "e1",
+    "projectId": "canon",
+    "name": "The coronation",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 10,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 38
+   },
+   {
+    "id": "e-retcon",
+    "projectId": "canon",
+    "name": "The false dawn",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 11,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [
+     "c3"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 39,
+    "canon": "retconned"
+   },
+   {
+    "id": "e2",
+    "projectId": "canon",
+    "name": "The aftermath",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 12,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": "e-retcon",
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 40
+   },
+   {
+    "id": "e3",
+    "projectId": "canon",
+    "name": "Two days on",
+    "description": "",
+    "when": {
+     "precision": "relative",
+     "anchorId": "e-retcon",
+     "amount": 2,
+     "unit": "days",
+     "direction": "after"
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 41
+   },
+   {
+    "id": "e4",
+    "projectId": "canon",
+    "name": "The vigil",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 13,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [
+     {
+      "id": "mira",
+      "age": null
+     }
+    ],
+    "entryIds": [],
+    "nodeIds": [
+     "c3"
+    ],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 42
+   },
+   {
+    "id": "e5",
+    "projectId": "canon",
+    "name": "A dream",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 14,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "duration": null,
+    "importance": "minor",
+    "locationId": null,
+    "characters": [],
+    "entryIds": [],
+    "nodeIds": [],
+    "afterId": null,
+    "threadIds": [],
+    "labels": [],
+    "createdAt": 43,
+    "canon": "non-canon"
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "c3",
+    "projectId": "canon",
+    "objective": "",
+    "beats": [],
+    "entityIds": [],
+    "appearIds": [
+     "mira"
+    ],
+    "mentionIds": [],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "characterRelations": [
+   {
+    "id": "rel1",
+    "projectId": "canon",
+    "fromId": "mira",
+    "toId": "orrin",
+    "stages": [
+     {
+      "id": "st0",
+      "startNodeId": null,
+      "label": "Friends"
+     },
+     {
+      "id": "st1",
+      "startNodeId": "c2",
+      "label": "Rivals"
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "l1",
+    "projectId": "canon",
+    "fromId": "guild",
+    "toId": "crown",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 44,
+    "type": "allied-with"
+   },
+   {
+    "id": "l2",
+    "projectId": "canon",
+    "fromId": "crown",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 45,
+    "type": "at-war-with"
+   },
+   {
+    "id": "l3",
+    "projectId": "canon",
+    "fromId": "mira",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 46,
+    "type": "member-of",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "c3"
+     },
+     "until": {
+      "kind": "node",
+      "nodeId": "c1"
+     }
+    }
+   },
+   {
+    "id": "l4",
+    "projectId": "canon",
+    "fromId": "orrin",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 47,
+    "type": "member-of",
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 10,
+       "month": 13,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "l5",
+    "projectId": "canon",
+    "fromId": "pell",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 48,
+    "type": "member-of",
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "gone-node"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "l6",
+    "projectId": "canon",
+    "fromId": "kai",
+    "toId": "crown",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 49,
+    "type": "member-of",
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "e-retcon"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "l7",
+    "projectId": "canon",
+    "fromId": "alex",
+    "toId": "crown",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 50,
+    "type": "member-of",
+    "canon": "non-canon",
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "e-retcon"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "l8",
+    "projectId": "canon",
+    "fromId": "alex",
+    "toId": "guild",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 51,
+    "type": "related",
+    "canon": "provisional"
+   }
+  ],
+  "journeys": [
+   {
+    "id": "j1",
+    "projectId": "canon",
+    "travellerIds": [
+     "kai"
+    ],
+    "fromId": "greykeep",
+    "toId": "saltport",
+    "via": [],
+    "departure": {
+     "kind": "node",
+     "nodeId": "gone-node2"
+    },
+    "arrival": null,
+    "afterId": null,
+    "method": "",
+    "methodId": null,
+    "duration": null,
+    "distance": null,
+    "distanceUnit": "",
+    "eventIds": [],
+    "note": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "progressChanges": [
+   {
+    "id": "p1",
+    "projectId": "canon",
+    "entryId": "pell",
+    "categoryId": "cat",
+    "action": "set",
+    "subject": "",
+    "value": "3",
+    "refId": null,
+    "abilityId": null,
+    "at": {
+     "kind": "event",
+     "eventId": "e-retcon"
+    },
+    "cost": "",
+    "note": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "progressCategories": [
+   {
+    "id": "cat",
+    "projectId": "canon",
+    "name": "Level",
+    "shape": "value",
+    "ladder": [],
+    "characterIds": [],
+    "order": 0,
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "characterSecrets": [
+   {
+    "id": "s1",
+    "projectId": "canon",
+    "entryId": "mira",
+    "title": "The heir",
+    "description": "Mira is the heir",
+    "status": "Hidden",
+    "self": "knows",
+    "knows": [
+     "alex"
+    ],
+    "suspects": [],
+    "unaware": [],
+    "reader": "unaware",
+    "readerNodeId": null,
+    "firstNodeId": "c1",
+    "revealNodeId": "c4",
+    "revealEventId": "e1",
+    "nodeIds": [],
+    "threadIds": [],
+    "notes": "",
+    "records": [
+     {
+      "id": "k1",
+      "characterId": "orrin",
+      "state": "unaware",
+      "belief": "",
+      "nodeId": "c1",
+      "eventId": "e1",
+      "how": "",
+      "fromId": null
+     },
+     {
+      "id": "k2",
+      "characterId": "pell",
+      "state": "knows",
+      "belief": "",
+      "nodeId": "c2",
+      "eventId": null,
+      "how": "overheard",
+      "fromId": "orrin"
+     },
+     {
+      "id": "k3",
+      "characterId": "kai",
+      "state": "false",
+      "belief": "Pell is the heir",
+      "nodeId": "c1",
+      "eventId": null,
+      "how": "",
+      "fromId": null
+     },
+     {
+      "id": "k4",
+      "characterId": "orrin",
+      "state": "knows",
+      "belief": "",
+      "nodeId": "c4",
+      "eventId": "e4",
+      "how": "",
+      "fromId": null
+     },
+     {
+      "id": "k6",
+      "characterId": "alex",
+      "state": "suspects",
+      "belief": "",
+      "nodeId": null,
+      "eventId": "e2",
+      "how": "",
+      "fromId": null
+     },
+     {
+      "id": "k5",
+      "characterId": "kai",
+      "state": "partial",
+      "belief": "",
+      "nodeId": null,
+      "eventId": null,
+      "how": "",
+      "fromId": null
+     }
+    ],
+    "needs": [
+     {
+      "id": "n1",
+      "characterId": "orrin",
+      "nodeId": "c2",
+      "eventId": null,
+      "note": "uses it"
+     },
+     {
+      "id": "n2",
+      "characterId": "kai",
+      "nodeId": "c3",
+      "eventId": "e2",
+      "note": ""
+     }
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   },
+   {
+    "id": "s2",
+    "projectId": "canon",
+    "entryId": "pell",
+    "title": "Plain secret",
+    "description": "",
+    "status": "Hidden",
+    "self": "unaware",
+    "knows": [],
+    "suspects": [
+     "orrin"
+    ],
+    "unaware": [
+     "mira"
+    ],
+    "reader": "knows",
+    "readerNodeId": null,
+    "firstNodeId": null,
+    "revealNodeId": null,
+    "revealEventId": null,
+    "nodeIds": [],
+    "threadIds": [],
+    "notes": "",
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ],
+  "characterProfiles": [
+   {
+    "id": "mira",
+    "projectId": "canon",
+    "entryId": "mira",
+    "aliases": [
+     "The Heiress"
+    ],
+    "createdAt": 0,
+    "updatedAt": 0
+   }
+  ]
+ }
+}

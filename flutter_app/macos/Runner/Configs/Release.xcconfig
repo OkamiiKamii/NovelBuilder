@@ -1,0 +1,6 @@
+#include "../../Flutter/Flutter-Release.xcconfig"
+#include "Warnings.xcconfig"
+
+// Apple-silicon Macs only. Flutter 3.38 checks a universal (Intel + Apple) build with a lipo
+// command that Xcode 27 no longer accepts, so universal release builds fail. Debug builds are unaffected.
+ARCHS = arm64

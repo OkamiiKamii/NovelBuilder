@@ -1,0 +1,1172 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:super_editor/super_editor.dart';
+
+import '../../core/format.dart';
+import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/confirm_dialog.dart';
+import '../../core/widgets/save_status_indicator.dart';
+import '../../shared/data/providers.dart';
+import '../../shared/domain/json.dart';
+import '../../shared/domain/manuscript/prose.dart';
+import '../../shared/domain/model/story_order.dart';
+import '../../shared/domain/records/category.dart';
+import '../../shared/domain/records/entry.dart';
+import '../../shared/domain/records/story_node.dart';
+import '../characters/character_actions.dart';
+import '../characters/widgets/vault.dart';
+import 'data/manuscript_service.dart';
+import 'drafts_dialog.dart';
+import 'editor/find_bar.dart';
+import 'editor/link_bar.dart';
+import 'editor/prose_document.dart';
+import 'version_history.dart';
+import 'write_providers.dart';
+import 'writing_prefs.dart';
+import 'writing_prefs_controls.dart';
+
+/// Saves are made at most this long apart while the author keeps typing (as well as when typing pauses).
+const _maxUnsaved = Duration(seconds: 5);
+
+/// Crash copies are written this often while there is unsaved writing.
+const _draftEvery = Duration(milliseconds: 250);
+
+/// Writing one chapter or scene.
+///
+/// NON-INVASIVE EDITING: the editor is built with no automatic conversions (no Markdown shortcuts, no smart dashes,
+/// no turning addresses into links, nothing fetched from the network) and opens no links. The author's keys are the
+/// only thing that changes the text.
+class ChapterEditor extends ConsumerStatefulWidget {
+  const ChapterEditor({super.key, required this.novelId, required this.node, this.onBack});
+
+  final String novelId;
+  final StoryNode node;
+
+  /// On phones: back to the outline.
+  final VoidCallback? onBack;
+
+  @override
+  ConsumerState<ChapterEditor> createState() => _ChapterEditorState();
+}
+
+class _ChapterEditorState extends ConsumerState<ChapterEditor> {
+  late final ManuscriptService _service = ref.read(manuscriptServiceProvider);
+  late final _saves = ref.read(saveControllerProvider);
+  late final _title = TextEditingController(text: widget.node.title);
+  final _focus = FocusNode();
+
+  late OpenedText _opened;
+  late int _rev;
+  EditableProse? _prose;
+  MutableDocument? _document;
+  MutableDocumentComposer? _composer;
+  Editor? _editor;
+  ({JsonMap doc, DateTime at})? _recovered;
+  bool _dirty = false;
+  bool _conflict = false;
+  bool _findOpen = false;
+  DateTime? _dirtySince;
+  Timer? _draftTimer;
+  Timer? _countTimer;
+  ({int words, int characters, int paragraphs, int readingMinutes}) _counts = measure(const []);
+
+  /// The chapter's words when this sitting began: a split or a restore starts a new one.
+  int _sessionStart = 0;
+
+  String get _saveKey => 'chapter:${widget.node.id}';
+
+  /// Words to find when the chapter was opened from search, and the paragraph they were found in.
+  ({String term, int block})? _findStart;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+    final pending = ref.read(pendingFindProvider);
+    if (pending != null && pending.nodeId == widget.node.id && _editor != null) {
+      _findStart = (term: pending.term, block: pending.block);
+      _findOpen = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) ref.read(pendingFindProvider.notifier).request(null);
+      });
+    }
+  }
+
+  void _load({JsonMap? override}) {
+    _opened = _service.open(widget.novelId, widget.node.id);
+    _rev = _opened.rev;
+    _recovered = override == null ? _opened.recovered : null;
+    _attach(override ?? _opened.doc);
+  }
+
+  void _attach(JsonMap? doc) {
+    _detach();
+    _prose = editableDocument(doc);
+    _counts = measureDoc(doc);
+    _sessionStart = _counts.words;
+    final document = _prose!.document;
+    if (document == null) return;
+    _document = document;
+    _composer = MutableDocumentComposer();
+    _editor = Editor(
+      editables: {Editor.documentKey: document, Editor.composerKey: _composer!},
+      requestHandlers: List<EditRequestHandler>.of(defaultRequestHandlers.cast<EditRequestHandler>()),
+      // Only keeps the typing style in step with the caret. Every converting reaction is left out on purpose.
+      reactionPipeline: [UpdateComposerTextStylesReaction()],
+      isHistoryEnabled: true,
+    );
+    document.addListener(_changed);
+  }
+
+  void _detach() {
+    _document?.removeListener(_changed);
+    // The editor on screen may still be using its composer this frame: let it go first.
+    final composer = _composer;
+    if (composer != null) WidgetsBinding.instance.addPostFrameCallback((_) => composer.dispose());
+    _editor = null;
+    _composer = null;
+    _document = null;
+  }
+
+  JsonMap _currentDoc() => documentToProse(_document!, extras: _prose!.docExtras);
+
+  void _changed(DocumentChangeLog _) {
+    _dirty = true;
+    final now = DateTime.now();
+    _dirtySince ??= now;
+    if (_conflict) return;
+    if (now.difference(_dirtySince!) > _maxUnsaved) {
+      _saves.saveNow(_saveKey, _save);
+    } else {
+      _saves.schedule(_saveKey, _save);
+    }
+    _draftTimer ??= Timer(_draftEvery, _writeDraft);
+    _countTimer?.cancel();
+    _countTimer = Timer(const Duration(milliseconds: 300), () {
+      if (mounted && _document != null) setState(() => _counts = measureDoc(_currentDoc()));
+    });
+  }
+
+  void _writeDraft() {
+    _draftTimer = null;
+    if (_dirty && _document != null) _service.saveDraft(widget.novelId, widget.node.id, _currentDoc(), _rev);
+  }
+
+  /// The autosave: the editor's document exactly as it is, against the revision it was opened at.
+  void _save() {
+    if (_document == null || !_dirty) return;
+    try {
+      _rev = _service.save(widget.novelId, widget.node.id, _currentDoc(), baseRev: _rev);
+      _dirty = false;
+      _dirtySince = null;
+    } on SaveConflict {
+      if (!_conflict && mounted) {
+        setState(() => _conflict = true);
+        WidgetsBinding.instance.addPostFrameCallback((_) => _resolveConflict());
+      }
+      rethrow; // Shown as "Not saved" until the author decides.
+    }
+  }
+
+  Future<void> _resolveConflict() async {
+    final keepMine = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('This chapter was saved somewhere else'),
+        content: const Text(
+          'It was changed in another window since you opened it here. Which text should be kept? The other one is '
+          'kept in the chapter\'s history either way, so nothing is lost.',
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Use the saved text')),
+          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Keep my text')),
+        ],
+      ),
+    );
+    if (!mounted) return;
+    if (keepMine == true) {
+      final doc = _currentDoc();
+      _saves.saveNow(_saveKey, () {
+        _rev = _service.save(widget.novelId, widget.node.id, doc, baseRev: _rev, force: true);
+        _dirty = false;
+      });
+    } else {
+      // My text goes into history before the saved one is loaded.
+      _service.keepInHistory(
+        widget.novelId,
+        widget.node.id,
+        _currentDoc(),
+        reason: 'conflict',
+        label: 'Your text, set aside in a conflict',
+      );
+      _saves.saveNow(_saveKey, () {}); // Nothing of mine is waiting any more.
+      _dirty = false;
+    }
+    setState(() {
+      _conflict = false;
+      _dirtySince = null;
+      _load();
+    });
+  }
+
+  /// Saves now (Cmd/Ctrl+S, leaving the chapter, splitting).
+  bool _flush() {
+    _draftTimer?.cancel();
+    _draftTimer = null;
+    return _dirty ? _saves.saveNow(_saveKey, _save) : true;
+  }
+
+  void _rename() {
+    final title = _title.text;
+    if (title.trim() == widget.node.title) return;
+    _saves.saveNow('node:${widget.node.id}:title', () => _service.rename(widget.novelId, widget.node.id, title));
+  }
+
+  @override
+  void dispose() {
+    _rename();
+    _flush();
+    _countTimer?.cancel();
+    _detach();
+    _title.dispose();
+    _focus.dispose();
+    super.dispose();
+  }
+
+  void _tell(String message) => ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message)));
+
+  // ----------------------------------------------------------------------------------------------- actions
+
+  void _keepRecovered() {
+    final doc = _recovered!.doc;
+    setState(() {
+      _recovered = null;
+      _attach(doc);
+      _dirty = true;
+      _dirtySince = DateTime.now();
+    });
+    _saves.saveNow(_saveKey, _save);
+  }
+
+  void _discardRecovered() {
+    _service.discardDraft(widget.novelId, widget.node.id);
+    setState(() => _recovered = null);
+  }
+
+  Future<void> _splitHere() async {
+    final selection = _composer?.selection;
+    if (selection == null) return _tell('Put the cursor in the paragraph that should start the new part.');
+    final nodes = _document!.toList();
+    final at = nodes.indexWhere((n) => n.id == selection.extent.nodeId);
+    if (at <= 0) return _tell('The cursor is in the first paragraph: there is nothing before it to keep.');
+    final ok = await showConfirmDialog(
+      context,
+      title: 'Split “${widget.node.displayTitle}” here?',
+      message:
+          'Everything from the paragraph with the cursor on becomes a new ${widget.node.kindKey} right after this one. '
+          'This text is kept in the history first.',
+      confirmLabel: 'Split',
+    );
+    if (!ok || !mounted || !_flush()) return;
+    final head = documentToProse(MutableDocument(nodes: nodes.sublist(0, at)), extras: _prose!.docExtras);
+    final tail = documentToProse(MutableDocument(nodes: nodes.sublist(at)), extras: _prose!.docExtras);
+    try {
+      _service.split(widget.novelId, widget.node.id, head, tail);
+      setState(_load);
+      _tell('Split. The second part is right after this one in the outline.');
+    } on Object catch (e) {
+      _tell('It could not be split, and nothing was changed: $e');
+    }
+  }
+
+  Future<void> _openDrafts() async {
+    if (!_flush()) return _tell('The latest changes are not saved yet, so the drafts cannot be changed.');
+    final changed = await showDrafts(context, service: _service, novelId: widget.novelId, node: widget.node);
+    if (mounted) setState(changed == true ? _load : () {});
+  }
+
+  Future<void> _openHistory() async {
+    if (!_flush()) return _tell('The latest changes are not saved yet, so history cannot be compared.');
+    final restored = await showVersionHistory(
+      context,
+      service: _service,
+      novelId: widget.novelId,
+      node: widget.node,
+      current: _document == null ? _opened.doc : _currentDoc(),
+      rev: _rev,
+    );
+    if (restored == true && mounted) setState(_load);
+  }
+
+  Future<void> _linkEntry() async {
+    final selection = _composer?.selection;
+    if (selection == null || selection.isCollapsed) return _tell('Select the words to link to a codex entry first.');
+    final entries = ref.read(novelStoreProvider).rowsIn(widget.novelId, 'loreEntries');
+    if (entries.isEmpty) return _tell('This novel has no codex entries yet to link to.');
+    final picked = await showDialog<String>(
+      context: context,
+      builder: (_) => _EntryPicker(entries: entries),
+    );
+    if (picked == null) return;
+    _editor!.execute([
+      AddTextAttributionsRequest(documentRange: selection, attributions: {EntityLinkAttribution(picked)}),
+    ]);
+  }
+
+  void _unlink() {
+    final selection = _composer?.selection;
+    if (selection == null || selection.isCollapsed) return _tell('Select the linked words to unlink.');
+    final node = _document!.getNodeById(selection.extent.nodeId);
+    final links = <Attribution>{
+      if (node is TextNode)
+        for (var i = 0; i < node.text.length; i++)
+          ...node.text.getAllAttributionsAt(i).whereType<EntityLinkAttribution>(),
+    };
+    if (links.isEmpty) return;
+    _editor!.execute([RemoveTextAttributionsRequest(documentRange: selection, attributions: links)]);
+  }
+
+  void _openFind() {
+    if (_editor != null) setState(() => _findOpen = true);
+  }
+
+  Future<void> _openPrefs() {
+    const body = SingleChildScrollView(padding: EdgeInsets.fromLTRB(20, 0, 20, 24), child: WritingPrefsControls());
+    if (WindowSize.of(context) == WindowSize.compact) {
+      return showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (_) => const SafeArea(child: body),
+      );
+    }
+    return showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Writing settings'),
+        contentPadding: const EdgeInsets.only(top: 12),
+        content: const SizedBox(width: 460, child: body),
+        actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Done'))],
+      ),
+    );
+  }
+
+  Future<void> _goals() async {
+    await showDialog<void>(
+      context: context,
+      builder: (_) => _GoalsDialog(service: _service, novelId: widget.novelId),
+    );
+    if (mounted) setState(() {});
+  }
+
+  /// "CHAPTER 3" over a chapter, "CHAPTER 3 · SCENE" over one of its scenes; nothing over a volume or an arc.
+  String? _kicker() {
+    final n = StoryOrder.of(ref.watch(outlineProvider)).chapterNumber[widget.node.id];
+    if (n == null) return null;
+    return switch (widget.node.kind) {
+      NodeKind.chapter => 'CHAPTER $n',
+      NodeKind.scene => 'CHAPTER $n · SCENE',
+      _ => null,
+    };
+  }
+
+  // ------------------------------------------------------------------------------------------------- view
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final compact = WindowSize.of(context) == WindowSize.compact;
+    final written = _service.wordsWritten(widget.novelId);
+    final goals = _service.wordGoals(widget.novelId);
+
+    final prefs = ref.watch(writingPrefsProvider)[deviceFormOf(context)]!;
+    final focus = ref.watch(focusModeProvider);
+    final page = pageColors(prefs.page);
+    void toggleFocus() => ref.read(focusModeProvider.notifier).toggle();
+    void escape() {
+      if (_findOpen) {
+        setState(() => _findOpen = false);
+      } else if (focus) {
+        ref.read(focusModeProvider.notifier).set(false);
+      }
+    }
+
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.keyS, meta: true): _flush,
+        const SingleActivator(LogicalKeyboardKey.keyS, control: true): _flush,
+        const SingleActivator(LogicalKeyboardKey.keyF, meta: true): _openFind,
+        const SingleActivator(LogicalKeyboardKey.keyF, control: true): _openFind,
+        const SingleActivator(LogicalKeyboardKey.keyF, meta: true, shift: true): toggleFocus,
+        const SingleActivator(LogicalKeyboardKey.keyF, control: true, shift: true): toggleFocus,
+        const SingleActivator(LogicalKeyboardKey.escape): escape,
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (focus)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                child: TextButton.icon(
+                  onPressed: () => ref.read(focusModeProvider.notifier).set(false),
+                  icon: const Icon(Icons.fullscreen_exit),
+                  label: const Text('Exit focus'),
+                ),
+              ),
+            )
+          else
+            Padding(
+              padding: EdgeInsets.fromLTRB(compact ? 4 : 16, 8, 8, 0),
+              child: Row(
+                children: [
+                  if (widget.onBack != null)
+                    IconButton(
+                      tooltip: 'Back to the outline',
+                      onPressed: widget.onBack,
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                  const Spacer(),
+                  if (_editor != null)
+                    IconButton(tooltip: 'Find and replace (⌘F)', onPressed: _openFind, icon: const Icon(Icons.search)),
+                  IconButton(tooltip: 'Writing settings', onPressed: _openPrefs, icon: const Icon(Icons.text_fields)),
+                  IconButton(tooltip: 'Focus mode (⇧⌘F)', onPressed: toggleFocus, icon: const Icon(Icons.fullscreen)),
+                  IconButton(tooltip: 'Alternate drafts', onPressed: _openDrafts, icon: const Icon(Icons.alt_route)),
+                  IconButton(tooltip: 'Version history', onPressed: _openHistory, icon: const Icon(Icons.history)),
+                ],
+              ),
+            ),
+          if (!focus)
+            _DraftLine(service: _service, novelId: widget.novelId, nodeId: widget.node.id, onOpen: _openDrafts),
+          if (_recovered != null)
+            MaterialBanner(
+              content: Text(
+                'Unsaved writing from ${formatRelative(context, _recovered!.at.millisecondsSinceEpoch)} was recovered. '
+                'Keep it, or keep the saved text?',
+              ),
+              actions: [
+                TextButton(onPressed: _discardRecovered, child: const Text('Keep the saved text')),
+                FilledButton(onPressed: _keepRecovered, child: const Text('Keep the recovered writing')),
+              ],
+            ),
+          if (_editor != null && !focus)
+            _Toolbar(
+              editor: _editor!,
+              composer: _composer!,
+              document: _document!,
+              onLink: _linkEntry,
+              onUnlink: _unlink,
+              onSplit: _splitHere,
+            ),
+          if (_findOpen && _editor != null)
+            FindBar(
+              editor: _editor!,
+              document: _document!,
+              initialTerm: _findStart?.term,
+              initialBlock: _findStart?.block,
+              onClose: () => setState(() {
+                _findOpen = false;
+                _findStart = null;
+              }),
+            ),
+          if (_editor != null && !focus)
+            LinkBar(
+              composer: _composer!,
+              document: _document!,
+              entryOf: (id) {
+                final row = ref.read(novelStoreProvider).row(widget.novelId, 'loreEntries', id);
+                return row == null ? null : Entry(row);
+              },
+              kindOf: (e) {
+                final rows = ref.read(novelStoreProvider).rowsIn(widget.novelId, 'loreSchemas');
+                final kinds = resolveCategories([for (final r in rows) Category(r)]);
+                return kinds.where((c) => c.key == e.category).firstOrNull?.singular ?? 'Entry';
+              },
+              onOpen: (entry) {
+                _flush();
+                context.go(entryPath(entry.id, character: entry.category == 'character'));
+              },
+            ),
+          Expanded(
+            child: _Desk(
+              compact: compact,
+              paper: page?.background,
+              width: prefs.width.maxWidth,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: _ChapterHeading(
+                      title: _title,
+                      kicker: _kicker(),
+                      hint: 'Untitled ${widget.node.kindKey}',
+                      compact: compact,
+                      ink: page?.text,
+                      muted: page?.muted,
+                      onRename: _rename,
+                    ),
+                  ),
+                  if (_editor == null)
+                    _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
+                  else
+                    SuperEditor(
+                      // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
+                      key: ObjectKey(_editor),
+                      editor: _editor!,
+                      focusNode: _focus,
+                      autofocus: !compact,
+                      stylesheet: writingStylesheet(theme, prefs),
+                      contentTapDelegateFactories: const [],
+                    ),
+                ],
+              ),
+            ),
+          ),
+          if (!focus)
+            _Meter(
+              words: _counts.words,
+              minutes: _counts.readingMinutes,
+              session: _counts.words - _sessionStart,
+              today: written.today,
+              week: written.week,
+              daily: goals.daily,
+              weekly: goals.weekly,
+              onGoals: _goals,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// THE WRITING DESK: on a tablet or a computer the chapter is a sheet of paper on a desk, as wide as the author's
+/// line length plus its margins. On a phone the paper is the whole screen.
+class _Desk extends StatelessWidget {
+  const _Desk({required this.compact, required this.paper, required this.width, required this.child});
+
+  final bool compact;
+
+  /// The page colour the author chose, or null for the app's own.
+  final Color? paper;
+  final double width;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final dark = scheme.brightness == Brightness.dark;
+    final sheet = paper ?? (dark ? scheme.surfaceContainerHigh : scheme.surfaceContainerLowest);
+    if (compact) return ColoredBox(color: sheet, child: child);
+    return ColoredBox(
+      color: dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer,
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          // The text's own width, its 24-point margins, and the paper's edge.
+          constraints: BoxConstraints(maxWidth: width.isFinite ? width + 112 : double.infinity),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                border: Border.all(color: scheme.outlineVariant.withValues(alpha: dark ? 0.6 : 0.45)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: dark ? 0.45 : 0.10),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: dark ? 0.3 : 0.06),
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                child: ColoredBox(
+                  color: sheet,
+                  child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: child),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The top of the page, set like a printed book's: where it sits, the title (typed here), and an ornament.
+class _ChapterHeading extends StatelessWidget {
+  const _ChapterHeading({
+    required this.title,
+    required this.kicker,
+    required this.hint,
+    required this.compact,
+    required this.ink,
+    required this.muted,
+    required this.onRename,
+  });
+
+  final TextEditingController title;
+  final String? kicker;
+  final String hint;
+  final bool compact;
+  final Color? ink;
+  final Color? muted;
+  final VoidCallback onRename;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final faint = muted ?? scheme.onSurfaceVariant;
+    final style = vaultHeading(context, size: compact ? 22 : 30, weight: 600, color: ink ?? scheme.onSurface);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24, compact ? 20 : 44, 24, 4),
+      child: Column(
+        children: [
+          if (kicker != null)
+            Text(
+              kicker!,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, letterSpacing: 3, fontWeight: FontWeight.w600, color: faint),
+            ),
+          TextField(
+            controller: title,
+            textAlign: TextAlign.center,
+            style: style,
+            maxLines: null,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              filled: false,
+              border: InputBorder.none,
+              hintText: hint,
+              hintStyle: style.copyWith(color: faint.withValues(alpha: 0.6)),
+              semanticCounterText: '',
+            ),
+            onSubmitted: (_) => onRename(),
+            onTapOutside: (_) => onRename(),
+          ),
+          ExcludeSemantics(child: _Ornament(color: ink == null ? scheme.primary : faint)),
+        ],
+      ),
+    );
+  }
+}
+
+/// A rule, a diamond, a rule: the mark under a printed chapter heading.
+class _Ornament extends StatelessWidget {
+  const _Ornament({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) =>
+      SizedBox(width: 148, height: 18, child: CustomPaint(painter: _OrnamentPainter(color)));
+}
+
+class _OrnamentPainter extends CustomPainter {
+  _OrnamentPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final mid = size.center(Offset.zero);
+    final line = Paint()
+      ..color = color.withValues(alpha: 0.7)
+      ..strokeWidth = 1;
+    canvas.drawLine(Offset(0, mid.dy), Offset(mid.dx - 12, mid.dy), line);
+    canvas.drawLine(Offset(mid.dx + 12, mid.dy), Offset(size.width, mid.dy), line);
+    final diamond = Path()
+      ..moveTo(mid.dx, mid.dy - 5)
+      ..lineTo(mid.dx + 5, mid.dy)
+      ..lineTo(mid.dx, mid.dy + 5)
+      ..lineTo(mid.dx - 5, mid.dy)
+      ..close();
+    canvas.drawPath(diamond, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_OrnamentPainter old) => old.color != color;
+}
+
+/// Under the page: the chapter's length, this sitting's words, and today's against the author's goal, as a ring
+/// that closes when the goal is met.
+class _Meter extends StatelessWidget {
+  const _Meter({
+    required this.words,
+    required this.minutes,
+    required this.session,
+    required this.today,
+    required this.week,
+    required this.daily,
+    required this.weekly,
+    required this.onGoals,
+  });
+
+  final int words;
+  final int minutes;
+  final int session;
+  final int today;
+  final int week;
+  final int? daily;
+  final int? weekly;
+  final VoidCallback onGoals;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final muted = theme.textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant);
+    final strong = theme.textTheme.bodySmall?.copyWith(color: scheme.onSurface, fontWeight: FontWeight.w600);
+    final reached = daily != null && today >= daily!;
+    return Material(
+      color: scheme.surface,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: scheme.outlineVariant)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+          child: Wrap(
+            spacing: 12,
+            runSpacing: 0,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Semantics(
+                button: true,
+                child: InkWell(
+                  onTap: onGoals,
+                  borderRadius: BorderRadius.circular(8),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 48),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox.square(
+                            dimension: 22,
+                            child: reached
+                                ? Icon(Icons.check_circle, size: 22, color: scheme.primary)
+                                : CircularProgressIndicator(
+                                    value: daily == null || daily == 0 ? 0 : (today / daily!).clamp(0.0, 1.0),
+                                    strokeWidth: 3,
+                                    backgroundColor: scheme.outlineVariant,
+                                    semanticsLabel: 'Today\'s goal',
+                                  ),
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              daily == null
+                                  ? 'Today: ${formatNumber(today)} words · Set a goal'
+                                  : 'Today: ${formatNumber(today)} of ${formatNumber(daily!)} words'
+                                        '${reached ? ' · goal reached' : ''}',
+                              style: (reached ? strong : muted)?.copyWith(
+                                decoration: daily == null ? TextDecoration.underline : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (session != 0)
+                Text('${session > 0 ? '+' : '−'}${formatNumber(session.abs())} this session', style: strong),
+              Text('${plural(words, 'word')} · $minutes min read', style: muted),
+              if (weekly != null) Text('This week: ${formatNumber(week)} of ${formatNumber(weekly!)}', style: muted),
+              const SaveStatusIndicator(compact: true),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The chapter's text as the author set it up (font, size, spacing, width, page colour), or in the app's colours.
+/// Links to codex entries are underlined, in the accent colour.
+Stylesheet writingStylesheet(ThemeData theme, WritingPrefs prefs) {
+  final page = pageColors(prefs.page);
+  final text = page?.text ?? theme.colorScheme.onSurface;
+  final muted = page?.muted ?? theme.colorScheme.onSurfaceVariant;
+  final font = fontFor(prefs.font, theme.platform);
+  final size = prefs.fontSize;
+  final gap = prefs.paragraphSpacing * size * prefs.lineHeight;
+  TextStyle heading(double scale) =>
+      TextStyle(color: text, fontSize: size * scale, fontWeight: FontWeight.w700, height: 1.3);
+  return Stylesheet(
+    rules: [
+      StyleRule(
+        BlockSelector.all,
+        (doc, node) => {
+          Styles.maxWidth: prefs.width.maxWidth,
+          Styles.padding: const CascadingPadding.symmetric(horizontal: 24),
+          Styles.textStyle: TextStyle(
+            color: text,
+            fontSize: size,
+            height: prefs.lineHeight,
+            fontFamily: font.family,
+            fontFamilyFallback: font.fallback,
+          ),
+        },
+      ),
+      StyleRule(
+        const BlockSelector('header1'),
+        (doc, node) => {Styles.padding: CascadingPadding.only(top: size * 1.6), Styles.textStyle: heading(1.67)},
+      ),
+      StyleRule(
+        const BlockSelector('header2'),
+        (doc, node) => {Styles.padding: CascadingPadding.only(top: size * 1.3), Styles.textStyle: heading(1.33)},
+      ),
+      StyleRule(
+        const BlockSelector('header3'),
+        (doc, node) => {Styles.padding: CascadingPadding.only(top: size * 1.1), Styles.textStyle: heading(1.11)},
+      ),
+      StyleRule(const BlockSelector('paragraph'), (doc, node) => {Styles.padding: CascadingPadding.only(top: gap)}),
+      StyleRule(
+        const BlockSelector('blockquote'),
+        (doc, node) => {
+          Styles.padding: CascadingPadding.only(top: gap + 6),
+          Styles.textStyle: TextStyle(color: muted),
+          Styles.backgroundColor: (page?.muted ?? theme.colorScheme.onSurface).withValues(alpha: 0.08),
+          Styles.borderRadius: BorderRadius.circular(6),
+        },
+      ),
+      StyleRule(
+        const BlockSelector('listItem'),
+        (doc, node) => {Styles.padding: CascadingPadding.only(top: gap / 2 + 2)},
+      ),
+      StyleRule(BlockSelector.all.first(), (doc, node) => {Styles.padding: const CascadingPadding.only(top: 16)}),
+      StyleRule(BlockSelector.all.last(), (doc, node) => {Styles.padding: const CascadingPadding.only(bottom: 96)}),
+    ],
+    inlineTextStyler: (attributions, style) {
+      var s = defaultInlineTextStyler(attributions, style);
+      if (attributions.any((a) => a is EntityLinkAttribution)) {
+        s = s.copyWith(
+          decoration: TextDecoration.combine([if (s.decoration != null) s.decoration!, TextDecoration.underline]),
+          decorationStyle: TextDecorationStyle.dotted,
+          decorationColor: theme.colorScheme.primary,
+        );
+      }
+      return s;
+    },
+  );
+}
+
+/// Shown (as a sliver, under the heading) when a chapter holds something the editor cannot reproduce exactly: the text, readable, with the reason.
+class _ReadOnly extends StatelessWidget {
+  const _ReadOnly({required this.doc, required this.reason});
+
+  final JsonMap? doc;
+  final String? reason;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SliverPadding(
+      padding: const EdgeInsets.all(24),
+      sliver: SliverList.list(
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Shown read-only so nothing is lost: ${reason ?? 'this text cannot be edited here yet'}. Your text is '
+                'stored exactly as it was.',
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          for (final b in docBlocks(doc))
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: SelectableText(b.text, style: b.heading ? theme.textTheme.titleLarge : theme.textTheme.bodyLarge),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Toolbar extends StatelessWidget {
+  const _Toolbar({
+    required this.editor,
+    required this.composer,
+    required this.document,
+    required this.onLink,
+    required this.onUnlink,
+    required this.onSplit,
+  });
+
+  final Editor editor;
+  final MutableDocumentComposer composer;
+  final MutableDocument document;
+  final VoidCallback onLink;
+  final VoidCallback onUnlink;
+  final VoidCallback onSplit;
+
+  void _style(Attribution a) {
+    final selection = composer.selection;
+    if (selection == null) return;
+    if (selection.isCollapsed) {
+      composer.preferences.toggleStyle(a); // Applies to what is typed next.
+    } else {
+      editor.execute([
+        ToggleTextAttributionsRequest(documentRange: selection, attributions: {a}),
+      ]);
+    }
+  }
+
+  void _block(Attribution? blockType) {
+    final id = composer.selection?.extent.nodeId;
+    if (id == null) return;
+    final node = document.getNodeById(id);
+    if (node is ListItemNode) {
+      editor.execute([
+        ConvertListItemToParagraphRequest(
+          nodeId: id,
+          paragraphMetadata: {'blockType': blockType ?? paragraphAttribution},
+        ),
+      ]);
+    } else if (node is ParagraphNode) {
+      editor.execute([ChangeParagraphBlockTypeRequest(nodeId: id, blockType: blockType ?? paragraphAttribution)]);
+    }
+  }
+
+  void _list(ListItemType type) {
+    final id = composer.selection?.extent.nodeId;
+    if (id == null) return;
+    final node = document.getNodeById(id);
+    if (node is ListItemNode && node.type == type) {
+      editor.execute([ConvertListItemToParagraphRequest(nodeId: id)]);
+    } else if (node is ListItemNode) {
+      editor.execute([
+        ConvertListItemToParagraphRequest(nodeId: id),
+        ConvertParagraphToListItemRequest(nodeId: id, type: type),
+      ]);
+    } else if (node is ParagraphNode) {
+      editor.execute([ConvertParagraphToListItemRequest(nodeId: id, type: type)]);
+    }
+  }
+
+  void _align(TextAlign a) {
+    final id = composer.selection?.extent.nodeId;
+    if (id != null && document.getNodeById(id) is ParagraphNode) {
+      editor.execute([ChangeParagraphAlignmentRequest(nodeId: id, alignment: a)]);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget button(IconData icon, String label, VoidCallback onPressed) =>
+        IconButton(tooltip: label, onPressed: onPressed, icon: Icon(icon));
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          button(Icons.undo, 'Undo', editor.undo),
+          button(Icons.redo, 'Redo', editor.redo),
+          const SizedBox(width: 8),
+          button(Icons.format_bold, 'Bold (⌘B)', () => _style(boldAttribution)),
+          button(Icons.format_italic, 'Italic (⌘I)', () => _style(italicsAttribution)),
+          button(Icons.format_underline, 'Underline (⌘U)', () => _style(underlineAttribution)),
+          button(Icons.strikethrough_s, 'Strikethrough', () => _style(strikethroughAttribution)),
+          PopupMenuButton<Attribution?>(
+            tooltip: 'Paragraph style',
+            useRootNavigator: true,
+            icon: const Icon(Icons.title),
+            onSelected: _block,
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: paragraphAttribution, child: Text('Paragraph')),
+              PopupMenuItem(value: header1Attribution, child: Text('Heading 1')),
+              PopupMenuItem(value: header2Attribution, child: Text('Heading 2')),
+              PopupMenuItem(value: header3Attribution, child: Text('Heading 3')),
+              PopupMenuItem(value: blockquoteAttribution, child: Text('Quotation')),
+            ],
+          ),
+          button(Icons.format_list_bulleted, 'Bulleted list', () => _list(ListItemType.unordered)),
+          button(Icons.format_list_numbered, 'Numbered list', () => _list(ListItemType.ordered)),
+          PopupMenuButton<TextAlign>(
+            tooltip: 'Alignment',
+            useRootNavigator: true,
+            icon: const Icon(Icons.format_align_left),
+            onSelected: _align,
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: TextAlign.left, child: Text('Align left')),
+              PopupMenuItem(value: TextAlign.center, child: Text('Center')),
+              PopupMenuItem(value: TextAlign.right, child: Text('Align right')),
+              PopupMenuItem(value: TextAlign.justify, child: Text('Justify')),
+            ],
+          ),
+          const SizedBox(width: 8),
+          button(Icons.link, 'Link the selected words to a codex entry', onLink),
+          button(Icons.link_off, 'Remove the link from the selected words', onUnlink),
+          button(Icons.call_split, 'Split here: the paragraph with the cursor starts a new part', onSplit),
+        ],
+      ),
+    );
+  }
+}
+
+class _EntryPicker extends StatefulWidget {
+  const _EntryPicker({required this.entries});
+  final List<JsonMap> entries;
+
+  @override
+  State<_EntryPicker> createState() => _EntryPickerState();
+}
+
+class _EntryPickerState extends State<_EntryPicker> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final q = _query.trim().toLowerCase();
+    final shown = [
+      for (final e in widget.entries)
+        if (q.isEmpty || str(e['name']).toLowerCase().contains(q)) e,
+    ];
+    return AlertDialog(
+      title: const Text('Link to a codex entry'),
+      content: SizedBox(
+        width: 420,
+        height: 420,
+        child: Column(
+          children: [
+            TextField(
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Search entries', prefixIcon: Icon(Icons.search)),
+              onChanged: (v) => setState(() => _query = v),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: shown.isEmpty
+                  ? const Center(child: Text('No entry matches.'))
+                  : ListView(
+                      children: [
+                        for (final e in shown)
+                          ListTile(
+                            title: Text(str(e['name'], 'Unnamed')),
+                            subtitle: Text(str(e['category'])),
+                            onTap: () => Navigator.of(context).pop(str(e['id'])),
+                          ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ),
+      actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel'))],
+    );
+  }
+}
+
+class _GoalsDialog extends StatefulWidget {
+  const _GoalsDialog({required this.service, required this.novelId});
+  final ManuscriptService service;
+  final String novelId;
+
+  @override
+  State<_GoalsDialog> createState() => _GoalsDialogState();
+}
+
+class _GoalsDialogState extends State<_GoalsDialog> {
+  late final _goals = widget.service.wordGoals(widget.novelId);
+  late final _daily = TextEditingController(text: _goals.daily?.toString() ?? '');
+  late final _weekly = TextEditingController(text: _goals.weekly?.toString() ?? '');
+
+  @override
+  void dispose() {
+    _daily.dispose();
+    _weekly.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    InputDecoration field(String label) =>
+        InputDecoration(labelText: label, hintText: 'No goal', helperText: 'Words, net of cuts');
+    return AlertDialog(
+      title: const Text('Writing goals'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Goals are yours to set; none is assumed. Leave a box empty for no goal.'),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _daily,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: field('Each day'),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _weekly,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: field('Each week'),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        FilledButton(
+          onPressed: () {
+            widget.service.setWordGoal(widget.novelId, 'daily', int.tryParse(_daily.text));
+            widget.service.setWordGoal(widget.novelId, 'weekly', int.tryParse(_weekly.text));
+            Navigator.of(context).pop();
+          },
+          child: const Text('Save goals'),
+        ),
+      ],
+    );
+  }
+}
+
+/// Which draft is in the manuscript, shown once a chapter or scene has more than one.
+class _DraftLine extends StatelessWidget {
+  const _DraftLine({required this.service, required this.novelId, required this.nodeId, required this.onOpen});
+  final ManuscriptService service;
+  final String novelId;
+  final String nodeId;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final String active;
+    final int others;
+    try {
+      active = service.activeDraft(novelId, nodeId);
+      others = service.alternateDrafts(novelId, nodeId).length;
+    } on StateError {
+      return const SizedBox.shrink();
+    }
+    if (others == 0 && active == mainDraft) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: ActionChip(
+          avatar: const Icon(Icons.alt_route, size: 18),
+          label: Text('Draft: $active · ${others == 1 ? '1 other' : '$others others'}'),
+          onPressed: onOpen,
+        ),
+      ),
+    );
+  }
+}

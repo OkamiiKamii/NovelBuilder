@@ -1,0 +1,891 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "kinds",
+  "title": "Kinds and a calendar",
+  "subtitle": "",
+  "author": "",
+  "primaryGenre": "",
+  "secondaryGenres": [],
+  "cover": null,
+  "tags": [],
+  "synopsis": "",
+  "status": "planning",
+  "targetWordCount": null,
+  "deadline": null,
+  "language": "en",
+  "accent": "#b4532a",
+  "pinned": false,
+  "archived": false,
+  "createdAt": 1,
+  "updatedAt": 1,
+  "lastOpenedAt": null
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "00000000-0000-4000-8000-c00000000000",
+    "projectId": "kinds",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "The Gate",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "mentions": [],
+    "createdAt": 1
+   }
+  ],
+  "loreSchemas": [
+   {
+    "id": "00000000-0000-4000-8000-s00000000000",
+    "projectId": "kinds",
+    "key": "custom-artifacts",
+    "name": "Artifacts",
+    "singular": "Artifact",
+    "color": "#2b7a8c",
+    "builtin": false,
+    "order": 40,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "fields": [
+     {
+      "id": "found",
+      "name": "Found",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "lost",
+      "name": "Lost",
+      "type": "date",
+      "options": []
+     },
+     {
+      "id": "east",
+      "name": "East",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "north",
+      "name": "North",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "tier",
+      "name": "Tier",
+      "type": "select",
+      "options": [
+       "Low",
+       "Mid",
+       "High"
+      ]
+     },
+     {
+      "id": "keeper",
+      "name": "Keeper",
+      "type": "reference",
+      "options": []
+     },
+     {
+      "id": "code",
+      "name": "Code",
+      "type": "text",
+      "options": []
+     },
+     {
+      "id": "bonds",
+      "name": "Bonds",
+      "type": "references",
+      "options": []
+     },
+     {
+      "id": "notes",
+      "name": "Notes",
+      "type": "longtext",
+      "options": []
+     }
+    ],
+    "uses": {
+     "timeline": {
+      "start": "found",
+      "end": "lost"
+     },
+     "map": {
+      "x": "east",
+      "y": "north"
+     },
+     "rank": "tier",
+     "ownership": {
+      "type": "owns",
+      "field": "keeper"
+     },
+     "graphLabel": "code",
+     "graphLinks": [
+      "bonds"
+     ]
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000001",
+    "projectId": "kinds",
+    "key": "custom-relics",
+    "name": "Relics",
+    "singular": "Relic",
+    "color": "#a8436b",
+    "builtin": false,
+    "order": 41,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "fields": [
+     {
+      "id": "age",
+      "name": "Age",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "seen",
+      "name": "Seen",
+      "type": "date",
+      "options": []
+     },
+     {
+      "id": "power",
+      "name": "Power",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "grade",
+      "name": "Grade",
+      "type": "select",
+      "options": [
+       "Only"
+      ]
+     },
+     {
+      "id": "gone",
+      "name": "Gone",
+      "type": "number",
+      "options": [],
+      "archived": true
+     },
+     {
+      "id": "owner",
+      "name": "Owner",
+      "type": "text",
+      "options": []
+     },
+     {
+      "id": "links",
+      "name": "Links",
+      "type": "references",
+      "options": []
+     }
+    ],
+    "uses": {
+     "timeline": {
+      "start": "age"
+     },
+     "map": {
+      "x": "power",
+      "y": "power"
+     },
+     "rank": "grade",
+     "ownership": {
+      "field": "owner"
+     },
+     "graphLabel": "gone",
+     "graphLinks": [
+      "links",
+      "owner"
+     ]
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000002",
+    "projectId": "kinds",
+    "key": "custom-tomes",
+    "name": "Tomes",
+    "singular": "Tome",
+    "color": "#6b7a2b",
+    "builtin": false,
+    "order": 42,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "fields": [
+     {
+      "id": "pages",
+      "name": "Pages",
+      "type": "number",
+      "options": []
+     },
+     {
+      "id": "written",
+      "name": "Written",
+      "type": "date",
+      "options": []
+     }
+    ],
+    "uses": {
+     "rank": "pages",
+     "timeline": {
+      "start": "written",
+      "end": "pages"
+     }
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-s00000000003",
+    "projectId": "kinds",
+    "key": "custom-empty",
+    "name": "Empties",
+    "singular": "Empty",
+    "color": "#4f5fa3",
+    "builtin": false,
+    "order": 43,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "fields": [
+     {
+      "id": "t",
+      "name": "Title",
+      "type": "text",
+      "options": []
+     }
+    ]
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "00000000-0000-4000-8000-p00000000000",
+    "projectId": "kinds",
+    "category": "character",
+    "name": "Mira",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 10,
+    "fields": []
+   },
+   {
+    "id": "00000000-0000-4000-8000-p00000000001",
+    "projectId": "kinds",
+    "category": "character",
+    "name": "Orrin",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 11,
+    "fields": []
+   },
+   {
+    "id": "00000000-0000-4000-8000-l00000000000",
+    "projectId": "kinds",
+    "category": "location",
+    "name": "The Keep",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 10,
+    "fields": []
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000000",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Ember Crown",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 10,
+    "fields": [
+     {
+      "id": "a0-0",
+      "key": "found",
+      "value": "1020",
+      "defId": "found"
+     },
+     {
+      "id": "a0-1",
+      "key": "lost",
+      "value": "1024-05-01",
+      "defId": "lost"
+     },
+     {
+      "id": "a0-2",
+      "key": "east",
+      "value": "3",
+      "defId": "east"
+     },
+     {
+      "id": "a0-3",
+      "key": "north",
+      "value": "4",
+      "defId": "north"
+     },
+     {
+      "id": "a0-4",
+      "key": "tier",
+      "value": "High",
+      "defId": "tier"
+     },
+     {
+      "id": "a0-5",
+      "key": "keeper",
+      "value": "00000000-0000-4000-8000-p00000000000",
+      "defId": "keeper"
+     },
+     {
+      "id": "a0-6",
+      "key": "code",
+      "value": "EC-1",
+      "defId": "code"
+     },
+     {
+      "id": "a0-7",
+      "key": "bonds",
+      "value": "00000000-0000-4000-8000-a00000000001",
+      "defId": "bonds"
+     },
+     {
+      "id": "a0-8",
+      "key": "notes",
+      "value": "Heavy,\n\"old\"",
+      "defId": "notes"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000001",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Ash Blade",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 11,
+    "fields": [
+     {
+      "id": "a1-0",
+      "key": "found",
+      "value": "1022",
+      "defId": "found"
+     },
+     {
+      "id": "a1-1",
+      "key": "lost",
+      "value": "1010-01-01",
+      "defId": "lost"
+     },
+     {
+      "id": "a1-2",
+      "key": "east",
+      "value": "far",
+      "defId": "east"
+     },
+     {
+      "id": "a1-3",
+      "key": "north",
+      "value": "1",
+      "defId": "north"
+     },
+     {
+      "id": "a1-4",
+      "key": "tier",
+      "value": "Low",
+      "defId": "tier"
+     },
+     {
+      "id": "a1-5",
+      "key": "keeper",
+      "value": "00000000-0000-4000-8000-p00000000001",
+      "defId": "keeper"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000002",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Dull Cup, \"chipped\"",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 12,
+    "fields": [
+     {
+      "id": "a2-0",
+      "key": "found",
+      "value": "long ago",
+      "defId": "found"
+     },
+     {
+      "id": "a2-1",
+      "key": "tier",
+      "value": "Rusty",
+      "defId": "tier"
+     },
+     {
+      "id": "a2-2",
+      "key": "keeper",
+      "value": "nobody",
+      "defId": "keeper"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000003",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Ring",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 13,
+    "fields": [
+     {
+      "id": "a3-0",
+      "key": "found",
+      "value": " -50 ",
+      "defId": "found"
+     },
+     {
+      "id": "a3-1",
+      "key": "lost",
+      "value": "0003-13-40",
+      "defId": "lost"
+     },
+     {
+      "id": "a3-2",
+      "key": "east",
+      "value": "-2.5",
+      "defId": "east"
+     },
+     {
+      "id": "a3-3",
+      "key": "north",
+      "value": "1e2",
+      "defId": "north"
+     },
+     {
+      "id": "a3-4",
+      "key": "tier",
+      "value": "Mid",
+      "defId": "tier"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000004",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Orb",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 14,
+    "fields": [
+     {
+      "id": "a4-0",
+      "key": "found",
+      "value": "1021",
+      "defId": "found"
+     },
+     {
+      "id": "a4-1",
+      "key": "lost",
+      "value": "1021-12-31",
+      "defId": "lost"
+     },
+     {
+      "id": "a4-2",
+      "key": "east",
+      "value": "0",
+      "defId": "east"
+     },
+     {
+      "id": "a4-3",
+      "key": "north",
+      "value": " 0 ",
+      "defId": "north"
+     },
+     {
+      "id": "a4-4",
+      "key": "tier",
+      "value": "High",
+      "defId": "tier"
+     },
+     {
+      "id": "a4-5",
+      "key": "keeper",
+      "value": "00000000-0000-4000-8000-l00000000000",
+      "defId": "keeper"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-a00000000005",
+    "projectId": "kinds",
+    "category": "custom-artifacts",
+    "name": "Shard",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 15,
+    "fields": [
+     {
+      "id": "a5-0",
+      "key": "found",
+      "value": "1020-02-30",
+      "defId": "found"
+     },
+     {
+      "id": "a5-1",
+      "key": "east",
+      "value": "7",
+      "defId": "east"
+     },
+     {
+      "id": "a5-2",
+      "key": "north",
+      "value": "x",
+      "defId": "north"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-r00000000000",
+    "projectId": "kinds",
+    "category": "custom-relics",
+    "name": "Stone",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 10,
+    "fields": [
+     {
+      "id": "r0-0",
+      "key": "age",
+      "value": "12",
+      "defId": "age"
+     },
+     {
+      "id": "r0-1",
+      "key": "grade",
+      "value": "Only",
+      "defId": "grade"
+     },
+     {
+      "id": "r0-2",
+      "key": "power",
+      "value": "3",
+      "defId": "power"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000000",
+    "projectId": "kinds",
+    "category": "custom-tomes",
+    "name": "Grimoire",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 10,
+    "fields": [
+     {
+      "id": "t0-0",
+      "key": "pages",
+      "value": "300",
+      "defId": "pages"
+     },
+     {
+      "id": "t0-1",
+      "key": "written",
+      "value": "1019-07-04",
+      "defId": "written"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000001",
+    "projectId": "kinds",
+    "category": "custom-tomes",
+    "name": "Primer",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 11,
+    "fields": [
+     {
+      "id": "t1-0",
+      "key": "pages",
+      "value": "300",
+      "defId": "pages"
+     },
+     {
+      "id": "t1-1",
+      "key": "written",
+      "value": "",
+      "defId": "written"
+     }
+    ]
+   },
+   {
+    "id": "00000000-0000-4000-8000-t00000000002",
+    "projectId": "kinds",
+    "category": "custom-tomes",
+    "name": "Atlas",
+    "summary": "",
+    "description": "",
+    "tags": [],
+    "createdAt": 12,
+    "fields": [
+     {
+      "id": "t2-0",
+      "key": "pages",
+      "value": "1.5e2",
+      "defId": "pages"
+     }
+    ]
+   }
+  ],
+  "loreLinks": [
+   {
+    "id": "00000000-0000-4000-8000-k00000000000",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-a00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 0,
+    "validity": {
+     "from": null,
+     "until": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 1023,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     }
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000001",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-a00000000000",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 1,
+    "validity": {
+     "from": {
+      "kind": "date",
+      "when": {
+       "precision": "exact",
+       "year": 1023,
+       "month": null,
+       "day": null,
+       "hour": null,
+       "minute": null
+      }
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000002",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-l00000000000",
+    "toId": "00000000-0000-4000-8000-a00000000004",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 2,
+    "validity": {
+     "from": {
+      "kind": "node",
+      "nodeId": "00000000-0000-4000-8000-c00000000000"
+     },
+     "until": {
+      "kind": "event",
+      "eventId": "00000000-0000-4000-8000-e00000000000"
+     }
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000003",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-a00000000004",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 3,
+    "validity": {
+     "from": {
+      "kind": "event",
+      "eventId": "00000000-0000-4000-8000-e00000000000"
+     },
+     "until": null
+    }
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000004",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000001",
+    "toId": "00000000-0000-4000-8000-a00000000003",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 4
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000005",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-a00000000003",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 5
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000006",
+    "projectId": "kinds",
+    "fromId": "00000000-0000-4000-8000-p00000000000",
+    "toId": "00000000-0000-4000-8000-a00000000001",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "created-by",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 6
+   },
+   {
+    "id": "00000000-0000-4000-8000-k00000000007",
+    "projectId": "kinds",
+    "fromId": "gone",
+    "toId": "00000000-0000-4000-8000-a00000000002",
+    "fromType": "entry",
+    "toType": "entry",
+    "type": "owns",
+    "fromLabel": "",
+    "toLabel": "",
+    "createdAt": 7
+   }
+  ],
+  "timelineEvents": [
+   {
+    "id": "00000000-0000-4000-8000-e00000000000",
+    "projectId": "kinds",
+    "name": "The siege",
+    "description": "",
+    "when": {
+     "precision": "exact",
+     "year": 1022,
+     "month": null,
+     "day": null,
+     "hour": null,
+     "minute": null
+    },
+    "end": null,
+    "ongoing": false,
+    "nodeIds": [],
+    "characters": [],
+    "entryIds": [],
+    "threadIds": [],
+    "labels": [],
+    "locationId": null,
+    "createdAt": 1
+   }
+  ],
+  "storyCalendars": [
+   {
+    "id": "00000000-0000-4000-8000-y00000000000",
+    "projectId": "kinds",
+    "kind": "custom",
+    "name": "Ten Moons",
+    "months": [
+     {
+      "name": "Moon 1",
+      "days": 20
+     },
+     {
+      "name": "Moon 2",
+      "days": 20
+     },
+     {
+      "name": "Moon 3",
+      "days": 20
+     },
+     {
+      "name": "Moon 4",
+      "days": 20
+     },
+     {
+      "name": "Moon 5",
+      "days": 20
+     },
+     {
+      "name": "Moon 6",
+      "days": 20
+     },
+     {
+      "name": "Moon 7",
+      "days": 20
+     },
+     {
+      "name": "Moon 8",
+      "days": 20
+     },
+     {
+      "name": "Moon 9",
+      "days": 20
+     },
+     {
+      "name": "Moon 10",
+      "days": 20
+     }
+    ],
+    "hoursPerDay": 20,
+    "daysPerWeek": 5,
+    "eras": [],
+    "seasons": {
+     "spring": 1,
+     "summer": 3,
+     "autumn": 6,
+     "winter": 9
+    },
+    "updatedAt": 1
+   }
+  ]
+ }
+}

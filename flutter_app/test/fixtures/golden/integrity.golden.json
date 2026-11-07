@@ -1,0 +1,1567 @@
+{
+ "qa-sample": {
+  "broken": [],
+  "unresolved": [],
+  "duplicates": [],
+  "unfit": [],
+  "statuses": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ },
+ "qa-sample-damaged": {
+  "broken": [
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000002|node:00000000-0000-4000-8000-000000000019",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "node",
+     "id": "00000000-0000-4000-8000-000000000019"
+    },
+    "says": "a record that is gone: “Appears in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "a record that is gone: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000002|node:00000000-0000-4000-8000-000000000019",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "node",
+     "id": "00000000-0000-4000-8000-000000000019"
+    },
+    "says": "a record that is gone: “Point of view in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "a record that is gone: “Point of view in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-00000000001f:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001f",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Ashe House: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-00000000001f:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001f",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Ashe House: “Point of view in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-00000000001c:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001c",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "At the Archive: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|mentioned:00000000-0000-4000-8000-00000000001c:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a link in the manuscript’s text",
+    "table": "chapters",
+    "rowId": "00000000-0000-4000-8000-00000000001c",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "At the Archive: “Mentioned in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-00000000001c:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001c",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "At the Archive: “Point of view in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000003|node:00000000-0000-4000-8000-000000000019",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "node",
+     "id": "00000000-0000-4000-8000-000000000019"
+    },
+    "says": "Corin Ashe: “Mentioned in, not on the page” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|relationship:00000000-0000-4000-8000-00000000002e|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a character relationship",
+    "table": "characterRelations",
+    "rowId": "00000000-0000-4000-8000-00000000002e",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Corin Ashe: “Mentor” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000026:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000026",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Flight inland: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|progress-ability:00000000-0000-4000-8000-000000000056|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a progression change",
+    "table": "progressChanges",
+    "rowId": "00000000-0000-4000-8000-000000000056",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Glass Step: “Gained” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|holds:00000000-0000-4000-8000-000000000052:00000000-0000-4000-8000-00000000004c|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a system sheet",
+    "table": "systemSheets",
+    "rowId": "00000000-0000-4000-8000-000000000052",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Glass Step: “Has” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000023:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000023",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Ilse joins the Guild: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|progress-ability:00000000-0000-4000-8000-000000000057|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a progression change",
+    "table": "progressChanges",
+    "rowId": "00000000-0000-4000-8000-000000000057",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Mirror Walk: “Gained” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|holds:00000000-0000-4000-8000-000000000052:00000000-0000-4000-8000-00000000004d|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a system sheet",
+    "table": "systemSheets",
+    "rowId": "00000000-0000-4000-8000-000000000052",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Mirror Walk: “Has” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|progress-ability:00000000-0000-4000-8000-000000000055|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a progression change",
+    "table": "progressChanges",
+    "rowId": "00000000-0000-4000-8000-000000000055",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Read the Glass: “Gained” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|holds:00000000-0000-4000-8000-000000000052:00000000-0000-4000-8000-00000000004b|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a system sheet",
+    "table": "systemSheets",
+    "rowId": "00000000-0000-4000-8000-000000000052",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Read the Glass: “Has” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000027:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000027",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Return to Ashe House: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-00000000001e:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001e",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Roads Inland: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|mentioned:00000000-0000-4000-8000-00000000001e:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a link in the manuscript’s text",
+    "table": "chapters",
+    "rowId": "00000000-0000-4000-8000-00000000001e",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Roads Inland: “Mentioned in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-00000000001e:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001e",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Roads Inland: “Point of view in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|relationship:00000000-0000-4000-8000-000000000038|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a character relationship",
+    "table": "characterRelations",
+    "rowId": "00000000-0000-4000-8000-000000000038",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Tamsin Roe: “Friends on the salt road” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000022:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000022",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The fire at Ashe House: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|link:00000000-0000-4000-8000-000000000049|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a connection you recorded",
+    "table": "loreLinks",
+    "rowId": "00000000-0000-4000-8000-000000000049",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The Glasswrights’ Guild: “Member of” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-00000000001a:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001a",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The Guild Mark: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|progress:00000000-0000-4000-8000-000000000056|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a progression change",
+    "table": "progressChanges",
+    "rowId": "00000000-0000-4000-8000-000000000056",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The Guild Mark: “Changes (Gained Glass Step) in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|mentioned:00000000-0000-4000-8000-00000000001a:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a link in the manuscript’s text",
+    "table": "chapters",
+    "rowId": "00000000-0000-4000-8000-00000000001a",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The Guild Mark: “Mentioned in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|pov:00000000-0000-4000-8000-00000000001a:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-00000000001a",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The Guild Mark: “Point of view in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000024:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000024",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The heist at the Glass Archive: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|participant:00000000-0000-4000-8000-000000000028:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "00000000-0000-4000-8000-000000000028",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The ledger is read: “Takes part in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|thread-entry:00000000-0000-4000-8000-000000000029:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a plot thread",
+    "table": "plotThreads",
+    "rowId": "00000000-0000-4000-8000-000000000029",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "The stolen ledger: “Involves” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|beat:00000000-0000-4000-8000-000000000029:00000000-0000-4000-8000-00000000002a|node:00000000-0000-4000-8000-000000000019",
+    "where": "a plot thread",
+    "table": "plotThreads",
+    "rowId": "00000000-0000-4000-8000-000000000029",
+    "missing": {
+     "type": "node",
+     "id": "00000000-0000-4000-8000-000000000019"
+    },
+    "says": "The stolen ledger: “The ledger seen in the glass” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-000000000020:00000000-0000-4000-8000-000000000002|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000020",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "What the Fire Kept: “Appears in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|progress:00000000-0000-4000-8000-000000000057|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a progression change",
+    "table": "progressChanges",
+    "rowId": "00000000-0000-4000-8000-000000000057",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "What the Fire Kept: “Changes (Gained Mirror Walk) in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:00000000-0000-4000-8000-000000000019:00000000-0000-4000-8000-000000000006|node:00000000-0000-4000-8000-000000000019",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "00000000-0000-4000-8000-000000000019",
+    "missing": {
+     "type": "node",
+     "id": "00000000-0000-4000-8000-000000000019"
+    },
+    "says": "Wren Varn: “Appears in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|relationship:00000000-0000-4000-8000-000000000040|entry:00000000-0000-4000-8000-000000000002",
+    "where": "a character relationship",
+    "table": "characterRelations",
+    "rowId": "00000000-0000-4000-8000-000000000040",
+    "missing": {
+     "type": "entry",
+     "id": "00000000-0000-4000-8000-000000000002"
+    },
+    "says": "Wren Varn: “Siblings” points at a codex entry that no longer exists"
+   }
+  ],
+  "unresolved": [],
+  "duplicates": [],
+  "unfit": [],
+  "statuses": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ },
+ "made-in-the-app": {
+  "broken": [
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "node",
+     "id": "32b1b62b-f7b6-4526-8649-5de1fa392057"
+    },
+    "says": "a record that is gone: “Present in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|entry:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "entry",
+     "id": "ed92373a-8fd7-42a8-bc1e-5b7e8e189b55"
+    },
+    "says": "a record that is gone: “Present in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "node",
+     "id": "32b1b62b-f7b6-4526-8649-5de1fa392057"
+    },
+    "says": "Emberfang: “Present in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+    "missing": {
+     "type": "node",
+     "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2"
+    },
+    "says": "Mira: “Appears in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:578d5618-2850-48cf-95cc-6b7be03789f7-talk:578d5618-2850-48cf-95cc-6b7be03789f7-mira|node:578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+    "missing": {
+     "type": "node",
+     "id": "578d5618-2850-48cf-95cc-6b7be03789f7-talk"
+    },
+    "says": "Mira: “Mentioned in, not on the page” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|dated-from:3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|event:05c38dda-ec27-444d-8d1c-ce8713ef498b",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "3188de6b-7681-4e9a-9fd8-49d67e8d1f1c",
+    "missing": {
+     "type": "event",
+     "id": "05c38dda-ec27-444d-8d1c-ce8713ef498b"
+    },
+    "says": "The Burning: “Dated from” points at a event that no longer exists"
+   }
+  ],
+  "unresolved": [],
+  "duplicates": [
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "a": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex",
+    "b": "ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "a": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex",
+    "b": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|ea77d958-5322-4b96-a2e0-5716ef1b2839|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "a": "ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "b": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "rule": "same-name",
+    "because": "“Bren” and “Bren” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-crown|72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-crown",
+    "b": "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "rule": "same-name",
+    "because": "“Ember Crown” and “The Ember Crown” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "a": "70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "rule": "same-name",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|70465ae9-f720-4346-8683-298ce006ed1a-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+    "a": "70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "b": "b99120ca-bbde-411a-a568-df285a9649d7",
+    "rule": "same-name",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "b": "b99120ca-bbde-411a-a568-df285a9649d7",
+    "rule": "same-name",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-guild|9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "rule": "same-name",
+    "because": "“The Guild” and “The Guild” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   }
+  ],
+  "unfit": [],
+  "statuses": [
+   null,
+   null,
+   null,
+   null,
+   "confirmed",
+   "confirmed",
+   "disputed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ },
+ "made-in-the-app-damaged": {
+  "broken": [
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "node",
+     "id": "32b1b62b-f7b6-4526-8649-5de1fa392057"
+    },
+    "says": "a record that is gone: “Present in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55|entry:ed92373a-8fd7-42a8-bc1e-5b7e8e189b55",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "entry",
+     "id": "ed92373a-8fd7-42a8-bc1e-5b7e8e189b55"
+    },
+    "says": "a record that is gone: “Present in” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|present:32b1b62b-f7b6-4526-8649-5de1fa392057:75dd1569-4b8d-4d6f-bfd8-9413fcdf1e37|node:32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "32b1b62b-f7b6-4526-8649-5de1fa392057",
+    "missing": {
+     "type": "node",
+     "id": "32b1b62b-f7b6-4526-8649-5de1fa392057"
+    },
+    "says": "Emberfang: “Present in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|field:005a2068-3743-4583-b17e-f465a7f49a9c:51641fc9-7167-45a9-8188-55c1dca82ed8:70465ae9-f720-4346-8683-298ce006ed1a-kai|entry:70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "where": "a field of an entry",
+    "table": "loreEntries",
+    "rowId": "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "missing": {
+     "type": "entry",
+     "id": "70465ae9-f720-4346-8683-298ce006ed1a-kai"
+    },
+    "says": "Kai & Ren: “Partners” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2:9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|node:9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2",
+    "missing": {
+     "type": "node",
+     "id": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-c2"
+    },
+    "says": "Mira: “Appears in” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|appearance:578d5618-2850-48cf-95cc-6b7be03789f7-talk:578d5618-2850-48cf-95cc-6b7be03789f7-mira|node:578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+    "where": "a chapter’s or scene’s plan",
+    "table": "chapterPlans",
+    "rowId": "578d5618-2850-48cf-95cc-6b7be03789f7-talk",
+    "missing": {
+     "type": "node",
+     "id": "578d5618-2850-48cf-95cc-6b7be03789f7-talk"
+    },
+    "says": "Mira: “Mentioned in, not on the page” points at a chapter or scene that no longer exists"
+   },
+   {
+    "key": "integrity|broken|relationship:22d4720f-0b25-4b54-9708-2205bb2c1ce6|entry:70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "where": "a character relationship",
+    "table": "characterRelations",
+    "rowId": "22d4720f-0b25-4b54-9708-2205bb2c1ce6",
+    "missing": {
+     "type": "entry",
+     "id": "70465ae9-f720-4346-8683-298ce006ed1a-kai"
+    },
+    "says": "Ren: “Parent” points at a codex entry that no longer exists"
+   },
+   {
+    "key": "integrity|broken|dated-from:3188de6b-7681-4e9a-9fd8-49d67e8d1f1c|event:05c38dda-ec27-444d-8d1c-ce8713ef498b",
+    "where": "a timeline event",
+    "table": "timelineEvents",
+    "rowId": "3188de6b-7681-4e9a-9fd8-49d67e8d1f1c",
+    "missing": {
+     "type": "event",
+     "id": "05c38dda-ec27-444d-8d1c-ce8713ef498b"
+    },
+    "says": "The Burning: “Dated from” points at a event that no longer exists"
+   },
+   {
+    "key": "integrity|broken|field:9eb2b6c7-52bd-4e58-965d-4176b6fa9dda:0438b3c6-12e1-49d4-9da5-b9e117b2e504:70465ae9-f720-4346-8683-298ce006ed1a-kai|entry:70465ae9-f720-4346-8683-298ce006ed1a-kai",
+    "where": "a field of an entry",
+    "table": "loreEntries",
+    "rowId": "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "missing": {
+     "type": "entry",
+     "id": "70465ae9-f720-4346-8683-298ce006ed1a-kai"
+    },
+    "says": "The Butler: “Character” points at a codex entry that no longer exists"
+   }
+  ],
+  "unresolved": [],
+  "duplicates": [
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "a": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex",
+    "b": "ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|d036b962-7224-4c8f-bd74-fd3bc106298e-alex|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "a": "d036b962-7224-4c8f-bd74-fd3bc106298e-alex",
+    "b": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|ea77d958-5322-4b96-a2e0-5716ef1b2839|ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "a": "ea77d958-5322-4b96-a2e0-5716ef1b2839",
+    "b": "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-alex",
+    "rule": "same-name",
+    "because": "“Alex” and “Alex” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-bren",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-bren",
+    "rule": "same-name",
+    "because": "“Bren” and “Bren” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-crown|72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-crown",
+    "b": "72fe506d-41d3-4042-b69a-52075a1ee7ee-regalia",
+    "rule": "same-name",
+    "because": "“Ember Crown” and “The Ember Crown” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai|b99120ca-bbde-411a-a568-df285a9649d7",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-kai",
+    "b": "b99120ca-bbde-411a-a568-df285a9649d7",
+    "rule": "same-name",
+    "because": "“Kai” and “Kai” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|01ac40fa-82f4-4e46-848d-2039d865984c-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "01ac40fa-82f4-4e46-848d-2039d865984c-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|2b852e2e-b121-4e32-8291-5fab11d3723b-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "2b852e2e-b121-4e32-8291-5fab11d3723b-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|578d5618-2850-48cf-95cc-6b7be03789f7-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "578d5618-2850-48cf-95cc-6b7be03789f7-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|89342824-f943-42b5-8266-2e629dad4fe4",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|89342824-f943-42b5-8266-2e629dad4fe4|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "89342824-f943-42b5-8266-2e629dad4fe4",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "9b149a4b-9c56-44d6-bb6c-a0e18aa36220-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira|a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "a": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-mira",
+    "b": "a1bc3bba-f37e-47d8-90de-0198e8d61bb3-mira",
+    "rule": "same-name",
+    "because": "“Mira” and “Mira” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin",
+    "b": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-orrin",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|88334800-fff7-42c5-8fa1-6458d55100e8-orrin|9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "a": "88334800-fff7-42c5-8fa1-6458d55100e8-orrin",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-orrin",
+    "rule": "same-name",
+    "because": "“Orrin” and “Orrin” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   },
+   {
+    "key": "integrity|duplicate|72fe506d-41d3-4042-b69a-52075a1ee7ee-guild|9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "a": "72fe506d-41d3-4042-b69a-52075a1ee7ee-guild",
+    "b": "9d451702-6dc3-417a-af3c-0bcafd2fcc64-guild",
+    "rule": "same-name",
+    "because": "“The Guild” and “The Guild” are the same name, apart from capitals, accents, punctuation or a leading “The”."
+   }
+  ],
+  "unfit": [
+   {
+    "key": "integrity|unfit|005a2068-3743-4583-b17e-f465a7f49a9c",
+    "entry": "005a2068-3743-4583-b17e-f465a7f49a9c",
+    "issues": [
+     {
+      "defId": "9e802dc4-9f0b-4dab-80b7-38b79367ce02",
+      "field": "Partners",
+      "problem": "not-an-entry",
+      "message": "Partners holds “70465ae9-f720-4346-8683-298ce006ed1a-kai”, which is not an entry."
+     }
+    ]
+   },
+   {
+    "key": "integrity|unfit|9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "entry": "9eb2b6c7-52bd-4e58-965d-4176b6fa9dda",
+    "issues": [
+     {
+      "defId": "913f4031-2d48-4711-8c38-fc6939dfefe1",
+      "field": "Character",
+      "problem": "not-an-entry",
+      "message": "Character holds “70465ae9-f720-4346-8683-298ce006ed1a-kai”, which is not an entry."
+     }
+    ]
+   }
+  ],
+  "statuses": [
+   null,
+   null,
+   null,
+   null,
+   "confirmed",
+   "confirmed",
+   "disputed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   "confirmed",
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ },
+ "names": {
+  "The Ember Blade": "ember blade",
+  "ember-blade": "ember blade",
+  "  Émile  Zola! ": "emile zola",
+  "A Tale": "tale",
+  "an": "an",
+  "The": "the",
+  "Ørn the Great": "ørn the great",
+  "İstanbul": "istanbul",
+  "42 Things": "42 things"
+ },
+ "without": [
+  {
+   "id": "x",
+   "nodeIds": [
+    "a"
+   ],
+   "characters": [
+    {
+     "id": "c"
+    }
+   ],
+   "locationId": null,
+   "value": "a\nc"
+  },
+  {
+   "fields": [
+    {
+     "id": "f",
+     "key": "Leader",
+     "value": ""
+    }
+   ],
+   "beats": [
+    {
+     "id": "bt",
+     "nodeId": null,
+     "note": "keep"
+    }
+   ]
+  },
+  [
+   "c"
+  ]
+ ]
+}

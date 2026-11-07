@@ -1,0 +1,3320 @@
+{
+ "listed": [
+  {
+   "id": "00000000-0000-4000-8000-000000000002",
+   "profileId": "profile-00000000-0000-4000-8000-000000000002",
+   "linkedIn": [
+    "00000000-0000-4000-8000-000000000019",
+    "00000000-0000-4000-8000-00000000001a",
+    "00000000-0000-4000-8000-00000000001c",
+    "00000000-0000-4000-8000-00000000001e"
+   ],
+   "first": 1,
+   "latest": 7,
+   "factions": [
+    "The Glasswrights’ Guild"
+   ]
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000003",
+   "profileId": "profile-00000000-0000-4000-8000-000000000003",
+   "linkedIn": [
+    "00000000-0000-4000-8000-00000000001a"
+   ],
+   "first": 2,
+   "latest": 2,
+   "factions": [
+    "The Glasswrights’ Guild"
+   ]
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000004",
+   "profileId": "profile-00000000-0000-4000-8000-000000000004",
+   "linkedIn": [
+    "00000000-0000-4000-8000-00000000001c",
+    "00000000-0000-4000-8000-00000000001e"
+   ],
+   "first": 4,
+   "latest": 7,
+   "factions": []
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000005",
+   "profileId": "profile-00000000-0000-4000-8000-000000000005",
+   "linkedIn": [
+    "00000000-0000-4000-8000-00000000001d"
+   ],
+   "first": 5,
+   "latest": 5,
+   "factions": []
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000006",
+   "profileId": "profile-00000000-0000-4000-8000-000000000006",
+   "linkedIn": [
+    "00000000-0000-4000-8000-000000000019"
+   ],
+   "first": 1,
+   "latest": 1,
+   "factions": []
+  }
+ ],
+ "sorts": {
+  "name": [
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "updated": [
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "created": [
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "first": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000006",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005"
+  ],
+  "appearances": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "latest": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "custom": [
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000006"
+  ]
+ },
+ "facets": {
+  "roles": [],
+  "statuses": [],
+  "tags": [],
+  "species": [],
+  "occupations": [],
+  "factions": [
+   "The Glasswrights’ Guild"
+  ]
+ },
+ "queries": {
+  "": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "the": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "zzz": [],
+  "MIRA": [],
+  "mira kai": [],
+  "émile": [],
+  "alive": [],
+  "protagonist": [],
+  "Ilse": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "Corin": [
+   "00000000-0000-4000-8000-000000000003"
+  ],
+  "Tamsin": [
+   "00000000-0000-4000-8000-000000000004"
+  ],
+  "Odo": [
+   "00000000-0000-4000-8000-000000000005"
+  ],
+  "Wren": [
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "the glasswrights’ guild": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003"
+  ]
+ },
+ "filtered": {
+  "none": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "archived": [],
+  "faction:The Glasswrights’ Guild": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003"
+  ],
+  "firstBy:00000000-0000-4000-8000-000000000019": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "firstBy:00000000-0000-4000-8000-00000000001a": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "firstBy:00000000-0000-4000-8000-00000000001b": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000006"
+  ],
+  "firstBy:00000000-0000-4000-8000-00000000001e": [
+   "00000000-0000-4000-8000-000000000002",
+   "00000000-0000-4000-8000-000000000003",
+   "00000000-0000-4000-8000-000000000004",
+   "00000000-0000-4000-8000-000000000005",
+   "00000000-0000-4000-8000-000000000006"
+  ]
+ },
+ "mentions": {
+  "00000000-0000-4000-8000-000000000002": 0,
+  "00000000-0000-4000-8000-000000000003": 0,
+  "00000000-0000-4000-8000-000000000004": 0,
+  "00000000-0000-4000-8000-000000000005": 0,
+  "00000000-0000-4000-8000-000000000006": 0
+ },
+ "extraMentions": {
+  "firstWords": 8,
+  "short": 0,
+  "punctuation": 0
+ },
+ "matrices": {
+  "chapters": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001b",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3: The Night of Two Doors",
+     "short": "3",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 5,
+     "cells": [
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 6,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Council”)",
+        "Linked in the text (in “At the Council”)",
+        "Takes part in “The council vote”, told here (in “At the Council”)"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 3,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000006",
+     "name": "Wren Varn",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    }
+   ],
+   "hidden": 0,
+   "characters": 5
+  },
+  "scenes": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001c",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Archive",
+     "short": "3.1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001d",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Council",
+     "short": "3.2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 5,
+     "cells": [
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 6,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The council vote”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 3,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000006",
+     "name": "Wren Varn",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    }
+   ],
+   "hidden": 0,
+   "characters": 5
+  },
+  "everyone": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001b",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3: The Night of Two Doors",
+     "short": "3",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 5,
+     "cells": [
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 6,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Council”)",
+        "Linked in the text (in “At the Council”)",
+        "Takes part in “The council vote”, told here (in “At the Council”)"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 3,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000006",
+     "name": "Wren Varn",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    }
+   ],
+   "hidden": 0,
+   "characters": 5
+  },
+  "scenesEveryone": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001c",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Archive",
+     "short": "3.1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001d",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Council",
+     "short": "3.2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 5,
+     "cells": [
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 6,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The council vote”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 3,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000006",
+     "name": "Wren Varn",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    }
+   ],
+   "hidden": 0,
+   "characters": 5
+  },
+  "drafting": {
+   "columns": [],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 0,
+     "cells": []
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 0,
+     "cells": []
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 0,
+     "cells": []
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 0,
+     "cells": []
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000006",
+     "name": "Wren Varn",
+     "recorded": 0,
+     "cells": []
+    }
+   ],
+   "hidden": 0,
+   "characters": 5
+  },
+  "range": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001b",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3: The Night of Two Doors",
+     "short": "3",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 2,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Council”)",
+        "Linked in the text (in “At the Council”)",
+        "Takes part in “The council vote”, told here (in “At the Council”)"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      }
+     ]
+    }
+   ],
+   "hidden": 1,
+   "characters": 5
+  },
+  "openEnd": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001c",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Archive",
+     "short": "3.1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001d",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3, scene: At the Council",
+     "short": "3.2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000003",
+     "name": "Corin Ashe",
+     "recorded": 4,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "mentioned",
+       "evidence": [
+        {
+         "kind": "mentioned",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        }
+       ],
+       "words": [
+        "Mentioned, not on the page (your appearance record)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 5,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000005",
+     "name": "Odo Hale",
+     "recorded": 1,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001d"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001d",
+         "eventId": "00000000-0000-4000-8000-000000000025"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The council vote”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    },
+    {
+     "characterId": "00000000-0000-4000-8000-000000000004",
+     "name": "Tamsin Roe",
+     "recorded": 3,
+     "cells": [
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The heist at the Glass Archive”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "none",
+       "evidence": [],
+       "words": []
+      }
+     ]
+    }
+   ],
+   "hidden": 1,
+   "characters": 5
+  },
+  "place": {
+   "columns": [],
+   "rows": [],
+   "hidden": 5,
+   "characters": 5
+  },
+  "text": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001b",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3: The Night of Two Doors",
+     "short": "3",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [],
+   "hidden": 0,
+   "characters": 0
+  },
+  "one": {
+   "columns": [
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000019",
+     "chapterId": "00000000-0000-4000-8000-000000000019",
+     "chapterNumber": 1,
+     "label": "Ch 1: Salt and Glass",
+     "short": "1",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001a",
+     "chapterId": "00000000-0000-4000-8000-00000000001a",
+     "chapterNumber": 2,
+     "label": "Ch 2: The Guild Mark",
+     "short": "2",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001b",
+     "chapterId": "00000000-0000-4000-8000-00000000001b",
+     "chapterNumber": 3,
+     "label": "Ch 3: The Night of Two Doors",
+     "short": "3",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001e",
+     "chapterId": "00000000-0000-4000-8000-00000000001e",
+     "chapterNumber": 4,
+     "label": "Ch 4: Roads Inland",
+     "short": "4",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-00000000001f",
+     "chapterId": "00000000-0000-4000-8000-00000000001f",
+     "chapterNumber": 5,
+     "label": "Ch 5: Ashe House",
+     "short": "5",
+     "status": "idea"
+    },
+    {
+     "nodeId": "00000000-0000-4000-8000-000000000020",
+     "chapterId": "00000000-0000-4000-8000-000000000020",
+     "chapterNumber": 6,
+     "label": "Ch 6: What the Fire Kept",
+     "short": "6",
+     "status": "idea"
+    }
+   ],
+   "rows": [
+    {
+     "characterId": "00000000-0000-4000-8000-000000000002",
+     "name": "Ilse Varn",
+     "recorded": 6,
+     "cells": [
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-000000000019"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001a",
+         "eventId": "00000000-0000-4000-8000-000000000023"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “Ilse joins the Guild”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001c"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001c",
+         "eventId": "00000000-0000-4000-8000-000000000024"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record) (in “At the Archive”)",
+        "Linked in the text (in “At the Archive”)",
+        "Takes part in “The heist at the Glass Archive”, told here (in “At the Archive”)"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "linked",
+         "nodeId": "00000000-0000-4000-8000-00000000001e"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001e",
+         "eventId": "00000000-0000-4000-8000-000000000026"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Linked in the text",
+        "Takes part in “Flight inland”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-00000000001f"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-00000000001f",
+         "eventId": "00000000-0000-4000-8000-000000000027"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “Return to Ashe House”, told here"
+       ]
+      },
+      {
+       "state": "appears",
+       "evidence": [
+        {
+         "kind": "appears",
+         "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000022"
+        },
+        {
+         "kind": "event",
+         "nodeId": "00000000-0000-4000-8000-000000000020",
+         "eventId": "00000000-0000-4000-8000-000000000028"
+        }
+       ],
+       "words": [
+        "Appears (your appearance record)",
+        "Takes part in “The fire at Ashe House”, told here",
+        "Takes part in “The ledger is read”, told here"
+       ]
+      }
+     ]
+    }
+   ],
+   "hidden": 0,
+   "characters": 1
+  }
+ },
+ "secrets": [],
+ "fields": [
+  {
+   "entry": "00000000-0000-4000-8000-000000000007",
+   "def": "builtin-faction-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000007",
+   "def": "builtin-faction-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000007",
+   "def": "builtin-faction-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000008",
+   "def": "builtin-item-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000008",
+   "def": "builtin-item-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000008",
+   "def": "builtin-item-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000009",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000009",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-000000000009",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000a",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000a",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000a",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000b",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000b",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000b",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000c",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000c",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000c",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000d",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000d",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000d",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000e",
+   "def": "builtin-location-0",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000e",
+   "def": "builtin-location-1",
+   "display": null,
+   "issue": null
+  },
+  {
+   "entry": "00000000-0000-4000-8000-00000000000e",
+   "def": "builtin-location-2",
+   "display": null,
+   "issue": null
+  }
+ ]
+}

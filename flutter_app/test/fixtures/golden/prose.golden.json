@@ -1,0 +1,745 @@
+{
+  "words": {
+    "Hello world": 2,
+    "Don't stop—never.": 3,
+    "well-known e.g. U.S.A. 3.14 1,000 _snake_case": 7,
+    "Ça va? Él dijo: «sí».": 5,
+    "  spaced   out  ": 2,
+    "": 0,
+    "Tab\tseparated\nlines": 3,
+    "東京は大きい。": 3,
+    "Emoji 😀 ok": 2,
+    "twenty-one": 2,
+    "rock'n'roll": 1,
+    "A.B.C": 1,
+    "x:y": 1
+  },
+  "qa-sample": {
+    "docs": {
+      "00000000-0000-4000-8000-000000000019": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The tide came in grey over Port Calder, and Ilse read it in the window glass before it reached the harbour wall."
+          },
+          {
+            "heading": false,
+            "text": "Wren asked her what she saw. She said rain, and a ledger, and a man who would want it back."
+          },
+          {
+            "heading": false,
+            "text": "Somewhere above the town, in the guild house, her old teacher was waiting for an answer she had not given."
+          }
+        ],
+        "words": 62,
+        "characters": 309,
+        "paragraphs": 3,
+        "mentions": [
+          "00000000-0000-4000-8000-00000000000a",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000006"
+        ]
+      },
+      "00000000-0000-4000-8000-00000000001a": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Corin pressed the guild mark into the warm glass and handed it to her without a word."
+          },
+          {
+            "heading": false,
+            "text": "The burn on his wrist was older than she was. She had asked about it once, as a child, and he had looked at the hills and said nothing at all."
+          },
+          {
+            "heading": false,
+            "text": "Ilse took the mark. From that night she was one of the Glasswrights, whatever came after."
+          }
+        ],
+        "words": 64,
+        "characters": 316,
+        "paragraphs": 3,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000003",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000007"
+        ]
+      },
+      "00000000-0000-4000-8000-00000000001c": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The Archive smelled of dust and lamp oil. Tamsin had the door open before Ilse finished reading the lock."
+          },
+          {
+            "heading": false,
+            "text": "The Ledger of Tides was lighter than either of them had thought. They argued about who would carry it, and then ran."
+          }
+        ],
+        "words": 41,
+        "characters": 221,
+        "paragraphs": 2,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000004",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000008"
+        ]
+      },
+      "00000000-0000-4000-8000-00000000001d": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Across the square, Magistrate Hale counted the raised hands in Council Hall and smiled at the number."
+          },
+          {
+            "heading": false,
+            "text": "He did not yet know the Archive stood open."
+          }
+        ],
+        "words": 26,
+        "characters": 144,
+        "paragraphs": 2,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000005",
+          "00000000-0000-4000-8000-00000000000c"
+        ]
+      },
+      "00000000-0000-4000-8000-00000000001e": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "They left Port Calder by the salt road before dawn. Tamsin walked ahead; Ilse carried the ledger."
+          },
+          {
+            "heading": false,
+            "text": "By the third night they had stopped arguing. By the fourth they were friends, though neither said it."
+          }
+        ],
+        "words": 35,
+        "characters": 198,
+        "paragraphs": 2,
+        "mentions": [
+          "00000000-0000-4000-8000-00000000000a",
+          "00000000-0000-4000-8000-000000000004",
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      }
+    },
+    "diffs": []
+  },
+  "made-in-the-app": {
+    "docs": {
+      "70465ae9-f720-4346-8683-298ce006ed1a-c1": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Chapter One. Still writing."
+          }
+        ],
+        "words": 4,
+        "characters": 27,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "0a1c3eb3-4538-47e9-b178-c795e63dfb0d": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "It began in ash and silence."
+          },
+          {
+            "heading": false,
+            "text": "Nobody ran."
+          },
+          {
+            "heading": false,
+            "text": "The bell rang."
+          }
+        ],
+        "words": 11,
+        "characters": 53,
+        "paragraphs": 3,
+        "mentions": []
+      },
+      "d036b962-7224-4c8f-bd74-fd3bc106298e-c1": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "UNSENT MANUSCRIPT PROSE."
+          }
+        ],
+        "words": 3,
+        "characters": 24,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-c20": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Alex trained alone."
+          }
+        ],
+        "words": 3,
+        "characters": 19,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "ebeb63a6-ddc9-481a-8f19-80fb4d9e5b18-c25": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The offer came at dawn."
+          },
+          {
+            "heading": false,
+            "text": "Alex signed, and Marcus handed him the Silver Badge at Association HQ."
+          }
+        ],
+        "words": 17,
+        "characters": 93,
+        "paragraphs": 2,
+        "mentions": []
+      },
+      "32b1b62b-f7b6-4526-8649-5de1fa392057": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Rain fell on the  black gate. Quillon arrives. Thunder. Five more words right here."
+          }
+        ],
+        "words": 14,
+        "characters": 83,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "cc2d3e36-d665-4cb7-bc4a-bc0c3b1652b4": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "\"Wait.\"  She turned."
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": "\tIndented   line -- with \"straight\" quotes..."
+          },
+          {
+            "heading": false,
+            "text": "# not a heading"
+          },
+          {
+            "heading": false,
+            "text": "> not a quote **nor bold**"
+          },
+          {
+            "heading": false,
+            "text": "bolditalundergone"
+          },
+          {
+            "heading": true,
+            "text": "Centered"
+          },
+          {
+            "heading": false,
+            "text": "Quoted extra"
+          },
+          {
+            "heading": false,
+            "text": "LINE one  two spaces"
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": "    four-space indent"
+          },
+          {
+            "heading": false,
+            "text": "\"Dialogue,\" he said."
+          }
+        ],
+        "words": 30,
+        "characters": 204,
+        "paragraphs": 10,
+        "mentions": []
+      },
+      "b17a1622-b77b-4839-98cc-9c3436476d4c-c2": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The bell rang once. Twice, then."
+          }
+        ],
+        "words": 6,
+        "characters": 32,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "78cef8b7-9c3b-41b3-aad7-1d636a260d13-k1": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The gates stood open."
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": "The Academy had stood for five centuries, the porter said."
+          },
+          {
+            "heading": false,
+            "text": "Nobody believed him."
+          }
+        ],
+        "words": 17,
+        "characters": 99,
+        "paragraphs": 3,
+        "mentions": []
+      },
+      "ec449725-d523-41a6-a143-9be8da631eec": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Kael walked into the hall. Nobody rose. the lamps were already lit"
+          }
+        ],
+        "words": 12,
+        "characters": 66,
+        "paragraphs": 1,
+        "mentions": [
+          "80cecce9-8dab-4504-87f1-597250024e22"
+        ]
+      },
+      "4fee0c33-10ac-413e-a828-941049a681a0": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "The road ended at a wall."
+          },
+          {
+            "heading": false,
+            "text": "Mira touched the gate."
+          },
+          {
+            "heading": false,
+            "text": "Nobody answered. Then the wall fell."
+          }
+        ],
+        "words": 16,
+        "characters": 83,
+        "paragraphs": 3,
+        "mentions": []
+      },
+      "3faa7638-8bee-4772-8184-331e2f54177f": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "Chapter One."
+          }
+        ],
+        "words": 2,
+        "characters": 12,
+        "paragraphs": 1,
+        "mentions": []
+      },
+      "1f7ace61-dce2-43fb-9e7f-8e1ca636edbb": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "It began in ash."
+          },
+          {
+            "heading": false,
+            "text": "Nobody ran."
+          },
+          {
+            "heading": false,
+            "text": "The bell rang."
+          }
+        ],
+        "words": 9,
+        "characters": 41,
+        "paragraphs": 3,
+        "mentions": []
+      },
+      "7dc30f9c-7784-4e72-a2c0-ee62743fc12f": {
+        "blocks": [
+          {
+            "heading": false,
+            "text": "\"Wait.\"  She turned."
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": "\tIndented   line -- with \"straight\" quotes..."
+          },
+          {
+            "heading": false,
+            "text": "# not a heading"
+          },
+          {
+            "heading": false,
+            "text": "> not a quote **nor bold**"
+          },
+          {
+            "heading": false,
+            "text": "bolditalundergone"
+          },
+          {
+            "heading": true,
+            "text": "Centered"
+          },
+          {
+            "heading": false,
+            "text": "Quoted extra"
+          },
+          {
+            "heading": false,
+            "text": "Line one  two spaces"
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": ""
+          },
+          {
+            "heading": false,
+            "text": "    four-space indent"
+          },
+          {
+            "heading": false,
+            "text": "\"Dialogue,\" he said."
+          }
+        ],
+        "words": 30,
+        "characters": 204,
+        "paragraphs": 10,
+        "mentions": []
+      }
+    },
+    "diffs": [
+      {
+        "revision": "3faa7638-8bee-4772-8184-331e2f54177f",
+        "result": {
+          "blocks": [
+            {
+              "kind": "changed",
+              "parts": [
+                {
+                  "op": "same",
+                  "text": "Chapter One."
+                },
+                {
+                  "op": "add",
+                  "text": " Still writing."
+                }
+              ]
+            }
+          ],
+          "identical": false,
+          "stats": {
+            "wordsBefore": 2,
+            "wordsAfter": 4,
+            "charactersBefore": 12,
+            "charactersAfter": 27,
+            "wordsAdded": 2,
+            "wordsRemoved": 0,
+            "paragraphsChanged": 1
+          }
+        }
+      },
+      {
+        "revision": "1f7ace61-dce2-43fb-9e7f-8e1ca636edbb",
+        "result": {
+          "blocks": [
+            {
+              "kind": "changed",
+              "parts": [
+                {
+                  "op": "same",
+                  "text": "It began in ash"
+                },
+                {
+                  "op": "add",
+                  "text": " and silence"
+                },
+                {
+                  "op": "same",
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "kind": "same",
+              "text": "Nobody ran."
+            },
+            {
+              "kind": "same",
+              "text": "The bell rang."
+            }
+          ],
+          "identical": false,
+          "stats": {
+            "wordsBefore": 9,
+            "wordsAfter": 11,
+            "charactersBefore": 41,
+            "charactersAfter": 53,
+            "wordsAdded": 2,
+            "wordsRemoved": 0,
+            "paragraphsChanged": 1
+          }
+        }
+      },
+      {
+        "revision": "7dc30f9c-7784-4e72-a2c0-ee62743fc12f",
+        "result": {
+          "blocks": [
+            {
+              "kind": "same",
+              "text": "\"Wait.\"  She turned."
+            },
+            {
+              "kind": "same",
+              "text": ""
+            },
+            {
+              "kind": "same",
+              "text": "\tIndented   line -- with \"straight\" quotes..."
+            },
+            {
+              "kind": "same",
+              "text": "# not a heading"
+            },
+            {
+              "kind": "same",
+              "text": "> not a quote **nor bold**"
+            },
+            {
+              "kind": "same",
+              "text": "bolditalundergone"
+            },
+            {
+              "kind": "same",
+              "text": "Centered"
+            },
+            {
+              "kind": "same",
+              "text": "Quoted extra"
+            },
+            {
+              "kind": "changed",
+              "parts": [
+                {
+                  "op": "del",
+                  "text": "Line "
+                },
+                {
+                  "op": "add",
+                  "text": "LINE "
+                },
+                {
+                  "op": "same",
+                  "text": "one  two spaces"
+                }
+              ]
+            },
+            {
+              "kind": "same",
+              "text": ""
+            },
+            {
+              "kind": "same",
+              "text": ""
+            },
+            {
+              "kind": "same",
+              "text": "    four-space indent"
+            },
+            {
+              "kind": "same",
+              "text": "\"Dialogue,\" he said."
+            }
+          ],
+          "identical": false,
+          "stats": {
+            "wordsBefore": 30,
+            "wordsAfter": 30,
+            "charactersBefore": 204,
+            "charactersAfter": 204,
+            "wordsAdded": 1,
+            "wordsRemoved": 1,
+            "paragraphsChanged": 1
+          }
+        }
+      }
+    ]
+  },
+  "paragraphDiffs": [
+    {
+      "blocks": [
+        {
+          "kind": "removed",
+          "text": "One two three."
+        },
+        {
+          "kind": "moved",
+          "side": "from",
+          "text": "Keep me."
+        },
+        {
+          "kind": "same",
+          "text": "Moved paragraph here."
+        },
+        {
+          "kind": "added",
+          "text": "One two four."
+        },
+        {
+          "kind": "moved",
+          "side": "to",
+          "text": "Keep me."
+        },
+        {
+          "kind": "added",
+          "text": "Brand new."
+        }
+      ],
+      "identical": false,
+      "stats": {
+        "wordsBefore": 8,
+        "wordsAfter": 10,
+        "charactersBefore": 43,
+        "charactersAfter": 52,
+        "wordsAdded": 5,
+        "wordsRemoved": 3,
+        "paragraphsChanged": 5
+      }
+    },
+    {
+      "blocks": [
+        {
+          "kind": "changed",
+          "parts": [
+            {
+              "op": "same",
+              "text": "Same"
+            },
+            {
+              "op": "del",
+              "text": "  "
+            },
+            {
+              "op": "add",
+              "text": " "
+            },
+            {
+              "op": "same",
+              "text": "spacing."
+            }
+          ]
+        }
+      ],
+      "identical": false,
+      "stats": {
+        "wordsBefore": 2,
+        "wordsAfter": 2,
+        "charactersBefore": 14,
+        "charactersAfter": 13,
+        "wordsAdded": 0,
+        "wordsRemoved": 0,
+        "paragraphsChanged": 1
+      }
+    },
+    {
+      "blocks": [
+        {
+          "kind": "added",
+          "text": "Only added."
+        }
+      ],
+      "identical": false,
+      "stats": {
+        "wordsBefore": 0,
+        "wordsAfter": 2,
+        "charactersBefore": 0,
+        "charactersAfter": 11,
+        "wordsAdded": 2,
+        "wordsRemoved": 0,
+        "paragraphsChanged": 1
+      }
+    },
+    {
+      "blocks": [
+        {
+          "kind": "changed",
+          "parts": [
+            {
+              "op": "same",
+              "text": "The quick "
+            },
+            {
+              "op": "del",
+              "text": "brown "
+            },
+            {
+              "op": "add",
+              "text": "red "
+            },
+            {
+              "op": "same",
+              "text": "fox "
+            },
+            {
+              "op": "del",
+              "text": "jumps "
+            },
+            {
+              "op": "add",
+              "text": "leaps "
+            },
+            {
+              "op": "same",
+              "text": "over the lazy dog"
+            },
+            {
+              "op": "del",
+              "text": "."
+            },
+            {
+              "op": "add",
+              "text": "!"
+            }
+          ]
+        }
+      ],
+      "identical": false,
+      "stats": {
+        "wordsBefore": 9,
+        "wordsAfter": 9,
+        "charactersBefore": 44,
+        "charactersAfter": 42,
+        "wordsAdded": 2,
+        "wordsRemoved": 2,
+        "paragraphsChanged": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+node_modules
+dist
+relay-data/
+signing/
+release/
+desktop/web/
+
+# Mac Finder files, TypeScript build cache
+.DS_Store
+tsconfig.tsbuildinfo
+
+# Kept on this computer only: they name the owner's devices
+AI_HANDOFF_PROMPT.md
+flutter_app/README.md
