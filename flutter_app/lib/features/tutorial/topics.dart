@@ -62,8 +62,11 @@ const tutorialTopics = <Topic>[
     steps: [
       'Press New novel: type the title on the cover, the author under it, pick a colour, and press Begin chapter '
           'one to start writing. More details holds everything else.',
-      'Press a book to open it, or Continue writing to go straight back to the chapter you left.',
+      'Press a book to open it, or Continue writing to go straight back to the chapter you left. The last lines you '
+          'wrote there wait on the page above the button, and you land with the caret after the last word.',
       'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete.',
+      'Choose Covers or Spines beside the search. With more than six books the shelf stands them as spines on a '
+          'bookcase; press a spine to take the book off the shelf, then open it or use any of its actions.',
       'Search, filter by status or genre, and sort when the shelf fills up.',
     ],
     example:
@@ -97,8 +100,10 @@ const tutorialTopics = <Topic>[
       'Write on the page. Its title is typed at the top, under the chapter number.',
       'Below the page: today\'s words against your goal (tap to set one), the words added this session, the '
           'chapter\'s length and the save status.',
-      'Use the text button for font, size and spacing, and the frame button for focus mode.',
-      'Ctrl/⌘+F finds and replaces words in the chapter.',
+      'Use the text button for font, size and spacing, the frame button for focus mode, and Ctrl/⌘+F to find and '
+          'replace words in the chapter.',
+      'Press Sprint below the page and choose 10, 15, 25 or 45 minutes: the desk clears, a ring shows the time left '
+          'beside the words you add, and at the end a card says what you wrote. Stop ends it early.',
     ],
     example:
         'Type a scene, then press Ctrl/⌘+F to find every “Kael”. Close the app mid-sentence: the words are there when '

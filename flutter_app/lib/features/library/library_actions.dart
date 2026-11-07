@@ -57,6 +57,15 @@ class _Scope {
 
 void openNovel(BuildContext context, WidgetRef ref, Novel novel) => _Scope(context).open(novel);
 
+/// "Continue writing": the novel open at the chapter it was left at, with the caret after the last word written.
+void continueWritingFlow(BuildContext context, WidgetRef ref, Novel novel, StoryNode chapter) {
+  final scope = _Scope(context);
+  scope.container.read(openNovelProvider.notifier).open(novel.id);
+  scope.container.read(selectedNodeProvider.notifier).select(chapter.id);
+  scope.container.read(pendingCaretEndProvider.notifier).request(chapter.id);
+  scope.router.go(Destination.write.path);
+}
+
 /// What the title page holds before anything is created.
 typedef TitleDraft = ({String title, String author, String accent});
 

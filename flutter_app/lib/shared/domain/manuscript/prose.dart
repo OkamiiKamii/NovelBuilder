@@ -46,6 +46,47 @@ List<({bool heading, String text})> docBlocks(Object? doc) {
 
 List<String> blockTexts(Object? doc) => [for (final b in docBlocks(doc)) b.text];
 
+/// The closing words of a document, to show where the writing stopped: its last paragraphs (headings left out), up to
+/// about [max] characters, cut at a space so no word is broken. [cut] says whether earlier text was left out. Empty
+/// when nothing is written. Reads only: the text is the author's exactly, paragraph breaks kept.
+({String text, bool cut}) closingWords(Object? doc, {int max = 320}) {
+  final paragraphs = [
+    for (final b in docBlocks(doc))
+      if (!b.heading && b.text.trim().isNotEmpty) b.text.trim(),
+  ];
+  final kept = <String>[];
+  var length = 0;
+  var cut = false;
+  for (final p in paragraphs.reversed) {
+    final room = max - length;
+    final runes = p.runes.toList();
+    if (runes.length <= room) {
+      kept.insert(0, p);
+      length += runes.length + 2;
+      continue;
+    }
+    cut = true;
+    if (kept.isEmpty || room > 40) {
+      // The end of this paragraph, from the first space that leaves it within the room.
+      final take = room > 40 ? room : 40;
+      final from = runes.length > take ? runes.length - take : 0;
+      var start = from;
+      while (start > 0 && start < runes.length && String.fromCharCode(runes[start]).trim().isNotEmpty) {
+        start++;
+      }
+      final tail = String.fromCharCodes(runes.skip(start)).trimLeft();
+      if (tail.isNotEmpty) {
+        kept.insert(0, tail);
+      } else if (kept.isEmpty) {
+        // One unbroken run longer than the room: its end, as it is.
+        kept.insert(0, String.fromCharCodes(runes.skip(from)));
+      }
+    }
+    break;
+  }
+  return (text: kept.join('\n\n'), cut: cut);
+}
+
 /// Codex entries linked inside the text, in the order first linked.
 List<String> mentionsIn(Object? doc) {
   final ids = <String>{};

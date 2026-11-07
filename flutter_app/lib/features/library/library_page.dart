@@ -10,6 +10,7 @@ import '../../shared/data/providers.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/records/novel.dart';
 import 'backup_actions.dart';
+import 'bookcase.dart';
 import 'bookshelf.dart';
 import 'library_actions.dart';
 import 'title_page.dart';
@@ -24,6 +25,12 @@ enum LibrarySort {
   const LibrarySort(this.label);
   final String label;
 }
+
+/// Where the Library's choice of covers or spines is kept on this device.
+const libraryViewKey = 'library.view';
+
+/// Untouched, the shelf shows spines once it holds more books than this.
+const spinesAfter = 6;
 
 /// The novels on this device. Every novel is separate: nothing in one points into another.
 class LibraryPage extends ConsumerStatefulWidget {
@@ -63,6 +70,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
         if (!n.archived) n,
     ];
     final archivedCount = all.length - active.length;
+    // Covers, or spines on a bookcase: the choice is kept on this device; untouched, a long shelf shows spines.
+    final chosenView = ref.watch(settingsStoreProvider).read(libraryViewKey);
+    final spines = chosenView is String ? chosenView == 'spines' : active.length > spinesAfter;
     final genres = {
       for (final n in all) ...[n.primaryGenre, ...n.secondaryGenres].where((g) => g.isNotEmpty),
     }.toList()..sort(localeCompare);
@@ -148,6 +158,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               onGenre: (g) => setState(() => _genre = g),
               onSort: (s) => setState(() => _sort = s),
               onArchived: (v) => setState(() => _archived = v),
+              spines: spines,
+              onSpines: (v) =>
+                  setState(() => ref.read(settingsStoreProvider).write(libraryViewKey, v ? 'spines' : 'covers')),
             ),
             const SizedBox(height: 16),
             if (visible.isEmpty)
@@ -164,7 +177,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               Semantics(
                 label: '${plural(visible.length, 'novel')} shown',
                 container: true,
-                child: Bookshelf(novels: visible),
+                child: spines ? Bookcase(novels: visible) : Bookshelf(novels: visible),
               ),
           ],
         ],
@@ -187,6 +200,8 @@ class _Toolbar extends StatelessWidget {
     required this.onGenre,
     required this.onSort,
     required this.onArchived,
+    required this.spines,
+    required this.onSpines,
   });
 
   final TextEditingController search;
@@ -201,6 +216,8 @@ class _Toolbar extends StatelessWidget {
   final ValueChanged<String?> onGenre;
   final ValueChanged<LibrarySort> onSort;
   final ValueChanged<bool> onArchived;
+  final bool spines;
+  final ValueChanged<bool> onSpines;
 
   @override
   Widget build(BuildContext context) {
@@ -265,6 +282,15 @@ class _Toolbar extends StatelessWidget {
     final archivedChip = archivedCount > 0 || archived
         ? FilterChip(label: Text('Archived ($archivedCount)'), selected: archived, onSelected: onArchived)
         : null;
+    final viewSwitch = SegmentedButton<bool>(
+      segments: const [
+        ButtonSegment(value: false, icon: Icon(Icons.auto_stories_outlined), label: Text('Covers')),
+        ButtonSegment(value: true, icon: Icon(Icons.view_week_outlined), label: Text('Spines')),
+      ],
+      selected: {spines},
+      showSelectedIcon: false,
+      onSelectionChanged: (v) => onSpines(v.first),
+    );
 
     // On a phone the controls share rows, so the novels themselves stay near the top of the screen.
     if (compact) {
@@ -290,6 +316,8 @@ class _Toolbar extends StatelessWidget {
               ],
             ),
           ],
+          gap,
+          Align(alignment: AlignmentDirectional.centerStart, child: viewSwitch),
         ],
       );
     }
@@ -304,6 +332,7 @@ class _Toolbar extends StatelessWidget {
         if (genreField != null) box(genreField),
         box(sortField),
         ?archivedChip,
+        viewSwitch,
       ],
     );
   }

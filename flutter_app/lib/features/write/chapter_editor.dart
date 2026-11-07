@@ -24,6 +24,7 @@ import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
 import 'editor/link_bar.dart';
 import 'editor/prose_document.dart';
+import 'sprint.dart';
 import 'version_history.dart';
 import 'write_providers.dart';
 import 'writing_prefs.dart';
@@ -93,7 +94,39 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) ref.read(pendingFindProvider.notifier).request(null);
       });
+    } else if (ref.read(pendingCaretEndProvider) == widget.node.id) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ref.read(pendingCaretEndProvider.notifier).request(null);
+        _caretAtEnd();
+      });
     }
+    // Opened during a sprint (moving to another chapter): this one counts from its words now.
+    if (ref.read(sprintProvider) != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
+      });
+    }
+  }
+
+  /// The caret after the chapter's last word, with the editor focused: from "Continue writing" in the library.
+  void _caretAtEnd() {
+    final editor = _editor;
+    final last = _document?.lastWhere((n) => n is TextNode, orElse: () => _document!.last);
+    if (editor == null || last is! TextNode) return;
+    editor.execute([
+      ChangeSelectionRequest(
+        DocumentSelection.collapsed(
+          position: DocumentPosition(
+            nodeId: last.id,
+            nodePosition: TextNodePosition(offset: last.text.length),
+          ),
+        ),
+        SelectionChangeType.placeCaret,
+        SelectionReason.userInteraction,
+      ),
+    ]);
+    _focus.requestFocus();
   }
 
   void _load({JsonMap? override}) {
@@ -147,7 +180,10 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
     _draftTimer ??= Timer(_draftEvery, _writeDraft);
     _countTimer?.cancel();
     _countTimer = Timer(const Duration(milliseconds: 300), () {
-      if (mounted && _document != null) setState(() => _counts = measureDoc(_currentDoc()));
+      if (mounted && _document != null) {
+        setState(() => _counts = measureDoc(_currentDoc()));
+        ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
+      }
     });
   }
 
@@ -388,6 +424,12 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
 
     final prefs = ref.watch(writingPrefsProvider)[deviceFormOf(context)]!;
     final focus = ref.watch(focusModeProvider);
+    final sprint = ref.watch(sprintProvider);
+    final sprintResult = ref.watch(sprintResultProvider);
+    // A sprint starting while this chapter is open counts from its words now.
+    ref.listen(sprintProvider, (before, now) {
+      if (before == null && now != null) ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
+    });
     final page = pageColors(prefs.page);
     void toggleFocus() => ref.read(focusModeProvider.notifier).toggle();
     void escape() {
@@ -495,7 +537,10 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
                 context.go(entryPath(entry.id, character: entry.category == 'character'));
               },
             ),
+          // Keyed, so the page (and the editor on it) stays the same when bars above it come and go (focus mode, a
+          // sprint): rebuilt from nothing, the editor would lose the caret and, on a phone, fail while it mounts.
           Expanded(
+            key: const ValueKey('page'),
             child: _Desk(
               compact: compact,
               paper: page?.background,
@@ -529,7 +574,11 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
               ),
             ),
           ),
-          if (!focus)
+          if (sprint != null)
+            SprintBar(sprint: sprint)
+          else if (sprintResult != null)
+            SprintCard(result: sprintResult)
+          else if (!focus)
             _Meter(
               words: _counts.words,
               minutes: _counts.readingMinutes,
@@ -784,6 +833,7 @@ class _Meter extends StatelessWidget {
                   ),
                 ),
               ),
+              const SprintButton(),
               if (session != 0)
                 Text('${session > 0 ? '+' : '−'}${formatNumber(session.abs())} this session', style: strong),
               Text('${plural(words, 'word')} · $minutes min read', style: muted),

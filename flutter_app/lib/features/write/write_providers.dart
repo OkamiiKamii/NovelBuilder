@@ -68,3 +68,14 @@ class PendingFindNotifier extends Notifier<FindRequest?> {
 }
 
 final pendingFindProvider = NotifierProvider<PendingFindNotifier, FindRequest?>(PendingFindNotifier.new);
+
+/// A chapter or scene to open with the caret after its last word (from the library's "Continue writing"), so the
+/// author carries on where they stopped. The chapter's editor takes it when it opens.
+class PendingCaretNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void request(String? nodeId) => state = nodeId;
+}
+
+final pendingCaretEndProvider = NotifierProvider<PendingCaretNotifier, String?>(PendingCaretNotifier.new);

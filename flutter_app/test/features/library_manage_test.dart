@@ -3,13 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/features/library/bookcase.dart';
+import 'package:novel_builder/features/library/bookshelf.dart';
+import 'package:novel_builder/features/library/library_page.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
 import 'package:novel_builder/shared/data/database.dart';
 import 'package:novel_builder/shared/data/providers.dart';
+import 'package:novel_builder/shared/domain/manuscript/prose.dart';
 import 'package:novel_builder/shared/domain/records/novel.dart';
 import 'package:novel_builder/shared/domain/records/story_node.dart';
 
+import 'package:super_editor/super_editor.dart';
+import 'package:super_editor/super_editor_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
 import '../helpers/pump_app.dart';
@@ -318,5 +325,168 @@ void main() {
     expect(currentLocation(container), '/write');
     expect(container.read(openNovelProvider), ash.id);
     expect(container.read(selectedNodeProvider), river.id);
+  });
+
+  testWidgets('the last lines written wait on a page, and Continue writing puts the caret after the last word', (
+    tester,
+  ) async {
+    BlinkController.indeterminateAnimationsEnabled = false;
+    addTearDown(() => BlinkController.indeterminateAnimationsEnabled = true);
+    final container = await pumpApp(tester);
+    final ash = _add(container, 'Ash');
+    final m = container.read(manuscriptServiceProvider);
+    final gate = m.create(ash.id, NodeKind.chapter, title: 'The Gate');
+    m.save(ash.id, gate.id, textToDoc('The bell rang twice.\n\nAnd then the gate stayed shut'), baseRev: 0);
+    final saved = jsonEncode(container.read(novelStoreProvider).row(ash.id, 'chapterContents', gate.id)!['doc']);
+    container.read(openNovelProvider.notifier).open(ash.id);
+    container.read(selectedNodeProvider.notifier).select(gate.id);
+    container.read(openNovelProvider.notifier).close();
+    await tester.pumpAndSettle();
+    expect(
+      find.bySemanticsLabel('The last lines you wrote: The bell rang twice.\n\nAnd then the gate stayed shut'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Continue writing “The Gate”'));
+    await tester.pumpAndSettle();
+    expect(currentLocation(container), '/write');
+    final caret = SuperEditorInspector.findDocumentSelection()!;
+    final last = SuperEditorInspector.findDocument()!.last as TextNode;
+    expect(caret.isCollapsed, isTrue);
+    expect(caret.extent.nodeId, last.id);
+    expect((caret.extent.nodePosition as TextNodePosition).offset, last.text.length);
+    expect(container.read(pendingCaretEndProvider), isNull, reason: 'taken once');
+    expect(
+      jsonEncode(container.read(novelStoreProvider).row(ash.id, 'chapterContents', gate.id)!['doc']),
+      saved,
+      reason: 'placing the caret never changes the text',
+    );
+  });
+
+  testWidgets('a blank chapter shows a blank page', (tester) async {
+    final container = await pumpApp(tester, size: phone);
+    final ash = _add(container, 'Ash');
+    final gate = container.read(manuscriptServiceProvider).create(ash.id, NodeKind.chapter, title: 'The Gate');
+    container.read(openNovelProvider.notifier).open(ash.id);
+    container.read(selectedNodeProvider.notifier).select(gate.id);
+    container.read(openNovelProvider.notifier).close();
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel('The chapter is a blank page'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a long shelf stands as spines; the choice of covers or spines is kept', (tester) async {
+    final container = await pumpApp(tester);
+    for (var i = 1; i <= spinesAfter; i++) {
+      _add(container, 'Book $i');
+    }
+    await tester.pumpAndSettle();
+    expect(find.byType(Spine), findsNothing, reason: 'six books stand as covers');
+    _add(container, 'Convergence');
+    await tester.pumpAndSettle();
+    expect(find.byType(Spine), findsNWidgets(spinesAfter + 1), reason: 'the seventh brings the bookcase');
+
+    await tester.tap(find.text('Covers'));
+    await tester.pumpAndSettle();
+    expect(find.byType(Spine), findsNothing);
+    expect(container.read(settingsStoreProvider).read(libraryViewKey), 'covers');
+    await tester.tap(find.text('Spines'));
+    await tester.pumpAndSettle();
+    expect(container.read(settingsStoreProvider).read(libraryViewKey), 'spines');
+    expect(find.byType(Spine), findsNWidgets(spinesAfter + 1));
+  });
+
+  testWidgets('a spine takes the book off the shelf, with every action, and Open opens it', (tester) async {
+    final container = await pumpApp(tester);
+    container.read(settingsStoreProvider).write(libraryViewKey, 'spines');
+    final ash = _add(container, 'Ash');
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel(RegExp(r'^Ash, Drafting')), findsOneWidget);
+
+    await tester.tap(find.byType(Spine));
+    await tester.pumpAndSettle();
+    for (final label in [
+      'Open Ash',
+      'Edit details',
+      'Pin to top',
+      'Duplicate',
+      'Archive',
+      'Export backup',
+      'Delete…',
+    ]) {
+      expect(find.text(label), findsOneWidget, reason: label);
+    }
+    await tester.tap(find.text('Back on the shelf'));
+    await tester.pumpAndSettle();
+    expect(find.text('Open Ash'), findsNothing);
+
+    await tester.tap(find.byType(Spine));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pin to top'));
+    await tester.pumpAndSettle();
+    expect(container.read(libraryProvider).single.pinned, isTrue, reason: 'the action runs once the book is put down');
+
+    await tester.tap(find.byType(Spine));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Open Ash'));
+    await tester.pumpAndSettle();
+    expect(container.read(openNovelProvider), ash.id);
+    expect(currentLocation(container), '/write');
+  });
+
+  testWidgets('the bookcase meets the guidelines and fits a phone at twice the text size', (tester) async {
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final handle = tester.ensureSemantics();
+    final container = await pumpApp(tester, size: phone);
+    container.read(settingsStoreProvider).write(libraryViewKey, 'spines');
+    for (final t in ['A Song for the Drowned City', 'Ash', 'Convergence', 'The Last Lighthouse']) {
+      _add(container, t);
+    }
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    final spines = find.byType(Spine);
+    await tester.ensureVisible(spines.first);
+    await tester.pumpAndSettle();
+    await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+    await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+    await expectLater(tester, meetsGuideline(textContrastGuideline));
+    await tester.tap(spines.first);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull, reason: 'the book in hand fits too');
+    handle.dispose();
+  });
+
+  testWidgets('the book opens on its way into the chapter, and opens at once when the device asks for less motion', (
+    tester,
+  ) async {
+    BlinkController.indeterminateAnimationsEnabled = false;
+    addTearDown(() => BlinkController.indeterminateAnimationsEnabled = true);
+    final container = await pumpApp(tester);
+    final ash = _add(container, 'Ash');
+    final gate = container.read(manuscriptServiceProvider).create(ash.id, NodeKind.chapter, title: 'The Gate');
+    container.read(openNovelProvider.notifier).open(ash.id);
+    container.read(selectedNodeProvider.notifier).select(gate.id);
+    container.read(openNovelProvider.notifier).close();
+    await tester.pumpAndSettle();
+    final jackets = find.byType(BookJacket).evaluate().length;
+
+    await tester.tap(find.text('Continue writing “The Gate”'));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byType(BookJacket), findsNWidgets(jackets + 1), reason: 'the book is held up, opening');
+    expect(currentLocation(container), '/', reason: 'still in the library while it opens');
+    await tester.pumpAndSettle();
+    expect(currentLocation(container), '/write');
+    expect(container.read(selectedNodeProvider), gate.id);
+    expect(find.byType(BookJacket), findsNothing, reason: 'nothing of it is left over the desk');
+
+    container.read(routerProvider).go('/');
+    await tester.pumpAndSettle();
+    tester.platformDispatcher.accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Continue writing “The Gate”'));
+    await tester.pump();
+    expect(currentLocation(container), '/write', reason: 'no animation: straight in');
   });
 }
