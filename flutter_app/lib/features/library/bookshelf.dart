@@ -267,6 +267,11 @@ class LastPage extends ConsumerWidget {
     final ink = colours?.text ?? scheme.onSurface;
     final blank = closing.text.isEmpty;
     final style = vaultText(context, size: 17, color: ink).copyWith(height: 1.5);
+    // On a phone the page is a glimpse, not a reading: paragraphs run line after line, without the blank lines between
+    // them, and only the last few lines show, so the shelves are not pushed a screen down.
+    final narrow = MediaQuery.sizeOf(context).width < 600;
+    final shown = narrow ? closing.text.replaceAll(RegExp(r'\n\s*\n+'), '\n') : closing.text;
+    final lineHeight = MediaQuery.textScalerOf(context).scale(style.fontSize ?? 17) * (style.height ?? 1.5);
     final words = Text.rich(
       TextSpan(
         children: [
@@ -277,7 +282,7 @@ class LastPage extends ConsumerWidget {
               style: style.copyWith(fontStyle: FontStyle.italic, color: colours?.muted ?? scheme.onSurfaceVariant),
             )
           else
-            TextSpan(text: '${closing.text} '),
+            TextSpan(text: '$shown '),
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: _Caret(color: scheme.primary, height: (style.fontSize ?? 17) * 1.2),
@@ -306,22 +311,51 @@ class LastPage extends ConsumerWidget {
             ),
           ],
         ),
-        // The text runs on from above: its first lines fade in, as if the page were turned to its foot.
-        child: closing.cut
-            ? ShaderMask(
-                blendMode: BlendMode.dstIn,
-                shaderCallback: (rect) => const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x33000000), Color(0xFF000000)],
-                  stops: [0, 0.45],
-                ).createShader(rect),
-                child: words,
+        child: narrow
+            ? LayoutBuilder(
+                builder: (context, box) {
+                  // Five lines at most, the last ones: the page is shown from its foot, the lines above faded.
+                  final max = lineHeight * 5 + 4;
+                  final painter = TextPainter(
+                    text: TextSpan(text: '${closing.cut ? '…' : ''}$shown  ', style: style),
+                    textDirection: Directionality.of(context),
+                    textScaler: MediaQuery.textScalerOf(context),
+                  )..layout(maxWidth: box.maxWidth);
+                  final over = painter.height > max;
+                  painter.dispose();
+                  final page = over
+                      ? SizedBox(
+                          height: max,
+                          child: ClipRect(
+                            child: OverflowBox(
+                              alignment: Alignment.bottomLeft,
+                              maxHeight: double.infinity,
+                              child: words,
+                            ),
+                          ),
+                        )
+                      : words;
+                  return over || closing.cut ? _fadeIn(page) : page;
+                },
               )
+            : closing.cut
+            ? _fadeIn(words)
             : words,
       ),
     );
   }
+
+  /// The text runs on from above: its first lines fade in, as if the page were turned to its foot.
+  static Widget _fadeIn(Widget child) => ShaderMask(
+    blendMode: BlendMode.dstIn,
+    shaderCallback: (rect) => const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [Color(0x33000000), Color(0xFF000000)],
+      stops: [0, 0.45],
+    ).createShader(rect),
+    child: child,
+  );
 }
 
 /// A caret where the next word goes. It blinks a few times, as an invitation, then stays lit (steady from the start

@@ -20,6 +20,7 @@ import '../characters/widgets/parts.dart';
 import '../visualize/visualize_providers.dart';
 import '../visualize/viz_frame.dart';
 import '../visualize/widgets/canon_badge.dart';
+import 'first_tie.dart';
 import 'relationship_page.dart';
 
 /// Each group's colour and line pattern: never told by colour alone.
@@ -213,13 +214,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
           Semantics(liveRegion: true, child: Text(count, style: Theme.of(context).textTheme.bodySmall)),
           const SizedBox(height: 8),
           if (net.edges.isEmpty && net.nodes.isEmpty)
-            filtered
-                ? NoResultsState(onClear: _clear)
-                : const EmptyState(
-                    icon: Icons.hub_outlined,
-                    title: 'No relationships yet',
-                    message: 'Add relationships on a character’s Relationships tab, and they appear here.',
-                  )
+            filtered ? NoResultsState(onClear: _clear) : FirstTie(cast: cast)
           else if (_list)
             _ListView(cast: cast, net: net, actions: actions)
           else ...[

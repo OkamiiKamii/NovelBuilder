@@ -15,6 +15,7 @@ import '../library/library_actions.dart';
 import '../tutorial/tutorial.dart';
 import '../workspace/open_novel.dart';
 import '../write/writing_prefs_controls.dart';
+import 'theme_swatches.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -33,20 +34,7 @@ class SettingsPage extends ConsumerWidget {
           const _ThisNovel(),
           FormSection(
             title: 'Appearance',
-            children: [
-              RadioGroup<ThemeChoice>(
-                groupValue: choice,
-                onChanged: (value) {
-                  if (value != null) ref.read(themeChoiceProvider.notifier).choose(value);
-                },
-                child: Column(
-                  children: [
-                    for (final c in ThemeChoice.values)
-                      RadioListTile<ThemeChoice>(value: c, title: Text(c.label), contentPadding: EdgeInsets.zero),
-                  ],
-                ),
-              ),
-            ],
+            children: [ThemeSwatches(choice: choice, onChoose: ref.read(themeChoiceProvider.notifier).choose)],
           ),
           const SizedBox(height: 16),
           FormSection(

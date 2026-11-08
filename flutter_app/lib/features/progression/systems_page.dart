@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
-import '../../core/widgets/states.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
@@ -20,6 +19,7 @@ import '../workspace/organize_switch.dart';
 import 'progression_providers.dart';
 import 'widgets/sheet_editor.dart';
 import 'widgets/sheet_view.dart';
+import 'widgets/system_gallery.dart';
 
 const _tabs = {
   'variables': 'Attributes & resources',
@@ -127,14 +127,7 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
           ),
           const SizedBox(height: 12),
           if (system == null)
-            EmptyState(
-              icon: Icons.account_tree_outlined,
-              title: 'No systems yet',
-              message:
-                  'For a novel with a worked-out system (a game system, cultivation realms, hard magic): start blank or '
-                  'from a preset, and change anything.',
-              action: start,
-            )
+            SystemGallery(onPreset: (p) => create(p.content), onBlank: () => create(blankBlueprint))
           else ...[
             Wrap(
               spacing: 8,

@@ -68,7 +68,8 @@ const tutorialTopics = <Topic>[
       'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
           'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
           'shelf and opens it.',
-      'Search, filter by status or genre, and sort when the shelf fills up.',
+      'Search the shelf, and press Sort & filter for status, genre and order. On a phone it stays folded until you '
+          'press it, and counts what is set.',
     ],
     example:
         'Create “Ashfall” and give it a cover. It stands on the shelf as a book; tomorrow, Continue writing opens '
@@ -85,7 +86,9 @@ const tutorialTopics = <Topic>[
     steps: [
       'Open a novel from the Library: its name shows in the areas.',
       'Move between areas with the rail, or with Ctrl/⌘ and a number from 1 to 8.',
-      'Within an area, the chips or buttons at the top switch between its pages.',
+      'Within an area, the tabs at the top switch between its pages.',
+      'On a phone, More opens the contents of the rest: Search the novel, then each area with what it holds now '
+          '(threads, characters, words against the target).',
       'Ctrl/⌘ and comma opens Settings from anywhere.',
     ],
     example: 'Press Ctrl/⌘+3 to go to Organize, then World to see every place and faction of “Ashfall”.',
@@ -100,8 +103,8 @@ const tutorialTopics = <Topic>[
       'Add a chapter (or a scene inside one) in the outline, and select it.',
       'Write on the page; its title is typed at the top. Beside it (the panel button) are notes: how the chapter '
           'before ends, this chapter\'s plan and beats, who is on the page and the threads that move here.',
-      'Below the page: today\'s words against your goal (tap to set one), the words added this session, the '
-          'chapter\'s length and the save status.',
+      'Below the page: today\'s words against your goal (tap it to choose 100, 250, 500 or 1,000 words a day, or '
+          'your own number), the words added this session, the chapter\'s length and the save status.',
       'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. The frame button is focus '
           'mode: the line you write stays in the middle and the rest fades back (Typewriter turns that off).',
       'Press Sprint below the page and choose 10, 15, 25 or 45 minutes: the desk clears, a ring shows the time left '
@@ -115,13 +118,16 @@ const tutorialTopics = <Topic>[
     id: 'outline',
     title: 'The outline',
     group: 'Writing',
-    where: 'In Write, the list of parts, chapters and scenes beside the editor.',
-    what: 'The whole book as volumes, acts, arcs, chapters and scenes, with a status on each.',
+    where: 'In Write, the contents page beside the editor (on a phone, Write opens on it).',
+    what:
+        'The whole book as its contents page: parts, numbered chapters with their length, and scenes, each with a '
+        'status. The chapter being written is marked with a ribbon.',
     steps: [
       'Add a part, then chapters inside it, then scenes inside a chapter.',
-      'Use a node’s ⋯ menu to rename, move, duplicate, split, merge or delete it.',
+      'Use a line’s ⋯ menu to rename, move, duplicate, split, merge or delete it.',
       'Set each one’s status, from Idea to Published.',
       'Open a chapter’s plan for its objective, beats and who appears.',
+      'Under a chapter’s last line, Continue to the next one; at the end of the book, Begin the next chapter.',
     ],
     example: 'Move “The Bell” from Act 1 to Act 2 and mark it Revising. Its text and notes move with it, untouched.',
   ),
@@ -226,10 +232,12 @@ const tutorialTopics = <Topic>[
     matches: ['/organize/character'],
     what: 'Your cast: a library to find characters in, and a profile for each with sections you shape yourself.',
     steps: [
-      'Press New character; only a name is needed.',
-      'On the profile, add sections and fields, or sections from a layout.',
+      'Press New character; only a name is needed. Names you keep writing in the manuscript wait at the top: Add one '
+          'in a press, or set it aside with Not a character.',
+      'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in.',
       'Use the tabs for relationships, secrets, notes, history and progression.',
-      'Search by name, alias or tag; filter by role; switch between cards and a list.',
+      'Search by name, alias or tag; filter by role; switch between Cards, List and Ties, where a “+” between two '
+          'characters says who they are to each other.',
       'Under each card, a line runs through the book: a tick for every chapter, lit where the character appears.',
     ],
     example:
@@ -245,7 +253,8 @@ const tutorialTopics = <Topic>[
     what:
         'Your world’s encyclopedia: places, factions, items, powers, lore and kinds of your own, each with its fields.',
     steps: [
-      'Press New entry and choose a category.',
+      'An empty world opens on its first page: name a place, who holds power, what everyone wants, fears and '
+          'remembers, and press Begin this world. Later, press New entry and choose a category.',
       'Fill in its summary and fields.',
       'Connect it to other records (“seated in”, “member of”) under Every connection.',
       'In the editor, select a name and link it to its entry.',
@@ -275,7 +284,8 @@ const tutorialTopics = <Topic>[
     path: '/organize/systems',
     what: 'Design the rules of a magic, levelling or power system: attributes, formulas, levels, classes and skills.',
     steps: [
-      'Start from a preset (LitRPG, Cultivation, Hard magic, Superhero) or a blank system.',
+      'Pick a card: LitRPG, Cultivation, Hard magic or Superhero (each shows its levels, ranks and attributes) and '
+          'press Begin with it, or Begin blank.',
       'Define attributes and resources, then levels or named stages.',
       'Add groups such as classes and skills, with what they need.',
       'Give a character a sheet, and record what changes chapter by chapter.',
@@ -328,7 +338,8 @@ const tutorialTopics = <Topic>[
     matches: ['/organize/relationship'],
     what: 'Who is what to whom, and how that changes over the story, drawn as a map.',
     steps: [
-      'Add a relationship from a character’s profile.',
+      'Add a relationship from a character’s profile, from Characters → Ties, or on the empty map: name two people, '
+          'say what they are, and press Draw it on the map.',
       'Choose its type and roles, and where the reader meets it.',
       'Add a stage when it changes, at the chapter where it does.',
       'Open Visualize → Relationship map to see it at any point in the story.',
@@ -358,7 +369,8 @@ const tutorialTopics = <Topic>[
     matches: ['/plan/event', '/plan/calendar', '/visualize/timeline', '/visualize/order', '/visualize/history'],
     what: 'Events in the order they happen in the story’s world, however your chapters are arranged.',
     steps: [
-      'Press New event and give it a date, exact or approximate, or none.',
+      'Press New event and give it a date, exact or approximate, or none. An empty timeline offers to make an event '
+          'from each chapter, in the order told, waiting for their dates.',
       'Link the characters and places involved, and the chapter that tells it.',
       'Read it down the line: each year a mark, each event on a node sized by its importance, and the years '
           'between said where time jumps.',
@@ -464,6 +476,7 @@ const tutorialTopics = <Topic>[
       'Read it: its rule, what it rests on, and its records; open one, or see it in a view.',
       'Press Resolved, Intentional, Needs review or Ignored (with a note if you like); the next one comes up.',
       'Use the arrows to skip, or The whole list to filter and group every warning.',
+      'When no check raises anything, Review says In good order, with every check that ran and what it read.',
     ],
     example: 'A character appears after being tracked as dead: it is a flashback, so mark it intentional, noting why.',
   ),
@@ -521,8 +534,10 @@ const tutorialTopics = <Topic>[
       'At the top: the days you have written in a row, the manuscript against its target, and when you would finish '
           'at your pace of the last 30 days.',
       'A year of writing has a square for each day, darker the more you wrote. Point at or tap a day to see its words.',
+      'How long it is: the manuscript among the lengths of fiction, from flash fiction to a long novel, its pages, '
+          'and the words to the next length.',
       'Milestones fill in as you pass them; the next one says how far it is.',
-      'Set daily and weekly word targets; add deadlines and tasks that are not word counts.',
+      'Set daily and weekly word targets (or from the goal under the page in Write); add deadlines and tasks.',
     ],
     example: 'Target: 1,000 words a day. Today shows 640, and the deadline says 820 a day will finish on time.',
   ),
@@ -597,7 +612,7 @@ const tutorialTopics = <Topic>[
     what: 'How the app looks and feels on this device: theme, writing settings, the tutorial, and import and export.',
     steps: [
       'Open Settings (Ctrl/⌘+comma).',
-      'Choose the parchment or midnight theme.',
+      'Choose a look: each is a small page in its own colours (parchment, midnight, or match this device).',
       'Set the editor’s font, size and spacing.',
       'Turn the Tutorial button on or off.',
     ],
@@ -610,8 +625,8 @@ const tutorialTopics = <Topic>[
     where: 'The same app on a phone or a tablet.',
     what: 'The app adapts: one column and a bar at the bottom on a phone, the rail on wider screens.',
     steps: [
-      'On a phone, use the bar at the bottom: Library, Write, Organize, and More for the rest.',
-      'In Write, the outline and the editor take turns; Back returns to the outline.',
+      'On a phone, use the bar at the bottom: Library, Write, Organize, and More, the contents of the rest.',
+      'In Write, the contents page and the editor take turns; Back returns to the contents.',
       'Panels open as sheets from the bottom.',
     ],
     example: 'On the bus, open Write, choose Chapter 18 and add a paragraph. It is saved before the next stop.',

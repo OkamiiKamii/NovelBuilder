@@ -25,6 +25,7 @@ import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
 import 'editor/link_bar.dart';
 import 'editor/prose_document.dart';
+import 'goal_pledge.dart';
 import 'margin.dart';
 import 'sprint.dart';
 import 'version_history.dart';
@@ -478,7 +479,12 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
   Future<void> _goals() async {
     await showDialog<void>(
       context: context,
-      builder: (_) => _GoalsDialog(service: _service, novelId: widget.novelId),
+      builder: (_) => GoalPledge(
+        service: _service,
+        novelId: widget.novelId,
+        words: [for (final n in ref.read(outlineProvider)) n.wordCount].fold(0, (a, b) => a + b),
+        target: ref.read(novelStoreProvider).novel(widget.novelId)?.targetWordCount,
+      ),
     );
     if (mounted) setState(() {});
   }
@@ -1317,68 +1323,6 @@ class _EntryPickerState extends State<_EntryPicker> {
         ),
       ),
       actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel'))],
-    );
-  }
-}
-
-class _GoalsDialog extends StatefulWidget {
-  const _GoalsDialog({required this.service, required this.novelId});
-  final ManuscriptService service;
-  final String novelId;
-
-  @override
-  State<_GoalsDialog> createState() => _GoalsDialogState();
-}
-
-class _GoalsDialogState extends State<_GoalsDialog> {
-  late final _goals = widget.service.wordGoals(widget.novelId);
-  late final _daily = TextEditingController(text: _goals.daily?.toString() ?? '');
-  late final _weekly = TextEditingController(text: _goals.weekly?.toString() ?? '');
-
-  @override
-  void dispose() {
-    _daily.dispose();
-    _weekly.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    InputDecoration field(String label) =>
-        InputDecoration(labelText: label, hintText: 'No goal', helperText: 'Words, net of cuts');
-    return AlertDialog(
-      title: const Text('Writing goals'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text('Goals are yours to set; none is assumed. Leave a box empty for no goal.'),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _daily,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: field('Each day'),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _weekly,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: field('Each week'),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
-        FilledButton(
-          onPressed: () {
-            widget.service.setWordGoal(widget.novelId, 'daily', int.tryParse(_daily.text));
-            widget.service.setWordGoal(widget.novelId, 'weekly', int.tryParse(_weekly.text));
-            Navigator.of(context).pop();
-          },
-          child: const Text('Save goals'),
-        ),
-      ],
     );
   }
 }

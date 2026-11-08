@@ -68,9 +68,14 @@ String twoSkills(Novel n) {
 void main() {
   testWidgets('a system starts from a preset, and its parts are named by the author', (tester) async {
     final n = await setUp(tester, location: (_) => '/organize/systems');
-    expect(find.text('No systems yet'), findsOneWidget);
-    await tapText(tester, 'Or start from a preset…');
-    await tapText(tester, systemPresets.first.name);
+    expect(find.text('Begin a system'), findsOneWidget);
+    // Every preset is a card saying what it holds; one press begins it.
+    for (final p in systemPresets) {
+      expect(find.text('Begin with ${p.name}'), findsOneWidget);
+    }
+    expect(find.textContaining('Common → Advanced → Unique → Legendary', findRichText: true), findsOneWidget);
+    await expectLater(tester, meetsGuideline(textContrastGuideline));
+    await tapText(tester, 'Begin with ${systemPresets.first.name}');
     final systems = rows(n, 'systems');
     expect(systems.single['name'], systemPresets.first.content['name']);
 
@@ -83,7 +88,7 @@ void main() {
 
   testWidgets('a character is put on a system from its Sheets tab, and taken off again', (tester) async {
     final n = await setUp(tester, location: (_) => '/organize/systems');
-    await tapText(tester, 'A blank system');
+    await tapText(tester, 'Begin blank');
     await tapText(tester, 'Sheets (0)');
     await tapText(tester, 'Add a character or entry…');
     await tapText(tester, 'Mira');
@@ -93,12 +98,12 @@ void main() {
 
   testWidgets('deleting a system asks first and names what goes with it', (tester) async {
     final n = await setUp(tester, location: (_) => '/organize/systems');
-    await tapText(tester, 'A blank system');
+    await tapText(tester, 'Begin blank');
     await tapText(tester, 'Delete this system…');
     expect(find.textContaining('Characters and entries are not changed'), findsOneWidget);
     await tapText(tester, 'Delete the system');
     expect(rows(n, 'systems'), isEmpty);
-    expect(find.text('No systems yet'), findsOneWidget);
+    expect(find.text('Begin a system'), findsOneWidget);
   });
 
   testWidgets('the Progression tab records a change only once something is tracked', (tester) async {

@@ -13,6 +13,7 @@ import '../../shared/data/providers.dart';
 import '../destinations.dart';
 import '../theme/leather.dart';
 import 'app_shortcuts.dart';
+import 'contents_sheet.dart';
 import 'page_turn.dart';
 
 /// The frame around every page: a navigation rail on wide screens, a bottom bar on phones.
@@ -228,30 +229,25 @@ class _BottomBar extends StatelessWidget {
       builder: (sheetContext) => Theme(
         data: Theme.of(Navigator.of(context, rootNavigator: true).context),
         child: SafeArea(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Consumer(
-                builder: (context, ref, _) => ListTile(
-                  leading: const Icon(Icons.search),
-                  title: const Text('Search the novel'),
-                  subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    showNovelSearch(paperContext(context), ref);
-                  },
-                ),
+          child: ContentsSheet(
+            areas: rest.toList(),
+            current: current,
+            onArea: (d) {
+              Navigator.of(sheetContext).pop();
+              goToArea(context, current, d);
+            },
+            search: Consumer(
+              builder: (context, ref, _) => ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Search the novel'),
+                subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  showNovelSearch(paperContext(context), ref);
+                },
               ),
-              for (final d in rest)
-                ListTile(
-                  leading: Icon(d == current ? d.selectedIcon : d.icon),
-                  title: Text(d.label),
-                  selected: d == current,
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    goToArea(context, current, d);
-                  },
-                ),
+            ),
+            extras: [
               Consumer(
                 builder: (context, ref, _) => ref.watch(tutorialShownProvider)
                     ? ListTile(

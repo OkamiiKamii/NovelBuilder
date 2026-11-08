@@ -15,6 +15,7 @@ import '../workspace/area_switch.dart';
 import 'journal_view.dart';
 import 'progress_providers.dart';
 import 'widgets/bars.dart';
+import 'widgets/length_shelf.dart';
 
 String _plural(int n, String word) => '${grouped(n)} $word${n == 1 ? '' : 's'}';
 String duration(int minutes) => minutes < 60 ? '$minutes min' : '${minutes ~/ 60} h ${minutes % 60} min';
@@ -258,6 +259,8 @@ class ProgressPage extends ConsumerWidget {
           const AreaSwitch(parts: progressParts, current: '/progress'),
           const SizedBox(height: 16),
           JournalHero(journal: data.journal, report: report),
+          const SizedBox(height: 16),
+          section(context, 'How long it is', [LengthShelf(words: report.totalWords)]),
           const SizedBox(height: 16),
           section(context, 'A year of writing', [YearOfWriting(journal: data.journal)]),
           const SizedBox(height: 16),

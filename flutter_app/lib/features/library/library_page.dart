@@ -301,30 +301,39 @@ class _Toolbar extends StatelessWidget {
     // On a phone the controls share rows, so the novels themselves stay near the top of the screen.
     if (compact) {
       const gap = SizedBox(width: 12, height: 12);
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          searchField,
-          gap,
-          Row(
-            children: [
-              Expanded(child: statusField),
-              gap,
-              Expanded(child: sortField),
-            ],
-          ),
-          if (genreField != null || archivedChip != null) ...[
-            gap,
+      // Status, sort, genre and the archive fold behind one button, so the books come up the screen; the button says
+      // how many are set apart from the usual, and they open by themselves while any is.
+      final set = [
+        status != null,
+        genres.contains(genre),
+        sort != LibrarySort.values.first,
+        archived,
+      ].where((s) => s).length;
+      return _Folded(
+        set: set,
+        search: searchField,
+        view: viewSwitch,
+        controls: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             Row(
               children: [
-                if (genreField != null) Expanded(child: genreField) else const Spacer(),
-                if (archivedChip != null) ...[gap, archivedChip],
+                Expanded(child: statusField),
+                gap,
+                Expanded(child: sortField),
               ],
             ),
+            if (genreField != null || archivedChip != null) ...[
+              gap,
+              Row(
+                children: [
+                  if (genreField != null) Expanded(child: genreField) else const Spacer(),
+                  if (archivedChip != null) ...[gap, archivedChip],
+                ],
+              ),
+            ],
           ],
-          gap,
-          Align(alignment: AlignmentDirectional.centerStart, child: viewSwitch),
-        ],
+        ),
       );
     }
     Widget box(Widget child) => SizedBox(width: 190, child: child);
@@ -339,6 +348,59 @@ class _Toolbar extends StatelessWidget {
         box(sortField),
         ?archivedChip,
         viewSwitch,
+      ],
+    );
+  }
+}
+
+/// On a phone: the search and a "Sort & filter" button on one line, the view switch beside the button's panel, and
+/// the status, sort, genre and archive under the button, folded until pressed (open while any is set, and the button
+/// counts them), so the shelves start higher on the screen.
+class _Folded extends StatefulWidget {
+  const _Folded({required this.set, required this.search, required this.view, required this.controls});
+
+  final int set;
+  final Widget search;
+  final Widget view;
+  final Widget controls;
+
+  @override
+  State<_Folded> createState() => _FoldedState();
+}
+
+class _FoldedState extends State<_Folded> {
+  bool? _open;
+
+  @override
+  Widget build(BuildContext context) {
+    final open = _open ?? widget.set > 0;
+    final label = widget.set == 0 ? 'Sort & filter' : 'Sort & filter · ${widget.set}';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        widget.search,
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            widget.view,
+            TextButton.icon(
+              onPressed: () => setState(() => _open = !open),
+              icon: Icon(open ? Icons.expand_less : Icons.tune),
+              label: Text(label),
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+            ),
+          ],
+        ),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 180),
+          alignment: Alignment.topCenter,
+          child: open
+              ? Padding(padding: const EdgeInsets.only(top: 12), child: widget.controls)
+              : const SizedBox(width: double.infinity),
+        ),
       ],
     );
   }

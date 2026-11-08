@@ -21,13 +21,15 @@ class CastTies extends ConsumerWidget {
   final List<Listed> found;
   final CastData cast;
 
-  static const _cell = Size(112, 58);
-  static const _head = 168.0;
+  // Narrower on a phone, so more of the table is seen before it scrolls sideways.
+  static bool _narrow(BuildContext context) => MediaQuery.sizeOf(context).width < 600;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
     final people = [for (final l in found) l.entry];
+    final cellSize = _narrow(context) ? const Size(92, 58) : const Size(112, 58);
+    final head = _narrow(context) ? 112.0 : 168.0;
     if (people.length < 2) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 24),
@@ -44,10 +46,11 @@ class CastTies extends ConsumerWidget {
 
     Widget header(String id, String name) => Tooltip(
       message: name,
-      child: SizedBox(
-        width: _cell.width,
-        height: 56,
+      // At least 56 tall, taller when the text is larger, so a name is never cut off.
+      child: ConstrainedBox(
+        constraints: BoxConstraints.tightFor(width: cellSize.width).copyWith(minHeight: 56),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             _Monogram(id: id, name: name),
@@ -70,7 +73,7 @@ class CastTies extends ConsumerWidget {
         children: [
           Row(
             children: [
-              const SizedBox(width: _head),
+              SizedBox(width: head),
               for (final p in people) header(p.id, p.name),
             ],
           ),
@@ -79,8 +82,8 @@ class CastTies extends ConsumerWidget {
             Row(
               children: [
                 SizedBox(
-                  width: _head,
-                  height: _cell.height,
+                  width: head,
+                  height: cellSize.height,
                   child: Row(
                     children: [
                       _Monogram(id: row.id, name: row.name),
@@ -98,7 +101,7 @@ class CastTies extends ConsumerWidget {
                 ),
                 for (final (j, col) in people.indexed)
                   SizedBox.fromSize(
-                    size: _cell,
+                    size: cellSize,
                     child: Padding(
                       padding: const EdgeInsets.all(3),
                       child: i == j

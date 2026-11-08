@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/format.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/continuity/rules.dart';
@@ -15,6 +16,7 @@ import '../codex/widgets/connections_panel.dart' show openRecord;
 import '../progress/widgets/bars.dart' show Gauge;
 import '../workspace/area_switch.dart';
 import 'review_providers.dart';
+import 'widgets/all_clear.dart';
 import 'widgets/review_parts.dart';
 
 enum _Show {
@@ -508,6 +510,29 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
           if (focusing) ...[
             const SizedBox(height: 16),
             KeyedSubtree(key: ValueKey('focus:${queue[at].warning.key}'), child: focusCard(queue[at])),
+          ] else if (items.isEmpty) ...[
+            const SizedBox(height: 16),
+            AllClear(
+              looked: [
+                if (data.manuscript.scanned.documents > 0)
+                  plural(data.manuscript.scanned.documents, 'chapter or scene', 'chapters and scenes'),
+                if (data.model.entries.values.where((e) => e.category == 'character').length case final n when n > 0)
+                  plural(n, 'character'),
+                if (data.model.entries.values.where((e) => e.category != 'character').length case final n when n > 0)
+                  plural(n, 'world entry', 'world entries'),
+                if (data.model.events.length case final n when n > 0) plural(n, 'timeline event'),
+              ],
+              checks: [
+                for (final s in ReviewSource.values)
+                  (
+                    label: s.label,
+                    what: s.what,
+                    extra: s == ReviewSource.continuity && data.manuscript.scanned.rules > 0
+                        ? 'With ${plural(data.manuscript.scanned.rules, 'tracked rule')}.'
+                        : null,
+                  ),
+              ],
+            ),
           ] else ...[
             ExpansionTile(
               tilePadding: EdgeInsets.zero,

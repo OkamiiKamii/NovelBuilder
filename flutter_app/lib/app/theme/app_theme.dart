@@ -154,6 +154,12 @@ abstract final class AppTheme {
     );
   }
 
+  /// A ruled line along a field's foot, its top corners softly rounded where the slip of paper begins.
+  static UnderlineInputBorder _rule(Color colour, {double width = 1}) => UnderlineInputBorder(
+    borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+    borderSide: BorderSide(color: colour, width: width),
+  );
+
   static ThemeData _base(Palette p, ColorScheme scheme, BorderRadius radius) {
     return ThemeData(
       useMaterial3: true,
@@ -196,10 +202,35 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      // THE LEDGER: a field is a line ruled on the paper, not a box: a slip of the page colour with a rule along its
+      // foot (the accent, and heavier, while it is written in), its label in the book's capitals and its example in
+      // the book's italic, as the margins of a ledger are lettered.
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: p.surface,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: _rule(p.muted),
+        enabledBorder: _rule(p.muted),
+        focusedBorder: _rule(p.accent, width: 2),
+        errorBorder: _rule(p.danger),
+        focusedErrorBorder: _rule(p.danger, width: 2),
+        disabledBorder: _rule(p.border),
+        labelStyle: TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w600, letterSpacing: 0.8, color: p.muted),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+          (states) => TextStyle(
+            fontFamily: 'Cinzel',
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.8,
+            color: states.contains(WidgetState.error)
+                ? p.danger
+                : states.contains(WidgetState.focused)
+                ? p.accent
+                : p.muted,
+          ),
+        ),
+        hintStyle: TextStyle(fontFamily: 'EB Garamond', fontStyle: FontStyle.italic, fontSize: 17, color: p.muted),
+        prefixIconColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.focused) ? p.accent : p.muted,
+        ),
       ),
       // A visible focus ring for keyboard users, in the accent colour.
       focusColor: p.accent.withValues(alpha: 0.24),

@@ -16,6 +16,7 @@ import '../characters/widgets/parts.dart';
 import '../workspace/area_switch.dart';
 import 'event_page.dart';
 import 'timeline_providers.dart';
+import 'widgets/chapter_seed.dart';
 import 'widgets/chronicle.dart';
 
 const _rank = {'minor': 0, 'major': 1, 'climax': 2};
@@ -287,7 +288,21 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
             ),
             const SizedBox(height: 16),
           ],
-          if (placed.isEmpty)
+          if (placed.isEmpty && model.order.chapters.isNotEmpty)
+            ChapterSeed(
+              chapters: model.order.chapters,
+              onNew: newEvent,
+              onSeed: () {
+                final made = actions.edit((x) => x.eventsFromChapters([for (final c in model.order.chapters) c.id]));
+                if (made != null) {
+                  actions.tell(
+                    '${plural(made.length, 'event')} made from your chapters, in the order they are told. '
+                    'Give each a date to place it in time.',
+                  );
+                }
+              },
+            )
+          else if (placed.isEmpty)
             EmptyState(
               icon: Icons.timeline,
               title: 'What happened, and when',

@@ -96,6 +96,32 @@ class EventChanges extends RecordChanges {
     return event['id']! as String;
   }
 
+  /// A first timeline from the chapters as told, for a novel with none: an event for each chapter (in [chapterIds]'
+  /// order), named as the chapter, its summary as the event's, linked to the chapter it is told in, each coming after
+  /// the one before. None has a date: they wait under "Not placed in time", in the order the story tells them, until
+  /// the author moves them where they happen. Refused when the timeline already has events.
+  List<String> eventsFromChapters(List<String> chapterIds) {
+    if (rows('timelineEvents').isNotEmpty) throw ChangeRefused('The timeline already has events.');
+    final made = <String>[];
+    for (final (i, id) in chapterIds.indexed) {
+      final chapter = row('chapters', id);
+      if (chapter == null) continue;
+      final title = str(chapter['title']).trim();
+      final event = {
+        ..._newEvent(title.isEmpty ? 'Chapter ${i + 1}' : title),
+        'description': str(chapter['summary']),
+        'nodeIds': [id],
+        'afterId': made.lastOrNull,
+        // A millisecond apart, so events of the same moment keep the chapters' order.
+        'createdAt': now + i,
+      };
+      put('timelineEvents', event);
+      made.add(event['id']! as String);
+    }
+    if (made.isEmpty) throw ChangeRefused('There are no chapters to start from.');
+    return made;
+  }
+
   /// Updates an event from what it holds now. Anything that does not fit is not stored: ids that are not this novel's,
   /// statuses that do not exist, a date the calendar does not have. How long it lasts is said one way at a time.
   void updateEvent(String eventId, JsonMap Function(TimelineEvent stored) edit) {

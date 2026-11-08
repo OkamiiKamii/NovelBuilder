@@ -290,7 +290,8 @@ void main() {
     await openWrite(tester);
     await tester.tap(find.textContaining('Set a goal'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.widgetWithText(TextField, 'Each day'), '500');
+    await tester.tap(find.bySemanticsLabel(RegExp('^500 words a day')));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Save goals'));
     await tester.pumpAndSettle();
     expect(find.textContaining('of 500 words'), findsOneWidget);

@@ -80,9 +80,12 @@ class JournalHero extends StatelessWidget {
             mediumDay(journal.finishDay!),
             style: vaultHeading(context, size: 24, weight: 700, color: scheme.onSurface),
           ),
-          Text('At your pace of the last 30 days: about ${grouped(pace!)} words a day', style: muted),
+          Text(
+            'At your pace of the last 30 days: about ${grouped(pace!)} ${pace == 1 ? 'word' : 'words'} a day',
+            style: muted,
+          ),
         ] else if (pace != null) ...[
-          Text('About ${grouped(pace)} words a day', style: theme.textTheme.titleMedium),
+          Text('About ${grouped(pace)} ${pace == 1 ? 'word' : 'words'} a day', style: theme.textTheme.titleMedium),
           Text('over the last 30 days', style: muted),
         ] else
           Text('No words logged in the last 30 days', style: muted),

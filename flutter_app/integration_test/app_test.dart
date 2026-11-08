@@ -641,9 +641,10 @@ void main() {
       // A system from a preset, and Mira put on it, the way a person would.
       container.read(routerProvider).go('/organize/systems');
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Or start from a preset…'));
+      final begin = find.text('Begin with ${systemPresets.first.name}');
+      await tester.ensureVisible(begin);
       await tester.pumpAndSettle();
-      await tester.tap(find.text(systemPresets.first.name).last);
+      await tester.tap(begin);
       await tester.pumpAndSettle();
       final sheets = find.textContaining('Sheets (0)');
       await tester.ensureVisible(sheets);
