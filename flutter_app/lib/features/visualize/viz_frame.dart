@@ -23,6 +23,7 @@ import '../characters/widgets/parts.dart';
 import '../codex/widgets/connections_panel.dart' show openRecord;
 import '../exchange/data_export_dialog.dart';
 import '../workspace/area_switch.dart';
+import 'view_atlas.dart';
 import 'visualize_providers.dart';
 import 'widgets/canon_badge.dart';
 
@@ -841,28 +842,36 @@ class _ViewMenu extends StatelessWidget {
   final String? current;
   final ValueChanged<String> onGo;
 
+  /// The view shown, as a field: a press opens the atlas of every view (`view_atlas.dart`).
   @override
-  Widget build(BuildContext context) => DropdownButtonFormField<String>(
-    key: ValueKey('view:$current'),
-    initialValue: parts.any((p) => p.path == current) ? current : null,
-    isExpanded: true,
-    decoration: const InputDecoration(labelText: 'View', isDense: true),
-    hint: const Text('Choose a view'),
-    items: [
-      for (final p in parts)
-        DropdownMenuItem(
-          value: p.path,
-          child: Row(
-            children: [
-              Icon(p.icon, size: 20),
-              const SizedBox(width: 8),
-              Flexible(child: Text(p.label, overflow: TextOverflow.ellipsis)),
-            ],
+  Widget build(BuildContext context) {
+    final shown = parts.where((p) => p.path == current).firstOrNull;
+    void open() => showViewAtlas(context, parts: parts, current: current, onGo: onGo);
+    return Tooltip(
+      message: 'All views',
+      child: Semantics(
+        button: true,
+        label: 'View: ${shown?.label ?? 'choose a view'}. All views',
+        excludeSemantics: true,
+        onTap: open,
+        child: InkWell(
+          onTap: open,
+          // At least 48 tall, to be easy to press.
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: InputDecorator(
+              decoration: const InputDecoration(labelText: 'View', isDense: true),
+              child: Row(
+                children: [
+                  if (shown != null) ...[Icon(shown.icon, size: 20), const SizedBox(width: 8)],
+                  Expanded(child: Text(shown?.label ?? 'Choose a view', overflow: TextOverflow.ellipsis)),
+                  const Icon(Icons.apps, size: 20),
+                ],
+              ),
+            ),
           ),
         ),
-    ],
-    onChanged: (path) {
-      if (path != null && path != current) onGo(path);
-    },
-  );
+      ),
+    );
+  }
 }

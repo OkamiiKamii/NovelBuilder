@@ -60,13 +60,8 @@ void main() {
     expect(currentLocation(c), '/progress');
   });
 
-  testWidgets('with no novel open, the contents are the areas alone', (tester) async {
+  testWidgets('on the shelf there is no More: it is inside a book, and holds no Settings', (tester) async {
     await pumpApp(tester, size: phone, location: '/');
-    await tester.tap(find.text('More'));
-    await tester.pumpAndSettle();
-    expect(find.text('Contents'), findsOneWidget);
-    expect(find.text('Settings'), findsWidgets);
-    expect(find.textContaining('words'), findsNothing);
-    expect(tester.takeException(), isNull);
+    expect(find.text('More'), findsNothing);
   });
 }

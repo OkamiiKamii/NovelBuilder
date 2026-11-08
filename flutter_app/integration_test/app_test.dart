@@ -66,6 +66,17 @@ void main() {
   /// Goes to an area the way a person would: the rail on wide screens, the bottom bar (or More) on phones.
   Future<void> goTo(WidgetTester tester, Destination d) async {
     final rail = find.byType(NavigationRail);
+    final offered = rail.evaluate().isNotEmpty
+        ? find.descendant(of: rail, matching: find.text(d.label)).evaluate().isNotEmpty
+        : find.byType(NavigationBar).evaluate().isNotEmpty;
+    // On the shelf the novel's areas are not offered: the book is entered first (as pressing it does), and from
+    // inside it every area is a press away.
+    if (!offered) {
+      final container = ProviderScope.containerOf(tester.element(find.byType(NovelBuilderApp)));
+      container.read(routerProvider).go(d.path);
+      await tester.pumpAndSettle();
+      return;
+    }
     if (rail.evaluate().isNotEmpty) {
       await tester.tap(find.descendant(of: rail, matching: find.text(d.label)));
     } else if (AppShell.compactPrimary.contains(d)) {
@@ -86,21 +97,14 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  /// Chooses a view of Visualize from its View menu, scrolling the open menu to it: on a short window the menu opens
-  /// scrolled to the view shown now, so one far up or down the list is out of sight until scrolled to.
+  /// Chooses a view of Visualize from the atlas of views, scrolled to its plate.
   Future<void> chooseView(WidgetTester tester, String label) async {
-    await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'View'));
+    await tester.tap(find.byTooltip('All views'));
     await tester.pumpAndSettle();
-    final menu = find.byWidgetPredicate((w) => w.runtimeType.toString().startsWith('_DropdownMenu<'));
-    final item = find.descendant(of: menu, matching: find.text(label));
-    final list = find.descendant(of: menu, matching: find.byType(Scrollable)).first;
-    for (final step in [const Offset(0, 120), const Offset(0, -120)]) {
-      for (var i = 0; i < 12 && item.hitTestable().evaluate().isEmpty; i++) {
-        await tester.drag(list, step);
-        await tester.pumpAndSettle();
-      }
-    }
-    await tester.tap(item.hitTestable().first);
+    final plate = find.bySemanticsLabel(RegExp('^${RegExp.escape(label)}(, showing now)?\\. '));
+    await tester.ensureVisible(plate);
+    await tester.pumpAndSettle();
+    await tester.tap(plate);
     await tester.pumpAndSettle();
   }
 

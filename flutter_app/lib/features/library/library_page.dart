@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/page_scaffold.dart';
@@ -110,19 +112,58 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
 
     return PageScaffold(
       title: 'Library',
+      // The app's settings, beside the Library: the novel's own areas are inside each book.
+      // On a computer the gear is the rail's second item, under the Library.
+      titleTrailing: WindowSize.of(context) != WindowSize.compact
+          ? null
+          : IconButton(
+              tooltip: 'Settings',
+              onPressed: () => context.go(Destination.settings.path),
+              icon: const Icon(Icons.settings_outlined),
+            ),
       actions: [
-        if (all.isNotEmpty) ...[
-          FilledButton.icon(
-            onPressed: () => showTitlePage(context, ref),
-            icon: const Icon(Icons.add),
-            label: const Text('New novel'),
-          ),
-          OutlinedButton.icon(
-            onPressed: () => importBackupFlow(context, ref),
-            icon: const Icon(Icons.file_open_outlined),
-            label: const Text('Import backup'),
-          ),
-        ],
+        if (all.isNotEmpty)
+          if (WindowSize.of(context) == WindowSize.compact)
+            // On a phone the two share one row the width of the page, side by side and the same size, instead of
+            // two buttons of different widths stacked at the left.
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => showTitlePage(context, ref),
+                      style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14)),
+                      icon: const Icon(Icons.add),
+                      label: const FittedBox(fit: BoxFit.scaleDown, child: Text('New novel')),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => importBackupFlow(context, ref),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                      ),
+                      icon: const Icon(Icons.file_open_outlined),
+                      label: const FittedBox(fit: BoxFit.scaleDown, child: Text('Import backup')),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else ...[
+            FilledButton.icon(
+              onPressed: () => showTitlePage(context, ref),
+              icon: const Icon(Icons.add),
+              label: const Text('New novel'),
+            ),
+            OutlinedButton.icon(
+              onPressed: () => importBackupFlow(context, ref),
+              icon: const Icon(Icons.file_open_outlined),
+              label: const Text('Import backup'),
+            ),
+          ],
       ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

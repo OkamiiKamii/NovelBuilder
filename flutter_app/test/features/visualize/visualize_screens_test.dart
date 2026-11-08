@@ -75,19 +75,24 @@ List<JsonMap> savedRows(ProviderContainer c, String novel) => c.read(novelStoreP
 
 /// Chooses a view from the View menu, as on every screen.
 Future<void> pickView(WidgetTester tester, String label) async {
-  await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'View'));
+  await tester.tap(find.byTooltip('All views'));
   await tester.pumpAndSettle();
-  await tester.tap(find.text(label).last);
+  final plate = plateOf(label);
+  await tester.ensureVisible(plate);
+  await tester.pumpAndSettle();
+  await tester.tap(plate);
   await tester.pumpAndSettle();
 }
 
-/// Whether the View menu offers a view: opened, looked at, closed.
+/// A view's plate in the atlas of views, by its name.
+Finder plateOf(String label) => find.bySemanticsLabel(RegExp('^${RegExp.escape(label)}(, showing now)?\\. '));
+
+/// Whether the atlas of views offers a view: opened, looked at, closed.
 Future<bool> isOffered(WidgetTester tester, String label) async {
-  await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'View'));
+  await tester.tap(find.byTooltip('All views'));
   await tester.pumpAndSettle();
-  final menu = find.byWidgetPredicate((w) => w.runtimeType.toString().startsWith('_DropdownMenu<'));
-  final found = find.descendant(of: menu, matching: find.text(label)).evaluate().isNotEmpty;
-  await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+  final found = plateOf(label).evaluate().isNotEmpty;
+  await tester.tap(find.byTooltip('Close the views'));
   await tester.pumpAndSettle();
   return found;
 }
@@ -290,10 +295,7 @@ void main() {
 
   testWidgets('on a phone the views are a menu, and the details of the selection open in a sheet', (tester) async {
     final w = await setUpNovel(tester, size: phone);
-    await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'View'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Places').last);
-    await tester.pumpAndSettle();
+    await pickView(tester, 'Places');
     expect(currentLocation(w.c), '/visualize/places');
     await tester.tap(find.text('The Keep'));
     await tester.pumpAndSettle();

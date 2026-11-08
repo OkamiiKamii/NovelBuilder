@@ -20,6 +20,7 @@ void main() {
       'More details',
       'Continue writing',
       'Start writing it',
+      'Draw an idea',
       'Sort & filter',
       'Covers',
       'Spines',

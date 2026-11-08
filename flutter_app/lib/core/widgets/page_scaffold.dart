@@ -13,6 +13,8 @@ class PageScaffold extends StatelessWidget {
     required this.child,
     this.maxWidth = 1200,
     this.scrollable = true,
+    this.titleTrailing,
+    this.leading,
   });
 
   final String title;
@@ -23,6 +25,12 @@ class PageScaffold extends StatelessWidget {
 
   /// False for pages that manage their own scrolling (lists, canvases).
   final bool scrollable;
+
+  /// Beside the title (the Library's settings gear).
+  final Widget? titleTrailing;
+
+  /// Above the title (a way back, where there is no bar to go back with).
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +48,16 @@ class PageScaffold extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Semantics(header: true, child: Text(title, style: theme.textTheme.headlineSmall)),
+              ?leading,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Semantics(header: true, child: Text(title, style: theme.textTheme.headlineSmall)),
+                  ),
+                  if (titleTrailing != null) ...[const SizedBox(width: 8), titleTrailing!],
+                ],
+              ),
               if (subtitle != null) ...[
                 const SizedBox(height: 4),
                 Text(subtitle!, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),

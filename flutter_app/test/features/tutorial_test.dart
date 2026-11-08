@@ -125,7 +125,11 @@ void main() {
   testWidgets('on a phone at twice the text size: under More, and the lesson fits', (tester) async {
     tester.platformDispatcher.textScaleFactorTestValue = 2;
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-    await pumpApp(tester, size: phone, location: '/');
+    final c = await pumpApp(tester, size: phone, location: '/');
+    // More is inside a book.
+    c.read(openNovelProvider.notifier).open(c.read(libraryServiceProvider).create({'title': 'A'}).id);
+    c.read(routerProvider).go('/organize');
+    await tester.pumpAndSettle();
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
     final sheet = find.descendant(of: find.byType(BottomSheet), matching: find.byType(Scrollable)).first;
@@ -134,7 +138,7 @@ void main() {
     await tester.tap(find.text('Tutorial'));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    expect(find.text('The Library'), findsWidgets);
+    expect(find.text('Characters'), findsWidgets, reason: 'the lesson for Organize');
     await tester.tap(find.text('All topics'));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);

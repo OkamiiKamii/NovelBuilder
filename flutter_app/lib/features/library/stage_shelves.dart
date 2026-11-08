@@ -5,10 +5,11 @@ import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
 import 'bookcase.dart';
 import 'bookshelf.dart';
+import 'idea_draw.dart';
 
 /// SHELVES BY STAGE: the library as a study, the books being written on the top shelf and the ideas below, then those
 /// set aside and those finished, each shelf with a brass nameplate. When nothing is being written the top shelf is an
-/// empty place that says how to fill it (an idea's "Start writing it"). Used when the whole library is shown (no
+/// empty place that offers to draw one of the ideas (`idea_draw.dart`). Used when the whole library is shown (no
 /// search, filter or archive); otherwise the books are one shelf as before.
 enum ShelfStage {
   writing('Writing now'),
@@ -48,7 +49,7 @@ class StageShelves extends StatelessWidget {
             Nameplate(label: stage.label, count: byStage[stage]!.length),
             const SizedBox(height: 10),
             if (byStage[stage]!.isEmpty)
-              const _EmptyDesk()
+              IdeaDraw(ideas: byStage[ShelfStage.ideas]!)
             else if (spines)
               Bookcase(novels: byStage[stage]!)
             else
@@ -129,43 +130,4 @@ class _Screw extends StatelessWidget {
       border: Border.all(color: const Color(0xFF6E4E1C), width: 0.8),
     ),
   );
-}
-
-/// The top shelf with nothing being written: an empty place, and what fills it.
-class _EmptyDesk extends StatelessWidget {
-  const _EmptyDesk();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    return Container(
-      constraints: const BoxConstraints(minHeight: 96),
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: scheme.outline.withValues(alpha: 0.6), width: 1.2),
-        color: scheme.surfaceContainerLow,
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.edit_note, size: 30, color: scheme.primary),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Nothing being written', style: vaultText(context, size: 18, color: scheme.onSurface)),
-                Text(
-                  'Choose Start writing it on one of your ideas.',
-                  style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

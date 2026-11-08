@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../app/shell/app_shortcuts.dart';
 import '../../app/theme/theme_choice.dart';
+import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/form_section.dart';
 import '../../core/widgets/page_scaffold.dart';
@@ -28,6 +29,17 @@ class SettingsPage extends ConsumerWidget {
     ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
     return PageScaffold(
       title: 'Settings',
+      // On a phone there is no bar on the shelf: the way back to the Library is here.
+      leading: WindowSize.of(context) == WindowSize.compact
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: TextButton.icon(
+                onPressed: () => context.go(Destination.library.path),
+                icon: const Icon(Icons.arrow_back),
+                label: const Text('Library'),
+              ),
+            )
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

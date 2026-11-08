@@ -12,7 +12,11 @@ void main() {
     final w = await openWorld(tester);
     expect(find.text('The first page of your world'), findsOneWidget);
     final begin = find.ancestor(of: find.text('Begin this world'), matching: find.bySubtype<ButtonStyleButton>());
-    expect(tester.widget<ButtonStyleButton>(begin).onPressed, isNull, reason: 'nothing to make until a blank is filled');
+    expect(
+      tester.widget<ButtonStyleButton>(begin).onPressed,
+      isNull,
+      reason: 'nothing to make until a blank is filled',
+    );
 
     await tester.enterText(find.widgetWithText(TextField, 'Vell'), 'Harrowmere');
     await tester.enterText(find.widgetWithText(TextField, 'The Lantern Guild'), 'The Salt Court');
@@ -25,11 +29,11 @@ void main() {
 
     final store = w.c.read(novelStoreProvider);
     final entries = {for (final r in store.rowsIn(w.novel, 'loreEntries')) r['name']: r};
-    expect({for (final e in entries.entries) e.key: e.value['category']}, {
-      'Harrowmere': 'location',
-      'The Salt Court': 'faction',
-      'the Long Winter': 'lore',
-    }, reason: 'exactly as written, one entry per filled blank, the empty ones left out');
+    expect(
+      {for (final e in entries.entries) e.key: e.value['category']},
+      {'Harrowmere': 'location', 'The Salt Court': 'faction', 'the Long Winter': 'lore'},
+      reason: 'exactly as written, one entry per filled blank, the empty ones left out',
+    );
     final place = entries['Harrowmere']!['id'];
     expect(
       {for (final l in store.rowsIn(w.novel, 'loreLinks')) (l['fromId'], l['toId'], l['fromLabel'])},
@@ -52,7 +56,10 @@ void main() {
     await tester.tap(find.text('Begin this world'));
     await tester.pumpAndSettle();
     final store = w.c.read(novelStoreProvider);
-    expect([for (final r in store.rowsIn(w.novel, 'loreEntries')) (r['name'], r['category'])], [('Bloodsong', 'power')]);
+    expect(
+      [for (final r in store.rowsIn(w.novel, 'loreEntries')) (r['name'], r['category'])],
+      [('Bloodsong', 'power')],
+    );
     expect(store.rowsIn(w.novel, 'loreLinks'), isEmpty);
   });
 }

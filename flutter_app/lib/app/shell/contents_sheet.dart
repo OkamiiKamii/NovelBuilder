@@ -73,7 +73,6 @@ Map<Destination, Glimpse> areaGlimpses(NovelStore store, String novelId, {requir
       ].join(' · '),
       share: target != null && target > 0 ? (report.totalWords / target).clamp(0.0, 1.0) : null,
     ),
-    Destination.settings: (text: 'Look, backups and this device', share: null),
   };
 }
 

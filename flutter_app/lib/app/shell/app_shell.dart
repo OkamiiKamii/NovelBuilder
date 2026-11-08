@@ -7,6 +7,7 @@ import '../../core/widgets/save_status_indicator.dart';
 import '../../features/collab/review_gate.dart';
 import '../../features/search/search_dialog.dart';
 import '../../features/tutorial/tutorial.dart';
+import '../../features/workspace/open_novel.dart';
 import '../../features/write/writing_prefs.dart';
 import '../../shared/data/autosave.dart';
 import '../../shared/data/providers.dart';
@@ -26,8 +27,23 @@ class AppShell extends ConsumerWidget {
   final String location;
   final Widget child;
 
-  /// The areas shown directly in the phone's bottom bar; the rest are under "More".
+  /// The areas shown directly in the phone's bottom bar inside a book; the rest of the novel's are under "More".
   static const compactPrimary = [Destination.library, Destination.write, Destination.organize];
+
+  /// INSIDE A BOOK the navigation is the novel's: the Library to go back to the shelf, then the novel's own areas.
+  /// Settings is not among them; it belongs to the app, and is the gear beside the Library.
+  static final bookAreas = [
+    for (final d in Destination.values)
+      if (d.needsNovel || d == Destination.library) d,
+  ];
+
+  /// ON THE SHELF (the Library, Settings, or a novel's area with no novel open) only the Library and the gear: the
+  /// novel's areas appear once a book is opened.
+  static const shelfAreas = [Destination.library, Destination.settings];
+
+  /// Whether the page is inside a book: a novel is open and the page is one of its areas.
+  static bool insideBook(Destination? current, String? openNovel) =>
+      openNovel != null && (current?.needsNovel ?? false);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,17 +69,22 @@ class AppShell extends ConsumerWidget {
   }
 
   Widget _frame(BuildContext context, WidgetRef ref, Destination? current, WindowSize size, bool focus, Widget body) {
+    final inside = insideBook(current, ref.watch(openNovelProvider));
     final Widget layout = switch (size) {
       _ when focus => Scaffold(body: SafeArea(child: body)),
       WindowSize.compact => Scaffold(
         body: SafeArea(bottom: false, child: body),
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const _CompactSaveStatus(),
-            LeatherBinding(horizontal: true, child: _BottomBar(current: current)),
-          ],
-        ),
+        // On the shelf a phone shows no bar: the Library is the whole screen, Settings its gear. The foot then keeps
+        // clear of the phone's own buttons itself (a Scaffold leaves that to whatever stands at its foot).
+        bottomNavigationBar: inside
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const _CompactSaveStatus(),
+                  LeatherBinding(horizontal: true, child: _BottomBar(current: current)),
+                ],
+              )
+            : const SafeArea(top: false, child: _CompactSaveStatus()),
       ),
       _ => Scaffold(
         body: SafeArea(
@@ -71,7 +92,12 @@ class AppShell extends ConsumerWidget {
             children: [
               FocusTraversalGroup(
                 child: LeatherBinding(
-                  child: _Rail(current: current, extended: size == WindowSize.expanded),
+                  child: _Rail(
+                    current: current,
+                    extended: size == WindowSize.expanded,
+                    areas: inside ? bookAreas : shelfAreas,
+                    inside: inside,
+                  ),
                 ),
               ),
               Expanded(child: body),
@@ -106,10 +132,16 @@ class AppShell extends ConsumerWidget {
 }
 
 class _Rail extends StatelessWidget {
-  const _Rail({required this.current, required this.extended});
+  const _Rail({required this.current, required this.extended, required this.areas, required this.inside});
 
   final Destination? current;
   final bool extended;
+
+  /// The areas it lists: the shelf's (Library and the settings gear) or the book's.
+  final List<Destination> areas;
+
+  /// Inside a book, where searching the novel makes sense.
+  final bool inside;
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +180,14 @@ class _Rail extends StatelessWidget {
             else
               const Icon(Icons.auto_stories_outlined),
             const SizedBox(height: 8),
-            Consumer(
-              builder: (context, ref, _) => IconButton(
-                tooltip: 'Search the whole novel (${primaryModifierLabel}K)',
-                onPressed: () => showNovelSearch(paperContext(context), ref),
-                icon: const Icon(Icons.search),
+            if (inside)
+              Consumer(
+                builder: (context, ref, _) => IconButton(
+                  tooltip: 'Search the whole novel (${primaryModifierLabel}K)',
+                  onPressed: () => showNovelSearch(paperContext(context), ref),
+                  icon: const Icon(Icons.search),
+                ),
               ),
-            ),
             Consumer(
               builder: (context, ref, _) => ref.watch(tutorialShownProvider)
                   ? IconButton(
@@ -175,10 +208,10 @@ class _Rail extends StatelessWidget {
           child: SaveStatusIndicator(compact: !extended),
         ),
       ),
-      selectedIndex: current?.index,
-      onDestinationSelected: (index) => goToArea(context, current, Destination.values[index]),
+      selectedIndex: current != null && areas.contains(current) ? areas.indexOf(current!) : null,
+      onDestinationSelected: (index) => goToArea(context, current, areas[index]),
       destinations: [
-        for (final d in Destination.values)
+        for (final d in areas)
           NavigationRailDestination(
             icon: Tooltip(message: '${d.label} (${shortcutLabel(d)})', child: Icon(d.icon)),
             selectedIcon: Icon(d.selectedIcon),
@@ -219,7 +252,8 @@ class _BottomBar extends StatelessWidget {
   }
 
   void _showMore(BuildContext context) {
-    final rest = Destination.values.where((d) => !AppShell.compactPrimary.contains(d));
+    // More holds the rest of the novel's areas; Settings is the app's, the gear beside the Library.
+    final rest = AppShell.bookAreas.where((d) => !AppShell.compactPrimary.contains(d));
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,

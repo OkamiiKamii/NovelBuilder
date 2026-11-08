@@ -135,6 +135,17 @@ class _StateCard extends StatelessWidget {
     final dark = theme.brightness == Brightness.dark;
     final paper = dark ? scheme.surfaceContainerHigh : Color.lerp(scheme.surfaceContainerLowest, Colors.white, 0.6)!;
     final accent = iconColor ?? scheme.primary;
+    // In a space of fixed height (beside the outline, a short landscape window) the page scrolls rather than being
+    // cut off; in a scrolling page it simply stands as tall as it is.
+    return LayoutBuilder(
+      builder: (context, box) => box.hasBoundedHeight
+          ? SingleChildScrollView(child: _page(context, scheme, paper, accent))
+          : _page(context, scheme, paper, accent),
+    );
+  }
+
+  Widget _page(BuildContext context, ColorScheme scheme, Color paper, Color accent) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
     return Semantics(
       liveRegion: liveRegion,
       container: true,

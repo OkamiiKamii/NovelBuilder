@@ -67,7 +67,7 @@ const tutorialTopics = <Topic>[
       'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete.',
       'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
           'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
-          'shelf and opens it.',
+          'shelf and opens it. With nothing being written, Draw an idea picks one of your ideas for you.',
       'Search the shelf, and press Sort & filter for status, genre and order. On a phone it stays folded until you '
           'press it, and counts what is set.',
     ],
@@ -79,17 +79,17 @@ const tutorialTopics = <Topic>[
     id: 'areas',
     title: 'Finding your way',
     group: 'Getting started',
-    where: 'The rail on the left on wide screens; the bar at the bottom (and More) on phones.',
+    where: 'The rail on the left on wide screens; inside a book on a phone, the bar at the bottom (and More).',
     what:
-        'Eight areas: Library, Write, Organize, Plan, Visualize, Review, Progress and Settings. Each works on the novel '
-        'that is open.',
+        'The Library is the shelf, with the settings gear beside it. Open a book and its areas appear: Write, '
+        'Organize, Plan, Visualize, Review and Progress.',
     steps: [
-      'Open a novel from the Library: its name shows in the areas.',
-      'Move between areas with the rail, or with Ctrl/⌘ and a number from 1 to 8.',
+      'Open a novel from the Library: its areas appear in the rail, or in the bar at the bottom on a phone.',
+      'Move between them with the rail or the bar, or with Ctrl/⌘ and a number from 1 to 8.',
       'Within an area, the tabs at the top switch between its pages.',
-      'On a phone, More opens the contents of the rest: Search the novel, then each area with what it holds now '
-          '(threads, characters, words against the target).',
-      'Ctrl/⌘ and comma opens Settings from anywhere.',
+      'On a phone, More opens the contents of the rest of the book: Search the novel, then each area with what it '
+          'holds now. Library takes you back to the shelf.',
+      'The gear beside the Library is Settings (or Ctrl/⌘ and comma from anywhere).',
     ],
     example: 'Press Ctrl/⌘+3 to go to Organize, then World to see every place and faction of “Ashfall”.',
   ),
@@ -455,7 +455,7 @@ const tutorialTopics = <Topic>[
         'Every view of the novel, read live from your records: graph, maps, charts, appearances and more. Each has a '
         'list form too.',
     steps: [
-      'Open Visualize and pick a view.',
+      'Open Visualize and press View: every view is a card, gathered by subject, saying what it shows. Choose one.',
       'Filter, focus and zoom; select something to see what it touches.',
       'Save a view you want to come back to.',
       'Use its list form for the same content in words.',
@@ -611,7 +611,7 @@ const tutorialTopics = <Topic>[
     path: '/settings',
     what: 'How the app looks and feels on this device: theme, writing settings, the tutorial, and import and export.',
     steps: [
-      'Open Settings (Ctrl/⌘+comma).',
+      'Open Settings with the gear beside the Library (or Ctrl/⌘+comma).',
       'Choose a look: each is a small page in its own colours (parchment, midnight, or match this device).',
       'Set the editor’s font, size and spacing.',
       'Turn the Tutorial button on or off.',
@@ -625,7 +625,7 @@ const tutorialTopics = <Topic>[
     where: 'The same app on a phone or a tablet.',
     what: 'The app adapts: one column and a bar at the bottom on a phone, the rail on wider screens.',
     steps: [
-      'On a phone, use the bar at the bottom: Library, Write, Organize, and More, the contents of the rest.',
+      'On a phone the Library fills the screen; open a book and the bar appears: Library, Write, Organize and More.',
       'In Write, the contents page and the editor take turns; Back returns to the contents.',
       'Panels open as sheets from the bottom.',
     ],
@@ -635,7 +635,7 @@ const tutorialTopics = <Topic>[
     id: 'tutorial',
     title: 'This tutorial',
     group: 'Making it yours',
-    where: 'The Tutorial button in the rail (More on a phone), and Settings.',
+    where: 'The Tutorial button in the rail, in More inside a book on a phone, and in Settings.',
     what: 'A short guide to each feature. It opens on the page you are looking at.',
     steps: [
       'Press Tutorial at any time.',
