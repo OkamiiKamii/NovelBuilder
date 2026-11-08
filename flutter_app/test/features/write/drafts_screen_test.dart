@@ -89,7 +89,9 @@ void main() {
     w.c.read(manuscriptServiceProvider).createDraft(w.novel, w.chapter, 'An alternate ending for this chapter');
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    await _press(tester, find.byTooltip('Alternate drafts'));
+    // On a phone the drafts are in the desk's drawer.
+    await _press(tester, find.text('Desk'));
+    await _press(tester, find.text('Alternate drafts'));
     expect(tester.takeException(), isNull);
     expect(find.text('In the manuscript'), findsOneWidget);
   });

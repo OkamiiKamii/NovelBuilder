@@ -18,6 +18,7 @@ import '../characters/widgets/vault.dart';
 import '../workspace/area_switch.dart';
 import 'plot_providers.dart';
 import 'widgets/loom.dart';
+import 'widgets/story_questions.dart';
 
 const _groupings = {'status': 'Status', 'category': 'Category', 'character': 'Character'};
 
@@ -269,17 +270,7 @@ class _ThreadsPageState extends ConsumerState<ThreadsPage> {
             if (report.chapterCount > 0) ...[const LoomLegend(), const SizedBox(height: 8)],
           ],
           if (report.reports.isEmpty)
-            EmptyState(
-              icon: Icons.timeline,
-              title: 'Keep every promise you make',
-              message:
-                  'A thread is anything the reader will expect you to follow up: the main plot, a mystery, a romance, a line of foreshadowing. Record where each one develops, and you will be told when one has gone quiet for a long time.',
-              action: FilledButton.icon(
-                onPressed: newThread,
-                icon: const Icon(Icons.add),
-                label: const Text('New thread'),
-              ),
-            )
+            StoryQuestions(novelId: cast.novelId, onNew: newThread)
           else if (visible.isEmpty)
             NoResultsState(
               query: _query.trim().isEmpty ? null : _query.trim(),

@@ -13,6 +13,7 @@ import '../../shared/data/autosave.dart';
 import '../../shared/data/providers.dart';
 import '../destinations.dart';
 import '../theme/leather.dart';
+import '../theme/paper_ground.dart';
 import 'app_shortcuts.dart';
 import 'contents_sheet.dart';
 import 'page_turn.dart';
@@ -68,7 +69,9 @@ class AppShell extends ConsumerWidget {
     );
   }
 
-  Widget _frame(BuildContext context, WidgetRef ref, Destination? current, WindowSize size, bool focus, Widget body) {
+  Widget _frame(BuildContext context, WidgetRef ref, Destination? current, WindowSize size, bool focus, Widget page) {
+    // Every page lies on the paper (by day) or under the lamp (by night): `paper_ground.dart`.
+    final body = PaperGround(child: page);
     final inside = insideBook(current, ref.watch(openNovelProvider));
     final Widget layout = switch (size) {
       _ when focus => Scaffold(body: SafeArea(child: body)),

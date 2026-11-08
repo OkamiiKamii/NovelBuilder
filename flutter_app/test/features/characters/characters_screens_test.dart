@@ -51,7 +51,7 @@ void main() {
 
   testWidgets('an empty cast says what a character is; creating one opens its profile', (tester) async {
     final w = await openOrganize(tester);
-    expect(find.text('No characters yet'), findsOneWidget);
+    expect(find.text('Dramatis personae'), findsOneWidget);
     await tester.tap(find.text('Create a character'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add to the cast'));

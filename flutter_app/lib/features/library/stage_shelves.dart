@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../core/format.dart';
+import '../../core/layout/breakpoints.dart';
 import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
 import 'bookcase.dart';
 import 'bookshelf.dart';
 import 'idea_draw.dart';
+import 'shelf_row.dart';
 
 /// SHELVES BY STAGE: the library as a study, the books being written on the top shelf and the ideas below, then those
 /// set aside and those finished, each shelf with a brass nameplate. When nothing is being written the top shelf is an
@@ -28,19 +30,52 @@ ShelfStage stageOf(NovelStatus status) => switch (status) {
   NovelStatus.complete => ShelfStage.finished,
 };
 
-class StageShelves extends StatelessWidget {
+class StageShelves extends StatefulWidget {
   const StageShelves({super.key, required this.novels, required this.spines});
 
   /// In the order chosen (pinned first); each shelf keeps it.
   final List<Novel> novels;
   final bool spines;
 
+  /// On a phone, a shelf of more than this many is a row to swipe ([ShelfRow]), with "See all" for the full grid.
+  static const swipedAfter = 2;
+
+  @override
+  State<StageShelves> createState() => _StageShelvesState();
+}
+
+class _StageShelvesState extends State<StageShelves> {
+  /// The shelves opened out to every book (on a phone).
+  final _all = <ShelfStage>{};
+
   @override
   Widget build(BuildContext context) {
     final byStage = {for (final s in ShelfStage.values) s: <Novel>[]};
-    for (final n in novels) {
+    for (final n in widget.novels) {
       byStage[stageOf(n.status)]!.add(n);
     }
+    final phone = WindowSize.of(context) == WindowSize.compact;
+    Widget shelf(ShelfStage stage) {
+      final books = byStage[stage]!;
+      if (widget.spines) return Bookcase(novels: books);
+      if (!phone || books.length <= StageShelves.swipedAfter) return Bookshelf(novels: books);
+      final all = _all.contains(stage);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (all) Bookshelf(novels: books) else ShelfRow(novels: books),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton.icon(
+              onPressed: () => setState(() => all ? _all.remove(stage) : _all.add(stage)),
+              icon: Icon(all ? Icons.view_carousel_outlined : Icons.grid_view),
+              label: Text(all ? 'Back to the shelf' : 'See all ${formatNumber(books.length)}'),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -48,12 +83,7 @@ class StageShelves extends StatelessWidget {
           if (byStage[stage]!.isNotEmpty || (stage == ShelfStage.writing && byStage[ShelfStage.ideas]!.isNotEmpty)) ...[
             Nameplate(label: stage.label, count: byStage[stage]!.length),
             const SizedBox(height: 10),
-            if (byStage[stage]!.isEmpty)
-              IdeaDraw(ideas: byStage[ShelfStage.ideas]!)
-            else if (spines)
-              Bookcase(novels: byStage[stage]!)
-            else
-              Bookshelf(novels: byStage[stage]!),
+            if (byStage[stage]!.isEmpty) IdeaDraw(ideas: byStage[ShelfStage.ideas]!) else shelf(stage),
             const SizedBox(height: 26),
           ],
       ],

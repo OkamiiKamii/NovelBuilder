@@ -140,6 +140,45 @@ abstract final class AppTheme {
           color: p.text,
         ),
       ),
+      // THE SWITCHES AND TAGS OF THE BOOK: a choice between views (Covers / Spines, Cards / List / Ties, All /
+      // Enabled) is a row of squared labels lettered in the book's capitals, the chosen one inked in the accent; a tag
+      // is a small slip of paper with a thin edge, set in the book face; an on/off switch is brass when on.
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          shape: const WidgetStatePropertyAll(label),
+          side: WidgetStatePropertyAll(BorderSide(color: p.accent.withValues(alpha: 0.7))),
+          textStyle: const WidgetStatePropertyAll(
+            TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: 0.6, fontSize: 13),
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? p.accent : p.surface,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? p.onAccent : p.text,
+          ),
+          iconColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.onAccent : p.accent),
+          minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(3)),
+          side: BorderSide(color: p.border),
+        ),
+        backgroundColor: p.surface,
+        selectedColor: p.accent.withValues(alpha: 0.18),
+        labelStyle: TextStyle(fontFamily: 'EB Garamond', fontSize: 15, color: p.text),
+        side: BorderSide(color: p.border),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.onAccent : p.muted),
+        trackColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? const Color(0xFFC49A4C) : p.sunken,
+        ),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? const Color(0xFF8A6326) : p.border,
+        ),
+      ),
       snackBarTheme: SnackBarThemeData(
         // Fixed, so it always sits above the phone's bottom bar, even at the largest text sizes.
         behavior: SnackBarBehavior.fixed,

@@ -19,6 +19,7 @@ import 'new_character_dialog.dart';
 import 'widgets/cast_card.dart';
 import 'widgets/cast_ties.dart';
 import 'widgets/manuscript_names.dart';
+import 'widgets/playbill.dart';
 import 'widgets/portrait.dart';
 
 const _page = 60;
@@ -122,14 +123,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
             },
           ),
           if (list.isEmpty)
-            EmptyState(
-              icon: Icons.people_outline,
-              title: 'No characters yet',
-              message:
-                  'A character you create here is the same record the manuscript, relationships, the timeline and plot '
-                  'threads refer to. Only a name is needed.',
-              action: FilledButton(onPressed: () => _create(cast), child: const Text('Create a character')),
-            )
+            Playbill(novelId: cast.novelId, onCreate: () => _create(cast))
           else ...[
             _toolbar(context, view),
             if (_showFilters) ...[const SizedBox(height: 12), _filtersPanel(context, cast, facets)],

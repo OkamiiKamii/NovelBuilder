@@ -67,7 +67,8 @@ const tutorialTopics = <Topic>[
       'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete.',
       'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
           'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
-          'shelf and opens it. With nothing being written, Draw an idea picks one of your ideas for you.',
+          'shelf and opens it. With nothing being written, Draw an idea picks one of your ideas for you. On a phone, '
+          'swipe a shelf sideways, or press See all.',
       'Search the shelf, and press Sort & filter for status, genre and order. On a phone it stays folded until you '
           'press it, and counts what is set.',
     ],
@@ -101,7 +102,7 @@ const tutorialTopics = <Topic>[
     what: 'The editor. It saves as you type, never changes your words by itself, and works with no connection.',
     steps: [
       'Add a chapter (or a scene inside one) in the outline, and select it.',
-      'Write on the page; its title is typed at the top. Beside it (the panel button) are notes: how the chapter '
+      'Write on the page; its title is typed at the top. Beside it (the panel button; on a phone, Desk) are notes: how the chapter '
           'before ends, this chapter\'s plan and beats, who is on the page and the threads that move here.',
       'Below the page: today\'s words against your goal (tap it to choose 100, 250, 500 or 1,000 words a day, or '
           'your own number), the words added this session, the chapter\'s length and the save status.',
@@ -135,7 +136,7 @@ const tutorialTopics = <Topic>[
     id: 'drafts',
     title: 'Alternate drafts',
     group: 'Writing',
-    where: 'In the editor: the Alternate drafts button, next to Version history.',
+    where: 'In the editor: the Alternate drafts button, next to Version history (on a phone, in Desk).',
     what:
         'Keep another version of a chapter or scene beside the one in the manuscript, and switch between them. Only '
         'the one in the manuscript is counted and exported.',
@@ -153,7 +154,7 @@ const tutorialTopics = <Topic>[
     id: 'history',
     title: 'Version history',
     group: 'Writing',
-    where: 'In the editor: the Version history button.',
+    where: 'In the editor: the Version history button (on a phone, in Desk).',
     what:
         'Earlier versions of a chapter are kept, so nothing is lost: compare any of them with the text now, and bring '
         'one back.',
@@ -232,7 +233,8 @@ const tutorialTopics = <Topic>[
     matches: ['/organize/character'],
     what: 'Your cast: a library to find characters in, and a profile for each with sections you shape yourself.',
     steps: [
-      'Press New character; only a name is needed. Names you keep writing in the manuscript wait at the top: Add one '
+      'An empty cast is a playbill: name the hero, who stands against them and by them, and press Raise the '
+          'curtain. Or press New character; only a name is needed. Names you keep writing wait at the top: Add one '
           'in a press, or set it aside with Not a character.',
       'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in.',
       'Use the tabs for relationships, secrets, notes, history and progression.',
@@ -320,7 +322,8 @@ const tutorialTopics = <Topic>[
         'Ten optional tool sets, each for a kind of story, from fantasy to politics. Any number can be on; they all '
         'work on the same characters, places and events.',
     steps: [
-      'Open Organize → Modules and press Enable module on the ones this novel uses.',
+      'Open Organize → Modules: Made for your story names the ones your book’s words call for, with Turn on. Or '
+          'press Enable module on any.',
       'Open a module for its dashboard and tools.',
       'Add records in its lists: nothing is made for you.',
       'Press Configure to rename, hide or reorder its tools.',
@@ -387,7 +390,8 @@ const tutorialTopics = <Topic>[
     matches: ['/plan/thread', '/visualize/plot'],
     what: 'Follow each storyline from setup to payoff, and be reminded when one has gone quiet.',
     steps: [
-      'Press New thread and name it.',
+      'An empty list asks the questions your story raises (what the book answers, a mystery, a romance, a secret): '
+          'write them and press Ask them. Or press New thread and name it.',
       'Add development each time it moves, in the chapter where it does.',
       'Set its status: planned, active, paused, resolved.',
       'Read the reminders for threads untouched for many chapters.',
@@ -628,6 +632,7 @@ const tutorialTopics = <Topic>[
       'On a phone the Library fills the screen; open a book and the bar appears: Library, Write, Organize and More.',
       'In Write, the contents page and the editor take turns; Back returns to the contents.',
       'Panels open as sheets from the bottom.',
+      'While you type, bold, italic, lists and links sit on the keyboard; put it away and the page has the screen.',
     ],
     example: 'On the bus, open Write, choose Chapter 18 and add a paragraph. It is saved before the next stop.',
   ),

@@ -14,9 +14,13 @@ import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/codex_changes.dart' show ChangeRefused;
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
+import '../../shared/domain/manuscript/prose.dart' show blockTexts;
 import '../../shared/domain/modules/module_changes.dart';
 import '../../shared/domain/modules/module_defs.dart';
+import '../../shared/domain/modules/module_match.dart';
 import '../../shared/domain/records/category.dart';
+import '../../shared/domain/records/novel.dart';
+import '../characters/widgets/vault.dart';
 import '../workspace/open_novel.dart';
 import '../workspace/organize_switch.dart';
 import '../workspace/section_page.dart';
@@ -70,6 +74,21 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
 
   void _changed() {
     if (mounted) setState(() {});
+  }
+
+  /// The modules the novel's genres, tags, summary and chapters call for (`module_match.dart`), those on left out.
+  List<ModuleFit> _fits(String novelId, JsonMap project, Set<String> on) {
+    final novel = Novel(project);
+    return fittingModules(
+      genres: [novel.primaryGenre, ...novel.secondaryGenres],
+      tags: novel.tags,
+      synopsis: novel.synopsis,
+      chapters: [
+        for (final r in ref.read(novelStoreProvider).rowsIn(novelId, 'chapterContents'))
+          blockTexts(r['doc']).join('\n'),
+      ],
+      on: on,
+    );
   }
 
   void _tell(String message) => ScaffoldMessenger.of(context)
@@ -366,6 +385,23 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
             child: OrganizeSwitch(current: OrganizePart.modules),
           ),
           const SizedBox(height: 16),
+          // MADE FOR YOUR STORY: the modules the novel's own words call for, first, with one press to turn on.
+          if (writes)
+            if (_fits(novelId, snapshot.project, {
+                  for (final r in installed)
+                    if (r['enabled'] == true) str(r['moduleId']),
+                })
+                case final fits when fits.isNotEmpty) ...[
+              _ForYourStory(
+                fits: [
+                  for (final f in fits)
+                    if (builtinModules.where((m) => m.id == f.moduleId).firstOrNull case final m?) (m, f.words),
+                ],
+                onTurnOn: toggle,
+                onOpen: (m) => context.go(modulePath(m.id)),
+              ),
+              const SizedBox(height: 20),
+            ],
           Semantics(header: true, child: Text('Genre modules', style: theme.textTheme.titleLarge)),
           const SizedBox(height: 8),
           Align(
@@ -501,6 +537,89 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// MADE FOR YOUR STORY: at the head of Modules, the genre modules the novel's own words call for, each with its sign,
+/// its name, the words found that say so ("your book mentions skills, ranks, evolution") and **Turn on**. A plain
+/// match of listed words; nothing is turned on until the press.
+class _ForYourStory extends StatelessWidget {
+  const _ForYourStory({required this.fits, required this.onTurnOn, required this.onOpen});
+
+  final List<(ModuleDefinition, List<String>)> fits;
+  final ValueChanged<ModuleDefinition> onTurnOn;
+  final ValueChanged<ModuleDefinition> onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    String said(List<String> words) => switch (words.length) {
+      1 => words.first,
+      _ => '${words.sublist(0, words.length - 1).join(', ')} and ${words.last}',
+    };
+    return VaultFrame(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Semantics(
+            header: true,
+            child: Text('Made for your story', style: vaultHeading(context, size: 18, weight: 700)),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'From the words in your book. A module adds the records and tools its kind of story needs.',
+            style: vaultText(context, size: 15.5, color: scheme.onSurfaceVariant, style: FontStyle.italic),
+          ),
+          const VaultRule(),
+          for (final (m, words) in fits)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 46,
+                    height: 46,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: scheme.primary, width: 1.5),
+                    ),
+                    child: ExcludeSemantics(
+                      child: Text(m.icon, style: TextStyle(fontSize: 20, color: scheme.primary)),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(m.name, style: vaultHeading(context, size: 13.5, weight: 700, color: scheme.onSurface)),
+                        Text(
+                          'Your book mentions ${said(words)}.',
+                          style: vaultText(context, size: 15.5, color: scheme.onSurfaceVariant),
+                        ),
+                        if (m.features.isNotEmpty)
+                          Text(
+                            m.features.take(3).join(' · '),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                          ),
+                        const SizedBox(height: 8),
+                        FilledButton.icon(
+                          onPressed: () => onTurnOn(m),
+                          icon: const Icon(Icons.power_settings_new),
+                          label: Text('Turn on', semanticsLabel: 'Turn on ${m.name}'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );

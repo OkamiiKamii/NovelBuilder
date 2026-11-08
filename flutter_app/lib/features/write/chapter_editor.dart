@@ -60,7 +60,7 @@ class ChapterEditor extends ConsumerStatefulWidget {
   ConsumerState<ChapterEditor> createState() => _ChapterEditorState();
 }
 
-class _ChapterEditorState extends ConsumerState<ChapterEditor> {
+class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindingObserver {
   late final ManuscriptService _service = ref.read(manuscriptServiceProvider);
   late final _saves = ref.read(saveControllerProvider);
   late final _title = TextEditingController(text: widget.node.title);
@@ -95,6 +95,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
   @override
   void initState() {
     super.initState();
+    // The keyboard coming up or going away moves the ink tray (below the page on a phone).
+    WidgetsBinding.instance.addObserver(this);
     _load();
     final pending = ref.read(pendingFindProvider);
     if (pending != null && pending.nodeId == widget.node.id && _editor != null) {
@@ -345,7 +347,13 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
   }
 
   @override
+  void didChangeMetrics() {
+    if (mounted && WindowSize.of(context) == WindowSize.compact) setState(() {});
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _rename();
     _flush();
     _countTimer?.cancel();
@@ -476,6 +484,68 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
     );
   }
 
+  /// THE DESK'S DRAWER: on a phone, the tools beside the page are not four bare icons but a drawer that names each and
+  /// says what it does, opened from Desk over the page. Choosing one closes the drawer and opens it.
+  Future<void> _openDesk(VoidCallback toggleFocus) async {
+    final chosen = await showModalBottomSheet<VoidCallback>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (sheet) {
+        final scheme = Theme.of(sheet).colorScheme;
+        Widget tool(IconData icon, String name, String what, VoidCallback open) => ListTile(
+          leading: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: scheme.primary),
+            ),
+            child: Icon(icon, color: scheme.primary, size: 20),
+          ),
+          title: Text(name, style: vaultHeading(sheet, size: 13.5, weight: 700, color: scheme.onSurface)),
+          subtitle: Text(what, style: vaultText(sheet, size: 15.5, color: scheme.onSurfaceVariant)),
+          onTap: () => Navigator.of(sheet).pop(open),
+        );
+        return SafeArea(
+          // Every tool built at once (four), so each can be found and read, at any text size.
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+                  child: Text('The desk', style: vaultHeading(sheet, size: 18, weight: 700)),
+                ),
+                tool(
+                  Icons.view_sidebar_outlined,
+                  'Notes for this chapter',
+                  'How the chapter before ends, this one’s plan and beats, who is on the page.',
+                  _openMarginSheet,
+                ),
+                tool(
+                  Icons.fullscreen,
+                  'Focus mode',
+                  'Only the page; the line you write can stay in the middle.',
+                  toggleFocus,
+                ),
+                tool(
+                  Icons.alt_route,
+                  'Alternate drafts',
+                  'Another version of this chapter beside this one.',
+                  _openDrafts,
+                ),
+                tool(Icons.history, 'Version history', 'Earlier versions: compare, and bring one back.', _openHistory),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (chosen != null && mounted) chosen();
+  }
+
   Future<void> _goals() async {
     await showDialog<void>(
       context: context,
@@ -514,6 +584,17 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
     final sprint = ref.watch(sprintProvider);
     final sprintResult = ref.watch(sprintResultProvider);
     final typewriter = focus && ref.watch(typewriterProvider) && _editor != null;
+    // Typing on a phone: the keyboard is up.
+    // (Read from the screen itself: the frame around the page takes the keyboard's room out of what the page sees.)
+    final typing = compact && View.of(context).viewInsets.bottom > 0;
+    Widget toolbar() => _Toolbar(
+      editor: _editor!,
+      composer: _composer!,
+      document: _document!,
+      onLink: _linkEntry,
+      onUnlink: _unlink,
+      onSplit: _splitHere,
+    );
     // Into focus mode (or the typewriter turned on): bring the caret's line to the middle at once.
     ref.listen(focusModeProvider, (_, on) {
       if (on) _keepCentred();
@@ -605,29 +686,43 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
                         onPressed: _openPrefs,
                         icon: const Icon(Icons.text_fields),
                       ),
+                      // On a phone the rest are the desk's drawer: named, with what each does (`_openDesk`).
+                      if (compact)
+                        TextButton.icon(
+                          onPressed: () => _openDesk(toggleFocus),
+                          icon: const Icon(Icons.inventory_2_outlined),
+                          label: const Text('Desk'),
+                        ),
                       // Beside the page where there is room (on and off), otherwise as a sheet over it.
-                      IconButton(
-                        tooltip: room
-                            ? (showMargin ? 'Hide the notes beside the page' : 'Show the notes beside the page')
-                            : 'Notes for this chapter',
-                        isSelected: room && showMargin,
-                        onPressed: room
-                            ? () => ref.read(marginProvider.notifier).set(!showMargin)
-                            : () => _openMarginSheet(),
-                        icon: const Icon(Icons.view_sidebar_outlined),
-                        selectedIcon: const Icon(Icons.view_sidebar),
-                      ),
-                      IconButton(
-                        tooltip: 'Focus mode (⇧⌘F)',
-                        onPressed: toggleFocus,
-                        icon: const Icon(Icons.fullscreen),
-                      ),
-                      IconButton(
-                        tooltip: 'Alternate drafts',
-                        onPressed: _openDrafts,
-                        icon: const Icon(Icons.alt_route),
-                      ),
-                      IconButton(tooltip: 'Version history', onPressed: _openHistory, icon: const Icon(Icons.history)),
+                      if (!compact)
+                        IconButton(
+                          tooltip: room
+                              ? (showMargin ? 'Hide the notes beside the page' : 'Show the notes beside the page')
+                              : 'Notes for this chapter',
+                          isSelected: room && showMargin,
+                          onPressed: room
+                              ? () => ref.read(marginProvider.notifier).set(!showMargin)
+                              : () => _openMarginSheet(),
+                          icon: const Icon(Icons.view_sidebar_outlined),
+                          selectedIcon: const Icon(Icons.view_sidebar),
+                        ),
+                      if (!compact) ...[
+                        IconButton(
+                          tooltip: 'Focus mode (⇧⌘F)',
+                          onPressed: toggleFocus,
+                          icon: const Icon(Icons.fullscreen),
+                        ),
+                        IconButton(
+                          tooltip: 'Alternate drafts',
+                          onPressed: _openDrafts,
+                          icon: const Icon(Icons.alt_route),
+                        ),
+                        IconButton(
+                          tooltip: 'Version history',
+                          onPressed: _openHistory,
+                          icon: const Icon(Icons.history),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -644,15 +739,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
                     FilledButton(onPressed: _keepRecovered, child: const Text('Keep the recovered writing')),
                   ],
                 ),
-              if (_editor != null && !focus)
-                _Toolbar(
-                  editor: _editor!,
-                  composer: _composer!,
-                  document: _document!,
-                  onLink: _linkEntry,
-                  onUnlink: _unlink,
-                  onSplit: _splitHere,
-                ),
+              // On a computer or a tablet the formatting stands over the page; on a phone it rides on the keyboard (below).
+              if (_editor != null && !focus && !compact) toolbar(),
               if (_findOpen && _editor != null)
                 FindBar(
                   editor: _editor!,
@@ -751,11 +839,14 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> {
                   ),
                 ),
               ),
+              // THE INK TRAY: on a phone, while the keyboard is up, the formatting sits on it, under the thumbs; put the
+              // keyboard away to read and the tray goes with it, leaving the page the whole screen.
+              if (_editor != null && !focus && typing) _InkTray(child: toolbar()),
               if (sprint != null)
                 SprintBar(sprint: sprint)
               else if (sprintResult != null)
                 SprintCard(result: sprintResult)
-              else if (!focus)
+              else if (!focus && !typing)
                 _Meter(
                   words: _counts.words,
                   minutes: _counts.readingMinutes,
@@ -1355,6 +1446,27 @@ class _DraftLine extends StatelessWidget {
           label: Text('Draft: $active · ${others == 1 ? '1 other' : '$others others'}'),
           onPressed: onOpen,
         ),
+      ),
+    );
+  }
+}
+
+/// The ink tray on the keyboard: the formatting in a strip of the paper's colour with a rule along its head, so it
+/// reads as part of the page, not of the keyboard.
+class _InkTray extends StatelessWidget {
+  const _InkTray({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.surface,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: scheme.primary.withValues(alpha: 0.55))),
+        ),
+        child: child,
       ),
     );
   }

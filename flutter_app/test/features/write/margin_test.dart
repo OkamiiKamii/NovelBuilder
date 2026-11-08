@@ -128,7 +128,9 @@ void main() {
   testWidgets('where there is no room beside the page, the notes open as a sheet', (tester) async {
     await openWrite(tester, size: phone);
     expect(find.bySemanticsLabel(RegExp('^Notes for this chapter')), findsNothing);
-    await tester.tap(find.byTooltip('Notes for this chapter'));
+    await tester.tap(find.text('Desk'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Notes for this chapter'));
     await tester.pumpAndSettle();
     expect(find.text('Plan this chapter'), findsOneWidget);
     await tester.tap(find.text('Plan this chapter'));

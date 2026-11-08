@@ -328,6 +328,8 @@ void main() {
       reason: 'tests run as Android; a large window is a tablet',
     );
     await tester.tap(find.widgetWithText(ChoiceChip, 'Mono'));
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Sepia'));
+    await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(ChoiceChip, 'Sepia'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Done'));
