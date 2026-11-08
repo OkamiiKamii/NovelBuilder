@@ -26,6 +26,7 @@ void main() {
       'Ask them',
       'Jot an idea',
       'Branch the story',
+      'Lay a ribbon in this page',
       'Sort & filter',
       'Covers',
       'Spines',

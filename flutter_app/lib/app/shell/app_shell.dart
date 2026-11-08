@@ -18,6 +18,7 @@ import '../theme/paper_ground.dart';
 import 'app_shortcuts.dart';
 import 'contents_sheet.dart';
 import 'page_turn.dart';
+import 'ribbons.dart';
 
 /// The frame around every page: a navigation rail on wide screens, a bottom bar on phones.
 ///
@@ -72,8 +73,22 @@ class AppShell extends ConsumerWidget {
 
   Widget _frame(BuildContext context, WidgetRef ref, Destination? current, WindowSize size, bool focus, Widget page) {
     // Every page lies on the paper (by day) or under the lamp (by night): `paper_ground.dart`.
-    final body = PaperGround(child: page);
     final inside = insideBook(current, ref.watch(openNovelProvider));
+    // Inside a book, its ribbons peek in at the right edge of every page (`ribbons.dart`).
+    final body = PaperGround(
+      child: inside && !focus
+          ? Stack(
+              children: [
+                Positioned.fill(child: page),
+                Positioned(
+                  right: 0,
+                  bottom: 104,
+                  child: RibbonMarker(location: location, keyboardUp: MediaQuery.viewInsetsOf(context).bottom > 0),
+                ),
+              ],
+            )
+          : page,
+    );
     final Widget layout = switch (size) {
       _ when focus => Scaffold(body: SafeArea(child: body)),
       WindowSize.compact => Scaffold(

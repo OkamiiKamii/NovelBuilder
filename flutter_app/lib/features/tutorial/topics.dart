@@ -87,8 +87,10 @@ const tutorialTopics = <Topic>[
         'Organize, Plan, Visualize, Review and Progress.',
     steps: [
       'Open a novel from the Library: its areas appear in the rail, or in the bar at the bottom on a phone.',
-      'Move between them with the rail or the bar, or with Ctrl/⌘ and a number from 1 to 8.',
-      'Within an area, the tabs at the top switch between its pages.',
+      'Move between them with the rail or the bar (or Ctrl/⌘ and a number from 1 to 8); the tabs at the top of an '
+          'area switch between its pages.',
+      'The ribbon at the right edge of every page in the book holds its ribbons: press it, then Lay a ribbon in this '
+          'page to mark a page you keep going back to. Press a ribbon to turn back to its page.',
       'On a phone, More opens the contents of the rest of the book: Search the novel, then each area with what it '
           'holds now. Library takes you back to the shelf.',
       'The gear beside the Library is Settings (or Ctrl/⌘ and comma from anywhere).',
