@@ -24,6 +24,8 @@ void main() {
       'Raise the curtain',
       'Desk',
       'Ask them',
+      'Jot an idea',
+      'Branch the story',
       'Sort & filter',
       'Covers',
       'Spines',

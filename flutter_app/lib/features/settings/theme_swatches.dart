@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_theme.dart';
+import '../../app/theme/book_faces.dart';
 import '../../app/theme/theme_choice.dart';
 import '../characters/widgets/vault.dart';
 
@@ -17,8 +18,11 @@ class ThemeSwatches extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, box) {
-      // All three side by side when they fit at a readable size (a phone included), as large as 132 wide.
-      final width = ((box.maxWidth - 2 * 8) / 3 - 12).clamp(84.0, 132.0);
+      final n = ThemeChoice.values.length;
+      // All in a row where four fit at a readable size; otherwise two by two, so none is left alone on a line and
+      // every name keeps its words whole.
+      final across = ((box.maxWidth - (n - 1) * 8) / n - 12) >= 100 ? n : 2;
+      final width = ((box.maxWidth - (across - 1) * 8) / across - 12).clamp(84.0, 160.0);
       return Wrap(
         spacing: 8,
         runSpacing: 16,
@@ -45,6 +49,7 @@ class _Swatch extends StatelessWidget {
     final page = switch (choice) {
       ThemeChoice.light => _MiniPage(theme: AppTheme.light()),
       ThemeChoice.dark => _MiniPage(theme: AppTheme.dark()),
+      ThemeChoice.monolith => _MiniPage(theme: AppTheme.monolith()),
       ThemeChoice.auto => Stack(
         fit: StackFit.expand,
         children: [
@@ -161,7 +166,13 @@ class _MiniPage extends StatelessWidget {
                     'Chapter I',
                     maxLines: 1,
                     textScaler: TextScaler.noScaling,
-                    style: vaultHeading(context, size: 10, weight: 700, color: s.primary),
+                    // In the look's own lettering, not the one shown now.
+                    style: vaultHeading(
+                      context,
+                      size: 10,
+                      weight: 700,
+                      color: s.primary,
+                    ).copyWith(fontFamily: (theme.extension<BookFaces>() ?? BookFaces.book).heading),
                   ),
                   Container(
                     height: 1,

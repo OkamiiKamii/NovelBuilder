@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
@@ -586,7 +587,7 @@ class ShelfTotals extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        Text(formatNumber(value), style: theme.textTheme.titleMedium),
+        Text(formatNumber(value), style: numberStyle(context, theme.textTheme.titleMedium!)),
         const SizedBox(width: 6),
         Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
       ],

@@ -7,6 +7,7 @@ import '../../core/widgets/states.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/records/calendar.dart';
 import '../../shared/domain/records/event.dart';
+import '../../shared/domain/timeline/calendar_presets.dart';
 import '../../shared/domain/timeline/dates.dart';
 import '../characters/widgets/parts.dart';
 import '../workspace/area_switch.dart';
@@ -176,6 +177,54 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
           if (custom) ...[
             const SizedBox(height: 12),
+            // BEGIN FROM A CALENDAR: ready-made ones, as cards, that fill in every month at once (then Save).
+            Text('Begin from one of these, or build your own below', style: theme.textTheme.titleSmall),
+            const SizedBox(height: 8),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final p in calendarPresets)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: SizedBox(
+                        width: 220,
+                        child: Card(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(10),
+                            onTap: () => _set(
+                              {...p.settings},
+                              months: _keys(maps(p.settings['months']).length),
+                              eras: _keys(maps(p.settings['eras']).length),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_month_outlined, color: theme.colorScheme.primary),
+                                      const SizedBox(width: 8),
+                                      Expanded(child: Text(p.name, style: theme.textTheme.titleSmall)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(p.about, style: theme.textTheme.bodySmall),
+                                  const SizedBox(height: 6),
+                                  small(yearOf(p.settings)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             _DraftField(
               key: const ValueKey('calendar-name'),
               label: 'Calendar name',

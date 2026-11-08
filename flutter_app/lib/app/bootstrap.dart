@@ -30,7 +30,13 @@ void bootstrap() {
 /// The bundled typefaces' licences, in the app's licence list beside the packages'.
 void registerFontLicences() {
   LicenseRegistry.addLicense(() async* {
-    for (final (family, file) in [('Cinzel', 'Cinzel-OFL.txt'), ('EB Garamond', 'EBGaramond-OFL.txt')]) {
+    for (final (family, file) in [
+      ('Cinzel', 'Cinzel-OFL.txt'),
+      ('EB Garamond', 'EBGaramond-OFL.txt'),
+      ('Outfit', 'Outfit-OFL.txt'),
+      ('Merriweather', 'Merriweather-OFL.txt'),
+      ('JetBrains Mono', 'JetBrainsMono-OFL.txt'),
+    ]) {
       yield LicenseEntryWithLineBreaks([family], await rootBundle.loadString('assets/fonts/$file'));
     }
   });

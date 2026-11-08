@@ -20,7 +20,11 @@ void main() {
           reason: '${choice.name} checked only when chosen',
         );
       }
-      expect(find.text('Chapter I'), findsNWidgets(4), reason: 'parchment, midnight and both halves of the device');
+      expect(
+        find.text('Chapter I'),
+        findsNWidgets(5),
+        reason: 'parchment, midnight, both halves of the device, and System Monolith',
+      );
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
       await expectLater(tester, meetsGuideline(textContrastGuideline));

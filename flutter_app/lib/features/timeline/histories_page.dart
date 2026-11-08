@@ -16,6 +16,7 @@ import '../characters/widgets/parts.dart';
 import '../workspace/area_switch.dart';
 import 'timeline_providers.dart';
 import 'widgets/date_editor.dart';
+import 'widgets/what_if.dart';
 
 const _canonWords = {
   BranchStatus.alternate: 'Alternate canon: an official second course of events. The main timeline stays as it is.',
@@ -151,6 +152,20 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
         children: [
           const AreaSwitch(parts: planParts, current: '/plan/histories'),
           const SizedBox(height: 16),
+          // With none yet, a history begins as a question (`widgets/what_if.dart`); the full form stays below.
+          if (list.isEmpty) ...[
+            WhatIfCard(
+              starters: whatIfStarters(
+                events: [for (final p in inOrder(main)) (id: p.event.id, name: p.event.name)],
+                people: [for (final c in data.cast.characters()) c.name],
+              ),
+              onBranch: (name, eventId) {
+                final made = actions.edit((x) => x.createHistory(name: name, originEventId: eventId));
+                if (made != null) select(made);
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
           ProfileBox(
             title: 'Histories',
             children: [

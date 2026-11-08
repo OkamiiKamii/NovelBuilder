@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'book_faces.dart';
+
 /// THE GROUND THE PAGES LIE ON: in place of a flat colour, a surface. By day, paper: faint fibres laid in it and its
 /// edges a shade deeper, as a sheet is. By night, lamplight: a warm glow from the head of the page, falling away
 /// into the dark at the edges, as at a desk at night. Painted once for each size behind every page of the app, and
@@ -16,7 +18,13 @@ class PaperGround extends StatelessWidget {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
     return CustomPaint(
-      painter: _Ground(base: theme.scaffoldBackgroundColor, warm: theme.colorScheme.primary, dark: dark),
+      painter: BookFaces.of(context).ground == Ground.grid
+          ? _Grid(
+              base: theme.scaffoldBackgroundColor,
+              gold: theme.colorScheme.primary,
+              line: theme.colorScheme.outlineVariant,
+            )
+          : _Ground(base: theme.scaffoldBackgroundColor, warm: theme.colorScheme.primary, dark: dark),
       // Painted once and kept: the page over it repaints on its own.
       isComplex: true,
       willChange: false,
@@ -85,4 +93,54 @@ class _Ground extends CustomPainter {
 
   @override
   bool shouldRepaint(_Ground old) => old.base != base || old.warm != warm || old.dark != dark;
+}
+
+/// System Monolith's field: near-black with a faint geometric grid, a soft gold light at the head of the page and a
+/// cooler one at its foot, as a status window lit from within. Kept faint enough that no text changes its contrast.
+class _Grid extends CustomPainter {
+  _Grid({required this.base, required this.gold, required this.line});
+
+  final Color base;
+  final Color gold;
+  final Color line;
+
+  static const _teal = Color(0xFF38BDF8);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.isEmpty) return;
+    final rect = Offset.zero & size;
+    canvas.drawRect(rect, Paint()..color = base);
+    canvas.drawRect(
+      rect,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(0, -1.2),
+          radius: 1.1,
+          colors: [gold.withValues(alpha: 0.06), Colors.transparent],
+        ).createShader(rect),
+    );
+    canvas.drawRect(
+      rect,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(1, 1.2),
+          radius: 1.0,
+          colors: [_teal.withValues(alpha: 0.035), Colors.transparent],
+        ).createShader(rect),
+    );
+    final grid = Paint()
+      ..color = line.withValues(alpha: 0.35)
+      ..strokeWidth = 0.5;
+    const step = 48.0;
+    for (var x = step; x < size.width; x += step) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
+    }
+    for (var y = step; y < size.height; y += step) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), grid);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_Grid old) => old.base != base || old.gold != gold || old.line != line;
 }

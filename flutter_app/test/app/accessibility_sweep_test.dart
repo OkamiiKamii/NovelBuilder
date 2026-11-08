@@ -17,7 +17,7 @@ Future<String?> _check(WidgetTester tester, AccessibilityGuideline guideline) as
 }
 
 void main() {
-  for (final theme in [ThemeChoice.light, ThemeChoice.dark]) {
+  for (final theme in [ThemeChoice.light, ThemeChoice.dark, ThemeChoice.monolith]) {
     for (final size in [desktop, phone]) {
       testWidgets(
         'every screen meets the guidelines (${theme.name}, ${size.width.toInt()} wide)',

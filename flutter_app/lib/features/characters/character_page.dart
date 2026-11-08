@@ -107,20 +107,8 @@ class CharacterPage extends ConsumerWidget {
           // Getting to know them, a question at a time, while their profile still has empty answers.
           if (interviewFor(entry, profile, cast.templates).isNotEmpty)
             FilledButton.icon(
-              onPressed: () => showInterview(
-                context,
-                entry: entry,
-                profile: profile,
-                templates: cast.templates,
-                // Into the field they have, or the one their section suggests, made now with the answer.
-                save: (step, value) => actions.now((c) {
-                  if (step.fieldId != null) return c.updateField(entry.id, step.fieldId!, value: value);
-                  // The section as it is stored now (found by name: an unstored profile's ids change on each read).
-                  final sections = c.profileOf(c.character(entry.id)).sections;
-                  final section = sections.where((s) => s.name == step.sectionName).firstOrNull;
-                  c.addField(entry.id, section?.id ?? step.sectionId!, step.suggestion!, value: value);
-                }),
-              ),
+              onPressed: () =>
+                  interviewCharacter(context, actions, entry: entry, profile: profile, templates: cast.templates),
               icon: const Icon(Icons.record_voice_over_outlined),
               label: Text('Interview ${entry.name}'),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'book_faces.dart';
+
 /// BOUND IN LEATHER: the app's frame (the navigation rail on a computer or tablet, the bottom bar on a phone) is the
 /// binding of the book: dark leather, a stitched gilt edge, gilt bands, gilt lettering, with the area being worked in
 /// picked out in brighter gold. The same binding by day and by night (a shade darker at night). Everything on it is
@@ -26,7 +28,17 @@ class Leather {
     giltMuted: Color(0xFFCDB485),
   );
 
-  static Leather of(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? night : day;
+  /// System Monolith's binding: a dark blue-gray panel lettered in gold.
+  static const monolith = Leather(
+    top: Color(0xFF13161F),
+    bottom: Color(0xFF0A0B0E),
+    gilt: Color(0xFFF3B63A),
+    giltMuted: Color(0xFF94A3B8),
+  );
+
+  static Leather of(BuildContext context) => BookFaces.of(context).ground == Ground.grid
+      ? monolith
+      : (Theme.of(context).brightness == Brightness.dark ? night : day);
 }
 
 /// The theme for what sits on the binding: gilt on leather.
@@ -54,12 +66,17 @@ ThemeData leatherTheme(ThemeData base, Leather l) {
       unselectedIconTheme: IconThemeData(color: l.giltMuted),
       selectedLabelTextStyle: TextStyle(
         color: l.gilt,
-        fontFamily: 'Cinzel',
+        fontFamily: (base.extension<BookFaces>() ?? BookFaces.book).heading,
         fontWeight: FontWeight.w700,
         fontSize: 12,
         letterSpacing: 0.6,
       ),
-      unselectedLabelTextStyle: TextStyle(color: l.giltMuted, fontFamily: 'Cinzel', fontSize: 12, letterSpacing: 0.6),
+      unselectedLabelTextStyle: TextStyle(
+        color: l.giltMuted,
+        fontFamily: (base.extension<BookFaces>() ?? BookFaces.book).heading,
+        fontSize: 12,
+        letterSpacing: 0.6,
+      ),
     ),
     navigationBarTheme: base.navigationBarTheme.copyWith(
       backgroundColor: Colors.transparent,
@@ -70,7 +87,7 @@ ThemeData leatherTheme(ThemeData base, Leather l) {
       labelTextStyle: WidgetStateProperty.resolveWith(
         (states) => TextStyle(
           fontSize: 12,
-          fontFamily: 'Cinzel',
+          fontFamily: (base.extension<BookFaces>() ?? BookFaces.book).heading,
           letterSpacing: 0.4,
           color: states.contains(WidgetState.selected) ? l.gilt : l.giltMuted,
           fontWeight: states.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'book_faces.dart';
+
 /// The palette of the original app (src/styles/global.css): parchment by day, midnight by night.
 @immutable
 class Palette {
@@ -51,11 +53,43 @@ class Palette {
   );
 }
 
-abstract final class AppTheme {
-  static ThemeData light() => _build(Palette.light, Brightness.light);
-  static ThemeData dark() => _build(Palette.dark, Brightness.dark);
+/// SYSTEM MONOLITH's tokens, as named in its design: background primary, secondary and elevated, the two accents, the
+/// two inks and the border.
+abstract final class MonolithTokens {
+  static const backgroundPrimary = Color(0xFF0A0B0E);
+  static const backgroundSecondary = Color(0xFF13161F);
+  static const backgroundElevated = Color(0xFF1C202D);
+  static const accentPrimary = Color(0xFFF3B63A);
+  static const accentSecondary = Color(0xFF38BDF8);
+  static const textPrimary = Color(0xFFF8FAFC);
+  static const textSecondary = Color(0xFF94A3B8);
+  static const borderPrimary = Color(0xFF272E40);
+  static const danger = Color(0xFFF87171);
+}
 
-  static ThemeData _build(Palette p, Brightness brightness) {
+extension MonolithPalette on Palette {
+  /// System Monolith as a palette the theme builder reads like the others.
+  static const monolith = Palette(
+    background: MonolithTokens.backgroundPrimary,
+    surface: MonolithTokens.backgroundSecondary,
+    sunken: MonolithTokens.backgroundElevated,
+    border: MonolithTokens.borderPrimary,
+    text: MonolithTokens.textPrimary,
+    muted: MonolithTokens.textSecondary,
+    accent: MonolithTokens.accentPrimary,
+    onAccent: MonolithTokens.backgroundPrimary,
+    danger: MonolithTokens.danger,
+  );
+}
+
+abstract final class AppTheme {
+  static ThemeData light() => _build(Palette.light, Brightness.light, BookFaces.book);
+  static ThemeData dark() => _build(Palette.dark, Brightness.dark, BookFaces.book);
+
+  /// SYSTEM MONOLITH: a futuristic, high-contrast system interface, near-black and gold with teal for what informs.
+  static ThemeData monolith() => _build(MonolithPalette.monolith, Brightness.dark, BookFaces.monolith);
+
+  static ThemeData _build(Palette p, Brightness brightness, BookFaces f) {
     final scheme = ColorScheme(
       brightness: brightness,
       primary: p.accent,
@@ -63,6 +97,9 @@ abstract final class AppTheme {
       secondary: p.accent,
       onSecondary: p.onAccent,
       error: p.danger,
+      // System Monolith's cyber teal, for what informs (notices, information); the book's themes keep their own.
+      tertiary: f.ground == Ground.grid ? MonolithTokens.accentSecondary : null,
+      onTertiary: f.ground == Ground.grid ? MonolithTokens.backgroundPrimary : null,
       onError: brightness == Brightness.light ? Colors.white : const Color(0xFF2B0B08),
       surface: p.surface,
       onSurface: p.text,
@@ -76,20 +113,32 @@ abstract final class AppTheme {
       outlineVariant: p.border,
     );
     final radius = BorderRadius.circular(10);
-    final theme = _base(p, scheme, radius);
+    final theme = _base(p, scheme, radius, f);
     // Page titles in the book's capitals (Cinzel, bundled), as the areas' own headings are; text stays in the UI face.
     TextStyle? capitals(TextStyle? s) =>
-        s?.copyWith(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: (s.fontSize ?? 24) * 0.06);
+        s?.copyWith(fontFamily: f.heading, fontWeight: FontWeight.w700, letterSpacing: (s.fontSize ?? 24) * 0.06);
+    TextStyle? section(TextStyle? s, double scale) => s?.copyWith(
+      fontFamily: f.heading,
+      fontWeight: FontWeight.w700,
+      fontSize: (s.fontSize ?? 16) * scale,
+      letterSpacing: (s.fontSize ?? 16) * 0.05,
+    );
     return _stationery(
       theme.copyWith(
         textTheme: theme.textTheme.copyWith(
           headlineLarge: capitals(theme.textTheme.headlineLarge),
           headlineMedium: capitals(theme.textTheme.headlineMedium),
           headlineSmall: capitals(theme.textTheme.headlineSmall),
+          // THE SECTIONS OF A PAGE are headed as a book heads its parts: in the book's capitals too, a little smaller
+          // and spaced, so "Appearance", "Months", "Genre modules" read as headings, not as lines of the interface.
+          titleLarge: section(theme.textTheme.titleLarge, 1.0),
+          titleMedium: section(theme.textTheme.titleMedium, 0.96),
+          titleSmall: section(theme.textTheme.titleSmall, 0.96),
         ),
       ),
       p,
       brightness,
+      f,
     );
   }
 
@@ -97,12 +146,14 @@ abstract final class AppTheme {
   /// (squared with softly rounded corners, lettered in the book's capitals; the main ones with a pressed, darker edge
   /// and a soft shadow), dialogs are cards of the book (paper with a thin edge, titled in capitals), and messages are
   /// slips of paper (ink on paper across the foot of the screen, under an accent rule).
-  static ThemeData _stationery(ThemeData t, Palette p, Brightness brightness) {
+  static ThemeData _stationery(ThemeData t, Palette p, Brightness brightness, BookFaces f) {
     const label = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6)));
-    const lettering = TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: 0.7, fontSize: 14);
+    final lettering = TextStyle(fontFamily: f.heading, fontWeight: FontWeight.w700, letterSpacing: 0.7, fontSize: 14);
     final pressedEdge = Color.lerp(p.accent, Colors.black, 0.28)!;
     final dark = brightness == Brightness.dark;
     return t.copyWith(
+      // The theme's own faces, binding and ground, for the widgets that draw them (`book_faces.dart`).
+      extensions: [f],
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: label.copyWith(side: BorderSide(color: pressedEdge)),
@@ -133,7 +184,7 @@ abstract final class AppTheme {
           side: BorderSide(color: p.border),
         ),
         titleTextStyle: TextStyle(
-          fontFamily: 'Cinzel',
+          fontFamily: f.heading,
           fontWeight: FontWeight.w700,
           fontSize: 20,
           letterSpacing: 1.1,
@@ -147,8 +198,8 @@ abstract final class AppTheme {
         style: ButtonStyle(
           shape: const WidgetStatePropertyAll(label),
           side: WidgetStatePropertyAll(BorderSide(color: p.accent.withValues(alpha: 0.7))),
-          textStyle: const WidgetStatePropertyAll(
-            TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w700, letterSpacing: 0.6, fontSize: 13),
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(fontFamily: f.heading, fontWeight: FontWeight.w700, letterSpacing: 0.6, fontSize: 13),
           ),
           backgroundColor: WidgetStateProperty.resolveWith(
             (s) => s.contains(WidgetState.selected) ? p.accent : p.surface,
@@ -167,16 +218,20 @@ abstract final class AppTheme {
         ),
         backgroundColor: p.surface,
         selectedColor: p.accent.withValues(alpha: 0.18),
-        labelStyle: TextStyle(fontFamily: 'EB Garamond', fontSize: 15, color: p.text),
+        labelStyle: TextStyle(fontFamily: f.text, fontSize: 15, color: p.text),
         side: BorderSide(color: p.border),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? p.onAccent : p.muted),
         trackColor: WidgetStateProperty.resolveWith(
-          (s) => s.contains(WidgetState.selected) ? const Color(0xFFC49A4C) : p.sunken,
+          (s) => s.contains(WidgetState.selected)
+              ? (f.ground == Ground.grid ? p.accent : const Color(0xFFC49A4C))
+              : p.sunken,
         ),
         trackOutlineColor: WidgetStateProperty.resolveWith(
-          (s) => s.contains(WidgetState.selected) ? const Color(0xFF8A6326) : p.border,
+          (s) => s.contains(WidgetState.selected)
+              ? (f.ground == Ground.grid ? p.accent : const Color(0xFF8A6326))
+              : p.border,
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -185,8 +240,13 @@ abstract final class AppTheme {
         backgroundColor: p.surface,
         elevation: 4,
         // A slip of paper across the foot, with an accent rule along its top edge.
-        shape: Border(top: BorderSide(color: p.accent.withValues(alpha: 0.75), width: 2)),
-        contentTextStyle: TextStyle(fontFamily: 'EB Garamond', fontSize: 15, height: 1.25, color: p.text),
+        shape: Border(
+          top: BorderSide(
+            color: (f.ground == Ground.grid ? MonolithTokens.accentSecondary : p.accent).withValues(alpha: 0.75),
+            width: 2,
+          ),
+        ),
+        contentTextStyle: TextStyle(fontFamily: f.text, fontSize: 15, height: 1.25, color: p.text),
         actionTextColor: p.accent,
         closeIconColor: p.muted,
       ),
@@ -199,7 +259,7 @@ abstract final class AppTheme {
     borderSide: BorderSide(color: colour, width: width),
   );
 
-  static ThemeData _base(Palette p, ColorScheme scheme, BorderRadius radius) {
+  static ThemeData _base(Palette p, ColorScheme scheme, BorderRadius radius, BookFaces f) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
@@ -253,10 +313,10 @@ abstract final class AppTheme {
         errorBorder: _rule(p.danger),
         focusedErrorBorder: _rule(p.danger, width: 2),
         disabledBorder: _rule(p.border),
-        labelStyle: TextStyle(fontFamily: 'Cinzel', fontWeight: FontWeight.w600, letterSpacing: 0.8, color: p.muted),
+        labelStyle: TextStyle(fontFamily: f.heading, fontWeight: FontWeight.w600, letterSpacing: 0.8, color: p.muted),
         floatingLabelStyle: WidgetStateTextStyle.resolveWith(
           (states) => TextStyle(
-            fontFamily: 'Cinzel',
+            fontFamily: f.heading,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.8,
             color: states.contains(WidgetState.error)
@@ -266,7 +326,7 @@ abstract final class AppTheme {
                 : p.muted,
           ),
         ),
-        hintStyle: TextStyle(fontFamily: 'EB Garamond', fontStyle: FontStyle.italic, fontSize: 17, color: p.muted),
+        hintStyle: TextStyle(fontFamily: f.text, fontStyle: FontStyle.italic, fontSize: 17, color: p.muted),
         prefixIconColor: WidgetStateColor.resolveWith(
           (states) => states.contains(WidgetState.focused) ? p.accent : p.muted,
         ),

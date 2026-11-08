@@ -80,7 +80,22 @@ flutter:
   assets:
     - assets/fonts/Cinzel-OFL.txt
     - assets/fonts/EBGaramond-OFL.txt
+    # The System Monolith theme's faces (Outfit, Merriweather, JetBrains Mono), also SIL Open Font License 1.1.
+    - assets/fonts/Outfit-OFL.txt
+    - assets/fonts/Merriweather-OFL.txt
+    - assets/fonts/JetBrainsMono-OFL.txt
   fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit.ttf
+    - family: Merriweather
+      fonts:
+        - asset: assets/fonts/Merriweather.ttf
+        - asset: assets/fonts/Merriweather-Italic.ttf
+          style: italic
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono.ttf
     - family: Cinzel
       fonts:
         - asset: assets/fonts/Cinzel.ttf

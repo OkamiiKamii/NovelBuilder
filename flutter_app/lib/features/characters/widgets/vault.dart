@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/book_faces.dart';
 import '../../../shared/domain/characters/character_records.dart';
 import '../../../shared/domain/codex/field_values.dart';
 import '../../../shared/domain/collation.dart';
@@ -16,12 +17,13 @@ import 'portrait.dart';
 /// (Cinzel) and its writing in a book face (EB Garamond), both bundled with the app. The colours are the app theme's:
 /// the accent where the design has gold, so the vault follows parchment by day and midnight by night.
 
+/// The faces of the book look (other themes bring their own, read through [BookFaces]).
 const vaultHeadingFont = 'Cinzel';
 const vaultTextFont = 'EB Garamond';
 
 /// A heading in the vault's capitals, in the accent colour, widely spaced.
 TextStyle vaultHeading(BuildContext context, {double size = 15, Color? color, double weight = 600}) => TextStyle(
-  fontFamily: vaultHeadingFont,
+  fontFamily: BookFaces.of(context).heading,
   fontSize: size,
   fontVariations: [FontVariation.weight(weight)],
   fontWeight: weight >= 600 ? FontWeight.w600 : FontWeight.w400,
@@ -32,7 +34,7 @@ TextStyle vaultHeading(BuildContext context, {double size = 15, Color? color, do
 
 /// Writing in the vault's book face.
 TextStyle vaultText(BuildContext context, {double size = 17, Color? color, FontStyle? style}) => TextStyle(
-  fontFamily: vaultTextFont,
+  fontFamily: BookFaces.of(context).text,
   fontSize: size,
   fontStyle: style,
   height: 1.35,

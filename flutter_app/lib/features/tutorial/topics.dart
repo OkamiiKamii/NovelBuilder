@@ -68,7 +68,8 @@ const tutorialTopics = <Topic>[
       'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
           'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
           'shelf and opens it. With nothing being written, Draw an idea picks one of your ideas for you. On a phone, '
-          'swipe a shelf sideways, or press See all.',
+          'swipe a shelf sideways, or press See all. Ideas with no premise are counted above the shelf: Begin gives each '
+          'a line, one card at a time. Jot an idea, at the head of the shelf, shelves a new one in a line.',
       'Search the shelf, and press Sort & filter for status, genre and order. On a phone it stays folded until you '
           'press it, and counts what is set.',
     ],
@@ -107,7 +108,8 @@ const tutorialTopics = <Topic>[
       'Below the page: today\'s words against your goal (tap it to choose 100, 250, 500 or 1,000 words a day, or '
           'your own number), the words added this session, the chapter\'s length and the save status.',
       'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. The frame button is focus '
-          'mode: the line you write stays in the middle and the rest fades back (Typewriter turns that off).',
+          'mode: the line you write stays in the middle and the rest fades back (Typewriter turns that off). In a long '
+          'chapter, the strip down the right edge is the whole chapter: tap or drag it to go anywhere.',
       'Press Sprint below the page and choose 10, 15, 25 or 45 minutes: the desk clears, a ring shows the time left '
           'beside the words you add, and at the end a card says what you wrote. Stop ends it early.',
     ],
@@ -236,7 +238,8 @@ const tutorialTopics = <Topic>[
       'An empty cast is a playbill: name the hero, who stands against them and by them, and press Raise the '
           'curtain. Or press New character; only a name is needed. Names you keep writing wait at the top: Add one '
           'in a press, or set it aside with Not a character.',
-      'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in.',
+      'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in. Each '
+          'card says how well you know them (Known 4 of 11); a press there asks the next.',
       'Use the tabs for relationships, secrets, notes, history and progression.',
       'Search by name, alias or tag; filter by role; switch between Cards, List and Ties, where a “+” between two '
           'characters says who they are to each other.',
@@ -377,7 +380,8 @@ const tutorialTopics = <Topic>[
       'Link the characters and places involved, and the chapter that tells it.',
       'Read it down the line: each year a mark, each event on a node sized by its importance, and the years '
           'between said where time jumps.',
-      'Set the novel’s own calendar if it has one.',
+      'Set the novel’s own calendar if it has one (Plan → Calendar): begin from Thirteen moons, The long year and '
+          'others, then rename anything.',
       'See it drawn in Visualize → Timeline, with tracks by character.',
     ],
     example: 'Add “The Fall of Emberhold”, ten years before Chapter 1, linked to Mira. Her life path shows it.',
@@ -425,7 +429,8 @@ const tutorialTopics = <Topic>[
     what:
         'Try another course of events without touching the timeline: an alternate history keeps only its differences.',
     steps: [
-      'Open Plan → Alternate histories and start one.',
+      'Open Plan → Alternate histories: ask What if…? (or take a question from your own story) and press Branch '
+          'the story.',
       'Change, add or remove events in it.',
       'Compare it with the timeline it branches from.',
     ],
@@ -616,7 +621,8 @@ const tutorialTopics = <Topic>[
     what: 'How the app looks and feels on this device: theme, writing settings, the tutorial, and import and export.',
     steps: [
       'Open Settings with the gear beside the Library (or Ctrl/⌘+comma).',
-      'Choose a look: each is a small page in its own colours (parchment, midnight, or match this device).',
+      'Choose a look: each is a small page in its own colours (parchment, midnight, match this device, or System '
+          'Monolith, a dark gold-and-teal system interface).',
       'Set the editor’s font, size and spacing.',
       'Turn the Tutorial button on or off.',
     ],
@@ -630,7 +636,8 @@ const tutorialTopics = <Topic>[
     what: 'The app adapts: one column and a bar at the bottom on a phone, the rail on wider screens.',
     steps: [
       'On a phone the Library fills the screen; open a book and the bar appears: Library, Write, Organize and More.',
-      'In Write, the contents page and the editor take turns; Back returns to the contents.',
+      'In Write, the contents page and the editor take turns; Back returns to the contents, and Ch. 1 at the top lists '
+          'every chapter, with Previous and Next.',
       'Panels open as sheets from the bottom.',
       'While you type, bold, italic, lists and links sit on the keyboard; put it away and the page has the screen.',
     ],

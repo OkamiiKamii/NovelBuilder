@@ -20,6 +20,7 @@ import '../../shared/domain/records/story_node.dart';
 import '../characters/character_actions.dart';
 import '../characters/widgets/vault.dart';
 import 'chapter_end.dart';
+import 'chapter_spine.dart';
 import 'data/manuscript_service.dart';
 import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
@@ -484,6 +485,96 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     );
   }
 
+  /// "Ch. 3", or "Ch. 3 · scene", or the title of a part: where in the book this page is, in a few letters.
+  String _shortPlace() {
+    final n = StoryOrder.of(ref.read(outlineProvider)).chapterNumber[widget.node.id];
+    return switch (widget.node.kind) {
+      NodeKind.chapter when n != null => 'Ch. $n',
+      NodeKind.scene when n != null => 'Ch. $n · scene',
+      _ => widget.node.displayTitle,
+    };
+  }
+
+  /// THE CHAPTERS, AT HAND: on a phone, every chapter and scene in reading order in a sheet over the page, numbered,
+  /// with its length; the one open marked; **Previous** and **Next** at its head. A press opens that page (what is
+  /// typed here is saved first), without going back to the contents.
+  Future<void> _openChapters() async {
+    final nodes = ref.read(outlineProvider);
+    final pages = [
+      for (final n in readingOrder(nodes))
+        if (n.kind == NodeKind.chapter || n.kind == NodeKind.scene) n,
+    ];
+    final numbers = StoryOrder.of(nodes).chapterNumber;
+    final at = pages.indexWhere((n) => n.id == widget.node.id);
+    final chosen = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (sheet) {
+        final scheme = Theme.of(sheet).colorScheme;
+        Widget step(IconData icon, String label, StoryNode? to) => Expanded(
+          child: OutlinedButton.icon(
+            onPressed: to == null ? null : () => Navigator.of(sheet).pop(to.id),
+            icon: Icon(icon),
+            label: Text(label),
+          ),
+        );
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.6,
+          maxChildSize: 0.92,
+          builder: (sheet, scroll) => ListView(
+            controller: scroll,
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+                child: Text('The chapters', style: vaultHeading(sheet, size: 18, weight: 700)),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Row(
+                  children: [
+                    step(Icons.chevron_left, 'Previous', at > 0 ? pages[at - 1] : null),
+                    const SizedBox(width: 10),
+                    step(Icons.chevron_right, 'Next', at >= 0 && at + 1 < pages.length ? pages[at + 1] : null),
+                  ],
+                ),
+              ),
+              for (final n in pages)
+                ListTile(
+                  selected: n.id == widget.node.id,
+                  contentPadding: EdgeInsets.fromLTRB(n.kind == NodeKind.scene ? 48 : 24, 0, 24, 0),
+                  leading: n.kind == NodeKind.chapter
+                      ? Text(
+                          '${numbers[n.id] ?? ''}',
+                          style: vaultText(sheet, size: 18, style: FontStyle.italic, color: scheme.primary),
+                        )
+                      : Icon(Icons.subdirectory_arrow_right, size: 18, color: scheme.onSurfaceVariant),
+                  title: Text(
+                    n.displayTitle,
+                    style: vaultText(
+                      sheet,
+                      size: 17,
+                      color: n.id == widget.node.id ? scheme.primary : scheme.onSurface,
+                    ),
+                  ),
+                  trailing: Text(
+                    n.wordCount == 0 ? 'Not begun' : plural(n.wordCount, 'word'),
+                    style: Theme.of(sheet).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                  ),
+                  onTap: () => Navigator.of(sheet).pop(n.id),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+    if (chosen == null || chosen == widget.node.id || !mounted) return;
+    _flush();
+    ref.read(selectedNodeProvider.notifier).select(chosen);
+  }
+
   /// THE DESK'S DRAWER: on a phone, the tools beside the page are not four bare icons but a drawer that names each and
   /// says what it does, opened from Desk over the page. Choosing one closes the drawer and opens it.
   Future<void> _openDesk(VoidCallback toggleFocus) async {
@@ -674,7 +765,31 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                           onPressed: widget.onBack,
                           icon: const Icon(Icons.arrow_back),
                         ),
-                      const Spacer(),
+                      // On a phone, which chapter this is, and every other one press away (`_openChapters`).
+                      if (compact)
+                        Expanded(
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: TextButton(
+                              onPressed: _openChapters,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      _shortPlace(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      semanticsLabel: '${_shortPlace()}. All chapters',
+                                    ),
+                                  ),
+                                  const Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (!compact) const Spacer(),
                       if (_editor != null)
                         IconButton(
                           tooltip: 'Find and replace (⌘F)',
@@ -783,59 +898,71 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                       : null,
                   // The typewriter's light: the text away from the line being written fades back. Always in the tree (clear
                   // when off), so turning it on or off never rebuilds the editor under it.
-                  child: LayoutBuilder(
-                    builder: (context, box) => ShaderMask(
-                      blendMode: BlendMode.dstIn,
-                      shaderCallback: (rect) => LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: typewriter
-                            ? const [Color(0x40000000), Color(0xFF000000), Color(0xFF000000), Color(0x40000000)]
-                            : const [Color(0xFF000000), Color(0xFF000000)],
-                        stops: typewriter ? const [0.05, typewriterLine - 0.12, typewriterLine + 0.1, 0.95] : null,
-                      ).createShader(rect),
-                      child: CustomScrollView(
-                        controller: _scroll,
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: _ChapterHeading(
-                              title: _title,
-                              kicker: _kicker(),
-                              hint: 'Untitled ${widget.node.kindKey}',
-                              compact: compact,
-                              ink: page?.text,
-                              muted: page?.muted,
-                              onRename: _rename,
-                            ),
+                  child: Stack(
+                    children: [
+                      LayoutBuilder(
+                        builder: (context, box) => ShaderMask(
+                          blendMode: BlendMode.dstIn,
+                          shaderCallback: (rect) => LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: typewriter
+                                ? const [Color(0x40000000), Color(0xFF000000), Color(0xFF000000), Color(0x40000000)]
+                                : const [Color(0xFF000000), Color(0xFF000000)],
+                            stops: typewriter ? const [0.05, typewriterLine - 0.12, typewriterLine + 0.1, 0.95] : null,
+                          ).createShader(rect),
+                          child: CustomScrollView(
+                            controller: _scroll,
+                            slivers: [
+                              SliverToBoxAdapter(
+                                child: _ChapterHeading(
+                                  title: _title,
+                                  kicker: _kicker(),
+                                  hint: 'Untitled ${widget.node.kindKey}',
+                                  compact: compact,
+                                  ink: page?.text,
+                                  muted: page?.muted,
+                                  onRename: _rename,
+                                ),
+                              ),
+                              if (_editor == null)
+                                _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
+                              else
+                                SuperEditor(
+                                  // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
+                                  key: ObjectKey(_editor),
+                                  editor: _editor!,
+                                  documentLayoutKey: _layout,
+                                  focusNode: _focus,
+                                  autofocus: !compact,
+                                  stylesheet: writingStylesheet(theme, prefs),
+                                  contentTapDelegateFactories: const [],
+                                ),
+                              // The chapter's end: what follows, one press away (`chapter_end.dart`).
+                              SliverToBoxAdapter(
+                                child: ChapterEnd(
+                                  novelId: widget.novelId,
+                                  node: widget.node,
+                                  ink: page?.text,
+                                  muted: page?.muted,
+                                ),
+                              ),
+                              // Room under the last line, so it too can come up to the middle.
+                              if (typewriter)
+                                SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),
+                            ],
                           ),
-                          if (_editor == null)
-                            _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
-                          else
-                            SuperEditor(
-                              // A new editor (after a split or a restore) gets a fresh widget, not the old one's state.
-                              key: ObjectKey(_editor),
-                              editor: _editor!,
-                              documentLayoutKey: _layout,
-                              focusNode: _focus,
-                              autofocus: !compact,
-                              stylesheet: writingStylesheet(theme, prefs),
-                              contentTapDelegateFactories: const [],
-                            ),
-                          // The chapter's end: what follows, one press away (`chapter_end.dart`).
-                          SliverToBoxAdapter(
-                            child: ChapterEnd(
-                              novelId: widget.novelId,
-                              node: widget.node,
-                              ink: page?.text,
-                              muted: page?.muted,
-                            ),
-                          ),
-                          // Room under the last line, so it too can come up to the middle.
-                          if (typewriter)
-                            SliverToBoxAdapter(child: SizedBox(height: box.maxHeight * (1 - typewriterLine))),
-                        ],
+                        ),
                       ),
-                    ),
+                      // The chapter's spine down the page's edge (`chapter_spine.dart`).
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        right: 0,
+                        width: 22,
+                        child: ChapterSpine(document: _document, scroll: _scroll),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app/theme/book_faces.dart';
+
 /// One part of an area, with its own page.
 class AreaPart {
   const AreaPart(this.label, this.path, this.icon);
@@ -111,6 +113,32 @@ class _IndexTabsState extends State<IndexTabs> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    // ON A PHONE, A FEW TABS SHARE THE WIDTH: up to four stand side by side, each as wide as a quarter of the page,
+    // the sign above the name, so every one is in sight and none is cut; more than four scroll as before.
+    final narrow = MediaQuery.sizeOf(context).width < 600;
+    if (narrow && widget.tabs.length <= 4) {
+      return Semantics(
+        container: true,
+        label: 'Views',
+        child: Stack(
+          children: [
+            Positioned(left: 0, right: 0, bottom: 0, child: Container(height: 1, color: scheme.outlineVariant)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                for (final (i, t) in widget.tabs.indexed)
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: i == widget.tabs.length - 1 ? 0 : 4),
+                      child: _Tab(tab: t, stacked: true),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
     return Semantics(
       container: true,
       label: 'Views',
@@ -143,8 +171,11 @@ class _IndexTabsState extends State<IndexTabs> {
 }
 
 class _Tab extends StatelessWidget {
-  const _Tab({super.key, required this.tab});
+  const _Tab({super.key, required this.tab, this.stacked = false});
   final IndexTab tab;
+
+  /// The sign above the name, filling its share of a phone's width.
+  final bool stacked;
 
   @override
   Widget build(BuildContext context) {
@@ -171,26 +202,51 @@ class _Tab extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: on ? 52 : 48),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(tab.icon, size: 17, color: on ? scheme.primary : ink),
-                    const SizedBox(width: 8),
-                    Text(
-                      tab.label,
-                      style: TextStyle(
-                        fontFamily: 'Cinzel',
-                        fontSize: 13.5,
-                        letterSpacing: 0.8,
-                        fontWeight: on ? FontWeight.w700 : FontWeight.w600,
-                        color: ink,
+              child: stacked
+                  ? Padding(
+                      padding: EdgeInsets.fromLTRB(4, on ? 10 : 8, 4, 6),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(tab.icon, size: 19, color: on ? scheme.primary : ink),
+                          const SizedBox(height: 3),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              tab.label,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontFamily: BookFaces.of(context).heading,
+                                fontSize: 12,
+                                letterSpacing: 0.5,
+                                fontWeight: on ? FontWeight.w700 : FontWeight.w600,
+                                color: ink,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(tab.icon, size: 17, color: on ? scheme.primary : ink),
+                          const SizedBox(width: 8),
+                          Text(
+                            tab.label,
+                            style: TextStyle(
+                              fontFamily: BookFaces.of(context).heading,
+                              fontSize: 13.5,
+                              letterSpacing: 0.8,
+                              fontWeight: on ? FontWeight.w700 : FontWeight.w600,
+                              color: ink,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ),
           ),
         ),

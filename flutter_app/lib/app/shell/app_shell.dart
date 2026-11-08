@@ -12,6 +12,7 @@ import '../../features/write/writing_prefs.dart';
 import '../../shared/data/autosave.dart';
 import '../../shared/data/providers.dart';
 import '../destinations.dart';
+import '../theme/book_faces.dart';
 import '../theme/leather.dart';
 import '../theme/paper_ground.dart';
 import 'app_shortcuts.dart';
@@ -173,7 +174,7 @@ class _Rail extends StatelessWidget {
               Text(
                 'Novel Builder',
                 style: TextStyle(
-                  fontFamily: 'Cinzel',
+                  fontFamily: BookFaces.of(context).heading,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.2,

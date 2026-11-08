@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/book_faces.dart';
+
 /// Shared loading, empty, error and no-results states, so every screen says these things the same way.
 
 class LoadingState extends StatelessWidget {
@@ -172,7 +174,7 @@ class _StateCard extends StatelessWidget {
                       title,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'EB Garamond',
+                        fontFamily: BookFaces.of(context).text,
                         fontSize: 23,
                         height: 1.25,
                         fontWeight: FontWeight.w600,
@@ -187,7 +189,7 @@ class _StateCard extends StatelessWidget {
                         message!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: 'EB Garamond',
+                          fontFamily: BookFaces.of(context).text,
                           fontStyle: FontStyle.italic,
                           fontSize: 17,
                           height: 1.4,

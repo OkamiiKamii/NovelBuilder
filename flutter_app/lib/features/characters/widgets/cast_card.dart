@@ -46,11 +46,22 @@ String monogram(String name) {
 /// name and epithet set like the vault's, and their thread through the book: a tick for every chapter, lit where they
 /// are in it.
 class CastWall extends StatelessWidget {
-  const CastWall({super.key, required this.found, required this.order, required this.onOpen});
+  const CastWall({
+    super.key,
+    required this.found,
+    required this.order,
+    required this.onOpen,
+    this.known,
+    this.onInterview,
+  });
 
   final List<Listed> found;
   final StoryOrder order;
   final void Function(Listed l) onOpen;
+
+  /// How well each is known (answered of the interview's questions), and the interview to know them better.
+  final ({int known, int of}) Function(Listed l)? known;
+  final void Function(Listed l)? onInterview;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -64,7 +75,13 @@ class CastWall extends StatelessWidget {
           for (final l in found)
             SizedBox(
               width: width,
-              child: _CastCard(listed: l, order: order, onOpen: () => onOpen(l)),
+              child: _CastCard(
+                listed: l,
+                order: order,
+                onOpen: () => onOpen(l),
+                known: known?.call(l),
+                onInterview: onInterview == null ? null : () => onInterview!(l),
+              ),
             ),
         ],
       );
@@ -73,11 +90,13 @@ class CastWall extends StatelessWidget {
 }
 
 class _CastCard extends StatelessWidget {
-  const _CastCard({required this.listed, required this.order, required this.onOpen});
+  const _CastCard({required this.listed, required this.order, required this.onOpen, this.known, this.onInterview});
 
   final Listed listed;
   final StoryOrder order;
   final VoidCallback onOpen;
+  final ({int known, int of})? known;
+  final VoidCallback? onInterview;
 
   @override
   Widget build(BuildContext context) {
@@ -179,6 +198,10 @@ class _CastCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.labelSmall?.copyWith(color: scheme.primary, letterSpacing: 1.2),
                       ),
+                    ],
+                    if (known case final k? when k.of > 0) ...[
+                      const SizedBox(height: 10),
+                      _Acquaintance(known: k.known, of: k.of, onInterview: onInterview),
                     ],
                     if (where != null) ...[
                       const SizedBox(height: 10),
@@ -300,4 +323,86 @@ class _ChapterThreadPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_ChapterThreadPainter old) => old.marks != marks || old.lit != lit || old.unlit != unlit;
+}
+
+/// HOW WELL YOU KNOW THEM: of the interview's questions, how many the character's profile answers, as twelve small
+/// steps lit in the accent, and "Known 4 of 12". A press (while some are unanswered) asks the next ones.
+class _Acquaintance extends StatelessWidget {
+  const _Acquaintance({required this.known, required this.of, this.onInterview});
+
+  final int known;
+  final int of;
+  final VoidCallback? onInterview;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final full = known >= of;
+    final label = full ? 'Known well' : 'Known $known of $of';
+    final steps = ExcludeSemantics(
+      child: Row(
+        children: [
+          for (var i = 0; i < of; i++)
+            Expanded(
+              child: Container(
+                height: 4,
+                margin: EdgeInsets.only(right: i == of - 1 ? 0 : 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: i < known ? scheme.primary : scheme.outlineVariant.withValues(alpha: 0.6),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+    final text = Text(
+      label,
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: full ? scheme.primary : scheme.onSurfaceVariant),
+    );
+    if (full || onInterview == null) {
+      return Semantics(
+        label: full ? 'Known well: every interview question answered' : '$label interview questions answered',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [steps, const SizedBox(height: 4), text],
+        ),
+      );
+    }
+    return Semantics(
+      button: true,
+      label: '$label interview questions answered. Interview them',
+      excludeSemantics: true,
+      onTap: onInterview,
+      child: InkWell(
+        onTap: onInterview,
+        borderRadius: BorderRadius.circular(4),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              steps,
+              const SizedBox(height: 4),
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  text,
+                  Text(
+                    'Interview ›',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: scheme.primary, fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

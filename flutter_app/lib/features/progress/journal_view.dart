@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/theme/book_faces.dart';
 
 import '../../shared/domain/analytics/journal.dart';
 import '../../shared/domain/analytics/progress.dart';
@@ -19,7 +20,10 @@ class JournalHero extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final muted = theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant);
-    final big = vaultHeading(context, size: 52, weight: 700, color: scheme.primary).copyWith(height: 1.05);
+    final big = numberStyle(
+      context,
+      vaultHeading(context, size: 52, weight: 700, color: scheme.primary).copyWith(height: 1.05),
+    );
 
     final run = Semantics(
       container: true,

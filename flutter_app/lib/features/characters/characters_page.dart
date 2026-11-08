@@ -15,6 +15,7 @@ import '../workspace/open_novel.dart';
 import '../workspace/organize_switch.dart';
 import 'character_actions.dart';
 import 'characters_providers.dart';
+import 'interview.dart';
 import 'new_character_dialog.dart';
 import 'widgets/cast_card.dart';
 import 'widgets/cast_ties.dart';
@@ -153,6 +154,15 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 found: found.take(_shown).toList(),
                 order: cast.model.order,
                 onOpen: (l) => context.go(characterPath(l.entry.id)),
+                // How well each is known, and the interview to know them better (`interview.dart`).
+                known: (l) => acquaintance(l.entry, l.profile, cast.templates),
+                onInterview: (l) => interviewCharacter(
+                  context,
+                  CharacterActions(context, cast.novelId),
+                  entry: l.entry,
+                  profile: l.profile,
+                  templates: cast.templates,
+                ),
               )
             else if (view == CastView.ties)
               // Who they are to each other: every pair, one press to record a tie (`widgets/cast_ties.dart`).

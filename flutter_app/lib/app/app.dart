@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../shared/data/providers.dart';
 import 'router.dart';
-import 'theme/app_theme.dart';
 import 'theme/theme_choice.dart';
 
 class NovelBuilderApp extends ConsumerStatefulWidget {
@@ -36,8 +35,8 @@ class _NovelBuilderAppState extends ConsumerState<NovelBuilderApp> {
     return MaterialApp.router(
       title: 'Novel Builder',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      theme: choice.dayTheme,
+      darkTheme: choice.nightTheme,
       themeMode: choice.mode,
       routerConfig: ref.watch(routerProvider),
     );

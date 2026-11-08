@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/theme/book_faces.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
@@ -6,7 +7,9 @@ import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
 import 'bookcase.dart';
 import 'bookshelf.dart';
+import 'idea_cards.dart';
 import 'idea_draw.dart';
+import 'idea_jot.dart';
 import 'shelf_row.dart';
 
 /// SHELVES BY STAGE: the library as a study, the books being written on the top shelf and the ideas below, then those
@@ -80,10 +83,18 @@ class _StageShelvesState extends State<StageShelves> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final stage in ShelfStage.values)
-          if (byStage[stage]!.isNotEmpty || (stage == ShelfStage.writing && byStage[ShelfStage.ideas]!.isNotEmpty)) ...[
+          // The Ideas shelf always stands, so there is always a line to jot an idea on.
+          if (byStage[stage]!.isNotEmpty ||
+              stage == ShelfStage.ideas ||
+              (stage == ShelfStage.writing && byStage[ShelfStage.ideas]!.isNotEmpty)) ...[
             Nameplate(label: stage.label, count: byStage[stage]!.length),
             const SizedBox(height: 10),
-            if (byStage[stage]!.isEmpty) IdeaDraw(ideas: byStage[ShelfStage.ideas]!) else shelf(stage),
+            // Ideas without a premise: a note offering to give each a line (`idea_cards.dart`).
+            if (stage == ShelfStage.ideas) ...[const IdeaJot(), IdeaCardsNote(ideas: byStage[stage]!)],
+            if (byStage[stage]!.isNotEmpty)
+              shelf(stage)
+            else if (stage == ShelfStage.writing)
+              IdeaDraw(ideas: byStage[ShelfStage.ideas]!),
             const SizedBox(height: 26),
           ],
       ],
@@ -134,7 +145,7 @@ class Nameplate extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(
                   formatNumber(count),
-                  style: vaultText(context, size: 15, color: ink, style: FontStyle.italic),
+                  style: numberStyle(context, vaultText(context, size: 15, color: ink, style: FontStyle.italic)),
                 ),
                 const SizedBox(width: 10),
                 const _Screw(),

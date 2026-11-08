@@ -4,6 +4,7 @@ import '../../shared/domain/characters/character_records.dart';
 import '../../shared/domain/characters/templates.dart';
 import '../../shared/domain/records/category.dart' show FieldType;
 import '../../shared/domain/records/entry.dart';
+import 'character_actions.dart';
 import 'widgets/vault.dart';
 
 /// THE INTERVIEW: a character's empty profile filled the way writers get to know someone, one question at a time
@@ -233,3 +234,41 @@ class _InterviewState extends State<_Interview> {
     );
   }
 }
+
+/// How well the author knows a character: of the interview's questions, how many their profile has answered.
+({int known, int of}) acquaintance(Entry entry, CharacterProfile profile, List<CharacterTemplate> templates) {
+  // Answered: a question whose field the character has, filled. Still to ask: what the interview would ask now.
+  // A question with no field in this layout counts for neither.
+  final have = <String, EntryField>{};
+  for (final f in entry.fields) {
+    have.putIfAbsent(f.key.trim().toLowerCase(), () => f);
+  }
+  var known = 0;
+  for (final q in interviewQuestions) {
+    final field = q.fields.map((c) => have[c.toLowerCase()]).nonNulls.firstOrNull;
+    if (field != null && field.value.trim().isNotEmpty) known++;
+  }
+  return (known: known, of: known + interviewFor(entry, profile, templates).length);
+}
+
+/// The interview of [entry], each answer saved into its field as Next is pressed (the field the character has, or
+/// the one their section suggests, made now with the answer). The same from the profile and from the cast card.
+Future<void> interviewCharacter(
+  BuildContext context,
+  CharacterActions actions, {
+  required Entry entry,
+  required CharacterProfile profile,
+  required List<CharacterTemplate> templates,
+}) => showInterview(
+  context,
+  entry: entry,
+  profile: profile,
+  templates: templates,
+  save: (step, value) => actions.now((c) {
+    if (step.fieldId != null) return c.updateField(entry.id, step.fieldId!, value: value);
+    // The section as it is stored now (found by name: an unstored profile's ids change on each read).
+    final sections = c.profileOf(c.character(entry.id)).sections;
+    final section = sections.where((s) => s.name == step.sectionName).firstOrNull;
+    c.addField(entry.id, section?.id ?? step.sectionId!, step.suggestion!, value: value);
+  }),
+);

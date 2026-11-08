@@ -46,7 +46,9 @@ class SelectedNodeNotifier extends Notifier<String?> {
   void select(String? nodeId) {
     state = nodeId;
     final novelId = ref.read(openNovelProvider);
-    if (novelId == null) return;
+    // Going back to the contents (nothing selected) keeps the page last written on: the Library's "Pick up where you
+    // left off" still opens it, with its last lines.
+    if (novelId == null || nodeId == null) return;
     final settings = ref.read(settingsStoreProvider);
     ref
         .read(saveControllerProvider)

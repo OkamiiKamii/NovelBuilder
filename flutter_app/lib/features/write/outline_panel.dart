@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/states.dart';
@@ -57,7 +58,7 @@ class OutlinePanel extends ConsumerWidget {
                         child: Text(
                           'Contents',
                           style: TextStyle(
-                            fontFamily: 'Cinzel',
+                            fontFamily: BookFaces.of(context).heading,
                             fontWeight: FontWeight.w700,
                             fontSize: 17,
                             letterSpacing: 1.6,
@@ -68,7 +69,7 @@ class OutlinePanel extends ConsumerWidget {
                       Text(
                         '${ref.watch(libraryProvider).where((n) => n.id == novelId).firstOrNull?.title ?? 'Manuscript'} · ${formatNumber(total)} words',
                         style: TextStyle(
-                          fontFamily: 'EB Garamond',
+                          fontFamily: BookFaces.of(context).text,
                           fontStyle: FontStyle.italic,
                           fontSize: 15.5,
                           color: theme.colorScheme.onSurfaceVariant,
@@ -398,14 +399,19 @@ class _ContentsLine extends StatelessWidget {
                   children: [
                     Text(
                       node.kind?.label ?? node.kindKey,
-                      style: TextStyle(fontFamily: 'Cinzel', fontSize: 11, letterSpacing: 1.4, color: muted),
+                      style: TextStyle(
+                        fontFamily: BookFaces.of(context).heading,
+                        fontSize: 11,
+                        letterSpacing: 1.4,
+                        color: muted,
+                      ),
                     ),
                     Text(
                       title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontFamily: 'Cinzel',
+                        fontFamily: BookFaces.of(context).heading,
                         fontWeight: FontWeight.w700,
                         fontSize: 15,
                         letterSpacing: 1,
@@ -425,7 +431,7 @@ class _ContentsLine extends StatelessWidget {
     }
 
     final text = TextStyle(
-      fontFamily: 'EB Garamond',
+      fontFamily: BookFaces.of(context).text,
       fontSize: scene ? 15.5 : 17,
       fontStyle: scene ? FontStyle.italic : FontStyle.normal,
       fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
@@ -464,7 +470,7 @@ class _ContentsLine extends StatelessWidget {
                         child: Text(
                           scene ? '§' : '${number ?? ''}',
                           style: TextStyle(
-                            fontFamily: 'Cinzel',
+                            fontFamily: BookFaces.of(context).heading,
                             fontWeight: FontWeight.w700,
                             fontSize: scene ? 14 : 15,
                             color: selected ? scheme.primary : muted,
@@ -513,7 +519,7 @@ class _ContentsLine extends StatelessWidget {
                                         child: Text(
                                           formatNumber(node.wordCount),
                                           style: TextStyle(
-                                            fontFamily: 'EB Garamond',
+                                            fontFamily: BookFaces.of(context).text,
                                             fontSize: 15,
                                             color: muted,
                                             fontFeatures: const [FontFeature.oldstyleFigures()],
