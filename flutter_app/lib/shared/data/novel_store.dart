@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
@@ -224,6 +225,54 @@ class NovelStore extends ChangeNotifier {
     ]);
     return r.isEmpty ? null : jsonDecode(r.single['json']! as String) as JsonMap;
   }
+
+  /// When a collection last changed: how many records it holds and the latest time one was written. Read from the
+  /// index, not the records, so it is cheap to ask on every build: work done from a collection can be kept until this
+  /// changes.
+  ({int count, int latest}) stampOf(String projectId, String collection) {
+    final r = db.raw.select(
+      'SELECT COUNT(*) AS n, COALESCE(MAX(updated_at), 0) AS t FROM records WHERE project_id = ? AND collection = ?',
+      [projectId, collection],
+    ).single;
+    return (count: r['n'] as int, latest: r['t'] as int);
+  }
+
+  /// A collection's records as stored (JSON text, in order), not decoded: for work done away from the screen, which
+  /// decodes them there.
+  List<String> rawJsonIn(String projectId, String collection) => [
+    for (final r in db.raw.select(
+      'SELECT json FROM records WHERE project_id = ? AND collection = ? ORDER BY position',
+      [projectId, collection],
+    ))
+      r['json']! as String,
+  ];
+
+  /// How many records each collection of each of [projectIds] holds (by book, then by collection), in one query from
+  /// the index, without reading the records. A collection a book has no records in is absent.
+  Map<String, Map<String, int>> countsByCollection(List<String> projectIds) {
+    final out = <String, Map<String, int>>{};
+    if (projectIds.isEmpty) return out;
+    // In parts, to stay well inside SQLite's limit on the number of values one statement may take.
+    for (var at = 0; at < projectIds.length; at += 500) {
+      final part = projectIds.sublist(at, math.min(at + 500, projectIds.length));
+      for (final r in db.raw.select(
+        'SELECT project_id, collection, COUNT(*) AS n FROM records '
+        'WHERE project_id IN (${List.filled(part.length, '?').join(', ')}) GROUP BY project_id, collection',
+        part,
+      )) {
+        (out[r['project_id']! as String] ??= {})[r['collection']! as String] = r['n'] as int;
+      }
+    }
+    return out;
+  }
+
+  /// How many records a collection holds, without reading them.
+  int countIn(String projectId, String collection) =>
+      db.raw.select('SELECT COUNT(*) AS n FROM records WHERE project_id = ? AND collection = ?', [
+            projectId,
+            collection,
+          ]).single['n']
+          as int;
 
   /// A collection's records, in the order they were stored.
   List<JsonMap> rowsIn(String projectId, String collection) => [

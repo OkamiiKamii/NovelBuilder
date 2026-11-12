@@ -4,14 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
+import '../../shared/data/providers.dart';
+import '../../shared/domain/codex/world_finder.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
+import '../../shared/domain/manuscript/prose.dart';
 import '../../shared/domain/model/entity_ref.dart';
 import '../../shared/domain/model/story_model.dart';
 import '../../shared/domain/records/system.dart';
 import '../../shared/domain/stable_sort.dart';
 import '../../shared/domain/systems/compute.dart' show curveTable;
+import '../../shared/domain/systems/from_pages.dart';
 import '../../shared/domain/systems/system_presets.dart';
 import '../characters/characters_providers.dart';
 import '../characters/widgets/parts.dart';
@@ -127,7 +131,18 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
           ),
           const SizedBox(height: 12),
           if (system == null)
-            SystemGallery(onPreset: (p) => create(p.content), onBlank: () => create(blankBlueprint))
+            Builder(
+              builder: (context) {
+                final own = _ownSystem(cast);
+                return SystemGallery(
+                  onPreset: (p) => create(p.content),
+                  onBlank: () => create(blankBlueprint),
+                  fromPages: own?.system,
+                  holder: own?.holderName,
+                  onFromPages: own == null ? null : () => _beginOwn(actions, own),
+                );
+              },
+            )
           else ...[
             Wrap(
               spacing: 8,
@@ -176,6 +191,57 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
         ],
       ),
     );
+  }
+
+  // Read from the saved chapters once per change of the novel, only while the gallery is shown.
+  CastData? _ownFor;
+  ({PagesSystem system, String? holderId, String? holderName})? _own;
+
+  ({PagesSystem system, String? holderId, String? holderName})? _ownSystem(CastData cast) {
+    if (identical(cast, _ownFor)) return _own;
+    _ownFor = cast;
+    final store = ref.read(novelStoreProvider);
+    final chapters = [
+      for (final row in store.rowsIn(cast.novelId, 'chapterContents'))
+        if (cast.model.order.chapterNumber[str(row['id'])] case final number?) (number, blockTexts(row['doc'])),
+    ]..sort((a, b) => a.$1.compareTo(b.$1));
+    // The novel's powers: its Power System entries, then those its chapters call a skill or a spell.
+    final powers = [
+      for (final e in cast.entries)
+        if (e.category == 'power') e.name,
+      for (final f in worldFinds(chapters, limit: 40))
+        if (f.kind == 'power') f.name,
+    ];
+    final system = systemFromPages([for (final (_, blocks) in chapters) ...blocks], powers);
+    if (system == null) return _own = null;
+    // Who holds them: the protagonist, or the one most in the book.
+    final cast_ = [...cast.list]..sort((a, b) => b.seenIn.length.compareTo(a.seenIn.length));
+    final holder =
+        cast_.where((l) => l.profile.roles.contains('Protagonist')).firstOrNull ??
+        cast_.where((l) => l.seenIn.isNotEmpty).firstOrNull;
+    return _own = (
+      system: system,
+      holderId: system.powers.isEmpty ? null : holder?.entry.id,
+      holderName: system.powers.isEmpty ? null : holder?.entry.name,
+    );
+  }
+
+  /// Begins the book's own system, and the holder's sheet holding every power in it, in one change.
+  void _beginOwn(ProgressionActions actions, ({PagesSystem system, String? holderId, String? holderName}) own) {
+    final made = actions.systems((x) {
+      final system = x.createSystem(own.system.content);
+      if (own.holderId case final holder?) {
+        final sheet = x.addSheet(system.id, holder);
+        final names = {for (final p in own.system.powers) p.toLowerCase()};
+        final held = [
+          for (final i in x.systems().firstWhere((s) => s.id == system.id).items)
+            if (names.contains(i.name.toLowerCase())) i.id,
+        ];
+        x.updateSheet(sheet.id, (_) => {'itemIds': held});
+      }
+      return system;
+    });
+    if (made != null) setState(() => _systemId = made.id);
   }
 
   static int _count(SystemBlueprint s, StoryModel model, String tab) => switch (tab) {

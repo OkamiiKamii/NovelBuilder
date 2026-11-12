@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/novel_art.dart';
 import '../../../core/format.dart';
 import '../../../shared/domain/characters/cast.dart';
 import '../../../shared/domain/model/story_order.dart';
 import '../../../shared/domain/records/novel.dart' show novelAccents;
+import 'cameo.dart';
 import 'portrait.dart';
 import 'vault.dart';
 
@@ -28,7 +30,7 @@ String monogram(String name) {
 /// Where a character is in the book: for each chapter, whether a chapter or one of its scenes links to them.
 ({List<bool> chapters, int count, int? first, int? last}) presenceOf(Listed l, StoryOrder order) {
   final marks = List.filled(order.chapters.length, false);
-  for (final id in l.linkedIn) {
+  for (final id in l.seenIn) {
     final n = order.chapterNumber[id];
     if (n != null && n >= 1 && n <= marks.length) marks[n - 1] = true;
   }
@@ -245,30 +247,15 @@ class _Picture extends StatelessWidget {
   }
 
   Widget _monogram(BuildContext context) {
-    final dark = ThemeData.estimateBrightnessForColor(tone) == Brightness.dark;
-    final ink = dark ? const Color(0xFFFFF8EC) : const Color(0xFF1B140E);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color.lerp(tone, Colors.white, 0.1)!, Color.lerp(tone, Colors.black, 0.45)!],
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: DecoratedBox(
-          decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.45))),
-          child: Center(
-            child: LayoutBuilder(
-              builder: (context, box) => Text(
-                monogram(listed.entry.name),
-                style: vaultHeading(context, size: box.maxWidth * 0.3, weight: 700, color: ink),
-              ),
-            ),
-          ),
-        ),
-      ),
+    // The theme's way of drawing it (`novel_art.dart`), on the entry's own colour: their cameo (`cameo.dart`).
+    final art = NovelArt.of(context);
+    final look = art.bound(tone, lift: 0.1, sink: 0.45, tinted: true);
+    final ink = look.ink;
+    return Cameo(
+      look: cameoLookOf(listed.entry, listed.profile),
+      ground: look.ground,
+      ink: ink,
+      frame: art.system ? look.frame.withValues(alpha: 0.7) : ink.withValues(alpha: 0.55),
     );
   }
 }

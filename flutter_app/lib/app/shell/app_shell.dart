@@ -289,6 +289,11 @@ class _BottomBar extends StatelessWidget {
               Navigator.of(sheetContext).pop();
               goToArea(context, current, d);
             },
+            // A loose end opens the very page that answers it (a thread, a chapter's plan, the web of ties).
+            onGo: (path) {
+              Navigator.of(sheetContext).pop();
+              GoRouter.of(context).go(path);
+            },
             search: Consumer(
               builder: (context, ref, _) => ListTile(
                 leading: const Icon(Icons.search),

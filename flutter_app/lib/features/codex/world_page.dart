@@ -16,6 +16,8 @@ import '../characters/character_actions.dart';
 import '../characters/characters_providers.dart';
 import '../workspace/organize_switch.dart';
 import 'widgets/encyclopedia.dart';
+import 'widgets/found_in_pages.dart';
+import 'widgets/world_chart.dart';
 import 'widgets/world_charter.dart';
 
 /// THE WORLD: places, factions, items, powers, lore and the author's own kinds of record. Characters live in their own
@@ -111,6 +113,8 @@ class _WorldPageState extends ConsumerState<WorldPage> {
             child: OrganizeSwitch(current: OrganizePart.world),
           ),
           const SizedBox(height: 16),
+          // What the chapters name that the world does not hold yet, one press from it (`found_in_pages.dart`).
+          FoundInPages(cast: cast),
           if (all.isEmpty)
             WorldCharter(novelId: cast.novelId, kinds: cast.model.categories)
           else ...[
@@ -125,6 +129,17 @@ class _WorldPageState extends ConsumerState<WorldPage> {
               onSelect: (key) => setState(() => _category = key),
             ),
             const SizedBox(height: 16),
+            // The whole world as a sea chart: places as islands, what is linked to them on their shores, the rest
+            // adrift and one press from a place (`widgets/world_chart.dart`).
+            if (_category == null)
+              WorldChart(
+                model: cast.model,
+                chapters: cast.chaptersOf(),
+                kindOf: kindOf,
+                title: cast.novelTitle,
+                novelId: cast.novelId,
+                onOpen: (e) => context.go(entryPath(e.id, character: false)),
+              ),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -189,7 +204,7 @@ class _WorldPageState extends ConsumerState<WorldPage> {
               Encyclopedia(
                 entries: visible,
                 kindOf: kindOf,
-                mentions: chaptersMentioning(cast.model.nodes.values, cast.model.order),
+                mentions: cast.chaptersOf(),
                 chapterCount: cast.model.order.chapters.length,
                 onOpen: (e) => context.go(entryPath(e.id, character: false)),
               ),

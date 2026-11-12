@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:super_editor/super_editor.dart';
 
 /// One paragraph of the chapter as the spine draws it: its length in letters, and whether it is a heading.
-typedef SpineMark = ({int length, bool heading});
+typedef SpineMark = ({int length, bool heading, bool fresh});
 
 /// The chapter as marks: every paragraph, heading or list item, in order.
-List<SpineMark> spineOf(Document? document) => [
+List<SpineMark> spineOf(Document? document, {Set<String> fresh = const {}}) => [
   if (document != null)
     for (final node in document)
       if (node is TextNode)
@@ -15,6 +15,7 @@ List<SpineMark> spineOf(Document? document) => [
             final NamedAttribution a => a.id.startsWith('header'),
             _ => false,
           },
+          fresh: fresh.contains(node.id),
         ),
 ];
 
@@ -23,10 +24,13 @@ List<SpineMark> spineOf(Document? document) => [
 /// A press or a drag on it moves the page there. Shown only when the chapter runs past the screen, so a short one has
 /// the page to itself. Screen readers scroll the page as before; the strip is a picture for the eye.
 class ChapterSpine extends StatefulWidget {
-  const ChapterSpine({super.key, required this.document, required this.scroll});
+  const ChapterSpine({super.key, required this.document, required this.scroll, this.fresh = const {}});
 
   final Document? document;
   final ScrollController scroll;
+
+  /// The paragraphs in today's ink (`fresh_ink.dart`), drawn in the accent.
+  final Set<String> fresh;
 
   /// Paragraphs before the spine is worth drawing.
   static const fewest = 12;
@@ -52,7 +56,7 @@ class _ChapterSpineState extends State<ChapterSpine> {
 
   @override
   Widget build(BuildContext context) {
-    final marks = spineOf(widget.document);
+    final marks = spineOf(widget.document, fresh: widget.fresh);
     // Counted in paragraphs with words in them: the blank lines between them are not the chapter's length.
     if (marks.where((m) => m.length > 0).length < ChapterSpine.fewest) return const SizedBox.shrink();
     final scheme = Theme.of(context).colorScheme;
@@ -129,8 +133,8 @@ class _SpinePainter extends CustomPainter {
           ? size.width - 8
           : (4 + (size.width - 12) * (m.length / maxLength).clamp(0.15, 1.0)).toDouble();
       final paint = Paint()
-        ..color = m.heading ? accent : ink
-        ..strokeWidth = m.heading ? 2 : 1.2
+        ..color = m.heading || m.fresh ? accent : ink
+        ..strokeWidth = m.heading || m.fresh ? 2 : 1.2
         ..strokeCap = StrokeCap.round;
       final at = y + share / 2;
       canvas.drawLine(Offset(4, at), Offset(4 + width, at), paint);
@@ -143,6 +147,7 @@ class _SpinePainter extends CustomPainter {
       old.top != top ||
       old.shown != shown ||
       old.marks.length != marks.length ||
+      old.marks.where((m) => m.fresh).length != marks.where((m) => m.fresh).length ||
       old.ink != ink ||
       old.accent != accent;
 }

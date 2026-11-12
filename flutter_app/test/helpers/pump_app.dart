@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -6,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/app.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/shared/data/background.dart';
 import 'package:novel_builder/shared/data/backup_files.dart';
 import 'package:novel_builder/shared/data/database.dart';
 import 'package:novel_builder/shared/data/providers.dart';
@@ -69,6 +71,19 @@ Future<ProviderContainer> pumpApp(
       databaseProvider.overrideWithValue(database),
       backupFilesProvider.overrideWithValue(files ?? FakeBackupFiles()),
       routerProvider.overrideWith((ref) => buildRouter(initialLocation: location)),
+      // Work the app does in its own isolate runs here in place: a widget test's clock does not wait for isolates.
+      // The same functions run either way (`test/shared/data/background_test.dart` runs one in a real isolate).
+      // It is still checked to be sendable to an isolate, as the app would send it: a job that holds a widget or the
+      // database fails here as it would on the phone.
+      runAsideProvider.overrideWithValue(<R>(R Function() job) async {
+        final port = RawReceivePort();
+        try {
+          port.sendPort.send(job);
+        } finally {
+          port.close();
+        }
+        return job();
+      }),
     ],
   );
   addTearDown(container.dispose);

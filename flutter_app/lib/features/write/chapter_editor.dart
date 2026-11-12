@@ -17,6 +17,7 @@ import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/category.dart';
 import '../../shared/domain/records/entry.dart';
 import '../../shared/domain/records/story_node.dart';
+import '../../shared/domain/text/rhythm.dart';
 import '../characters/character_actions.dart';
 import '../characters/widgets/vault.dart';
 import 'chapter_end.dart';
@@ -26,10 +27,19 @@ import 'drafts_dialog.dart';
 import 'editor/find_bar.dart';
 import 'editor/link_bar.dart';
 import 'editor/prose_document.dart';
+import 'first_page.dart';
+import 'fresh_ink.dart';
 import 'goal_pledge.dart';
+import 'in_chapter.dart';
 import 'margin.dart';
+import 'next_note.dart';
+import 'nudge.dart';
+import 'red_pencil.dart';
+import 'rhythm.dart';
 import 'sprint.dart';
+import 'time_lapse.dart';
 import 'version_history.dart';
+import 'voices.dart';
 import 'write_providers.dart';
 import 'writing_prefs.dart';
 import 'writing_prefs_controls.dart';
@@ -80,6 +90,23 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   bool _dirty = false;
   bool _conflict = false;
   bool _findOpen = false;
+
+  /// The red pencil's marks are drawn by the editor's layout, never put in the text (`red_pencil.dart`).
+  final _pencil = RedPencil();
+
+  /// The voices are drawn the same way (`voices.dart`): dialogue in its speaker's colour.
+  final _voices = VoicesLens();
+
+  /// The paragraphs written or changed today, marked beside the text (`fresh_ink.dart`).
+  final _ink = FreshInk();
+
+  /// Who and what the page names (`in_chapter.dart`).
+  final _company = InChapter();
+
+  /// Watches for the writing stopping, to offer a nudge (`nudge.dart`).
+  late final _stuck = StuckWatch(focused: () => _focus.hasFocus);
+  void _stir([Object? _]) => _stuck.stirred();
+  late final _pencilPhases = [_voices.styler, _pencil.styler];
   DateTime? _dirtySince;
   Timer? _draftTimer;
   Timer? _countTimer;
@@ -98,6 +125,11 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     super.initState();
     // The keyboard coming up or going away moves the ink tray (below the page on a phone).
     WidgetsBinding.instance.addObserver(this);
+    _focus.addListener(_stir);
+    _stuck.addListener(_placeNudge);
+    _pencil.on = ref.read(redPencilProvider);
+    _voices.cast = voiceCastOf(ref.read(novelStoreProvider), widget.novelId);
+    _voices.on = ref.read(voicesProvider);
     _load();
     final pending = ref.read(pendingFindProvider);
     if (pending != null && pending.nodeId == widget.node.id && _editor != null) {
@@ -119,6 +151,52 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
         if (mounted) ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
       });
     }
+  }
+
+  /// The page's paragraphs as they stood when today began (null when that cannot be known).
+  List<String>? _dayStartText() {
+    final store = ref.read(novelStoreProvider);
+    final now = DateTime.now();
+    return textAtDayStart(
+      node: store.row(widget.novelId, 'chapters', widget.node.id),
+      saved: store.row(widget.novelId, 'chapterContents', widget.node.id),
+      revisions: _service.revisions(widget.novelId, widget.node.id),
+      dayStart: DateTime(now.year, now.month, now.day),
+    );
+  }
+
+  /// The nudges for this page as it is now: its plan, and the line the caret is in (else the last with words).
+  List<Nudge> _nudges() {
+    final document = _document;
+    var line = '';
+    final at = _composer?.selection?.extent.nodeId;
+    final here = at == null ? null : document?.getNodeById(at);
+    if (here is TextNode && here.text.toPlainText().trim().isNotEmpty) {
+      line = here.text.toPlainText();
+    } else if (document != null) {
+      for (final n in document) {
+        if (n is TextNode && n.text.toPlainText().trim().isNotEmpty) line = n.text.toPlainText();
+      }
+    }
+    final now = DateTime.now();
+    return nudgesFor(
+      marginNotesOf(ref.read(novelStoreProvider), widget.novelId, widget.node.id),
+      lastLine: line,
+      seed: now.year * 1000 + now.month * 40 + now.day + widget.node.id.hashCode,
+    );
+  }
+
+  /// Back to the contents (on a phone). After a real sitting on a page with no note left for it, first the offer of
+  /// one line for next time (`next_note.dart`); leaving without one is one press.
+  Future<void> _back() async {
+    final written = _counts.words - _sessionStart;
+    if (written >= nextNoteAfterWords && ref.read(nextNotesProvider)[widget.node.id] == null) {
+      _flush();
+      _focus.unfocus();
+      await leaveNextNote(context, ref, nodeId: widget.node.id, title: widget.node.displayTitle, leaving: true);
+      if (!mounted) return;
+    }
+    widget.onBack?.call();
   }
 
   /// The caret after the chapter's last word, with the editor focused: from "Continue writing" in the library.
@@ -166,13 +244,25 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     );
     document.addListener(_changed);
     _composer!.selectionNotifier.addListener(_keepCentred);
+    document.addListener(_stir);
+    _composer!.selectionNotifier.addListener(_stir);
+    _pencil.attach(document);
+    _voices.attach(document);
+    _ink.attach(document, _dayStartText());
+    _company.attach(document, pageCompanyOf(ref.read(novelStoreProvider), widget.novelId));
   }
 
   void _detach() {
+    _pencil.detach();
+    _voices.detach();
+    _ink.detach();
+    _company.detach();
     _document?.removeListener(_changed);
+    _document?.removeListener(_stir);
     // The editor on screen may still be using its composer this frame: let it go first.
     final composer = _composer;
     composer?.selectionNotifier.removeListener(_keepCentred);
+    composer?.selectionNotifier.removeListener(_stir);
     if (composer != null) WidgetsBinding.instance.addPostFrameCallback((_) => composer.dispose());
     _editor = null;
     _composer = null;
@@ -193,6 +283,27 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
 
   /// Moves the page so the caret's line is at [typewriterLine]. A glide that something else interrupts (the editor
   /// keeping a tapped caret in view, on a phone) is set straight once it stops, without gliding again.
+  /// Whether the caret is in the lower half of the page on screen: the nudge then stands at the page's head, so it
+  /// never covers the line being written.
+  bool _caretLow() {
+    final selection = _composer?.selection;
+    final Object? layout = _layout.currentState;
+    if (!_scroll.hasClients || selection == null || layout is! DocumentLayout) return true;
+    final caret = layout.getRectForPosition(selection.extent);
+    final viewport = _scroll.position.context.storageContext.findRenderObject();
+    if (caret == null || viewport is! RenderBox) return true;
+    final y = layout.getGlobalOffsetFromDocumentOffset(caret.center).dy - viewport.localToGlobal(Offset.zero).dy;
+    return y > viewport.size.height / 2;
+  }
+
+  /// Where the nudge stands: re-read each time the page stops.
+  bool _nudgeHigh = true;
+  void _placeNudge() {
+    if (!mounted || !_stuck.stuck) return;
+    final high = _caretLow();
+    if (high != _nudgeHigh) setState(() => _nudgeHigh = high);
+  }
+
   void _centre({required bool glide}) {
     if (!mounted || !_scroll.hasClients) return;
     final selection = _composer?.selection;
@@ -359,6 +470,12 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _flush();
     _countTimer?.cancel();
     _detach();
+    _pencil.dispose();
+    _voices.dispose();
+    _ink.dispose();
+    _company.dispose();
+    _focus.removeListener(_stir);
+    _stuck.dispose();
     _title.dispose();
     _focus.dispose();
     _scroll.dispose();
@@ -417,6 +534,59 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     if (!_flush()) return _tell('The latest changes are not saved yet, so the drafts cannot be changed.');
     final changed = await showDrafts(context, service: _service, novelId: widget.novelId, node: widget.node);
     if (mounted) setState(changed == true ? _load : () {});
+  }
+
+  /// The chapter's sentences as a waveform (`rhythm.dart`); the one chosen is selected, so it is brought into view.
+  Future<void> _openRhythm() async {
+    final document = _document;
+    final editor = _editor;
+    if (document == null || editor == null) return;
+    final ids = <String>[];
+    final texts = <String>[];
+    for (final node in document) {
+      if (node is TextNode) {
+        ids.add(node.id);
+        texts.add(node.text.toPlainText());
+      }
+    }
+    final picked = await showRhythm(context, report: rhythmOf(texts), title: widget.node.displayTitle);
+    if (picked == null || !mounted || picked.block >= ids.length) return;
+    final node = document.getNodeById(ids[picked.block]);
+    if (node is! TextNode) return;
+    final length = node.text.length;
+    editor.execute([
+      ChangeSelectionRequest(
+        DocumentSelection(
+          base: DocumentPosition(
+            nodeId: node.id,
+            nodePosition: TextNodePosition(offset: picked.start.clamp(0, length)),
+          ),
+          extent: DocumentPosition(
+            nodeId: node.id,
+            nodePosition: TextNodePosition(offset: picked.end.clamp(0, length)),
+          ),
+        ),
+        SelectionChangeType.placeCaret,
+        SelectionReason.userInteraction,
+      ),
+    ]);
+  }
+
+  /// The chapter writing itself, from its first saved copy to now (`time_lapse.dart`). Saved first, so now is now.
+  Future<void> _openTimeLapse() async {
+    _flush();
+    final store = ref.read(novelStoreProvider);
+    final row = store.row(widget.novelId, 'chapters', widget.node.id);
+    await showTimeLapse(
+      context,
+      frames: lapseFramesOf(
+        _service,
+        widget.novelId,
+        row == null ? widget.node : StoryNode(row),
+        store.row(widget.novelId, 'chapterContents', widget.node.id),
+      ),
+      title: widget.node.displayTitle,
+    );
   }
 
   Future<void> _openHistory() async {
@@ -599,7 +769,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
           onTap: () => Navigator.of(sheet).pop(open),
         );
         return SafeArea(
-          // Every tool built at once (four), so each can be found and read, at any text size.
+          // Every tool built at once (eight), so each can be found and read, at any text size.
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(bottom: 12),
             child: Column(
@@ -615,6 +785,25 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   'How the chapter before ends, this one’s plan and beats, who is on the page.',
                   _openMarginSheet,
                 ),
+                if (_editor != null)
+                  tool(
+                    Icons.edit_outlined,
+                    ref.read(redPencilProvider) ? 'Put the red pencil away' : 'Red pencil',
+                    'Echoes, long sentences and fillers marked under the words. Nothing is changed.',
+                    () => ref.read(redPencilProvider.notifier).set(!ref.read(redPencilProvider)),
+                  ),
+                if (_editor != null)
+                  tool(
+                    Icons.record_voice_over_outlined,
+                    ref.read(voicesProvider) ? 'Put the voices away' : 'Voices',
+                    'Every line of dialogue in its speaker’s colour, and who has the floor. Nothing is changed.',
+                    () {
+                      final on = !ref.read(voicesProvider);
+                      ref.read(voicesProvider.notifier).set(on);
+                      // A way of reading the page: the keyboard stays down, so the whole page shows.
+                      if (on) _focus.unfocus();
+                    },
+                  ),
                 tool(
                   Icons.fullscreen,
                   'Focus mode',
@@ -628,6 +817,19 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   _openDrafts,
                 ),
                 tool(Icons.history, 'Version history', 'Earlier versions: compare, and bring one back.', _openHistory),
+                if (_editor != null)
+                  tool(
+                    Icons.graphic_eq,
+                    'Rhythm',
+                    'Your sentences as a waveform: how long they run, and where a run keeps one beat.',
+                    _openRhythm,
+                  ),
+                tool(
+                  Icons.slow_motion_video,
+                  'Time-lapse',
+                  'Watch this chapter write itself, from its first saved copy to now.',
+                  _openTimeLapse,
+                ),
               ],
             ),
           ),
@@ -672,6 +874,20 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
 
     final prefs = ref.watch(writingPrefsProvider)[deviceFormOf(context)]!;
     final focus = ref.watch(focusModeProvider);
+    final pencilOn = ref.watch(redPencilProvider);
+    // The pencil reads the chapter when it is taken out, and its colours follow the theme; both outside the build.
+    ref.listen(redPencilProvider, (_, on) => _pencil.on = on);
+    final voicesOn = ref.watch(voicesProvider);
+    final freshOn = ref.watch(freshInkProvider);
+    // The cast is read again as the voices come out, so a character added since is heard.
+    ref.listen(voicesProvider, (_, on) {
+      if (on) _voices.cast = voiceCastOf(ref.read(novelStoreProvider), widget.novelId);
+      _voices.on = on;
+    });
+    final pencilColors = pencilColorsOf(theme);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _pencil.colors = pencilColors;
+    });
     final sprint = ref.watch(sprintProvider);
     final sprintResult = ref.watch(sprintResultProvider);
     final typewriter = focus && ref.watch(typewriterProvider) && _editor != null;
@@ -762,7 +978,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                       if (widget.onBack != null)
                         IconButton(
                           tooltip: 'Back to the outline',
-                          onPressed: widget.onBack,
+                          onPressed: _back,
                           icon: const Icon(Icons.arrow_back),
                         ),
                       // On a phone, which chapter this is, and every other one press away (`_openChapters`).
@@ -795,6 +1011,23 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                           tooltip: 'Find and replace (⌘F)',
                           onPressed: _openFind,
                           icon: const Icon(Icons.search),
+                        ),
+                      // On a phone the pencil is in the desk's drawer, so the chapter's name keeps its room.
+                      if (_editor != null && !compact)
+                        IconButton(
+                          tooltip: 'Red pencil: echoes, long sentences, fillers',
+                          isSelected: pencilOn,
+                          onPressed: () => ref.read(redPencilProvider.notifier).set(!pencilOn),
+                          icon: const Icon(Icons.edit_outlined),
+                          selectedIcon: Icon(Icons.edit, color: pencilColorsOf(theme).echo),
+                        ),
+                      if (_editor != null && !compact)
+                        IconButton(
+                          tooltip: 'Voices: each line of dialogue in its speaker\'s colour',
+                          isSelected: voicesOn,
+                          onPressed: () => ref.read(voicesProvider.notifier).set(!voicesOn),
+                          icon: const Icon(Icons.record_voice_over_outlined),
+                          selectedIcon: Icon(Icons.record_voice_over, color: theme.colorScheme.primary),
                         ),
                       IconButton(
                         tooltip: 'Writing settings',
@@ -837,6 +1070,17 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                           onPressed: _openHistory,
                           icon: const Icon(Icons.history),
                         ),
+                        if (_editor != null)
+                          IconButton(
+                            tooltip: 'Rhythm: your sentences as a waveform',
+                            onPressed: _openRhythm,
+                            icon: const Icon(Icons.graphic_eq),
+                          ),
+                        IconButton(
+                          tooltip: 'Time-lapse: watch this chapter write itself',
+                          onPressed: _openTimeLapse,
+                          icon: const Icon(Icons.slow_motion_video),
+                        ),
                       ],
                     ],
                   ),
@@ -867,6 +1111,14 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                     _findStart = null;
                   }),
                 ),
+              if (pencilOn && _editor != null && !focus)
+                RedPencilBar(
+                  pencil: _pencil,
+                  editor: _editor!,
+                  onClose: () => ref.read(redPencilProvider.notifier).set(false),
+                ),
+              if (voicesOn && _editor != null && !focus)
+                VoicesBar(lens: _voices, editor: _editor!, onClose: () => ref.read(voicesProvider.notifier).set(false)),
               if (_editor != null && !focus)
                 LinkBar(
                   composer: _composer!,
@@ -925,6 +1177,18 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                                   onRename: _rename,
                                 ),
                               ),
+                              // Who and what the chapter names, under its heading (`in_chapter.dart`). Always in the list (empty
+                              // in focus mode), so the editor after it is never rebuilt.
+                              SliverToBoxAdapter(
+                                child: focus
+                                    ? const SizedBox.shrink()
+                                    : InChapterStrip(
+                                        watch: _company,
+                                        onLeave: _flush,
+                                        ink: page?.text,
+                                        muted: page?.muted,
+                                      ),
+                              ),
                               if (_editor == null)
                                 _ReadOnly(doc: _opened.doc, reason: _prose?.reason)
                               else
@@ -936,7 +1200,31 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                                   focusNode: _focus,
                                   autofocus: !compact,
                                   stylesheet: writingStylesheet(theme, prefs),
+                                  customStylePhases: _pencilPhases,
                                   contentTapDelegateFactories: const [],
+                                ),
+                              // The note left for this sitting, pinned under the last line (`next_note.dart`).
+                              if (_editor != null)
+                                SliverToBoxAdapter(
+                                  child: NextNoteSlip(
+                                    nodeId: widget.node.id,
+                                    title: widget.node.displayTitle,
+                                    offer: !focus,
+                                  ),
+                                ),
+                              // A page with no words yet: what is already known of it, and ways in (`first_page.dart`).
+                              if (_editor != null && _document != null)
+                                SliverToBoxAdapter(
+                                  child: FirstPage(
+                                    novelId: widget.novelId,
+                                    nodeId: widget.node.id,
+                                    document: _document!,
+                                    onWrite: _caretAtEnd,
+                                    onLeave: _flush,
+                                    notesBeside: showMargin,
+                                    ink: page?.text,
+                                    muted: page?.muted,
+                                  ),
                                 ),
                               // The chapter's end: what follows, one press away (`chapter_end.dart`).
                               SliverToBoxAdapter(
@@ -954,14 +1242,43 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                           ),
                         ),
                       ),
+                      // Today's ink down the left margin, beside what was written today (`fresh_ink.dart`).
+                      if (_editor != null && _document != null && freshOn)
+                        Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: compact ? 4 : 6,
+                          width: 12,
+                          child: FreshInkMargin(ink: _ink, document: _document!, layout: _layout, scroll: _scroll),
+                        ),
                       // The chapter's spine down the page's edge (`chapter_spine.dart`).
                       Positioned(
                         top: 0,
                         bottom: 0,
                         right: 0,
                         width: 22,
-                        child: ChapterSpine(document: _document, scroll: _scroll),
+                        child: ListenableBuilder(
+                          listenable: _ink,
+                          builder: (_, _) => ChapterSpine(
+                            document: _document,
+                            scroll: _scroll,
+                            fresh: freshOn ? _ink.fresh : const {},
+                          ),
+                        ),
                       ),
+                      // Stuck? A nudge at the page's corner once the writing has stopped a while (`nudge.dart`).
+                      if (_editor != null)
+                        Positioned(
+                          left: 12,
+                          right: 28,
+                          top: _nudgeHigh ? 12 : null,
+                          bottom: _nudgeHigh ? null : 12,
+                          child: Align(
+                            alignment: _nudgeHigh ? Alignment.topRight : Alignment.bottomRight,
+                            heightFactor: 1,
+                            child: StuckNudge(watch: _stuck, nudges: _nudges, onBack: _focus.requestFocus),
+                          ),
+                        ),
                     ],
                   ),
                 ),

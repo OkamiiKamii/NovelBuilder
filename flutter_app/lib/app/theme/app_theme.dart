@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'book_faces.dart';
+import 'novel_art.dart';
 
 /// The palette of the original app (src/styles/global.css): parchment by day, midnight by night.
 @immutable
@@ -83,13 +84,14 @@ extension MonolithPalette on Palette {
 }
 
 abstract final class AppTheme {
-  static ThemeData light() => _build(Palette.light, Brightness.light, BookFaces.book);
-  static ThemeData dark() => _build(Palette.dark, Brightness.dark, BookFaces.book);
+  static ThemeData light() => _build(Palette.light, Brightness.light, BookFaces.book, NovelArt.parchment);
+  static ThemeData dark() => _build(Palette.dark, Brightness.dark, BookFaces.book, NovelArt.midnight);
 
   /// SYSTEM MONOLITH: a futuristic, high-contrast system interface, near-black and gold with teal for what informs.
-  static ThemeData monolith() => _build(MonolithPalette.monolith, Brightness.dark, BookFaces.monolith);
+  static ThemeData monolith() =>
+      _build(MonolithPalette.monolith, Brightness.dark, BookFaces.monolith, NovelArt.monolith);
 
-  static ThemeData _build(Palette p, Brightness brightness, BookFaces f) {
+  static ThemeData _build(Palette p, Brightness brightness, BookFaces f, NovelArt art) {
     final scheme = ColorScheme(
       brightness: brightness,
       primary: p.accent,
@@ -139,7 +141,8 @@ abstract final class AppTheme {
       p,
       brightness,
       f,
-    );
+      // And how the theme draws the novels themselves (`novel_art.dart`).
+    ).copyWith(extensions: [f, art]);
   }
 
   /// THE STATIONERY: what is pressed and what speaks, set like the rest of the book. Buttons are stamped labels

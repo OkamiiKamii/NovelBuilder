@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:novel_builder/app/router.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
+import 'package:novel_builder/features/characters/widgets/cameo.dart';
 import 'package:novel_builder/features/characters/widgets/cast_card.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
@@ -77,22 +78,17 @@ void main() {
     final w = await openOrganize(tester);
     await tester.tap(find.text('Create a character'));
     await tester.pumpAndSettle();
-    expect(find.text('?'), findsOneWidget, reason: 'no initials yet');
+    // Their cameo from the start, before a name.
+    expect(find.byType(Cameo), findsOneWidget);
     expect(find.text('Their name'), findsOneWidget);
     await tester.enterText(find.widgetWithText(TextField, 'Name *'), 'Mira Vance');
     await tester.enterText(find.widgetWithText(TextField, 'Title or epithet'), 'The Last Heir');
     await tester.tap(find.widgetWithText(FilterChip, 'Antagonist'));
     await tester.pumpAndSettle();
-    expect(find.text('MV'), findsOneWidget);
     expect(find.text('Mira Vance'), findsWidgets);
     expect(find.text('ANTAGONIST'), findsOneWidget);
     // The card's colour is the one the character keeps: its id was decided when the card was drawn.
-    final drawn = [
-      for (final box in tester.widgetList<DecoratedBox>(
-        find.ancestor(of: find.text('MV'), matching: find.byType(DecoratedBox)),
-      ))
-        if (box.decoration case BoxDecoration(:final gradient?)) gradient,
-    ].single.colors;
+    final drawn = tester.widget<Cameo>(find.byType(Cameo)).ground;
     await tester.tap(find.text('Add to the cast'));
     await tester.pumpAndSettle();
     final id = str(w.c.read(novelStoreProvider).rowsIn(w.novel, 'loreEntries').single['id']);
@@ -175,7 +171,7 @@ void main() {
     expect(find.text('3 characters'), findsOneWidget);
     await tester.enterText(find.widgetWithText(TextField, 'Search characters'), 'oathbreaker');
     await tester.pumpAndSettle();
-    expect(find.text('Kaelen Draven'), findsOneWidget);
+    expect(find.descendant(of: find.byType(CastWall), matching: find.text('Kaelen Draven')), findsOneWidget);
     expect(find.text('Seraphina Valdris'), findsNothing);
     expect(find.text('1 of 3 characters'), findsOneWidget);
     await tester.enterText(find.widgetWithText(TextField, 'Search characters'), 'zzz');
@@ -323,7 +319,7 @@ void main() {
       findsOneWidget,
       reason: 'the card says all of it to a screen reader',
     );
-    await tester.tap(find.text('Kael'));
+    await tester.tap(find.descendant(of: find.byType(CastWall), matching: find.text('Kael')));
     await tester.pumpAndSettle();
     expect(currentLocation(w.c), '/organize/character/$kael');
   });

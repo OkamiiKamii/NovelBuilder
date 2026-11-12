@@ -60,18 +60,18 @@ const tutorialTopics = <Topic>[
     what:
         'Your novels as books on a shelf, each kept apart from the others. The book you were last in waits at the top.',
     steps: [
-      'Press New novel: type the title on the cover, the author under it, pick a colour, and press Begin chapter '
-          'one to start writing. More details holds everything else.',
+      'A new library starts with a sample novel, The Drowned Road, to look around in (Settings → Add the sample '
+          'novel puts another copy on the shelf). Press New novel: type the title on the cover, the author under it, '
+          'pick a colour, and press Begin chapter one to start writing. More details holds everything else.',
       'Press a book to open it, or Continue writing to go straight back to the chapter you left. The last lines you '
           'wrote there wait on the page above the button, and you land with the caret after the last word.',
-      'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete.',
-      'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines beside the '
-          'search; press a spine to take the book off the shelf. On an idea, Start writing it moves it to the top '
-          'shelf and opens it. With nothing being written, Draw an idea picks one of your ideas for you. On a phone, '
-          'swipe a shelf sideways, or press See all. Ideas with no premise are counted above the shelf: Begin gives each '
-          'a line, one card at a time. Jot an idea, at the head of the shelf, shelves a new one in a line.',
-      'Search the shelf, and press Sort & filter for status, genre and order. On a phone it stays folded until you '
-          'press it, and counts what is set.',
+      'Books stand on shelves by stage: Writing now, Ideas, Set aside, Finished. Choose Covers or Spines; press a '
+          'spine to take the book off the shelf. On a phone, swipe a shelf sideways, or press See all.',
+      'The Ideas shelf: Jot an idea shelves a new one in a line (“The Glass Road — a courier who cannot lie”). Ideas '
+          'with no premise are counted above it, and Begin gives each a line, one card at a time. Start writing it '
+          'makes an idea the book being written; with nothing being written, Draw an idea picks one for you.',
+      'Use the ⋯ menu on a book to edit details (a cover too), pin, archive, duplicate, export a backup or delete. '
+          'Search the shelf, and press Sort & filter for status, genre and order.',
     ],
     example:
         'Create “Ashfall” and give it a cover. It stands on the shelf as a book; tomorrow, Continue writing opens '
@@ -89,13 +89,34 @@ const tutorialTopics = <Topic>[
       'Open a novel from the Library: its areas appear in the rail, or in the bar at the bottom on a phone.',
       'Move between them with the rail or the bar (or Ctrl/⌘ and a number from 1 to 8); the tabs at the top of an '
           'area switch between its pages.',
-      'The ribbon at the right edge of every page in the book holds its ribbons: press it, then Lay a ribbon in this '
-          'page to mark a page you keep going back to. Press a ribbon to turn back to its page.',
-      'On a phone, More opens the contents of the rest of the book: Search the novel, then each area with what it '
-          'holds now. Library takes you back to the shelf.',
+      'The ribbon at the right edge of every page in the book holds its ribbons: marks in the pages you keep going '
+          'back to (see Ribbons).',
+      'On a phone, More opens the contents of the rest of the book. Under Search the novel, Loose ends: what the story is waiting '
+          'for (today’s words, a thread gone quiet, a chapter with no plan, someone with no ties), each one press '
+          'from its page. Then each area with what it holds now, drawn small: threads along the book, the web of ties, the '
+          'last fortnight of writing. Library takes you back to the '
+          'shelf.',
       'The gear beside the Library is Settings (or Ctrl/⌘ and comma from anywhere).',
     ],
     example: 'Press Ctrl/⌘+3 to go to Organize, then World to see every place and faction of “Ashfall”.',
+  ),
+  Topic(
+    id: 'ribbons',
+    title: 'Ribbons',
+    group: 'Getting started',
+    where: 'The silk ribbon at the right edge of every page inside a book.',
+    what:
+        'Silk bookmarks in the pages you keep going back to: a character, a chapter, the map. Kept on this device, not '
+        'in the novel.',
+    steps: [
+      'On the page you want to keep close, press the ribbon at the right edge, then Lay a ribbon in this page.',
+      'Give it a name: it offers the page’s own (the character, the chapter, “Calendar”). Press Lay the ribbon.',
+      'From any page of the book, press the ribbon and then a ribbon to turn to its page; in Write, to its chapter.',
+      'Press × on a ribbon to take it out. A book holds six, each in its own colour.',
+    ],
+    example:
+        'Lay ribbons in Mira’s profile, Chapter 12 and the map of the Northern Reach: writing Chapter 13, each is one '
+        'press away.',
   ),
   Topic(
     id: 'write',
@@ -104,16 +125,21 @@ const tutorialTopics = <Topic>[
     path: '/write',
     what: 'The editor. It saves as you type, never changes your words by itself, and works with no connection.',
     steps: [
-      'Add a chapter (or a scene inside one) in the outline, and select it.',
-      'Write on the page; its title is typed at the top. Beside it (the panel button; on a phone, Desk) are notes: how the chapter '
-          'before ends, this chapter\'s plan and beats, who is on the page and the threads that move here.',
+      'Add a chapter (or a scene inside one) in the outline, and select it. Write on the page; its title is typed at '
+          'the top. On a phone, Ch. 1 at the top lists every chapter, with Previous and Next.',
+      'Beside the page (the panel button; on a phone, Desk) are notes: how the chapter before ends, this chapter\'s '
+          'plan and beats, who is on the page and the threads that move here. A chapter with no words yet opens on '
+          'them, under the first line, with a few ways in (or Plan this chapter); it goes with your first word.',
       'Below the page: today\'s words against your goal (tap it to choose 100, 250, 500 or 1,000 words a day, or '
-          'your own number), the words added this session, the chapter\'s length and the save status.',
-      'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. The frame button is focus '
-          'mode: the line you write stays in the middle and the rest fades back (Typewriter turns that off). In a long '
-          'chapter, the strip down the right edge is the whole chapter: tap or drag it to go anywhere.',
-      'Press Sprint below the page and choose 10, 15, 25 or 45 minutes: the desk clears, a ring shows the time left '
-          'beside the words you add, and at the end a card says what you wrote. Stop ends it early.',
+          'your own number), the chapter\'s length and the save status. Press Sprint for 10 to 45 minutes of writing '
+          'against a ring of time, with a card at the end saying what you wrote.',
+      'Use the text button for font, size and spacing, and Ctrl/⌘+F to find and replace. While you type on a phone, '
+          'bold, italic, lists and links wait in the ink tray on the keyboard. The pencil button (on a phone, in Desk) is the red pencil: '
+          'echoes, long sentences and fillers are marked under the words (nothing is changed); press Echoes, Long '
+          'sentences or Fillers to go to the next one.',
+      'The frame button is focus mode: the line you write stays in the middle and the rest fades back (Typewriter '
+          'turns that off). In a long chapter, the strip down the right edge is the whole chapter: tap or drag it to '
+          'go anywhere.',
     ],
     example:
         'Type a scene, then press Ctrl/⌘+F to find every “Kael”. Close the app mid-sentence: the words are there when '
@@ -238,14 +264,29 @@ const tutorialTopics = <Topic>[
     what: 'Your cast: a library to find characters in, and a profile for each with sections you shape yourself.',
     steps: [
       'An empty cast is a playbill: name the hero, who stands against them and by them, and press Raise the '
-          'curtain. Or press New character; only a name is needed. Names you keep writing wait at the top: Add one '
+          'curtain. Or press New character and write them in a line (“Mira Vance, 34, a smuggler from Glass River, '
+          'Kai’s sister”): age, gender, work, hometown and ties to the cast are recorded from it. Names you keep '
+          'writing wait at the top: Add one '
           'in a press, or set it aside with Not a character.',
       'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in. Each '
-          'card says how well you know them (Known 4 of 11); a press there asks the next.',
-      'Use the tabs for relationships, secrets, notes, history and progression.',
-      'Search by name, alias or tag; filter by role; switch between Cards, List and Ties, where a “+” between two '
-          'characters says who they are to each other.',
-      'Under each card, a line runs through the book: a tick for every chapter, lit where the character appears.',
+          'card says how well you know them (Known 4 of 11); a press there asks the next. With no picture, they are '
+          'a cameo drawn from their profile: gender sets the hair, old age silvers it, an elf has pointed ears. At the '
+          'top, the whole cast stands for a photograph, principals in front; press anyone to open them. While the '
+          'cast is three or fewer, the protagonist stands on a stage with empty chairs round them, each a question '
+          '(Who taught Wren? Who is Wren’s rival?): press one, write a name, and they join the cast already tied.',
+      'Use the tabs for relationships, secrets, notes, history and progression. In their pages quotes the '
+          'sentence each chapter first names them in; In their own words, the lines they say (“…,” Wren said). '
+          'A press on either opens the chapter there.',
+      'Search by name, alias or tag; filter by role; switch between Cards, List, Ties and Orbit (on a phone, one row '
+          'under the search, with the order and Arrange for sort and filters). In Ties a “+” between two '
+          'characters says who they are to each other. Orbit sets the cast round the protagonist like planets: the '
+          'principals close in, the minor cast further out, those not on the page yet in the wings; the larger, the '
+          'more chapters they are in, the brighter the line to the middle, the more they share the page with the '
+          'lead, and the ring round each is how well you know them. Under it, the one to interview next. Together on the page, at the top, asks about the pairs the '
+          'book keeps side by side with no tie: How are they tied? records one in a press, Not tied sets it aside.',
+      'Under each card, a line runs through the book: a tick for every chapter, lit where the character appears. '
+          'They are found by name, with nothing to link: their name, a part of it that is theirs alone, an alias, or '
+          'a title (“the Provost”). The World’s entries are found the same way.',
     ],
     example:
         'Create “Kaelen Draven”, role Protagonist, with the epithet “The Oathbreaker”. Searching “oathbreaker” finds '
@@ -261,12 +302,16 @@ const tutorialTopics = <Topic>[
         'Your world’s encyclopedia: places, factions, items, powers, lore and kinds of your own, each with its fields.',
     steps: [
       'An empty world opens on its first page: name a place, who holds power, what everyone wants, fears and '
-          'remembers, and press Begin this world. Later, press New entry and choose a category.',
+          'remembers, and press Begin this world. Later, press New entry and choose a category. Found in your pages, '
+          'at the top, offers what your chapters name (“the Mimir Forest”, “the Smart Atoms skill”): Add it in a '
+          'press, or set it aside with Not an entry.',
       'Fill in its summary and fields.',
       'Connect it to other records (“seated in”, “member of”) under Every connection.',
       'In the editor, select a name and link it to its entry.',
       'Each category is a volume on the shelf: press one to read only its entries, and a letter to jump to it. The '
-          'line under an entry lights the chapters it is linked in.',
+          'line under an entry lights the chapters it is in, linked or named. The whole world opens on its chart: each place an island, the places inside it within its shore, the larger '
+          'the more chapters it is in, and what is linked to a place as seals on its shore. What is linked to no place '
+          'floats adrift below; press one to say where it belongs. A press on a place or a seal opens it.',
     ],
     example: 'Create the faction “Ash Guild” and connect it to the place “Emberfall” as “seated in”.',
   ),
@@ -291,8 +336,10 @@ const tutorialTopics = <Topic>[
     path: '/organize/systems',
     what: 'Design the rules of a magic, levelling or power system: attributes, formulas, levels, classes and skills.',
     steps: [
-      'Pick a card: LitRPG, Cultivation, Hard magic or Superhero (each shows its levels, ranks and attributes) and '
-          'press Begin with it, or Begin blank.',
+      'Pick a card: LitRPG, Cultivation, Hard magic or Superhero. Each shows a sheet in it as it would look (a '
+          'status window, a cultivation record, an arcane ledger, a threat dossier, its numbers worked out by the '
+          'system itself) and its ranks; press Begin with it, or Begin blank. When your chapters already speak of '
+          'one, Your book’s own system comes first: your hero’s status window holding your skills, all in a press.',
       'Define attributes and resources, then levels or named stages.',
       'Add groups such as classes and skills, with what they need.',
       'Give a character a sheet, and record what changes chapter by chapter.',
@@ -328,7 +375,8 @@ const tutorialTopics = <Topic>[
         'work on the same characters, places and events.',
     steps: [
       'Open Organize → Modules: Made for your story names the ones your book’s words call for, with Turn on. Or '
-          'press Enable module on any.',
+          'press Enable module on any. On a phone they stand as a shelf of tiles: Turn on from the tile, or press '
+          'it for its full card, and Back to the shelf.',
       'Open a module for its dashboard and tools.',
       'Add records in its lists: nothing is made for you.',
       'Press Configure to rename, hide or reorder its tools.',
@@ -623,8 +671,10 @@ const tutorialTopics = <Topic>[
     what: 'How the app looks and feels on this device: theme, writing settings, the tutorial, and import and export.',
     steps: [
       'Open Settings with the gear beside the Library (or Ctrl/⌘+comma).',
-      'Choose a look: each is a small page in its own colours (parchment, midnight, match this device, or System '
-          'Monolith, a dark gold-and-teal system interface).',
+      'Choose a look: each is a small page in its own colours. Match this device follows the phone or computer; '
+          'Light (parchment) and Dark (midnight) are the book by day and by lamplight; System Monolith is a dark '
+          'gold-and-teal system interface on a grid. The look dresses the books too: covers, spines, shelves and frames; '
+          'a book’s own colour and cover picture stay as you chose them.',
       'Set the editor’s font, size and spacing.',
       'Turn the Tutorial button on or off.',
     ],
@@ -649,13 +699,19 @@ const tutorialTopics = <Topic>[
     id: 'tutorial',
     title: 'This tutorial',
     group: 'Making it yours',
-    where: 'The Tutorial button in the rail, in More inside a book on a phone, and in Settings.',
+    where:
+        'The Tutorial button in the rail; on a phone, beside the gear in the Library and in More inside a book; and in '
+        'Settings.',
     what: 'A short guide to each feature. It opens on the page you are looking at.',
     steps: [
       'Press Tutorial at any time.',
-      'Use Next and Back to walk through, or pick a topic from the list.',
-      'When you no longer need it, switch off “Show the Tutorial button”.',
-      'Bring it back, or open it once, from Settings.',
+      'Use Next and Back to walk through, or press All topics and type in Find a lesson.',
+      'Your path, at the head of All topics, ticks each lesson your books show you have used (a character, an '
+          'event, a ribbon) and names the next one worth trying: press Show me.',
+      'On the lesson for the page you are on, Show me on this page dims the page and lights each button the lesson '
+          'names, one step at a time.',
+      'When you no longer need it, switch off “Show the Tutorial button”; bring it back, or open it once, from '
+          'Settings.',
     ],
     example: 'On the World page, press Tutorial: it opens on “The world”, with an example entry to try.',
   ),
@@ -680,3 +736,72 @@ Topic topicFor(String location) {
   }
   return best ?? tutorialTopics.firstWhere((t) => t.id == 'areas');
 }
+
+/// The buttons and pages the lessons name, as the app writes them: the tutorial points them out on the page
+/// (`spotlight.dart`), and a test checks each is still both in a lesson and in the app.
+const tutorialButtonNames = [
+  'New novel',
+  'Begin chapter one',
+  'More details',
+  'Continue writing',
+  'Start writing it',
+  'Draw an idea',
+  'Raise the curtain',
+  'Desk',
+  'Ask them',
+  'Jot an idea',
+  'Branch the story',
+  'Lay a ribbon in this page',
+  'Lay the ribbon',
+  'Find a lesson',
+  'Show me',
+  'Show me on this page',
+  'Sort & filter',
+  'Covers',
+  'Spines',
+  'Search the novel',
+  'Sprint',
+  'Plan this chapter',
+  'Add the sample novel',
+  'How are they tied?',
+  'Not tied',
+  'Not an entry',
+  'Alternate drafts',
+  'Version history',
+  'Save a version',
+  'Put in the manuscript',
+  'New character',
+  'Interview',
+  'Not a character',
+  'Ties',
+  'Begin this world',
+  'New entry',
+  'Categories & fields',
+  'Begin blank',
+  'Draw it on the map',
+  'New event',
+  'New thread',
+  'In good order',
+  'The whole list',
+  'How long it is',
+  'Show the Tutorial button',
+  'Import backup',
+  'Export backup',
+  'Begin the next chapter',
+  'Enable module',
+  'New statement',
+  'Every connection',
+  'Configure',
+  'Publish',
+  'Add a person',
+  'Share a template',
+  'Import a template file',
+  'Read as a book',
+  'Book details',
+  'Export manuscript',
+  'Record check',
+  'Typewriter',
+  'Resolved',
+  'Intentional',
+  'Needs review',
+];

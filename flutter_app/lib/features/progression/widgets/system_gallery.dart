@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/domain/json.dart';
+import '../../../shared/domain/systems/from_pages.dart';
 import '../../../shared/domain/systems/system_presets.dart';
 import '../../characters/widgets/vault.dart';
+import 'status_window.dart';
 
 /// The motif of each preset, by its id (an unknown one has the system mark).
 IconData presetIcon(String id) => switch (id) {
@@ -36,10 +38,22 @@ List<(String, String)> blueprintLines(JsonMap content) {
 /// its kinds of class or skill), and **Begin with** it; a last card begins blank. Whatever is begun can be renamed and
 /// changed throughout.
 class SystemGallery extends StatelessWidget {
-  const SystemGallery({super.key, required this.onPreset, required this.onBlank});
+  const SystemGallery({
+    super.key,
+    required this.onPreset,
+    required this.onBlank,
+    this.fromPages,
+    this.holder,
+    this.onFromPages,
+  });
 
   final ValueChanged<SystemPreset> onPreset;
   final VoidCallback onBlank;
+
+  /// The system the book's own pages describe (`from_pages.dart`), offered first; [holder] is who gets a sheet.
+  final PagesSystem? fromPages;
+  final String? holder;
+  final VoidCallback? onFromPages;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +77,11 @@ class SystemGallery extends StatelessWidget {
               spacing: 14,
               runSpacing: 14,
               children: [
+                if (fromPages case final fp?)
+                  SizedBox(
+                    width: box.maxWidth,
+                    child: _OwnSystem(system: fp, holder: holder, onBegin: onFromPages),
+                  ),
                 for (final p in systemPresets)
                   SizedBox(
                     width: width,
@@ -70,7 +89,19 @@ class SystemGallery extends StatelessWidget {
                       icon: presetIcon(p.id),
                       name: p.name,
                       description: p.description,
-                      lines: blueprintLines(p.content),
+                      // Its ladder of ranks in words; everything else as a sheet in it would look.
+                      lines: [
+                        for (final l in blueprintLines(p.content))
+                          if (l.$1 == 'Ranks') l,
+                      ],
+                      window: StatusWindow(
+                        content: p.content,
+                        presetId: p.id,
+                        holder: holder ?? 'Your hero',
+                        held: exampleHeld(p.content),
+                        caption: 'A sheet in it, for example. Every name and number can be changed.',
+                        compact: true,
+                      ),
                       action: FilledButton.tonal(
                         onPressed: () => onPreset(p),
                         child: Text('Begin with ${p.name}', textAlign: TextAlign.center),
@@ -103,6 +134,7 @@ class _Card extends StatelessWidget {
     required this.description,
     required this.lines,
     required this.action,
+    this.window,
   });
 
   final IconData icon;
@@ -110,6 +142,9 @@ class _Card extends StatelessWidget {
   final String description;
   final List<(String, String)> lines;
   final Widget action;
+
+  /// A sheet in the system, as it would look (`status_window.dart`).
+  final Widget? window;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +176,7 @@ class _Card extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(description, style: vaultText(context, size: 16)),
+          if (window case final w?) ...[const SizedBox(height: 14), w, const SizedBox(height: 4)],
           if (lines.isNotEmpty) ...[
             const VaultRule(),
             for (final (label, value) in lines)
@@ -162,6 +198,86 @@ class _Card extends StatelessWidget {
           ],
           const SizedBox(height: 10),
           SizedBox(width: double.infinity, child: action),
+        ],
+      ),
+    );
+  }
+}
+
+/// YOUR BOOK'S OWN SYSTEM, first in the gallery: which kind the pages read as and why (the words they use most, with
+/// how often); then the sheet it begins as it will look, the hero's status window holding the powers already in the
+/// pages (`status_window.dart`); then **Begin with your book's system**. In the book's frame, with its kind's motif.
+class _OwnSystem extends StatelessWidget {
+  const _OwnSystem({required this.system, required this.holder, required this.onBegin});
+
+  final PagesSystem system;
+  final String? holder;
+  final VoidCallback? onBegin;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final s = system;
+    final why = s.signs.isEmpty
+        ? null
+        : 'Your chapters speak of ${[for (final w in s.signs.take(3)) '“${w.word}” ×${w.times}'].join(', ')}: '
+              'they read as a ${s.preset.name}.';
+    return VaultFrame(
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: scheme.primary),
+                child: Icon(presetIcon(s.preset.id), color: scheme.onPrimary, size: 22),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Semantics(
+                  header: true,
+                  child: Text(
+                    'Your book’s own system',
+                    style: vaultHeading(context, size: 15, weight: 700, color: scheme.onSurface),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${why ?? 'It is a ${s.preset.name}.'} It begins with what your pages already hold.',
+            style: vaultText(context, size: 16),
+          ),
+          // The sheet it begins, as it will look: the hero's status window, holding the powers the pages name.
+          const SizedBox(height: 14),
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: StatusWindow(
+                content: s.content,
+                presetId: s.preset.id,
+                holder: holder ?? 'Your hero',
+                held: [
+                  for (final i in maps(s.content['items']))
+                    if (s.powers.any((p) => p.toLowerCase() == str(i['name']).toLowerCase())) str(i['id']),
+                ],
+                caption: holder == null
+                    ? 'A sheet in it, as it begins.'
+                    : s.powers.isEmpty
+                    ? 'A sheet for $holder, as it begins.'
+                    : 'A sheet for $holder, holding ${s.powers.length == 1 ? 'it' : 'all ${s.powers.length}'}.',
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(onPressed: onBegin, child: const Text('Begin with your book’s system')),
+          ),
         ],
       ),
     );

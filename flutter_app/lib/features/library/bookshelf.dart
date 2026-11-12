@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/app_theme.dart';
 import '../../app/theme/book_faces.dart';
+import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
@@ -40,8 +44,9 @@ Color accentOf(Novel novel) {
   }
 }
 
-/// A book's jacket: its cover picture when it has one; otherwise a cover designed from its title and author on its
-/// colour, with a thin rule inside the edge, in the vault's typefaces. 2 : 3, as books are.
+/// A book's jacket: its cover picture when it has one; otherwise a cover designed from its title and author, in the
+/// theme's way of drawing books (`novel_art.dart`): on the book's colour with a thin rule inside the edge (the book's
+/// themes), or near-black framed in gold with the book's colour down its spine edge (System Monolith). 2 : 3.
 class BookJacket extends StatelessWidget {
   const BookJacket({super.key, required this.novel, required this.width});
   final Novel novel;
@@ -53,56 +58,102 @@ class BookJacket extends StatelessWidget {
     final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
     final bytes = coverBytes(novel.cover);
     final accent = accentOf(novel);
-    final dark = ThemeData.estimateBrightnessForColor(accent) == Brightness.dark;
-    final ink = dark ? const Color(0xFFFFF8EC) : const Color(0xFF1B140E);
-    final designed = DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color.lerp(accent, Colors.white, 0.08)!, Color.lerp(accent, Colors.black, 0.35)!],
+    // The theme's way of drawing a book (`novel_art.dart`); the book's colour is the author's either way.
+    final art = NovelArt.of(context);
+    final look = art.bound(accent);
+    final ink = look.ink;
+    final lettering = Column(
+      children: [
+        const Spacer(),
+        _Lettering(
+          title,
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+          style: vaultHeading(context, size: width * 0.1, color: ink, weight: 700),
         ),
-      ),
-      // The book's own motif, faint, behind its frame and lettering (`cover_art.dart`).
-      child: CustomPaint(
-        painter: CoverArtPainter(motif: motifOf(novel), seed: coverSeed(novel.id), ink: ink),
-        child: Padding(
-          padding: EdgeInsets.all(width * 0.06),
-          child: DecoratedBox(
-            decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.55))),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.06, vertical: width * 0.1),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  _Lettering(
-                    title,
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                    style: vaultHeading(context, size: width * 0.1, color: ink, weight: 700),
-                  ),
-                  if (novel.subtitle.isNotEmpty) ...[
-                    SizedBox(height: width * 0.04),
-                    _Lettering(
-                      novel.subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.85)),
-                    ),
-                  ],
-                  const Spacer(),
-                  if (novel.author.isNotEmpty)
-                    _Lettering(
-                      novel.author,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.9)),
-                    ),
-                ],
-              ),
+        if (art.system) ...[
+          SizedBox(height: width * 0.04),
+          Container(width: width * 0.22, height: 1.5, color: look.frame),
+        ],
+        if (novel.subtitle.isNotEmpty) ...[
+          SizedBox(height: width * 0.04),
+          _Lettering(
+            novel.subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: vaultText(context, size: width * 0.075, color: ink.withValues(alpha: 0.85)),
+          ),
+        ],
+        const Spacer(),
+        if (novel.author.isNotEmpty)
+          _Lettering(
+            novel.author,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: vaultText(
+              context,
+              size: width * 0.075,
+              color: art.system ? MonolithTokens.textSecondary : ink.withValues(alpha: 0.9),
             ),
           ),
+        // The system style signs the jacket off with a status line, as its windows are (at the foot, clear of the
+        // shelf's menu button over the top corner).
+        if (art.system && width >= 90) ...[
+          SizedBox(height: width * 0.03),
+          Text(
+            'NOVEL · ${novel.status.label.toUpperCase()}',
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+            style: TextStyle(
+              fontFamily: BookFaces.of(context).numbers,
+              fontSize: width * 0.05,
+              letterSpacing: width * 0.006,
+              color: look.motif,
+            ),
+          ),
+        ],
+      ],
+    );
+    final framed = Padding(
+      padding: EdgeInsets.all(width * 0.06),
+      child: CustomPaint(
+        foregroundPainter: art.system ? BracketsPainter(look.motif, arm: width * 0.08) : null,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: art.system ? look.frame.withValues(alpha: 0.6) : look.frame),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.06, vertical: width * 0.1),
+            child: lettering,
+          ),
         ),
+      ),
+    );
+    final designed = DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: look.ground),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // The system style: the book's own colour as a glow behind the title.
+          if (look.band case final band?)
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: const Alignment(0, -0.15),
+                  radius: 0.75,
+                  colors: [band.withValues(alpha: 0.32), band.withValues(alpha: 0)],
+                ),
+              ),
+            ),
+          // The book's own motif, faint, behind its frame and lettering (`cover_art.dart`).
+          CustomPaint(
+            painter: CoverArtPainter(motif: motifOf(novel), seed: coverSeed(novel.id), ink: look.motif),
+            child: framed,
+          ),
+        ],
       ),
     );
     return ExcludeSemantics(
@@ -110,11 +161,17 @@ class BookJacket extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.horizontal(left: Radius.circular(3), right: Radius.circular(6)),
+          borderRadius: art.system
+              ? BorderRadius.circular(2)
+              : const BorderRadius.horizontal(left: Radius.circular(3), right: Radius.circular(6)),
           boxShadow: [
             BoxShadow(color: Colors.black.withValues(alpha: 0.35), blurRadius: 10, offset: const Offset(2, 4)),
           ],
         ),
+        // A cover picture is the author's and is shown as it is; the system style frames it in gold.
+        foregroundDecoration: art.system && bytes != null
+            ? BoxDecoration(border: Border.all(color: look.frame.withValues(alpha: 0.8)))
+            : null,
         clipBehavior: Clip.antiAlias,
         child: Stack(
           fit: StackFit.expand,
@@ -123,18 +180,36 @@ class BookJacket extends StatelessWidget {
               designed
             else
               Image.memory(bytes, fit: BoxFit.cover, gaplessPlayback: true, errorBuilder: (_, _, _) => designed),
-            // The spine's shadow on the left, as on a real book.
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: width * 0.05,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [Colors.black.withValues(alpha: 0.35), Colors.transparent]),
+            if (look.band case final band? when bytes == null)
+              // The system style: the book's own colour down the spine edge.
+              Positioned(
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: width * 0.055,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color.lerp(band, Colors.white, 0.15)!, band, Color.lerp(band, Colors.black, 0.4)!],
+                    ),
+                  ),
+                ),
+              )
+            else
+              // The spine's shadow on the left, as on a real book.
+              Positioned(
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: width * 0.05,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [Colors.black.withValues(alpha: 0.35), Colors.transparent]),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -370,33 +445,43 @@ class _Caret extends StatefulWidget {
   State<_Caret> createState() => _CaretState();
 }
 
-class _CaretState extends State<_Caret> with SingleTickerProviderStateMixin {
-  late final _blink = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+class _CaretState extends State<_Caret> {
+  // Lit for the first half of each second, out for the second, four times; then lit. A switch every half second (eight
+  // in all), so the screen is drawn eight times for it: an animation running through each second asked for every frame
+  // of the four (some 240), measured on a phone, though the caret changes only at the half seconds.
+  var _lit = true;
+  var _switched = 0;
+  Timer? _blink;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (MediaQuery.disableAnimationsOf(context)) {
-      _blink.value = 0;
-    } else if (!_blink.isAnimating && _blink.value == 0) {
-      _blink.repeat(count: 4).whenComplete(() {
-        if (mounted) _blink.value = 0;
+      _blink?.cancel();
+      _lit = true;
+    } else if (_blink == null && _switched == 0) {
+      _blink = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+        if (!mounted) return timer.cancel();
+        setState(() {
+          _switched++;
+          _lit = _switched.isEven;
+        });
+        if (_switched >= 8) timer.cancel();
       });
     }
   }
 
   @override
   void dispose() {
-    _blink.dispose();
+    _blink?.cancel();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: _blink,
-    // Lit for the first half of each second, out for the second.
-    builder: (context, _) => Opacity(
-      opacity: _blink.value < 0.5 ? 1 : 0,
+  Widget build(BuildContext context) => RepaintBoundary(
+    // Only the caret is drawn again when it switches.
+    child: Opacity(
+      opacity: _lit ? 1 : 0,
       child: Container(width: 2, height: widget.height, color: widget.color),
     ),
   );

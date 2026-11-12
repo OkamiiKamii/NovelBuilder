@@ -79,7 +79,9 @@ void main() {
     expect(find.text('Categories & fields'), findsWidgets);
     await tester.tap(find.text('All topics'));
     await tester.pumpAndSettle();
-    final list = find.byType(Scrollable).last;
+    final list = find
+        .descendant(of: find.byKey(const ValueKey('tutorial-topics')), matching: find.byType(Scrollable))
+        .first;
     await tester.scrollUntilVisible(find.text('This page'), 100, scrollable: list);
     expect(find.text('This page'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Canon'), 100, scrollable: list);
@@ -87,7 +89,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Canon'));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Take me there'));
+    final page = find
+        .descendant(of: find.byKey(const ValueKey('tutorial-lesson')), matching: find.byType(Scrollable))
+        .first;
+    await tester.scrollUntilVisible(find.text('Take me there'), 100, scrollable: page);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Take me there'));
     await tester.pumpAndSettle();
@@ -120,6 +125,32 @@ void main() {
     await tester.tap(find.widgetWithText(SwitchListTile, 'Show the Tutorial button'));
     await tester.pumpAndSettle();
     expect(find.byTooltip('Tutorial'), findsOneWidget);
+  });
+
+  testWidgets('on a phone the Library has the Tutorial beside its gear; a lesson is found by any word in it', (
+    tester,
+  ) async {
+    await pumpApp(tester, size: phone, location: '/');
+    await tester.tap(find.byTooltip('Tutorial'));
+    await tester.pumpAndSettle();
+    expect(find.text('The Library'), findsWidgets, reason: 'the lesson for the shelf');
+    expect(find.text('Next: Finding your way'), findsOneWidget);
+    await tester.tap(find.text('All topics'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.widgetWithText(TextField, 'Find a lesson'), 'ribbon');
+    await tester.pumpAndSettle();
+    expect(find.text('Ribbons'), findsOneWidget);
+    expect(find.text('Canon'), findsNothing);
+    await tester.tap(find.text('Ribbons'));
+    await tester.pumpAndSettle();
+    expect(find.text('How to use it'), findsOneWidget);
+    expect(find.textContaining('Lay a ribbon in this page'), findsWidgets);
+
+    await tester.tap(find.text('All topics'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.widgetWithText(TextField, 'Find a lesson'), 'zeppelin');
+    await tester.pumpAndSettle();
+    expect(find.text('No lesson mentions “zeppelin”.'), findsOneWidget);
   });
 
   testWidgets('on a phone at twice the text size: under More, and the lesson fits', (tester) async {

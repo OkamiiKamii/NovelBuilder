@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/novel_art.dart';
 import '../../shared/data/providers.dart';
 import '../characters/data/portrait_image.dart';
 
@@ -45,15 +46,33 @@ class NovelCover extends StatelessWidget {
     } on RangeError {
       colour = const Color(0xFFB4532A);
     }
+    // The book's colour (the author's) as the theme draws books (`novel_art.dart`): the whole cover, or System Monolith's
+    // dark cover framed in gold with the colour down its edge.
+    final art = NovelArt.of(context);
+    final look = art.bound(colour);
     final letter = Container(
       width: width,
       height: height,
-      color: colour,
+      decoration: art.system
+          ? BoxDecoration(
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: look.ground),
+              border: Border(
+                left: BorderSide(color: colour, width: width * 0.08),
+                top: BorderSide(color: look.frame.withValues(alpha: 0.7)),
+                right: BorderSide(color: look.frame.withValues(alpha: 0.7)),
+                bottom: BorderSide(color: look.frame.withValues(alpha: 0.7)),
+              ),
+            )
+          : BoxDecoration(color: colour),
       alignment: Alignment.center,
       child: Text(
         title.trim().isEmpty ? '?' : title.trim().characters.first.toUpperCase(),
         style: TextStyle(
-          color: ThemeData.estimateBrightnessForColor(colour) == Brightness.dark ? Colors.white : Colors.black,
+          color: art.system
+              ? look.ink
+              : ThemeData.estimateBrightnessForColor(colour) == Brightness.dark
+              ? Colors.white
+              : Colors.black,
           fontSize: height * 0.4,
           fontWeight: FontWeight.w600,
         ),

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import '../collation.dart';
-import '../continuity/text.dart' show Paragraph, excerptAround, findWords, paragraphsOf;
+import '../continuity/text.dart' show Paragraph, WordIndex, excerptAround, findWords, paragraphsOf;
 import '../json.dart';
 import '../manuscript/outline.dart' show isDocument;
 import '../model/story_order.dart';
@@ -259,13 +259,18 @@ Report analyze(World world, Subject subject, {List<String> include = const [], L
       !anchorNodes.contains(nodeId);
 
   /// Whether a chapter or scene names an entry: by a link, in its plan, or in its words.
+  // Each chapter's words, read once when first asked (`WordIndex`): a thousand entries are asked of the same chapter,
+  // and a search of its text for each was most of this page's time on a long book. Paragraphs are joined by a line
+  // break, which no name runs across, so the answers are those of asking paragraph by paragraph.
+  final words = <String, WordIndex>{};
+  WordIndex wordsOf(String nodeId) =>
+      words[nodeId] ??= WordIndex([for (final p in text[nodeId] ?? const <Paragraph>[]) p.text].join('\n'));
   bool namedIn(String nodeId, JsonMap entry) {
     final id = str(entry['id']);
     final node = nodeById[nodeId];
     if (_ids(node?.raw['mentions']).contains(id) || _ids(planOf[nodeId]?['entityIds']).contains(id)) return true;
-    return (text[nodeId] ?? const []).any(
-      (p) => p.links.any((l) => l.entryId == id) || findWords(p.text, [str(entry['name'])]).isNotEmpty,
-    );
+    final paragraphs = text[nodeId] ?? const <Paragraph>[];
+    return paragraphs.any((p) => p.links.any((l) => l.entryId == id)) || wordsOf(nodeId).has(str(entry['name']));
   }
 
   if (subject is NodeSubject) {

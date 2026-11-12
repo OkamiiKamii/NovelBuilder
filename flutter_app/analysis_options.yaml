@@ -12,6 +12,12 @@ analyzer:
   errors:
     # A future that is dropped can hide a failed save.
     unawaited_futures: error
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - windows/**
+    - macos/**
 
 linter:
   rules:

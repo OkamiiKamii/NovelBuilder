@@ -21,6 +21,7 @@ import '../../shared/domain/stable_sort.dart';
 import '../characters/character_actions.dart';
 import '../characters/characters_providers.dart';
 import '../characters/data/portrait_image.dart';
+import '../characters/widgets/in_their_pages.dart';
 import '../characters/widgets/parts.dart';
 import '../characters/widgets/portrait.dart';
 import '../characters/widgets/typed_input.dart';
@@ -131,6 +132,7 @@ class EntryPage extends ConsumerWidget {
           _Related(cast: cast, entry: entry, actions: actions),
           gap,
           _Mentions(cast: cast, entry: entry, actions: actions),
+          InTheirPages(cast: cast, entryId: entry.id, actions: actions, title: 'In its pages'),
           gap,
           ConnectionsPanel(cast: cast, self: EntityRef(EntityType.entry, entry.id), actions: actions),
           gap,

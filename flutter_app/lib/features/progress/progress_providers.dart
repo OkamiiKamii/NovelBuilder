@@ -29,9 +29,9 @@ class ProgressData {
     required this.goals,
     required this.report,
     required this.journal,
-    required this.analytics,
+    required Analytics Function() analytics,
     required this.scopes,
-  });
+  }) : _analytics = analytics;
 
   final String novelId;
   final Novel novel;
@@ -39,7 +39,11 @@ class ProgressData {
   final List<Goal> goals;
   final ProgressReport report;
   final Journal journal;
-  final Analytics analytics;
+
+  /// Analytics, worked out the first time they are asked for (the Analytics page): they read every chapter's text and
+  /// who is named where, which the Progress page never shows, so a goal changed there no longer waits for them.
+  late final Analytics analytics = _analytics();
+  final Analytics Function() _analytics;
 
   /// Parts of the manuscript a deadline can cover: everything but scenes, in reading order.
   final List<TreeItem> scopes;
@@ -75,7 +79,7 @@ final progressDataProvider = Provider.autoDispose<ProgressData?>((ref) {
       chapters: report.chapters,
       now: now,
     ),
-    analytics: computeAnalytics(
+    analytics: () => computeAnalytics(
       cast.model,
       targetWordCount: novel.targetWordCount,
       docs: {for (final r in store.rowsIn(cast.novelId, 'chapterContents')) str(r['id']): r['doc']},

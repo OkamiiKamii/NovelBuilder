@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
+import '../../shared/data/background.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collation.dart';
@@ -12,45 +13,12 @@ import '../../shared/domain/consequences/consequences.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/manuscript/outline.dart' show isDocument;
 import '../../shared/domain/model/story_order.dart';
-import '../../shared/domain/progression/snapshots.dart' show ProgressSnapshot;
-import '../../shared/domain/records/story_node.dart';
-import '../../shared/domain/records/system.dart';
 import '../characters/character_actions.dart' show characterPath, entryPath;
 import '../workspace/area_switch.dart';
 import '../workspace/open_novel.dart';
 import '../workspace/section_page.dart';
 import '../write/write_providers.dart';
-
-const _collections = {
-  'chapters',
-  'chapterContents',
-  'chapterPlans',
-  'loreEntries',
-  'characterRelations',
-  'plotThreads',
-  'timelineEvents',
-  'canonFacts',
-  'continuityRules',
-  'progressSnapshots',
-  'systems',
-};
-
-World _worldOf(NovelStore store, String novelId) {
-  final s = store.loadPart(novelId, _collections)!;
-  return World(
-    nodes: [for (final r in s.rows('chapters')) StoryNode(r)],
-    docs: {for (final r in s.rows('chapterContents')) str(r['id']): r['doc']},
-    plans: s.rows('chapterPlans'),
-    entries: s.rows('loreEntries'),
-    relations: s.rows('characterRelations'),
-    threads: s.rows('plotThreads'),
-    events: s.rows('timelineEvents'),
-    facts: s.rows('canonFacts'),
-    rules: s.rows('continuityRules'),
-    snapshots: [for (final r in s.rows('progressSnapshots')) ProgressSnapshot(r)],
-    systems: [for (final r in s.rows('systems')) SystemBlueprint(r)],
-  );
-}
+import 'consequences_job.dart';
 
 /// The address of "What depends on this" for a chapter or scene, an event, or a development of a plot thread.
 String consequencesPath({String? nodeId, String? eventId, String? threadId, String? beatId}) => Uri(
@@ -80,11 +48,75 @@ class ConsequencesPage extends ConsumerStatefulWidget {
   ConsumerState<ConsequencesPage> createState() => _ConsequencesPageState();
 }
 
+/// How many times the analysis has been started (for the test that it is not on every rebuild).
+@visibleForTesting
+int consequenceRuns = 0;
+
 class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
   late var _kind = widget.eventId != null ? _Kind.event : (widget.beatId != null ? _Kind.beat : _Kind.node);
   final _include = <String>[];
   final _exclude = <String>[];
   late final NovelStore _store = ref.read(novelStoreProvider);
+
+  // THE NOVEL AND THE REPORT ARE WORKED OUT ONLY WHEN WHAT THEY ARE MADE FROM CHANGES. This page used to read eleven
+  // collections (every chapter's text among them) and run the whole analysis in every build: on every save anywhere in
+  // the novel while it was open, and on every "Looked at" ticked. Now each build asks only when those collections last
+  // changed (`NovelStore.stampOf`, from the index). The novel (for the pickers) is read again when that changes; the
+  // analysis runs in the background (`background.dart`) when the data, the point or the people taken to be involved
+  // change, and only the answer to the latest of those is ever shown.
+  String? _worldFrom;
+  World? _world;
+  Report? _report;
+  String? _reportFrom;
+  String? _reportPoint;
+  String? _working;
+
+  /// When the collections the page reads last changed, as one key.
+  String _dataKey(String novelId) => [
+    novelId,
+    for (final c in consequenceCollections)
+      if (_store.stampOf(novelId, c) case (:final count, :final latest)) ...[count, latest],
+  ].join(':');
+
+  World _worldFor(String novelId, String data) {
+    if (_world != null && _worldFrom == data) return _world!;
+    final s = _store.loadPart(novelId, consequenceCollections)!;
+    _worldFrom = data;
+    return _world = worldFromRows(s.rows);
+  }
+
+  /// The report for [subject] (null while the first one for this point is being worked out), and whether a newer one
+  /// is on its way (the novel changed since).
+  ({Report? report, bool updating}) _reportFor(String novelId, String data, Subject subject) {
+    final point = [_subjectKey, ..._include, '|', ..._exclude].join(',');
+    final key = '$data#$point';
+    if (key != _reportFrom && key != _working) {
+      _working = key;
+      consequenceRuns++;
+      final stored = {for (final c in consequenceCollections) c: _store.rawJsonIn(novelId, c)};
+      final job = consequencesJob(stored: stored, subject: subject, include: [..._include], exclude: [..._exclude]);
+      ref
+          .read(runAsideProvider)(job)
+          .then(
+            (report) {
+              if (!mounted || _working != key) return;
+              setState(() {
+                _report = report;
+                _reportFrom = key;
+                _reportPoint = point;
+                _working = null;
+              });
+            },
+            onError: (Object e, StackTrace s) {
+              FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'consequences'));
+              if (mounted && _working == key) setState(() => _working = null);
+            },
+          );
+    }
+    // The last answer is shown only for the same point (the novel may have changed since: it is said to be updating).
+    if (_reportPoint != point) return (report: null, updating: true);
+    return (report: _report, updating: _reportFrom != key);
+  }
 
   @override
   void initState() {
@@ -164,7 +196,8 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
     if (novelId == null) return const SectionPage(destination: Destination.review);
     final theme = Theme.of(context);
     final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
-    final world = _worldOf(_store, novelId);
+    final data = _dataKey(novelId);
+    final world = _worldFor(novelId, data);
     final order = StoryOrder.of(world.nodes);
     final documents = [
       for (final n in world.nodes)
@@ -176,7 +209,8 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
         for (final b in maps(t['beats'])) (thread: t, beat: b),
     ];
     final subject = _subject;
-    final report = subject == null ? null : analyze(world, subject, include: _include, exclude: _exclude);
+    final answer = subject == null ? null : _reportFor(novelId, data, subject);
+    final report = answer?.report;
     final settings = ref.read(settingsStoreProvider);
     final looked = {for (final k in listOf(settings.read(_lookedKey(novelId)))) str(k)};
     void setLooked(String key, bool on) {
@@ -304,15 +338,32 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
           const SizedBox(height: 12),
           picker(),
           const SizedBox(height: 16),
-          if (report == null)
+          if (subject == null)
             const EmptyState(
               icon: Icons.account_tree_outlined,
               title: 'Pick the point you are thinking of changing',
               message: 'A chapter or scene, an event, or a development of a plot thread.',
             )
+          else if (report == null)
+            // Worked out in the background: the page stays usable while it reads the novel.
+            Semantics(
+              liveRegion: true,
+              child: Row(
+                children: [
+                  const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.5)),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text('Reading what may depend on it…', style: theme.textTheme.bodyLarge)),
+                ],
+              ),
+            )
           else if (!report.found)
             EmptyState(icon: Icons.search_off, title: report.title, message: 'It is no longer in the novel.')
           else ...[
+            if (answer?.updating ?? false)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text('Updating with your latest changes…', style: muted),
+              ),
             Semantics(header: true, child: Text('If ${report.title} changes', style: theme.textTheme.titleLarge)),
             Text(
               '${report.summaryLine}. ${report.downstream} chapters and scenes come after it.',

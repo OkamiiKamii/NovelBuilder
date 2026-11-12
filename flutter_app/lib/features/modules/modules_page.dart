@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/page_scaffold.dart';
+import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/module_library.dart';
 import '../../shared/data/novel_store.dart';
@@ -14,18 +16,20 @@ import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/codex_changes.dart' show ChangeRefused;
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
-import '../../shared/domain/manuscript/prose.dart' show blockTexts;
 import '../../shared/domain/modules/module_changes.dart';
 import '../../shared/domain/modules/module_defs.dart';
 import '../../shared/domain/modules/module_match.dart';
 import '../../shared/domain/records/category.dart';
 import '../../shared/domain/records/novel.dart';
+import '../../shared/domain/snapshot/novel_snapshot.dart';
 import '../characters/widgets/vault.dart';
 import '../workspace/open_novel.dart';
 import '../workspace/organize_switch.dart';
 import '../workspace/section_page.dart';
+import 'genre_shelf.dart';
 import 'module_page.dart' show ConfigureModule;
 import 'module_service.dart';
+import 'try_on_panel.dart';
 
 String _safe(String s) => s.trim().replaceAll(RegExp(r'[\\/:*?"<>|\x00-\x1F]'), '').replaceAll(RegExp(r'\s+'), ' ');
 
@@ -48,9 +52,16 @@ enum _Show {
   final String label;
 }
 
+/// How many times "Made for your story" has been worked out (for the test that it is not on every rebuild).
+@visibleForTesting
+int modulesSuggestionRuns = 0;
+
 class _ModulesPageState extends ConsumerState<ModulesPage> {
   late final NovelStore _store = ref.read(novelStoreProvider);
   var _show = _Show.all;
+
+  /// The genre module whose full card is open on the phone's shelf.
+  String? _opened;
   final _name = TextEditingController();
   final _genre = TextEditingController();
   final _description = TextEditingController();
@@ -76,19 +87,62 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
     if (mounted) setState(() {});
   }
 
+  /// What "Made for your story" last found, and what it was found from (the book, its chapters' stamp, its genres,
+  /// tags and summary, the modules on). Kept until one of those changes.
+  List<ModuleFit> _fits = const [];
+  String? _fitsFrom;
+  String? _fitsNovel;
+  String? _working;
+
   /// The modules the novel's genres, tags, summary and chapters call for (`module_match.dart`), those on left out.
-  List<ModuleFit> _fits(String novelId, JsonMap project, Set<String> on) {
+  ///
+  /// THE WORK IS DONE ONCE AND AWAY FROM THE SCREEN. Reading every chapter of a book and matching its words took
+  /// seconds on a long book; it was done in this page's build, on every save anywhere in the novel, and froze the app
+  /// (the two "not responding" reports of 2026-11-08). Now the build only asks the chapters' stamp (one indexed query);
+  /// when it, the details or the modules on have changed, the chapters are read as stored and decoded and matched in
+  /// the background (`background.dart`), and the page shows the answer when it comes. Until then it shows what was found
+  /// before (nothing, the first time).
+  List<ModuleFit> _fitsFor(String novelId, JsonMap project, Set<String> on) {
     final novel = Novel(project);
-    return fittingModules(
-      genres: [novel.primaryGenre, ...novel.secondaryGenres],
-      tags: novel.tags,
-      synopsis: novel.synopsis,
-      chapters: [
-        for (final r in ref.read(novelStoreProvider).rowsIn(novelId, 'chapterContents'))
-          blockTexts(r['doc']).join('\n'),
-      ],
-      on: on,
-    );
+    final stamp = _store.stampOf(novelId, 'chapterContents');
+    final genres = [novel.primaryGenre, ...novel.secondaryGenres];
+    final tags = novel.tags;
+    final synopsis = novel.synopsis;
+    final key = jsonEncode([novelId, stamp.count, stamp.latest, genres, tags, synopsis, (on.toList()..sort())]);
+    if (key != _fitsFrom && key != _working) {
+      _working = key;
+      modulesSuggestionRuns++;
+      final stored = _store.rawJsonIn(novelId, 'chapterContents');
+      final run = ref.read(runAsideProvider);
+      run(
+        // Made at the top level, holding only plain data: a closure made here would hold this page (and the database).
+        modulesSuggestionJob(genres: genres, tags: tags, synopsis: synopsis, storedContents: stored, on: on),
+      ).then(
+        (fits) {
+          if (!mounted || _working != key) return;
+          setState(() {
+            _fits = fits;
+            _fitsFrom = key;
+            _fitsNovel = novelId;
+            _working = null;
+          });
+        },
+        onError: (Object e, StackTrace s) {
+          // Said, never hidden: the suggestions are left out and the error reported as any other.
+          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'modules'));
+          if (mounted && _working == key) {
+            _fitsFrom = key;
+            _working = null;
+          }
+        },
+      );
+    }
+    // Never another book's; and a module just turned on is no longer offered, before the next answer comes.
+    if (_fitsNovel != novelId) return const [];
+    return [
+      for (final f in _fits)
+        if (!on.contains(f.moduleId)) f,
+    ];
   }
 
   void _tell(String message) => ScaffoldMessenger.of(context)
@@ -236,6 +290,16 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
                         for (final f in module.features) Chip(label: Text(f), visualDensity: VisualDensity.compact),
                       ],
                     ),
+                  ),
+                ],
+                // Before it is on: what it would add to this book (`try_on_panel.dart`).
+                if (!isEnabled) ...[
+                  const SizedBox(height: 4),
+                  TryOnPanel(
+                    key: ValueKey('try-on-card:${module.id}'),
+                    snapshot: snapshot,
+                    module: module,
+                    novelTitle: str(snapshot.project['title']),
                   ),
                 ],
                 for (final reason in at?.reasons ?? const <String>[])
@@ -387,7 +451,7 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
           const SizedBox(height: 16),
           // MADE FOR YOUR STORY: the modules the novel's own words call for, first, with one press to turn on.
           if (writes)
-            if (_fits(novelId, snapshot.project, {
+            if (_fitsFor(novelId, snapshot.project, {
                   for (final r in installed)
                     if (r['enabled'] == true) str(r['moduleId']),
                 })
@@ -399,6 +463,7 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
                 ],
                 onTurnOn: toggle,
                 onOpen: (m) => context.go(modulePath(m.id)),
+                snapshot: snapshot,
               ),
               const SizedBox(height: 20),
             ],
@@ -417,10 +482,26 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
             ),
           ),
           const SizedBox(height: 12),
-          grid([
-            for (final m in builtinModules)
-              if (visible(m)) card(m, owned: false),
-          ]),
+          // On a phone, the genre shelf: a tile for each, its full card opening in its place (`genre_shelf.dart`).
+          if (WindowSize.of(context) == WindowSize.compact)
+            GenreShelf(
+              modules: [
+                for (final m in builtinModules)
+                  if (visible(m)) m,
+              ],
+              stateOf: (m) => status[m.id]?.state ?? ModuleState.available,
+              open: _opened,
+              writes: writes,
+              card: (m) => card(m, owned: false),
+              onOpen: (m) => setState(() => _opened = _opened == m.id ? null : m.id),
+              onTurnOn: toggle,
+              onGo: (m) => context.go(modulePath(m.id)),
+            )
+          else
+            grid([
+              for (final m in builtinModules)
+                if (visible(m)) card(m, owned: false),
+            ]),
           const SizedBox(height: 24),
           Semantics(header: true, child: Text('Your modules', style: theme.textTheme.titleLarge)),
           const SizedBox(height: 8),
@@ -547,11 +628,14 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
 /// its name, the words found that say so ("your book mentions skills, ranks, evolution") and **Turn on**. A plain
 /// match of listed words; nothing is turned on until the press.
 class _ForYourStory extends StatelessWidget {
-  const _ForYourStory({required this.fits, required this.onTurnOn, required this.onOpen});
+  const _ForYourStory({required this.fits, required this.onTurnOn, required this.onOpen, required this.snapshot});
 
   final List<(ModuleDefinition, List<String>)> fits;
   final ValueChanged<ModuleDefinition> onTurnOn;
   final ValueChanged<ModuleDefinition> onOpen;
+
+  /// The novel as it is, to show what each would add to it (`try_on_panel.dart`).
+  final NovelSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -575,7 +659,7 @@ class _ForYourStory extends StatelessWidget {
             style: vaultText(context, size: 15.5, color: scheme.onSurfaceVariant, style: FontStyle.italic),
           ),
           const VaultRule(),
-          for (final (m, words) in fits)
+          for (final (i, (m, words)) in fits.indexed)
             Padding(
               padding: const EdgeInsets.only(bottom: 14),
               child: Row(
@@ -613,6 +697,14 @@ class _ForYourStory extends StatelessWidget {
                           onPressed: () => onTurnOn(m),
                           icon: const Icon(Icons.power_settings_new),
                           label: Text('Turn on', semanticsLabel: 'Turn on ${m.name}'),
+                        ),
+                        // What it would add to this book, under the press that does it; the first is shown open.
+                        TryOnPanel(
+                          key: ValueKey('try-on:${m.id}'),
+                          snapshot: snapshot,
+                          module: m,
+                          novelTitle: str(snapshot.project['title']),
+                          initiallyOpen: i == 0,
                         ),
                       ],
                     ),

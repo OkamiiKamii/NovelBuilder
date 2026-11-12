@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../core/layout/breakpoints.dart';
 import '../../shared/domain/characters/character_records.dart';
+import '../../shared/domain/characters/one_line.dart';
 import '../../shared/domain/ids.dart';
-import 'widgets/cast_card.dart' show castTone, monogram;
+import '../../shared/domain/records/entry.dart';
+import '../../shared/domain/relationships/relation_types.dart';
+import 'widgets/cameo.dart';
+import 'widgets/cast_card.dart' show castTone;
 import 'widgets/vault.dart';
 
 typedef NewCharacter = ({
@@ -13,19 +17,33 @@ typedef NewCharacter = ({
   List<String> roles,
   String summary,
   String templateId,
+
+  /// What the line said that the profile records as fields: Age, Gender, Species, Occupation, Place of Origin.
+  Map<String, String> fields,
+
+  /// Ties the line named to characters already in the cast.
+  List<LineTie> ties,
 });
 
 /// Asks for a new character. Only a name is needed; the layout can be changed at any time afterwards.
-Future<NewCharacter?> showNewCharacterDialog(BuildContext context, {required List<CharacterTemplate> templates}) =>
-    showDialog<NewCharacter>(context: context, builder: (_) => _NewCharacterDialog(templates));
+Future<NewCharacter?> showNewCharacterDialog(
+  BuildContext context, {
+  required List<CharacterTemplate> templates,
+  List<({String id, String name})> cast = const [],
+
+  /// What the line begins with, the name still to be written in front of it (", Wren's rival", from an empty chair).
+  String? line,
+}) => showDialog<NewCharacter>(context: context, builder: (_) => _NewCharacterDialog(templates, cast, line));
 
 /// THE CASTING CALL: a new character starts as their portrait card, as it will hang on the cast wall, and fills in
 /// while the author types: the monogram on the colour they will keep (their id is decided now, so it is theirs from
 /// the first letter), the name in the vault's capitals, the epithet, the roles and a line about them. "Add to the
 /// cast" makes them and opens their profile.
 class _NewCharacterDialog extends StatefulWidget {
-  const _NewCharacterDialog(this.templates);
+  const _NewCharacterDialog(this.templates, this.cast, this.line);
   final List<CharacterTemplate> templates;
+  final List<({String id, String name})> cast;
+  final String? line;
 
   @override
   State<_NewCharacterDialog> createState() => _NewCharacterDialogState();
@@ -36,16 +54,62 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
   final _name = TextEditingController();
   final _epithet = TextEditingController();
   final _summary = TextEditingController();
+  final _line = TextEditingController();
   final _roles = <String>{};
   late String _template = widget.templates.first.id;
   bool _tried = false;
+
+  /// What the line says, read as it is typed (`one_line.dart`).
+  OneLine? _read;
+
+  @override
+  void initState() {
+    super.initState();
+    // Begun from an empty chair: the line says who they are to the lead, and the cursor waits for their name.
+    if (widget.line case final line? when line.trim().isNotEmpty) {
+      _line.value = TextEditingValue(text: line, selection: const TextSelection.collapsed(offset: 0));
+      // Read as if a name stood in front, so what follows is read as what it is (a tie, a role) and not taken for
+      // the name; the name is left for the author.
+      final read = readOneLine('Someone$line', cast: widget.cast);
+      _apply(read);
+      _name.clear();
+    }
+  }
 
   @override
   void dispose() {
     _name.dispose();
     _epithet.dispose();
     _summary.dispose();
+    _line.dispose();
     super.dispose();
+  }
+
+  /// The line fills in the name, epithet, role and summary below as it is typed; they can still be changed by hand.
+  void _lineChanged(String text) {
+    final read = text.trim().isEmpty ? null : readOneLine(text, cast: widget.cast);
+    setState(() => _apply(read));
+  }
+
+  void _apply(OneLine? read) {
+    _read = read;
+    if (read == null) return;
+    _name.text = read.name;
+    if (read.epithet.isNotEmpty) _epithet.text = read.epithet;
+    if (read.role.isNotEmpty) _roles.add(read.role);
+    if (read.summary.isNotEmpty) _summary.text = read.summary;
+  }
+
+  Map<String, String> get _fields {
+    final r = _read;
+    if (r == null) return const {};
+    return {
+      if (r.age.isNotEmpty) 'Age': r.age,
+      if (r.gender.isNotEmpty) 'Gender': r.gender,
+      if (r.species.isNotEmpty) 'Species': r.species,
+      if (r.occupation.isNotEmpty) 'Occupation': r.occupation,
+      if (r.origin.isNotEmpty) 'Place of Origin': r.origin,
+    };
   }
 
   void _submit() {
@@ -61,6 +125,8 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
       ],
       summary: _summary.text.trim(),
       templateId: _template,
+      fields: _fields,
+      ties: _read?.ties ?? const [],
     ));
   }
 
@@ -71,13 +137,64 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
     final template = widget.templates.firstWhere((t) => t.id == _template);
     void changed(String _) => setState(() {});
 
+    final also = [
+      for (final MapEntry(:key, :value) in _fields.entries) (key == 'Place of Origin' ? 'From' : key, value),
+      for (final t in _read?.ties ?? const <LineTie>[]) (typeFor(t.preset).label, t.otherName),
+    ];
     final fields = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // A CHARACTER IN A LINE: who they are, as it would be jotted; what it says fills in the rest.
+        TextField(
+          controller: _line,
+          autofocus: true,
+          textInputAction: TextInputAction.next,
+          minLines: 1,
+          maxLines: 3,
+          style: vaultText(context, size: 17),
+          decoration: const InputDecoration(
+            labelText: 'Write them in a line',
+            hintText: 'Mira Vance, 34, a smuggler from Glass River, Kai’s sister',
+            helperText: 'Name first, then whatever you know; or fill in the fields below.',
+            helperMaxLines: 2,
+            prefixIcon: Icon(Icons.edit_note),
+          ),
+          onChanged: _lineChanged,
+        ),
+        if (also.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Semantics(
+            container: true,
+            label: 'Also recorded',
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text('Also recorded:', style: theme.textTheme.labelLarge),
+                for (final (what, value) in also)
+                  Chip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '$what  ',
+                            style: vaultHeading(context, size: 10.5, weight: 700, color: theme.colorScheme.primary),
+                          ),
+                          TextSpan(text: value),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+        const SizedBox(height: 16),
         TextField(
           controller: _name,
-          autofocus: true,
           textInputAction: TextInputAction.next,
           style: vaultHeading(context, size: 20, weight: 700, color: theme.colorScheme.onSurface),
           decoration: InputDecoration(
@@ -144,6 +261,7 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
       ],
       summary: _summary.text.trim(),
       width: compact ? 150 : 220,
+      fields: _fields,
     );
 
     return AlertDialog(
@@ -192,6 +310,7 @@ class _PortraitPreview extends StatelessWidget {
     required this.roles,
     required this.summary,
     required this.width,
+    this.fields = const {},
   });
 
   final String id;
@@ -201,11 +320,25 @@ class _PortraitPreview extends StatelessWidget {
   final String summary;
   final double width;
 
+  /// What the line said of them so far (Gender, Age, Species), for their cameo.
+  final Map<String, String> fields;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final tone = castTone(id);
+    final look = cameoLookOf(
+      Entry({
+        'id': id,
+        'name': name,
+        'category': 'character',
+        'fields': [
+          for (final MapEntry(:key, :value) in fields.entries) {'id': key, 'key': key, 'value': value},
+        ],
+      }),
+      null,
+    );
     final ink = ThemeData.estimateBrightnessForColor(tone) == Brightness.dark
         ? const Color(0xFFFFF8EC)
         : const Color(0xFF1B140E);
@@ -229,31 +362,16 @@ class _PortraitPreview extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Their cameo, as it will hang on the wall: drawn from what the line says so far.
               AspectRatio(
                 aspectRatio: 1,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color.lerp(tone, Colors.white, 0.1)!, Color.lerp(tone, Colors.black, 0.45)!],
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.45))),
-                      child: Center(
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 180),
-                          child: Text(
-                            name.isEmpty ? '?' : monogram(name),
-                            key: ValueKey(name.isEmpty ? '?' : monogram(name)),
-                            style: vaultHeading(context, size: width * 0.3, weight: 700, color: ink),
-                          ),
-                        ),
-                      ),
-                    ),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 220),
+                  child: Cameo(
+                    key: ValueKey(look),
+                    look: look,
+                    ground: [Color.lerp(tone, Colors.white, 0.1)!, Color.lerp(tone, Colors.black, 0.45)!],
+                    ink: ink,
                   ),
                 ),
               ),

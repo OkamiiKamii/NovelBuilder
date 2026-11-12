@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/novel_art.dart';
 import '../../shared/domain/records/novel.dart';
 import 'bookshelf.dart' show ShelfBook;
 
@@ -45,17 +46,25 @@ class _Ledge extends StatelessWidget {
   const _Ledge();
 
   @override
-  Widget build(BuildContext context) => ExcludeSemantics(
-    child: DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF7A5230), Color(0xFF5A3A1E), Color(0xFF3E2712)],
+  Widget build(BuildContext context) {
+    // Wood, or the system style's dark metal lit along its top edge (`novel_art.dart`).
+    final art = NovelArt.of(context);
+    return ExcludeSemantics(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: art.ledge),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withValues(alpha: 0.35), blurRadius: 6, offset: const Offset(0, 4)),
+          ],
         ),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.35), blurRadius: 6, offset: const Offset(0, 4))],
+        child: art.plankLight == null
+            ? null
+            : Align(
+                alignment: Alignment.topCenter,
+                child: Container(height: 1.5, color: art.plankLight),
+              ),
       ),
-    ),
-  );
+    );
+  }
 }

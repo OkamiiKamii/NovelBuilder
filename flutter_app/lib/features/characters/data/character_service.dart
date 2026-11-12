@@ -62,6 +62,9 @@ class CharacterService {
 
   void undoDelete(String restorePointId) => backups.restore(restorePointId);
 
+  /// Each chapter's record as stored, not decoded: for [mentionsJob], which decodes them away from the screen.
+  List<String> storedChapters(String projectId) => store.rawJsonIn(projectId, 'chapterContents');
+
   /// How many times any of [names] occurs in the saved text, as whole words. Words on the page, not appearances.
   int nameMentions(String projectId, List<String> names) => countMentions([
     for (final content in store.rowsIn(projectId, 'chapterContents'))

@@ -9,6 +9,8 @@ import '../../shared/data/providers.dart';
 import '../../shared/domain/analytics/progress.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../destinations.dart';
+import 'loose_ends.dart';
+import 'vignettes.dart';
 
 /// A line of the contents: what an area holds now, said in a few words, and for Progress how far the draft has come
 /// (0–1, when the novel has a target).
@@ -87,11 +89,15 @@ class ContentsSheet extends ConsumerWidget {
     required this.onArea,
     required this.search,
     required this.extras,
+    this.onGo,
   });
 
   final List<Destination> areas;
   final Destination? current;
   final ValueChanged<Destination> onArea;
+
+  /// Opens a page by its path: where a loose end leads (`loose_ends.dart`). Without it, no loose ends are shown.
+  final ValueChanged<String>? onGo;
 
   /// Searching the novel: first, under the heading, as it is what is reached for most.
   final Widget search;
@@ -108,6 +114,12 @@ class ContentsSheet extends ConsumerWidget {
     final glimpses = novelId == null || novel == null
         ? const <Destination, Glimpse>{}
         : areaGlimpses(store, novelId, now: DateTime.now().millisecondsSinceEpoch);
+    final ends = novelId == null || novel == null || onGo == null
+        ? const <LooseEnd>[]
+        : looseEnds(store, novelId, now: DateTime.now());
+    final pictures = novelId == null || novel == null
+        ? const <Destination, Vignette>{}
+        : areaVignettes(store, novelId, now: DateTime.now());
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
@@ -130,8 +142,16 @@ class ContentsSheet extends ConsumerWidget {
           ),
         ),
         search,
+        // What the story is waiting for, under Search (still reached first) and before the list of where things are.
+        LooseEndsSlip(ends: ends, onGo: (e) => onGo?.call(e.path)),
         for (final d in areas)
-          _ContentsLine(area: d, glimpse: glimpses[d], selected: d == current, onTap: () => onArea(d)),
+          _ContentsLine(
+            area: d,
+            glimpse: glimpses[d],
+            picture: pictures[d],
+            selected: d == current,
+            onTap: () => onArea(d),
+          ),
         if (extras.isNotEmpty) ...[
           const Padding(padding: EdgeInsets.symmetric(horizontal: 72), child: VaultRule()),
           ...extras,
@@ -142,10 +162,19 @@ class ContentsSheet extends ConsumerWidget {
 }
 
 class _ContentsLine extends StatelessWidget {
-  const _ContentsLine({required this.area, required this.glimpse, required this.selected, required this.onTap});
+  const _ContentsLine({
+    required this.area,
+    required this.glimpse,
+    required this.selected,
+    required this.onTap,
+    this.picture,
+  });
 
   final Destination area;
   final Glimpse? glimpse;
+
+  /// What the area holds, drawn small under its words (`vignettes.dart`).
+  final Vignette? picture;
   final bool selected;
   final VoidCallback onTap;
 
@@ -214,6 +243,7 @@ class _ContentsLine extends StatelessWidget {
                             color: scheme.onSurfaceVariant,
                           ),
                         ),
+                        if (picture case final p?) ...[const SizedBox(height: 6), VignetteView(p)],
                         if (g.share case final share?) ...[
                           const SizedBox(height: 6),
                           ExcludeSemantics(

@@ -78,6 +78,12 @@ class CharacterActions {
   /// Opens any entry where it lives: a character's profile, anything else under World.
   void openEntry(String entryId, {required bool character}) => router.go(entryPath(entryId, character: character));
 
+  /// Opens a chapter or scene in the editor with [term] found and selected, from paragraph [block] on.
+  void openChapterAt(String nodeId, String term, int block) {
+    container.read(pendingFindProvider.notifier).request((nodeId: nodeId, term: term, block: block));
+    openChapter(nodeId);
+  }
+
   /// Opens a chapter or scene in the editor.
   void openChapter(String nodeId) {
     flush();

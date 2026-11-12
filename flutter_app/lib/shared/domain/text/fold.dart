@@ -8,9 +8,18 @@
 String foldText(String text) {
   final out = StringBuffer();
   for (final rune in text.runes) {
+    // Plain ASCII never decomposes: written as it is, without a look-up or a new string (most of any book).
+    if (rune < 0x80) {
+      out.writeCharCode(rune);
+      continue;
+    }
     if (rune >= 0x300 && rune <= 0x36F) continue;
     final folded = _decomposed[rune];
-    out.write(folded ?? String.fromCharCode(rune));
+    if (folded == null) {
+      out.writeCharCode(rune);
+    } else {
+      out.write(folded);
+    }
   }
   return out.toString().toLowerCase();
 }

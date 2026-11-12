@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/novel_art.dart';
 import '../../shared/domain/collab/review_files.dart';
 import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
@@ -86,9 +87,11 @@ class _Shelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final wood = dark ? const Color(0xFF4A3322) : const Color(0xFF9C6B43);
-    final back = dark ? const Color(0xFF1E1712) : const Color(0xFFE9DFD0);
+    // The theme's bookcase (`novel_art.dart`): wood, or dark metal lit along its edge.
+    final art = NovelArt.of(context);
+    final dark = art.dark;
+    final wood = art.plank;
+    final back = art.shelfBack;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -112,6 +115,7 @@ class _Shelf extends StatelessWidget {
               colors: [Color.lerp(wood, Colors.white, 0.18)!, wood, Color.lerp(wood, Colors.black, 0.35)!],
               stops: const [0, 0.3, 1],
             ),
+            border: art.plankLight == null ? null : Border(top: BorderSide(color: art.plankLight!, width: 1.5)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: dark ? 0.6 : 0.25),
@@ -147,9 +151,9 @@ class _SpineState extends ConsumerState<Spine> {
     final novel = widget.novel;
     final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
     final colour = accentOf(novel);
-    final ink = ThemeData.estimateBrightnessForColor(colour) == Brightness.dark
-        ? const Color(0xFFF6E7BF)
-        : const Color(0xFF1B140E);
+    // The theme's spine (`novel_art.dart`); the book's colour is the author's either way.
+    final look = NovelArt.of(context).spine(colour);
+    final ink = look.ink;
     final width = spineWidth(novel);
     final review = ReviewMark.of(novel.raw) != null;
     final initials = authorInitials(novel.author);
@@ -159,18 +163,12 @@ class _SpineState extends ConsumerState<Spine> {
       key: _spine,
       width: width,
       height: widget.height,
+      // Clipped to its rounding only where the system style caps it in the book's colour.
+      clipBehavior: look.core == null ? Clip.none : Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(3), bottom: Radius.circular(2)),
         // Light across the middle and dark at both edges, as on a rounded spine.
-        gradient: LinearGradient(
-          colors: [
-            Color.lerp(colour, Colors.black, 0.45)!,
-            Color.lerp(colour, Colors.white, 0.12)!,
-            colour,
-            Color.lerp(colour, Colors.black, 0.5)!,
-          ],
-          stops: const [0, 0.35, 0.65, 1],
-        ),
+        gradient: LinearGradient(colors: look.ground, stops: const [0, 0.35, 0.65, 1]),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: _raised ? 0.45 : 0.3),
@@ -181,14 +179,16 @@ class _SpineState extends ConsumerState<Spine> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
-          _Bands(ink: ink),
+          // The system style: the book's own colour as a cap at the head of the spine (and at its foot).
+          if (look.core case final core?) Container(height: 4, color: core),
+          SizedBox(height: look.core == null ? 10 : 6),
+          _Bands(ink: look.bands),
           // The book's motif, small, under the head bands (`cover_art.dart`).
           const SizedBox(height: 8),
           SizedBox.square(
             dimension: 14,
             child: CustomPaint(
-              painter: SpineEmblemPainter(motif: motifOf(novel), ink: ink),
+              painter: SpineEmblemPainter(motif: motifOf(novel), ink: look.emblem),
             ),
           ),
           Expanded(
@@ -220,8 +220,9 @@ class _SpineState extends ConsumerState<Spine> {
                 style: vaultText(context, size: 12, color: ink.withValues(alpha: 0.9)),
               ),
             ),
-          _Bands(ink: ink),
-          const SizedBox(height: 8),
+          _Bands(ink: look.bands),
+          SizedBox(height: look.core == null ? 8 : 4),
+          if (look.core case final core?) Container(height: 4, color: core),
         ],
       ),
     );
@@ -280,7 +281,7 @@ class _SpineState extends ConsumerState<Spine> {
   }
 }
 
-/// Two thin gilt bands across the spine.
+/// Two thin bands across the spine: gilt, or the system style's gold rules.
 class _Bands extends StatelessWidget {
   const _Bands({required this.ink});
   final Color ink;
@@ -288,9 +289,9 @@ class _Bands extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      Container(height: 1.5, margin: const EdgeInsets.symmetric(horizontal: 5), color: ink.withValues(alpha: 0.7)),
+      Container(height: 1.5, margin: const EdgeInsets.symmetric(horizontal: 5), color: ink),
       const SizedBox(height: 3),
-      Container(height: 1.5, margin: const EdgeInsets.symmetric(horizontal: 5), color: ink.withValues(alpha: 0.7)),
+      Container(height: 1.5, margin: const EdgeInsets.symmetric(horizontal: 5), color: ink),
     ],
   );
 }

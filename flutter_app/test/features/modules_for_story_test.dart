@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/features/characters/characters_providers.dart';
+import 'package:novel_builder/features/modules/modules_page.dart' show modulesSuggestionRuns;
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
 import 'package:novel_builder/shared/data/providers.dart';
@@ -28,7 +30,8 @@ void main() {
     expect(find.textContaining('ranks'), findsWidgets);
     await expectLater(tester, meetsGuideline(textContrastGuideline));
 
-    await tester.tap(find.bySemanticsLabel('Turn on Progression Fantasy & LitRPG'));
+    // The suggestion's own (the shelf below has one for every module too).
+    await tester.tap(find.bySemanticsLabel('Turn on Progression Fantasy & LitRPG').first);
     await tester.pumpAndSettle();
     final installed = c.read(novelStoreProvider).rowsIn(novel, 'projectModules');
     expect(installed.where((r) => r['moduleId'] == 'progression' && r['enabled'] == true), hasLength(1));
@@ -42,5 +45,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Made for your story'), findsNothing);
     expect(find.text('Genre modules'), findsOneWidget);
+  });
+
+  testWidgets('the suggestions are worked out again only when the chapters (or the details) change', (tester) async {
+    final c = await pumpApp(tester, size: phone, location: '/organize/modules');
+    final novel = c.read(libraryServiceProvider).create({'title': 'Skill Creator'}).id;
+    final m = c.read(manuscriptServiceProvider);
+    final one = m.create(novel, NodeKind.chapter, title: 'Chapter 1');
+    m.save(novel, one.id, textToDoc('Can create skills. Have ranks.'), baseRev: 0);
+    var runs = 0;
+    c.read(openNovelProvider.notifier).open(novel);
+    await tester.pumpAndSettle();
+    expect(find.text('Made for your story'), findsOneWidget);
+    runs = modulesSuggestionRuns;
+
+    // Something else in the novel is saved: the page rebuilds, but the chapters are not read again.
+    c.read(characterServiceProvider).change(novel, (x) => x.create(name: 'Mira'));
+    await tester.pumpAndSettle();
+    expect(modulesSuggestionRuns, runs, reason: 'a character is not a chapter');
+
+    // A chapter changes: worked out again.
+    m.save(novel, one.id, textToDoc('Can create skills. Have ranks. A dragon.'), baseRev: 1);
+    await tester.pumpAndSettle();
+    expect(modulesSuggestionRuns, runs + 1);
   });
 }

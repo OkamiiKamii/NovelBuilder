@@ -46,7 +46,10 @@ class _ManuscriptNamesState extends ConsumerState<ManuscriptNames> {
         for (final row in store.rowsIn(cast.novelId, 'chapterContents'))
           if (cast.model.order.chapterNumber[str(row['id'])] case final number?) (number, blockTexts(row['doc'])),
       ],
-      known: knownWords([for (final e in cast.entries) e.name, for (final p in cast.profiles.values) ...p.aliases]),
+      known: knownWords([
+        for (final e in cast.entries) e.name,
+        for (final p in cast.profiles.values) ...[...p.aliases, p.epithet],
+      ]),
       limit: 40,
     );
   }

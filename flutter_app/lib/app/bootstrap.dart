@@ -10,7 +10,10 @@ import 'package:path_provider/path_provider.dart';
 import '../core/errors/error_log.dart';
 import '../core/widgets/broken_widget.dart';
 import '../shared/data/database.dart';
+import '../shared/data/novel_store.dart';
 import '../shared/data/providers.dart';
+import '../shared/data/sample_novel.dart';
+import '../shared/data/settings_store.dart';
 import 'app.dart';
 import 'library_error_app.dart';
 
@@ -47,6 +50,7 @@ void registerFontLicences() {
 Future<void> startApp() async {
   try {
     final db = AppDatabase.open(await libraryPath());
+    welcomeWithSample(db);
     runApp(ProviderScope(overrides: [databaseProvider.overrideWithValue(db)], child: const NovelBuilderApp()));
   } on Object catch (e) {
     runApp(
@@ -55,6 +59,19 @@ Future<void> startApp() async {
         onRetry: startApp,
       ),
     );
+  }
+}
+
+/// On the first start on this device, an empty library gets the sample novel (`sample_novel.dart`); a library with
+/// novels in it is never touched. Anything that goes wrong is logged and the app starts all the same.
+void welcomeWithSample(AppDatabase db) {
+  final store = NovelStore(db);
+  try {
+    addSampleNovelOnFirstStart(store, SettingsStore(db), now: DateTime.now().millisecondsSinceEpoch);
+  } on Object catch (e, stack) {
+    ErrorLog.instance.record(e, stack, context: 'adding the sample novel');
+  } finally {
+    store.dispose();
   }
 }
 

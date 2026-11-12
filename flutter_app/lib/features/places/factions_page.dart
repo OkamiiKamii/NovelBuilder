@@ -453,12 +453,16 @@ class _FactionMapState extends State<FactionMap> {
                         child: Stack(
                           children: [
                             Positioned.fill(
-                              child: CustomPaint(
-                                painter: _TiesPainter([
-                                  for (final e in edges)
-                                    if (pos.containsKey(e.link.fromId) && pos.containsKey(e.link.toId))
-                                      (from: at(e.link.fromId), to: at(e.link.toId), role: e.role),
-                                ]),
+                              // A layer of its own: the ties are drawn again only when they change, not with
+                              // whatever else on the page is painted.
+                              child: RepaintBoundary(
+                                child: CustomPaint(
+                                  painter: TiesPainter([
+                                    for (final e in edges)
+                                      if (pos.containsKey(e.link.fromId) && pos.containsKey(e.link.toId))
+                                        (from: at(e.link.fromId), to: at(e.link.toId), role: e.role),
+                                  ]),
+                                ),
                               ),
                             ),
                             for (final MapEntry(key: id, value: _) in pos.entries)
@@ -524,7 +528,7 @@ class _FactionMapState extends State<FactionMap> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomPaint(size: const Size(26, 10), painter: _TiesPainter.swatch(role)),
+                  CustomPaint(size: const Size(26, 10), painter: TiesPainter.swatch(role)),
                   const SizedBox(width: 6),
                   Text(role.label, style: theme.textTheme.bodySmall),
                 ],
@@ -536,30 +540,36 @@ class _FactionMapState extends State<FactionMap> {
   }
 }
 
-class _TiesPainter extends CustomPainter {
-  _TiesPainter(this.lines) : swatchRole = null;
-  _TiesPainter.swatch(TieRole role) : lines = const [], swatchRole = role;
+@visibleForTesting
+class TiesPainter extends CustomPainter {
+  TiesPainter(this.lines) : swatchRole = null;
+  TiesPainter.swatch(TieRole role) : lines = const [], swatchRole = role;
   final List<({Offset from, Offset to, TieRole role})> lines;
   final TieRole? swatchRole;
 
-  void _line(Canvas canvas, Offset a, Offset b, TieRole role) {
+  /// Adds the tie from [a] to [b] to [strokes] (its line, or each dash of it) and its arrowhead to [heads].
+  void _line(Path strokes, Path heads, Offset a, Offset b, TieRole role) {
     final style = _tieStyle[role] ?? _tieStyle[TieRole.other]!;
-    final paint = Paint()
-      ..color = Color(style.color)
-      ..strokeWidth = role == TieRole.territory ? 2 : 3
-      ..strokeCap = StrokeCap.round;
     final d = b - a;
     final len = d.distance;
     if (len == 0) return;
     if (style.dash.isEmpty) {
-      canvas.drawLine(a, b, paint);
+      strokes
+        ..moveTo(a.dx, a.dy)
+        ..lineTo(b.dx, b.dy);
     } else {
       var at = 0.0;
       var i = 0;
       final u = d / len;
       while (at < len) {
         final step = style.dash[i % style.dash.length];
-        if (i.isEven) canvas.drawLine(a + u * at, a + u * math.min(at + step, len), paint);
+        if (i.isEven) {
+          final p = a + u * at;
+          final q = a + u * math.min(at + step, len);
+          strokes
+            ..moveTo(p.dx, p.dy)
+            ..lineTo(q.dx, q.dy);
+        }
         at += step;
         i++;
       }
@@ -568,30 +578,57 @@ class _TiesPainter extends CustomPainter {
       final u = d / len;
       final n = Offset(-u.dy, u.dx);
       final tip = b - u * 24;
-      canvas.drawPath(
-        Path()
-          ..moveTo(tip.dx, tip.dy)
-          ..lineTo(tip.dx - u.dx * 10 + n.dx * 5, tip.dy - u.dy * 10 + n.dy * 5)
-          ..lineTo(tip.dx - u.dx * 10 - n.dx * 5, tip.dy - u.dy * 10 - n.dy * 5)
-          ..close(),
-        Paint()..color = Color(style.color),
-      );
+      heads
+        ..moveTo(tip.dx, tip.dy)
+        ..lineTo(tip.dx - u.dx * 10 + n.dx * 5, tip.dy - u.dy * 10 + n.dy * 5)
+        ..lineTo(tip.dx - u.dx * 10 - n.dx * 5, tip.dy - u.dy * 10 - n.dy * 5)
+        ..close();
     }
   }
 
+  /// Draws [strokes] and [heads] in [role]'s colour and weight.
+  void _flush(Canvas canvas, Path strokes, Path heads, TieRole role) {
+    final style = _tieStyle[role] ?? _tieStyle[TieRole.other]!;
+    canvas
+      ..drawPath(
+        strokes,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..color = Color(style.color)
+          ..strokeWidth = role == TieRole.territory ? 2 : 3
+          ..strokeCap = StrokeCap.round,
+      )
+      ..drawPath(heads, Paint()..color = Color(style.color));
+  }
+
+  /// Each run of ties of one kind, in the order they are given (so the later still lies over the earlier where they
+  /// cross), is one path of all its lines and dashes, drawn once. A tie was a line per dash before: with a large novel's
+  /// hundred factions and what they hold, tens of thousands of separate lines, every frame (a third of a second each
+  /// to draw while the page scrolled).
   @override
   void paint(Canvas canvas, Size size) {
     if (swatchRole case final role?) {
-      _line(canvas, Offset(0, size.height / 2), Offset(size.width, size.height / 2), role);
+      final strokes = Path(), heads = Path();
+      _line(strokes, heads, Offset(0, size.height / 2), Offset(size.width, size.height / 2), role);
+      _flush(canvas, strokes, heads, role);
       return;
     }
+    TieRole? current;
+    var strokes = Path(), heads = Path();
     for (final l in lines) {
-      _line(canvas, l.from, l.to, l.role);
+      if (l.role != current) {
+        if (current != null) _flush(canvas, strokes, heads, current);
+        current = l.role;
+        strokes = Path();
+        heads = Path();
+      }
+      _line(strokes, heads, l.from, l.to, l.role);
     }
+    if (current != null) _flush(canvas, strokes, heads, current);
   }
 
   @override
-  bool shouldRepaint(_TiesPainter old) => true;
+  bool shouldRepaint(TiesPainter old) => true;
 }
 
 /// Recording a tie: who or what, what kind of tie (or the author's own), to what, from when, and how it began.

@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show FlutterError, FlutterErrorDetails;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/characters/cast.dart';
 import '../../shared/domain/characters/character_changes.dart';
 import '../../shared/domain/characters/character_records.dart';
+import '../../shared/domain/characters/named_in.dart';
 import '../../shared/domain/codex/codex_changes.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/json.dart';
@@ -25,7 +30,7 @@ final characterServiceProvider = Provider<CharacterService>(
 /// The open novel's characters and what their screens show about them, read from the stored records (without the
 /// chapter text). Nothing here is a copy that could drift: it is read again after every change.
 class CastData {
-  CastData(this.novelId, this.snapshot) : model = StoryModel.fromSnapshot(snapshot) {
+  CastData(this.novelId, this.snapshot, {this.named = const {}}) : model = StoryModel.fromSnapshot(snapshot) {
     _read = CharacterChanges(snapshot, now: 0, createId: () => throw StateError('Reading only.'));
     // As the original app reads them: in id order, which decides the order of characters with the same name.
     entries = [...model.entries.values]..sort((a, b) => a.id.compareTo(b.id));
@@ -37,13 +42,42 @@ class CastData {
       for (final l in model.links)
         if (l.isEntryLink) l,
     ]..sort((a, b) => a.id.compareTo(b.id));
-    list = listCharacters(entries, profiles, links, model.nodes.values, model.order.position, _read.fresh);
+    list = listCharacters(
+      entries,
+      profiles,
+      links,
+      model.nodes.values,
+      model.order.position,
+      _read.fresh,
+      named: named,
+    );
     templates = _read.templates();
     characterCategory = categoriesOf(snapshot)['character'] ?? Category.builtin('character');
   }
 
   final String novelId;
   final NovelSnapshot snapshot;
+
+  /// Where each entry's name is on the page, by entry: chapters and scenes (`named_in.dart`, [namedInProvider]).
+  final Map<String, List<String>> named;
+
+  /// For each entry, the chapters (by number) it is in: linked in their text, or named there.
+  Map<String, Set<int>> chaptersOf() {
+    final out = <String, Set<int>>{};
+    for (final node in model.nodes.values) {
+      final n = model.order.chapterNumber[node.id];
+      if (n == null) continue;
+      for (final id in node.mentions) {
+        (out[id] ??= {}).add(n);
+      }
+    }
+    for (final MapEntry(key: id, value: nodes) in named.entries) {
+      for (final node in nodes) {
+        if (model.order.chapterNumber[node] case final n?) (out[id] ??= {}).add(n);
+      }
+    }
+    return out;
+  }
 
   String get novelTitle => str(snapshot.project['title']);
 
@@ -92,15 +126,23 @@ class CastNotifier extends Notifier<CastData?> {
     if (novelId == null) return null;
     final store = ref.watch(novelStoreProvider);
     final service = ref.watch(characterServiceProvider);
+    // Where names are on the page arrives from the background a moment later; the cast is read again with it then (as
+    // it arrives, never in the middle of building a page).
+    var named = const <String, List<String>>{};
     CastData? read() {
       final snapshot = service.read(novelId);
-      return snapshot == null ? null : CastData(novelId, snapshot);
+      return snapshot == null ? null : CastData(novelId, snapshot, named: named);
     }
 
     void update() {
       if (store.exists(novelId)) state = read();
     }
 
+    ref.listen(namedInProvider, (_, next) {
+      named = next;
+      update();
+    });
+    named = ref.read(namedInProvider);
     store.addListener(update);
     ref.onDispose(() => store.removeListener(update));
     return read();
@@ -109,8 +151,88 @@ class CastNotifier extends Notifier<CastData?> {
 
 final castProvider = NotifierProvider.autoDispose<CastNotifier, CastData?>(CastNotifier.new);
 
-/// Cards or a list, remembered on this device.
-enum CastView { cards, list, ties }
+/// Where each entry of the open novel is named in its text (`named_in.dart`), by entry: chapters and scenes. Read away
+/// from the screen when a screen first needs it, and again shortly after the text, the entries or the profiles
+/// change (and only then: a store change elsewhere leaves it be). Empty until the first reading is done.
+class NamedInNotifier extends Notifier<Map<String, List<String>>> {
+  @override
+  Map<String, List<String>> build() {
+    final novelId = ref.watch(openNovelProvider);
+    if (novelId == null) return const {};
+    final store = ref.watch(novelStoreProvider);
+    final run = ref.watch(runAsideProvider);
+    var alive = true;
+    String? readAt;
+    // One reading at a time; changes while one runs are read once it is done. Changes in the same moment are one.
+    var running = false;
+    var again = false;
+    var queued = false;
+
+    String stamp() => [
+      for (final c in const ['chapterContents', 'loreEntries', 'characterProfiles'])
+        if (store.stampOf(novelId, c) case (:final count, :final latest)) '$count:$latest',
+    ].join('|');
+
+    void read() {
+      if (!alive || !store.exists(novelId)) return;
+      if (running) {
+        again = true;
+        return;
+      }
+      final now = stamp();
+      if (now == readAt) return;
+      readAt = now;
+      running = true;
+      final entries = [for (final r in store.rowsIn(novelId, 'loreEntries')) Entry(r)];
+      final profiles = <String, CharacterProfile>{
+        for (final r in [
+          ...store.rowsIn(novelId, 'characterProfiles'),
+        ]..sort((a, b) => str(b['id']).compareTo(str(a['id']))))
+          str(r['entryId']): CharacterProfile(r),
+      };
+      run(namedInJob(store.rawJsonIn(novelId, 'chapterContents'), namesToFind(entries, profiles)))
+          .then(
+            (found) {
+              if (alive && readAt == now) state = found;
+            },
+            onError: (Object e, StackTrace s) =>
+                FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
+          )
+          .whenComplete(() {
+            running = false;
+            if (again) {
+              again = false;
+              read();
+            }
+          });
+    }
+
+    // Saves come from the editor already gathered (a pause in typing), and a change to anything but the text, the
+    // entries or the profiles is a quick look at their stamps and no more.
+    void changed() {
+      if (queued) return;
+      queued = true;
+      scheduleMicrotask(() {
+        queued = false;
+        read();
+      });
+    }
+
+    store.addListener(changed);
+    ref.onDispose(() {
+      alive = false;
+      store.removeListener(changed);
+    });
+    // The first reading too waits until whatever is being built now is done.
+    changed();
+    return const {};
+  }
+}
+
+final namedInProvider = NotifierProvider.autoDispose<NamedInNotifier, Map<String, List<String>>>(NamedInNotifier.new);
+
+/// Cards, a list, the ties or the orbit, remembered on this device.
+enum CastView { cards, list, ties, orbit }
 
 const _viewKey = 'characters.view';
 

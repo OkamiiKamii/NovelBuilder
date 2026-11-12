@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/features/write/outline_panel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
 import 'package:novel_builder/shared/domain/manuscript/prose.dart';
 import 'package:novel_builder/shared/domain/records/story_node.dart';
@@ -27,6 +29,12 @@ void main() {
       expect(find.text('Volume'), findsOneWidget, reason: 'a part says what kind it is');
       expect(find.text('1'), findsOneWidget, reason: 'The Gate is chapter 1');
       expect(find.text('2'), findsOneWidget, reason: 'The River is chapter 2, inside the volume');
+      // The day book and the road to the draft come first: the scene is further down.
+      await tester.scrollUntilVisible(
+        find.text('§'),
+        120,
+        scrollable: find.descendant(of: find.byType(OutlinePanel), matching: find.byType(Scrollable)).first,
+      );
       expect(find.text('§'), findsOneWidget, reason: 'the scene');
       expect(find.text('5'), findsOneWidget, reason: 'The River runs to five words');
 

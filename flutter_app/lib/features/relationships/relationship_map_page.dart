@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/theme/app_theme.dart';
+import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/states.dart';
@@ -658,6 +660,9 @@ class _MapViewState extends State<_MapView> {
                 text: theme.colorScheme.onSurface,
                 surface: theme.colorScheme.surface,
                 accent: theme.colorScheme.primary,
+                // The people as the theme draws them (`novel_art.dart`): rust with white letters, or teal with dark ones.
+                node: NovelArt.of(context).system ? MonolithTokens.accentSecondary : const Color(0xFFB4532A),
+                nodeInk: NovelArt.of(context).system ? MonolithTokens.backgroundPrimary : Colors.white,
                 badges: widget.badges,
                 scheme: theme.colorScheme,
               ),
@@ -687,9 +692,15 @@ class _MapPainter extends CustomPainter {
     required this.text,
     required this.surface,
     required this.accent,
+    this.node = const Color(0xFFB4532A),
+    this.nodeInk = Colors.white,
     this.badges,
     this.scheme,
   });
+
+  /// A person's circle (the one in focus is in [accent]) and the letter on it.
+  final Color node;
+  final Color nodeInk;
 
   final Map<String, CanonBadge>? badges;
   final ColorScheme? scheme;
@@ -747,11 +758,7 @@ class _MapPainter extends CustomPainter {
                 (e.from == n.id || e.to == n.id) &&
                 (e.from == selectedNode || e.to == selectedNode || e.id == selectedEdge),
           );
-      canvas.drawCircle(
-        c,
-        r,
-        Paint()..color = (n.focus ? accent : const Color(0xFFB4532A)).withValues(alpha: lit ? 1 : 0.25),
-      );
+      canvas.drawCircle(c, r, Paint()..color = (n.focus ? accent : node).withValues(alpha: lit ? 1 : 0.25));
       if (n.id == selectedNode) {
         canvas.drawCircle(
           c,
@@ -762,13 +769,7 @@ class _MapPainter extends CustomPainter {
             ..strokeWidth = 3,
         );
       }
-      _text(
-        canvas,
-        n.name.trim().isEmpty ? '?' : n.name.trim().characters.first.toUpperCase(),
-        c,
-        r * 0.9,
-        Colors.white,
-      );
+      _text(canvas, n.name.trim().isEmpty ? '?' : n.name.trim().characters.first.toUpperCase(), c, r * 0.9, nodeInk);
       _text(canvas, n.name, c + Offset(0, r + 12), 12, text.withValues(alpha: lit ? 1 : 0.35), background: surface);
       if (badges?['entry:${n.id}'] case final badge? when scheme != null) {
         paintCanonBadge(canvas, c + Offset(r * 0.7, -r - 8), badge, scheme!);
@@ -818,7 +819,16 @@ class _MapPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_MapPainter old) =>
-      old.net != net || old.selectedNode != selectedNode || old.selectedEdge != selectedEdge || old.labels != labels;
+      old.net != net ||
+      old.selectedNode != selectedNode ||
+      old.selectedEdge != selectedEdge ||
+      old.labels != labels ||
+      // A new theme repaints it at once, in its own colours.
+      old.accent != accent ||
+      old.node != node ||
+      old.nodeInk != nodeInk ||
+      old.text != text ||
+      old.surface != surface;
 }
 
 class _Legend extends StatelessWidget {

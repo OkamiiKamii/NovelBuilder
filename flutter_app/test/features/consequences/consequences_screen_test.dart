@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/features/characters/characters_providers.dart';
+import 'package:novel_builder/features/consequences/consequences_page.dart' show consequenceRuns;
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
 import 'package:super_text_layout/super_text_layout.dart';
@@ -92,4 +94,30 @@ void main() {
     expect(find.text('If The War changes'), findsOneWidget);
     await tester.pump(const Duration(seconds: 2));
   });
+
+  testWidgets(
+    'the analysis runs again only when the novel changes, never for a tick, and shows no other point’s answer',
+    (tester) async {
+      final c = await start(tester, '/review/consequences?node=$_war');
+      expect(find.text('If The War changes'), findsOneWidget);
+      final runs = consequenceRuns;
+
+      // Ticking what was looked at is not a change to the novel: the same answer, not worked out again.
+      await tap(tester, find.byType(Checkbox).first);
+      expect(consequenceRuns, runs);
+      expect(find.text('If The War changes'), findsOneWidget);
+
+      // A new character is: worked out again, with them in the novel.
+      c.read(characterServiceProvider).change(_novel, (x) => x.create(name: 'Zed'));
+      await tester.pumpAndSettle();
+      expect(consequenceRuns, runs + 1);
+      expect(find.text('If The War changes'), findsOneWidget);
+
+      // Another point: its own answer, never the last one’s.
+      c.read(routerProvider).go('/review/consequences');
+      await tester.pumpAndSettle();
+      expect(find.text('If The War changes'), findsNothing);
+      await tester.pump(const Duration(seconds: 2));
+    },
+  );
 }

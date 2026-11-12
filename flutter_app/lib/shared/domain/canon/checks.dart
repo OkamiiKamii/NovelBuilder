@@ -293,10 +293,16 @@ List<RecordFinding> checkRecords(
     for (final l in model.links)
       if (connectionType(l.type).key == 'at-war-with' && linkInPlay(l)) l,
   ];
+  // The wars by the pair they are between, worked out once (in their order): each alliance is then set against its
+  // own pair's wars only, not every war with the pair spelled out again each time (hundreds of alliances by hundreds
+  // of wars was most of the review's time on a large novel). The same findings, in the same order.
+  final warsOf = <String, List<Link>>{};
+  for (final w in atWar) {
+    (warsOf[pairOf(w)] ??= []).add(w);
+  }
   for (final a in allied) {
-    for (final w in atWar) {
-      if (pairOf(a) != pairOf(w) ||
-          overlaps(a.validity ?? Validity.always, w.validity ?? Validity.always, context) != Truth.yes) {
+    for (final w in warsOf[pairOf(a)] ?? const <Link>[]) {
+      if (overlaps(a.validity ?? Validity.always, w.validity ?? Validity.always, context) != Truth.yes) {
         continue;
       }
       final [x, y] = ends(a);

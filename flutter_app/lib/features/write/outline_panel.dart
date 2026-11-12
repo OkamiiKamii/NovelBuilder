@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
+import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
@@ -16,6 +17,8 @@ import '../exchange/export_dialog.dart';
 import '../exchange/import_dialog.dart';
 import '../plot/plot_providers.dart' show chapterPlanPath;
 import '../workspace/open_novel.dart';
+import 'day_book.dart';
+import 'draft_road.dart';
 import 'write_providers.dart';
 
 /// The manuscript in reading order: volumes, acts and arcs grouping chapters and scenes. Selecting a chapter or scene
@@ -126,9 +129,16 @@ class OutlinePanel extends ConsumerWidget {
                     ),
                   )
                 : ListView.builder(
-                    itemCount: reading.length,
+                    // The day book (`day_book.dart`) and the road to the draft (`draft_road.dart`) head the contents,
+                    // scrolling away with them. On a computer, beside a chapter being written, they follow the
+                    // chapters instead, so the contents stay at hand.
+                    itemCount: reading.length + 2,
                     itemBuilder: (context, i) {
-                      final n = reading[i];
+                      final deskLast = selected != null && WindowSize.of(context) != WindowSize.compact;
+                      final desk = deskLast ? i - reading.length : i;
+                      if (desk == 0) return DayBookCard(novelId: novelId);
+                      if (desk == 1) return DraftRoad(novelId: novelId);
+                      final n = reading[deskLast ? i : i - 2];
                       return _OutlineRow(
                         node: n,
                         depth: depth[n.id] ?? 0,
@@ -559,7 +569,8 @@ class _LeaderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final dot = Paint()..color = color.withValues(alpha: 0.55);
-    for (var x = 0.0; x < size.width; x += 5) {
+    // Stopping short of the end: the length covers the dots under it, and none peeks out after its last figure.
+    for (var x = 0.0; x < size.width - 8; x += 5) {
       canvas.drawCircle(Offset(x + 1, size.height / 2), 0.9, dot);
     }
   }

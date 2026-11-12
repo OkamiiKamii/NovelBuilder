@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../app/theme/book_faces.dart';
 
+import '../../app/theme/book_faces.dart';
+import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../shared/domain/records/novel.dart';
@@ -102,7 +103,7 @@ class _StageShelvesState extends State<StageShelves> {
   }
 }
 
-/// A brass plate with the shelf's name in the vault's capitals and how many books stand on it.
+/// A plate (brass, or dark glass in System Monolith) with the shelf's name in the vault's capitals and how many books stand on it.
 class Nameplate extends StatelessWidget {
   const Nameplate({super.key, required this.label, required this.count});
   final String label;
@@ -110,7 +111,9 @@ class Nameplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const ink = Color(0xFF2A1C08);
+    // Brass, or the system style's dark glass edged in gold (`novel_art.dart`).
+    final plate = NovelArt.of(context).plate;
+    final ink = plate.ink;
     return Align(
       alignment: AlignmentDirectional.centerStart,
       child: Semantics(
@@ -120,13 +123,13 @@ class Nameplate extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3),
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xFFE6C886), Color(0xFFC49A4C), Color(0xFFD9B66E)],
-              stops: [0, 0.55, 1],
+              colors: plate.ground,
+              stops: const [0, 0.55, 1],
             ),
-            border: Border.all(color: const Color(0xFF8A6326)),
+            border: Border.all(color: plate.border),
             boxShadow: [
               BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 3, offset: const Offset(0, 1)),
             ],
@@ -162,13 +165,16 @@ class _Screw extends StatelessWidget {
   const _Screw();
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: 6,
-    height: 6,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: const Color(0xFF9C7433),
-      border: Border.all(color: const Color(0xFF6E4E1C), width: 0.8),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final plate = NovelArt.of(context).plate;
+    return Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: plate.screw,
+        border: Border.all(color: plate.screwRim, width: 0.8),
+      ),
+    );
+  }
 }

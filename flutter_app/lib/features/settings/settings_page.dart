@@ -11,6 +11,7 @@ import '../../core/widgets/form_section.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/save_status_indicator.dart';
 import '../../shared/data/providers.dart';
+import '../../shared/data/sample_novel.dart';
 import '../library/backup_actions.dart';
 import '../library/library_actions.dart';
 import '../tutorial/tutorial.dart';
@@ -86,6 +87,8 @@ class SettingsPage extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
+          const _SampleNovel(),
+          const SizedBox(height: 16),
           const FormSection(title: 'Saving', children: [SaveStatusIndicator()]),
           const SizedBox(height: 16),
           FormSection(
@@ -119,6 +122,49 @@ class SettingsPage extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// The sample novel, which a new library starts with: another copy on request (your own novels are not touched).
+class _SampleNovel extends ConsumerWidget {
+  const _SampleNovel();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => FormSection(
+    title: 'Sample novel',
+    children: [
+      const Text(
+        '$sampleNovelTitle: fifteen chapters, with its people, places, plot threads, chapter plans and timeline '
+        'filled in, to try every part of the app on. A new library starts with it. Adding it again puts another '
+        'copy on the shelf; nothing else changes.',
+      ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: OutlinedButton.icon(
+          onPressed: () {
+            final novel = addSampleNovel(
+              ref.read(novelStoreProvider),
+              now: DateTime.now().millisecondsSinceEpoch,
+              title: ref.read(libraryServiceProvider).uniqueTitle(sampleNovelTitle),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('“${novel.title}” is in your library.'),
+                action: SnackBarAction(
+                  label: 'Open',
+                  onPressed: () {
+                    ref.read(openNovelProvider.notifier).open(novel.id);
+                    GoRouter.of(context).go(Destination.write.path);
+                  },
+                ),
+              ),
+            );
+          },
+          icon: const Icon(Icons.auto_stories_outlined),
+          label: const Text('Add the sample novel'),
+        ),
+      ),
+    ],
+  );
 }
 
 /// Whole-novel copies kept before an import or a restore replaced a novel. Restoring one is itself undoable.

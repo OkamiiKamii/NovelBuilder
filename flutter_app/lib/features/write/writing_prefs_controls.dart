@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'fresh_ink.dart';
 import 'writing_prefs.dart';
 
 /// The writing preferences of this kind of device, with a live sample. Used in the editor's "Aa" panel and in Settings.
@@ -118,7 +119,15 @@ class WritingPrefsControls extends ConsumerWidget {
         chips('Text width', WritingWidth.values, prefs.width, (w) => w.label, (w) => set((p) => p.copyWith(width: w))),
         const SizedBox(height: 12),
         chips('Page', WritingPage.values, prefs.page, (pg) => pg.label, (pg) => set((p) => p.copyWith(page: pg))),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Today’s ink'),
+          subtitle: const Text('A stroke in the margin beside what you wrote today'),
+          value: ref.watch(freshInkProvider),
+          onChanged: (on) => ref.read(freshInkProvider.notifier).set(on),
+        ),
+        const SizedBox(height: 4),
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton(onPressed: () => notifier.reset(form), child: const Text('Back to the defaults')),

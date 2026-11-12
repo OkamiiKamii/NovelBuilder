@@ -1,10 +1,17 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
+import '../../app/theme/novel_art.dart';
+import '../../core/layout/breakpoints.dart';
 import '../../shared/domain/characters/character_records.dart';
 import '../../shared/domain/characters/templates.dart';
 import '../../shared/domain/records/category.dart' show FieldType;
 import '../../shared/domain/records/entry.dart';
 import 'character_actions.dart';
+import 'widgets/cameo.dart';
+import 'widgets/cast_card.dart' show castTone;
+import 'widgets/portrait.dart';
 import 'widgets/vault.dart';
 
 /// THE INTERVIEW: a character's empty profile filled the way writers get to know someone, one question at a time
@@ -118,8 +125,11 @@ String storedAnswer(FieldType? type, String answer) => switch (type) {
   _ => answer.trim(),
 };
 
-/// The interview as a dialog over the profile: one question at a time, how far through, the answer, and Next (saves
-/// it and goes on), Skip and Done. [save] puts one answer into its field.
+/// THE INTERVIEW AS A CONVERSATION: the author and the character, face to face. Each question is the author's line,
+/// each answer the character's reply, in their colour beside their cameo, marked with where it went ("→ Fears"); the
+/// talk so far stays on the page above the question now, and at the head, how well they are known so far ("Known 3 of
+/// 11"). The author answers as the character. Next saves the answer and asks the next, Skip passes, Done ends; full
+/// screen on a phone. [save] puts one answer into its field.
 Future<void> showInterview(
   BuildContext context, {
   required Entry entry,
@@ -128,13 +138,32 @@ Future<void> showInterview(
   required void Function(InterviewStep step, String value) save,
 }) => showDialog<void>(
   context: context,
-  builder: (_) => _Interview(steps: interviewFor(entry, profile, templates), name: entry.name, save: save),
+  builder: (_) => _Interview(
+    steps: interviewFor(entry, profile, templates),
+    entry: entry,
+    profile: profile,
+    known: acquaintance(entry, profile, templates).known,
+    save: save,
+  ),
 );
 
+/// One exchange of the conversation: the question, and the reply (null when it was passed over).
+typedef _Exchange = ({String ask, String fieldName, String? reply});
+
 class _Interview extends StatefulWidget {
-  const _Interview({required this.steps, required this.name, required this.save});
+  const _Interview({
+    required this.steps,
+    required this.entry,
+    required this.profile,
+    required this.known,
+    required this.save,
+  });
   final List<InterviewStep> steps;
-  final String name;
+  final Entry entry;
+  final CharacterProfile profile;
+
+  /// Of the questions, how many the profile already answered before this conversation.
+  final int known;
   final void Function(InterviewStep step, String value) save;
 
   @override
@@ -143,94 +172,344 @@ class _Interview extends StatefulWidget {
 
 class _InterviewState extends State<_Interview> {
   final _answer = TextEditingController();
+  final _scroll = ScrollController();
+  final _said = <_Exchange>[];
   int _at = 0;
   int _answered = 0;
+
+  String get _name => widget.entry.name.trim().isEmpty ? 'them' : widget.entry.name.trim();
 
   @override
   void dispose() {
     _answer.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
   void _next({required bool keep}) {
     final step = widget.steps[_at];
-    if (keep && _answer.text.trim().isNotEmpty) {
+    final reply = keep && _answer.text.trim().isNotEmpty ? _answer.text.trim() : null;
+    if (reply != null) {
       widget.save(step, storedAnswer(step.type, _answer.text));
       _answered++;
     }
     _answer.clear();
     if (_at + 1 >= widget.steps.length) {
       Navigator.of(context).pop();
-    } else {
-      setState(() => _at++);
+      return;
     }
+    setState(() {
+      _said.add((ask: step.ask, fieldName: step.fieldName, reply: reply));
+      _at++;
+    });
+    // The newest question in view, under the talk so far.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scroll.hasClients) return;
+      final to = _scroll.position.maxScrollExtent;
+      if (MediaQuery.of(context).disableAnimations) {
+        _scroll.jumpTo(to);
+      } else {
+        _scroll.animateTo(to, duration: const Duration(milliseconds: 260), curve: Curves.easeOut);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final compact = WindowSize.of(context) == WindowSize.compact;
     final step = widget.steps[_at];
-    return AlertDialog(
-      title: Text('Interview with ${widget.name}'),
-      scrollable: true,
-      content: SizedBox(
-        width: 520,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    final tone = castTone(widget.entry.id);
+    final total = widget.known + widget.steps.length;
+    final known = widget.known + _answered;
+    final last = _at + 1 >= widget.steps.length;
+
+    final head = Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
+      child: Row(
+        children: [
+          _Face(entry: widget.entry, profile: widget.profile, size: 44),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  header: true,
+                  child: Text(
+                    'Interview with $_name',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: vaultHeading(context, size: 15, weight: 700, color: scheme.onSurface),
+                  ),
+                ),
+                Text(
+                  total == 0 ? 'In conversation' : 'Known $known of $total',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                ),
+              ],
+            ),
+          ),
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Done')),
+        ],
+      ),
+    );
+
+    final progress = Semantics(
+      label: 'Question ${_at + 1} of ${widget.steps.length}',
+      excludeSemantics: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
           children: [
-            Semantics(
-              label: 'Question ${_at + 1} of ${widget.steps.length}',
-              excludeSemantics: true,
-              child: Row(
-                children: [
-                  for (var i = 0; i < widget.steps.length; i++)
-                    Expanded(
-                      child: Container(
-                        height: 3,
-                        margin: const EdgeInsets.only(right: 3),
-                        color: i <= _at ? scheme.primary : scheme.outlineVariant,
-                      ),
-                    ),
-                ],
+            for (var i = 0; i < widget.steps.length; i++)
+              Expanded(
+                child: Container(
+                  height: 3,
+                  margin: const EdgeInsets.only(right: 3),
+                  color: i < _at
+                      ? tone
+                      : i == _at
+                      ? scheme.primary
+                      : scheme.outlineVariant,
+                ),
               ),
-            ),
-            const SizedBox(height: 18),
-            Text(step.ask, style: vaultText(context, size: 23)),
-            const SizedBox(height: 4),
-            Text(
-              'Goes into ${step.fieldName}',
-              style: vaultText(context, size: 15, style: FontStyle.italic, color: scheme.onSurfaceVariant),
-            ),
-            const SizedBox(height: 14),
-            TextField(
-              key: ValueKey(step.fieldName),
-              controller: _answer,
-              autofocus: true,
-              minLines: 3,
-              maxLines: 8,
-              style: vaultText(context, size: 18),
-              decoration: InputDecoration(labelText: 'Answer', hintText: step.hint),
-              onChanged: (_) => setState(() {}),
-            ),
-            if (_answered > 0) ...[
-              const SizedBox(height: 8),
-              Text(
-                '${_answered == 1 ? 'One answer' : '$_answered answers'} saved to the profile.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
-              ),
-            ],
           ],
         ),
       ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Done')),
-        TextButton(onPressed: () => _next(keep: false), child: const Text('Skip')),
-        FilledButton(
-          onPressed: _answer.text.trim().isEmpty ? null : () => _next(keep: true),
-          child: Text(_at + 1 >= widget.steps.length ? 'Save and finish' : 'Next'),
+    );
+
+    final talk = ListView(
+      controller: _scroll,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+      children: [
+        for (final x in _said) ...[
+          _Asked(text: x.ask, faded: true),
+          if (x.reply case final reply?)
+            _Reply(entry: widget.entry, profile: widget.profile, text: reply, into: x.fieldName)
+          else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14, right: 8),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Passed over',
+                  style: vaultText(context, size: 14, style: FontStyle.italic, color: scheme.onSurfaceVariant),
+                ),
+              ),
+            ),
+        ],
+        _Asked(text: step.ask),
+        Padding(
+          padding: const EdgeInsets.only(left: 6, bottom: 4),
+          child: Text(
+            'Goes into ${step.fieldName}',
+            style: vaultText(context, size: 14.5, style: FontStyle.italic, color: scheme.onSurfaceVariant),
+          ),
         ),
       ],
+    );
+
+    final composer = DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLow,
+        border: Border(top: BorderSide(color: scheme.outlineVariant)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                key: ValueKey(step.fieldName),
+                controller: _answer,
+                autofocus: true,
+                minLines: 2,
+                maxLines: 6,
+                style: vaultText(context, size: 18),
+                decoration: InputDecoration(
+                  labelText: 'Answer',
+                  hintText: step.hint ?? 'In $_name’s own words',
+                ),
+                onChanged: (_) => setState(() {}),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: _answered == 0
+                        ? const SizedBox.shrink()
+                        : Text(
+                            '${_answered == 1 ? 'One answer' : '$_answered answers'} saved to the profile.',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                          ),
+                  ),
+                  TextButton(onPressed: () => _next(keep: false), child: const Text('Skip')),
+                  const SizedBox(width: 8),
+                  FilledButton.icon(
+                    onPressed: _answer.text.trim().isEmpty ? null : () => _next(keep: true),
+                    icon: Icon(last ? Icons.check : Icons.send),
+                    label: Text(last ? 'Save and finish' : 'Next'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final body = Material(
+      color: scheme.surface,
+      child: Column(
+        children: [
+          SafeArea(bottom: false, child: head),
+          progress,
+          Expanded(child: talk),
+          composer,
+        ],
+      ),
+    );
+    if (compact) return Dialog.fullscreen(child: body);
+    return Dialog(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 640, maxHeight: math.min(760, MediaQuery.sizeOf(context).height * 0.9)),
+        child: body,
+      ),
+    );
+  }
+}
+
+/// The character's face in a circle: their picture, or their cameo on their own colour.
+class _Face extends StatelessWidget {
+  const _Face({required this.entry, required this.profile, required this.size});
+
+  final Entry entry;
+  final CharacterProfile profile;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final tone = castTone(entry.id);
+    final Widget face;
+    if (uploadedImageBytes(entry.image) != null) {
+      face = ClipOval(
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: Portrait(name: entry.name, image: entry.image, focal: profile.focal, size: size),
+        ),
+      );
+    } else {
+      final art = NovelArt.of(context);
+      final look = art.bound(tone, lift: 0.1, sink: 0.45, tinted: true);
+      face = Cameo(
+        look: cameoLookOf(entry, profile),
+        ground: look.ground,
+        ink: look.ink,
+        frame: art.system ? look.frame.withValues(alpha: 0.8) : look.ink.withValues(alpha: 0.6),
+        bare: true,
+      );
+    }
+    return ExcludeSemantics(
+      child: SizedBox.square(dimension: size, child: face),
+    );
+  }
+}
+
+/// The author's line: a question, on the left.
+class _Asked extends StatelessWidget {
+  const _Asked({required this.text, this.faded = false});
+
+  final String text;
+  final bool faded;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 480),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8, right: 40),
+          padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+          decoration: BoxDecoration(
+            color: scheme.surfaceContainerHigh,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(4),
+              topRight: Radius.circular(16),
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
+            ),
+          ),
+          child: Text(
+            text,
+            style: vaultText(context, size: faded ? 17 : 22, color: faded ? scheme.onSurfaceVariant : scheme.onSurface),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The character's reply: on the right, in their colour, beside their face, and where it went.
+class _Reply extends StatelessWidget {
+  const _Reply({required this.entry, required this.profile, required this.text, required this.into});
+
+  final Entry entry;
+  final CharacterProfile profile;
+  final String text;
+  final String into;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final tone = castTone(entry.id);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Flexible(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: Container(
+                margin: const EdgeInsets.only(left: 40),
+                padding: const EdgeInsets.fromLTRB(14, 10, 14, 8),
+                decoration: BoxDecoration(
+                  color: Color.alphaBlend(tone.withValues(alpha: 0.2), scheme.surface),
+                  border: Border.all(color: tone.withValues(alpha: 0.55)),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(4),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(text, style: vaultText(context, size: 18, color: scheme.onSurface)),
+                    const SizedBox(height: 4),
+                    Text(
+                      '→ $into',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          _Face(entry: entry, profile: profile, size: 30),
+        ],
+      ),
     );
   }
 }

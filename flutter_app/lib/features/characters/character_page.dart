@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
@@ -10,6 +11,7 @@ import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/characters/cast.dart';
 import '../../shared/domain/characters/character_changes.dart';
@@ -27,6 +29,8 @@ import 'tabs/notes_tab.dart';
 import 'tabs/overview_tab.dart';
 import 'tabs/relationships_tab.dart';
 import 'tabs/secrets_tab.dart';
+import 'widgets/cameo.dart';
+import 'widgets/cast_card.dart' show castTone;
 import 'widgets/portrait.dart';
 import 'widgets/vault.dart';
 
@@ -217,11 +221,19 @@ class _HeaderState extends State<_Header> {
     if (key == _mentionsFor) return;
     _mentionsFor = key;
     _mentions = null;
-    // Counted from the saved text of every chapter, after the page is drawn, so a long book never holds it up.
+    // Counted from the saved text of every chapter, after the page is drawn and away from the screen
+    // (`background.dart`): the chapters are only read here, as stored; decoding and counting them is done in the
+    // background, so a long book never holds up the page. Only the count for the names now shown is ever shown.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _mentionsFor != key) return;
-      final count = widget.actions.service.nameMentions(widget.cast.novelId, _names);
-      if (mounted && _mentionsFor == key) setState(() => _mentions = count);
+      final run = ProviderScope.containerOf(context, listen: false).read(runAsideProvider);
+      run(mentionsJob(widget.actions.service.storedChapters(widget.cast.novelId), [..._names])).then(
+        (count) {
+          if (mounted && _mentionsFor == key) setState(() => _mentions = count);
+        },
+        onError: (Object e, StackTrace s) =>
+            FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
+      );
     });
   }
 
@@ -275,6 +287,7 @@ class _HeaderState extends State<_Header> {
           )
         : _IdentityView(entry: entry, profile: profile, onEdit: () => setState(() => _editing = true));
     final linked = widget.listed.linkedIn.length;
+    final named = widget.listed.seenIn.length;
     final stats = Wrap(
       spacing: 24,
       runSpacing: 8,
@@ -283,6 +296,11 @@ class _HeaderState extends State<_Header> {
           label: 'Linked in',
           value: '${formatNumber(linked)} ${linked == 1 ? 'chapter' : 'chapters'}',
           tooltip: 'Chapters and scenes whose text has a link to this character',
+        ),
+        _Stat(
+          label: 'In the text',
+          value: '${formatNumber(named)} ${named == 1 ? 'chapter' : 'chapters'}',
+          tooltip: 'Chapters and scenes whose text has their name, an alias or their title, linked or not',
         ),
         _Stat(
           label: 'Name mentions',
@@ -369,13 +387,33 @@ class _PortraitTools extends StatelessWidget {
             border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1.5),
             borderRadius: BorderRadius.circular(size * 0.18 + 3),
           ),
-          child: Portrait(
-            name: entry.name,
-            image: image,
-            focal: profile.focal,
-            size: size,
-            label: image == null ? '${entry.name} has no portrait' : 'Portrait of ${entry.name}',
-          ),
+          // With no picture, their cameo, drawn from what is recorded of them (`cameo.dart`).
+          child: uploaded
+              ? Portrait(
+                  name: entry.name,
+                  image: image,
+                  focal: profile.focal,
+                  size: size,
+                  label: 'Portrait of ${entry.name}',
+                )
+              : Semantics(
+                  image: true,
+                  label: '${entry.name} has no portrait: a cameo drawn from their profile',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(size * 0.18),
+                    child: SizedBox.square(
+                      dimension: size,
+                      child: Builder(
+                        builder: (context) {
+                          final look = NovelArt.of(
+                            context,
+                          ).bound(castTone(entry.id), lift: 0.1, sink: 0.45, tinted: true);
+                          return Cameo(look: cameoLookOf(entry, profile), ground: look.ground, ink: look.ink);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
         ),
         if (image != null && !uploaded)
           SizedBox(

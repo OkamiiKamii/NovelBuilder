@@ -11,6 +11,7 @@ import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/records/novel.dart';
+import '../tutorial/tutorial.dart';
 import 'backup_actions.dart';
 import 'bookcase.dart';
 import 'bookshelf.dart';
@@ -116,10 +117,22 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
       // On a computer the gear is the rail's second item, under the Library.
       titleTrailing: WindowSize.of(context) != WindowSize.compact
           ? null
-          : IconButton(
-              tooltip: 'Settings',
-              onPressed: () => context.go(Destination.settings.path),
-              icon: const Icon(Icons.settings_outlined),
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  tooltip: 'Settings',
+                  onPressed: () => context.go(Destination.settings.path),
+                  icon: const Icon(Icons.settings_outlined),
+                ),
+                // On a phone the shelf has no bar, so the tutorial is here, beside the gear.
+                if (ref.watch(tutorialShownProvider))
+                  IconButton(
+                    tooltip: 'Tutorial',
+                    onPressed: () => showTutorial(context),
+                    icon: const Icon(Icons.school_outlined),
+                  ),
+              ],
             ),
       actions: [
         if (all.isNotEmpty)

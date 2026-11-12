@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/app_theme.dart';
+import '../../../app/theme/novel_art.dart';
 import '../../../core/format.dart';
 import '../../../core/layout/breakpoints.dart';
 import '../../../shared/domain/model/story_order.dart';
@@ -116,7 +118,10 @@ class _Volume extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final gilt = ThemeData.estimateBrightnessForColor(spine) == Brightness.dark
+    // Gilt bands, or the system style's gold rules (`novel_art.dart`).
+    final gilt = NovelArt.of(context).system
+        ? MonolithTokens.accentPrimary
+        : ThemeData.estimateBrightnessForColor(spine) == Brightness.dark
         ? const Color(0xFFF3E3B5)
         : const Color(0xFF3A2A12);
     return Semantics(
@@ -459,8 +464,10 @@ class _DropCap extends StatelessWidget {
     if (uploadedImageBytes(entry.image) != null) {
       return EntryThumb(entry: entry, color: tone, size: _size);
     }
-    final dark = ThemeData.estimateBrightnessForColor(tone) == Brightness.dark;
-    final ink = dark ? const Color(0xFFFFF8EC) : const Color(0xFF1B140E);
+    // The theme's way of drawing it (`novel_art.dart`), on the entry's own colour.
+    final art = NovelArt.of(context);
+    final look = art.bound(tone, lift: 0.1, sink: 0.4, tinted: true);
+    final ink = look.ink;
     final initial = entry.name.trim().isEmpty ? '?' : entry.name.trim().characters.first.toUpperCase();
     return ExcludeSemantics(
       child: Container(
@@ -468,15 +475,13 @@ class _DropCap extends StatelessWidget {
         height: _size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.lerp(tone, Colors.white, 0.1)!, Color.lerp(tone, Colors.black, 0.4)!],
-          ),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: look.ground),
         ),
         padding: const EdgeInsets.all(5),
         child: DecoratedBox(
-          decoration: BoxDecoration(border: Border.all(color: ink.withValues(alpha: 0.45))),
+          decoration: BoxDecoration(
+            border: Border.all(color: art.system ? look.frame.withValues(alpha: 0.6) : ink.withValues(alpha: 0.45)),
+          ),
           child: Center(
             child: Text(initial, style: vaultHeading(context, size: 30, weight: 700, color: ink)),
           ),

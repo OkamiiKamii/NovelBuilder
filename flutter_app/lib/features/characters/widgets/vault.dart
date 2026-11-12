@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/book_faces.dart';
+import '../../../app/theme/novel_art.dart';
 import '../../../shared/domain/characters/character_records.dart';
 import '../../../shared/domain/codex/field_values.dart';
 import '../../../shared/domain/collation.dart';
@@ -68,7 +69,10 @@ class VaultFrame extends StatelessWidget {
     return Semantics(
       container: true,
       child: CustomPaint(
-        foregroundPainter: _Corners(scheme.primary),
+        // Diamonds at the corners, or the system style's teal brackets (`novel_art.dart`).
+        foregroundPainter: NovelArt.of(context).system
+            ? BracketsPainter(scheme.tertiary, inset: -1, arm: 12)
+            : _Corners(scheme.primary),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: scheme.surface,

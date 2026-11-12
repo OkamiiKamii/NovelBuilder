@@ -329,6 +329,8 @@ class SystemChanges extends RecordChanges {
         for (final id in itemIds)
           if (items.firstWhere((i) => i.id == id).groupId == group.id) id,
       ];
+      // None or one held in it: nothing to drop (none used to fail here, holding a skill with no class).
+      if (inGroup.length < 2) continue;
       final drop = inGroup.take(inGroup.length - 1).toSet();
       itemIds = [
         for (final id in itemIds)

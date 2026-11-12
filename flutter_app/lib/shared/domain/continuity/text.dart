@@ -72,13 +72,72 @@ List<Found> findWords(String text, List<String> terms, {bool loose = false}) {
       if (t.trim().isNotEmpty) t.trim(),
   }.toList()..sort((a, b) => b.length - a.length);
   if (wanted.isEmpty) return const [];
-  final pattern = RegExp(
+  return [for (final m in _patternFor(wanted, loose).allMatches(text)) (index: m.start, text: m[0]!)];
+}
+
+/// The pattern for [wanted] (longest first), compiled once and kept: the same names are looked for in paragraph after
+/// paragraph (an entry in every paragraph of a chapter, every chapter of a book), and compiling a pattern costs far
+/// more than running it on a paragraph. The most recently used [_kept] are kept; the pattern is the same either way, so
+/// what is found is too.
+RegExp _patternFor(List<String> wanted, bool loose) {
+  final key = '${loose ? 'l' : 's'}\u0000${wanted.join('\u0001')}';
+  final kept = _patterns.remove(key);
+  if (kept != null) return _patterns[key] = kept;
+  if (_patterns.length >= _kept) _patterns.remove(_patterns.keys.first);
+  return _patterns[key] = RegExp(
     '$_before(?:${wanted.map(RegExp.escape).join('|')})$_after',
     unicode: true,
     caseSensitive: !loose,
   );
-  return [for (final m in pattern.allMatches(text)) (index: m.start, text: m[0]!)];
 }
+
+const _kept = 256;
+
+final _wordRun = RegExp(r'[\p{L}\p{N}]+', unicode: true);
+final _letterOrDigit = RegExp(r'^[\p{L}\p{N}]$', unicode: true);
+
+/// A text read once into the words it holds, to ask of many names whether it names them: [has] answers exactly as
+/// `findWords(text, [term]).isNotEmpty` does (whole words, as written), but a one-word name is a look-up rather than a
+/// search of the text. For asking a thousand names of the same chapter (who is named where).
+class WordIndex {
+  WordIndex(this.text) {
+    for (final m in _wordRun.allMatches(text)) {
+      _words.add(m[0]!);
+    }
+  }
+
+  final String text;
+  final _words = <String>{};
+
+  bool has(String term) {
+    final t = term.trim();
+    if (t.isEmpty) return false;
+    if (_wordRun.matchAsPrefix(t)?.end == t.length) return _words.contains(t);
+    // A name of more than one word ("Mira Vance", "O'Brien"): found where nothing of a word touches either end.
+    for (var at = text.indexOf(t); at >= 0; at = text.indexOf(t, at + 1)) {
+      if (!_wordCharBefore(at) && !_wordCharAt(at + t.length)) return true;
+    }
+    return false;
+  }
+
+  bool _wordCharBefore(int i) {
+    if (i <= 0) return false;
+    final low = text.codeUnitAt(i - 1);
+    // A character outside the first plane is two code units: read it whole.
+    final start = (low & 0xFC00) == 0xDC00 && i >= 2 && (text.codeUnitAt(i - 2) & 0xFC00) == 0xD800 ? i - 2 : i - 1;
+    return _letterOrDigit.hasMatch(text.substring(start, i));
+  }
+
+  bool _wordCharAt(int i) {
+    if (i >= text.length) return false;
+    final high = text.codeUnitAt(i);
+    final end = (high & 0xFC00) == 0xD800 && i + 1 < text.length ? i + 2 : i + 1;
+    return _letterOrDigit.hasMatch(text.substring(i, end));
+  }
+}
+
+/// In order of use, the least recently used first.
+final _patterns = <String, RegExp>{};
 
 final _sentenceBreak = RegExp(
   r'(?<=[.!?…]["”’'

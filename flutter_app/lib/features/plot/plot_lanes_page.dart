@@ -399,7 +399,7 @@ class _LanesDrawingState extends State<_LanesDrawing> {
 
   /// The columns whose cells exist as widgets (tap targets and screen-reader buttons): those on screen and a margin
   /// either side, in steps of [_step], so a novel of hundreds of chapters is not thousands of widgets. The drawing
-  /// itself shows every column.
+  /// ([LanesPainter]) draws the same columns.
   var _from = 0;
   var _to = _step * 2;
   double _nameW = 180;
@@ -542,8 +542,10 @@ class _LanesDrawingState extends State<_LanesDrawing> {
                 children: [
                   Positioned.fill(
                     child: CustomPaint(
-                      painter: _LanesPainter(
+                      painter: LanesPainter(
                         lanes: lanes,
+                        from: from,
+                        to: to,
                         nameW: nameW,
                         scheme: scheme,
                         text: theme.textTheme,
@@ -594,9 +596,16 @@ class _LanesDrawingState extends State<_LanesDrawing> {
   }
 }
 
-class _LanesPainter extends CustomPainter {
-  _LanesPainter({
+/// Draws the lanes, but only the columns from [from] to [to] (the page's window: those on screen and a margin either
+/// side, the same as its tap targets): a novel of hundreds of chapters was drawn whole, some twelve thousand cells and
+/// the dashes between them, and the first frame to show it took 55 to 60 ms to draw every time the view was opened.
+/// Lines running in from outside are drawn where they cross the window, dashed in the same places.
+@visibleForTesting
+class LanesPainter extends CustomPainter {
+  LanesPainter({
     required this.lanes,
+    this.from = 0,
+    this.to,
     required this.nameW,
     required this.scheme,
     required this.text,
@@ -609,6 +618,10 @@ class _LanesPainter extends CustomPainter {
 
   final Map<String, CanonBadge>? badges;
   final Lanes lanes;
+
+  /// The columns drawn (all of them when [to] is null).
+  final int from;
+  final int? to;
   final double nameW;
   final ColorScheme scheme;
   final TextTheme text;
@@ -634,7 +647,14 @@ class _LanesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final small = text.labelSmall?.copyWith(color: scheme.onSurfaceVariant);
-    for (final (i, c) in lanes.chapters.indexed) {
+    final first = math.max(0, from);
+    final last = math.min(to ?? lanes.chapters.length, lanes.chapters.length);
+    bool shown(int col) => col >= first && col < last;
+    // The window's left and right edges, where lines from outside it are cut.
+    final left = nameW + first * _colW;
+    final right = nameW + last * _colW;
+    for (var i = first; i < last; i++) {
+      final c = lanes.chapters[i];
       _text(canvas, '${c.number}', Offset(x(i), _headH - 26), small, centre: true);
       if (badges?['node:${c.id}'] case final badge?) {
         paintCanonBadge(canvas, Offset(x(i) + 6, 0), badge, scheme, size: 9);
@@ -671,20 +691,29 @@ class _LanesPainter extends CustomPainter {
       ];
       for (var i = 1; i < marked.length; i++) {
         final from = marked[i - 1], to = marked[i];
+        // A line wholly outside the window is not drawn; one running into it is drawn where it crosses it.
+        if (x(to) < left || x(from) > right) continue;
         final gap = to - from > 1;
         final line = Paint()
           ..color = gap ? scheme.outline : scheme.onSurface
           ..strokeWidth = 2;
         if (gap) {
-          for (var a = x(from); a < x(to); a += 8) {
+          // The dashes where they always fall (every 8 from the line's start), from the first in the window.
+          final skip = x(from) < left ? ((left - x(from)) / 8).floor() : 0;
+          final end = math.min(x(to), right);
+          for (var a = x(from) + skip * 8; a < end; a += 8) {
             canvas.drawLine(Offset(a, y(l)), Offset(math.min(a + 4, x(to)), y(l)), line);
           }
-          _text(canvas, '${to - from - 1} ch.', Offset((x(from) + x(to)) / 2, y(l) - 21), small, centre: true);
+          final middle = (x(from) + x(to)) / 2;
+          if (middle >= left - _colW && middle <= right + _colW) {
+            _text(canvas, '${to - from - 1} ch.', Offset(middle, y(l) - 21), small, centre: true);
+          }
         } else {
           canvas.drawLine(Offset(x(from), y(l)), Offset(x(to), y(l)), line);
         }
       }
       for (final c in lane.crossings) {
+        if (!shown(c.column)) continue;
         final other = laneOf[c.otherId];
         if (other == null) continue;
         final cross = Paint()
@@ -697,7 +726,8 @@ class _LanesPainter extends CustomPainter {
         }
         canvas.drawCircle(Offset(x(c.column), b), 4.5, Paint()..color = scheme.secondary);
       }
-      for (final (col, cell) in lane.cells.indexed) {
+      for (var col = first; col < math.min(last, lane.cells.length); col++) {
+        final cell = lane.cells[col];
         final isChosen = chosen?.lane == l && chosen?.col == col;
         final hit = RRect.fromRectAndRadius(
           Rect.fromLTWH(nameW + col * _colW + 2, top + 4, _colW - 4, _rowH - 8),
@@ -724,8 +754,10 @@ class _LanesPainter extends CustomPainter {
   void _mark(Canvas canvas, String? role, Offset c) => paintRoleMark(canvas, role, c, scheme);
 
   @override
-  bool shouldRepaint(_LanesPainter old) =>
+  bool shouldRepaint(LanesPainter old) =>
       old.lanes != lanes ||
+      old.from != from ||
+      old.to != to ||
       old.nameW != nameW ||
       old.scheme != scheme ||
       old.selectedThreadId != selectedThreadId ||

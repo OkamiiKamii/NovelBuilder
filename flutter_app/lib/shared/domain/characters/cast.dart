@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import '../collation.dart';
+import '../manuscript/prose.dart' show docBlocks;
 import '../records/category.dart';
 import '../records/entry.dart';
 import '../records/link.dart';
@@ -16,6 +19,7 @@ class Listed {
     required this.first,
     required this.latest,
     required this.factions,
+    this.namedIn = const [],
   });
 
   final Entry entry;
@@ -24,7 +28,14 @@ class Listed {
   /// Chapters and scenes whose text has a link to this character, in reading order. These are certain.
   final List<String> linkedIn;
 
-  /// Position in the story of the first and latest of those, or -1.
+  /// Chapters and scenes whose text has the character's name (or alias) where it is not linked (`named_in.dart`).
+  final List<String> namedIn;
+
+  /// Where the character is in the book: linked or named (not in reading order across the two; [first] and [latest]
+  /// say where).
+  late final List<String> seenIn = [...linkedIn, ...namedIn.where((id) => !linkedIn.contains(id))];
+
+  /// Position in the story of the first and latest of [seenIn], or -1.
   final int first;
   final int latest;
 
@@ -111,8 +122,9 @@ List<Listed> listCharacters(
   List<Link> links,
   Iterable<StoryNode> nodes,
   Map<String, int> position,
-  CharacterProfile Function(Entry entry) fallback,
-) {
+  CharacterProfile Function(Entry entry) fallback, {
+  Map<String, List<String>> named = const {},
+}) {
   final byId = {for (final e in entries) e.id: e};
   final ordered = stableSorted(
     nodes.where((n) => n.mentions.isNotEmpty),
@@ -120,7 +132,7 @@ List<Listed> listCharacters(
   );
   return [
     for (final entry in entries)
-      if (entry.category == 'character') _listed(entry, byId, ordered, links, position, profiles, fallback),
+      if (entry.category == 'character') _listed(entry, byId, ordered, links, position, profiles, fallback, named),
   ];
 }
 
@@ -132,11 +144,18 @@ Listed _listed(
   Map<String, int> position,
   Map<String, CharacterProfile> profiles,
   CharacterProfile Function(Entry entry) fallback,
+  Map<String, List<String>> nameFinds,
 ) {
   final linkedIn = [
     for (final node in ordered)
       if (node.mentions.contains(entry.id)) node.id,
   ];
+  // Named but not linked, in reading order; only chapters and scenes still in the book.
+  final namedIn = stableSorted([
+    for (final id in nameFinds[entry.id] ?? const <String>[])
+      if (position.containsKey(id) && !linkedIn.contains(id)) id,
+  ], (a, b) => position[a]! - position[b]!);
+  final seen = stableSorted([...linkedIn, ...namedIn], (a, b) => (position[a] ?? 0) - (position[b] ?? 0));
   final factions = <String>[
     for (final link in links)
       if (byId[link.fromId == entry.id ? link.toId : (link.toId == entry.id ? link.fromId : '')] case final other?
@@ -149,8 +168,9 @@ Listed _listed(
     entry: entry,
     profile: profiles[entry.id] ?? fallback(entry),
     linkedIn: linkedIn,
-    first: linkedIn.isEmpty ? -1 : (position[linkedIn.first] ?? -1),
-    latest: linkedIn.isEmpty ? -1 : (position[linkedIn.last] ?? -1),
+    namedIn: namedIn,
+    first: seen.isEmpty ? -1 : (position[seen.first] ?? -1),
+    latest: seen.isEmpty ? -1 : (position[seen.last] ?? -1),
     factions: {...factions, if (named.isNotEmpty && !byId.containsKey(named)) named}.toList(),
   );
 }
@@ -216,7 +236,7 @@ List<Listed> sortCharacters(List<Listed> list, CastSort sort) {
     CastSort.created => (Listed a, Listed b) => then(b.entry.createdAt - a.entry.createdAt, a, b),
     CastSort.first => seen((l) => l.first, 1),
     CastSort.latest => seen((l) => l.latest, -1),
-    CastSort.appearances => (Listed a, Listed b) => then(b.linkedIn.length - a.linkedIn.length, a, b),
+    CastSort.appearances => (Listed a, Listed b) => then(b.seenIn.length - a.seenIn.length, a, b),
     CastSort.custom => (Listed a, Listed b) {
       final byOrder = a.profile.order - b.profile.order;
       if (byOrder != 0) return _sign(byOrder);
@@ -276,4 +296,23 @@ int countMentions(Iterable<String> texts, Iterable<String> names) {
     unicode: true,
   );
   return texts.fold(0, (n, text) => n + pattern.allMatches(text).length);
+}
+
+/// [countMentions] over the chapters as stored ([storedContents]: each chapter's record as JSON text, as
+/// `NovelStore.rawJsonIn` reads them), as a job for an isolate (`background.dart`): decoding the book and reading out
+/// its text is done there, away from the screen. Made at the top level and holding only plain data, so it can be sent.
+/// A record that cannot be read counts as an empty chapter.
+int Function() mentionsJob(List<String> storedContents, List<String> names) =>
+    () => countMentions([
+      for (final json in storedContents)
+        for (final block in docBlocks(_docOf(json))) block.text,
+    ], names);
+
+Object? _docOf(String json) {
+  try {
+    final row = jsonDecode(json);
+    return row is Map ? row['doc'] : null;
+  } on FormatException {
+    return null;
+  }
 }

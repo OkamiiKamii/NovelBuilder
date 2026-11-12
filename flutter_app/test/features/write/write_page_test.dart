@@ -294,7 +294,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Save goals'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('of 500 words'), findsOneWidget);
+    expect(find.text('Today: 7 of 500 words'), findsOneWidget, reason: 'under the page');
+    expect(find.text('Today: 7 of 500 words · this week 7'), findsOneWidget, reason: 'in the day book');
   });
 
   testWidgets('on a phone: the outline first, the chapter full screen, and back', (tester) async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/domain/characters/cast.dart';
+import '../../../shared/domain/characters/together.dart';
 import '../../../shared/domain/records/relation.dart';
 import '../../../shared/domain/relationships/relation_types.dart';
 import '../../relationships/relationship_page.dart' show relate;
@@ -43,6 +44,7 @@ class CastTies extends ConsumerWidget {
       for (final r in cast.snapshot.rows('characterRelations').map(CharacterRelation.new)) _pair(r.fromId, r.toId): r,
     };
     final actions = CharacterActions(context, cast.novelId);
+    final together = chaptersTogether(cast.list, cast.model.order);
 
     Widget header(String id, String name) => Tooltip(
       message: name,
@@ -118,6 +120,7 @@ class CastTies extends ConsumerWidget {
                               // Each pair once: the lower half mirrors the upper and offers the same.
                               onOpen: (r) => actions.router.go('/organize/relationship/${r.id}'),
                               onAdd: (preset) => relate(actions, (c) => c.createRelation(row.id, col.id, preset)),
+                              together: together[_pair(row.id, col.id)]?.length ?? 0,
                             ),
                     ),
                   ),
@@ -144,13 +147,23 @@ Color _kindColour(String category, String preset, ColorScheme scheme) => switch 
 };
 
 class _Tie extends StatefulWidget {
-  const _Tie({required this.row, required this.col, required this.relation, required this.onOpen, required this.onAdd});
+  const _Tie({
+    required this.row,
+    required this.col,
+    required this.relation,
+    required this.onOpen,
+    required this.onAdd,
+    this.together = 0,
+  });
 
   final String row;
   final String col;
   final CharacterRelation? relation;
   final void Function(CharacterRelation r) onOpen;
   final void Function(String preset) onAdd;
+
+  /// Chapters the two share on the page (`together.dart`): said in an empty square, so a tie the book shows is seen.
+  final int together;
 
   @override
   State<_Tie> createState() => _TieState();
@@ -203,7 +216,9 @@ class _TieState extends State<_Tie> {
     }
     return Semantics(
       button: true,
-      label: '$row and $col: no tie yet. Add one',
+      label: widget.together > 0
+          ? '$row and $col: no tie yet, together in ${widget.together} chapters. Add one'
+          : '$row and $col: no tie yet. Add one',
       onTap: () => _menu.currentState?.showButtonMenu(),
       excludeSemantics: true,
       child: PopupMenuButton<String>(
@@ -224,7 +239,22 @@ class _TieState extends State<_Tie> {
             borderRadius: BorderRadius.circular(6),
             border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.7)),
           ),
-          child: Center(child: Icon(Icons.add, size: 18, color: scheme.onSurfaceVariant.withValues(alpha: 0.7))),
+          child: Center(
+            child: widget.together >= togetherAtLeast
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add, size: 16, color: scheme.primary),
+                      Text(
+                        '${widget.together} together',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: vaultText(context, size: 13, style: FontStyle.italic, color: scheme.primary),
+                      ),
+                    ],
+                  )
+                : Icon(Icons.add, size: 18, color: scheme.onSurfaceVariant.withValues(alpha: 0.7)),
+          ),
         ),
       ),
     );

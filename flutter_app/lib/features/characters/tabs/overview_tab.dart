@@ -11,6 +11,8 @@ import '../../../shared/domain/stable_sort.dart';
 import '../../codex/widgets/connections_panel.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import '../widgets/in_their_pages.dart';
+import '../widgets/in_their_words.dart';
 import '../widgets/parts.dart';
 import '../widgets/sections_view.dart';
 import '../widgets/vault.dart';
@@ -65,6 +67,11 @@ class OverviewTab extends StatelessWidget {
         if (symbolOf(cast, entry) case final symbol?) ...[gap, _Symbol(symbol)],
         gap,
         _InTheManuscript(cast: cast, listed: listed, actions: actions),
+        // What the book says where they are in it (`in_their_pages.dart`), with its own space above; nothing while they
+        // are nowhere yet.
+        InTheirPages(cast: cast, entryId: entry.id, actions: actions),
+        // What they say in the book (`in_their_words.dart`); nothing while they have no lines.
+        InTheirWords(cast: cast, entryId: entry.id, actions: actions),
         gap,
         _Timeline(cast: cast, entryId: entry.id, name: entry.name),
         gap,
@@ -131,15 +138,16 @@ class _InTheManuscript extends StatelessWidget {
       onPressed: () => actions.openChapter(id),
       child: Text(documentName(cast, id)),
     );
+    final named = listed.namedIn;
     return ProfileBox(
       title: 'In the manuscript',
       children: [
-        if (linked.isEmpty)
+        if (linked.isEmpty && named.isEmpty)
           NotRecorded(
             'No chapter links to ${entry.name} yet. In the editor, select their name (or a title they go by) and link '
             'it to this character.',
           )
-        else ...[
+        else if (linked.isNotEmpty) ...[
           Text(
             'Linked in ${plural(linked.length, 'chapter or scene', 'chapters and scenes')}. '
             'First: ${documentName(cast, linked.first)}'
@@ -147,6 +155,16 @@ class _InTheManuscript extends StatelessWidget {
           ),
           Wrap(children: [for (final id in linked.take(24)) chapterLink(id)]),
           if (linked.length > 24) Text('and ${formatNumber(linked.length - 24)} more'),
+        ],
+        // Found by name, where nobody linked them (`named_in.dart`).
+        if (named.isNotEmpty) ...[
+          if (linked.isNotEmpty) const SizedBox(height: 8),
+          Text(
+            '${linked.isEmpty ? 'Named' : 'Also named'} in ${plural(named.length, 'chapter or scene', 'chapters and scenes')}'
+            ' (their name, an alias or their title on the page):',
+          ),
+          Wrap(children: [for (final id in named.take(24)) chapterLink(id)]),
+          if (named.length > 24) Text('and ${formatNumber(named.length - 24)} more'),
         ],
         if (appears.isNotEmpty || mentioned.isNotEmpty) ...[
           const SizedBox(height: 8),
