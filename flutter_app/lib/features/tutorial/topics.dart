@@ -146,6 +146,56 @@ const tutorialTopics = <Topic>[
         'you come back.',
   ),
   Topic(
+    id: 'daybook',
+    title: 'The day book',
+    group: 'Writing',
+    where: 'At the head of the contents in Write (on a phone, Write opens on it).',
+    what:
+        'Every day you write leaves a mark, and coming back is one press. A note for next time and a nudge when you '
+        'stall keep you going; none of it writes a word for you.',
+    steps: [
+      'At the head of the contents, the day book: five weeks of ink, a mark for each day you wrote (darker the more '
+          'words), today ringed until it meets your goal, and the days in a row. Press Carry on to go back to the '
+          'chapter with the caret after its last word, or Set a daily goal.',
+      'Under it, the road to the draft: the manuscript’s length along a road past the first thousand words, a short '
+          'story, a novelette and a novella to the whole draft, the next milestone named with how far it is.',
+      'Under a chapter’s last line, press Leave a note for next time and write what happens next (leave the page '
+          'after 100 words or more and it is offered). It waits pinned under the last line and in the day book; press '
+          'Done with it when you are.',
+      'Page gone still for 40 seconds? Stuck? A nudge offers a prompt: from the chapter’s plan, its last line, or a '
+          'move writers make. Press Another, or Back to it; Don’t offer nudges turns them off.',
+      'Press Share today’s page for the day as a card: the words, the goal and the days in a row. A line of today’s '
+          'writing is on it only if you choose Include a line I wrote today.',
+    ],
+    example:
+        'Write 600 words of Chapter 9 and leave the note “Mira finds the letter”. Tomorrow the day book shows two '
+        'days in a row, and Carry on opens Chapter 9 with the note under its last line.',
+  ),
+  Topic(
+    id: 'pagetools',
+    title: 'Ways to see the page',
+    group: 'Writing',
+    where: 'In the editor: the buttons above the page (on a phone, in Desk).',
+    what:
+        'Other ways to look at a chapter: who speaks, how it sounds read aloud, how its sentences run and how it '
+        'grew. Each one only reads; your words are never changed.',
+    steps: [
+      'Voices: each line of dialogue in its speaker’s colour from the cast, the telling faded back, and who has the '
+          'floor; press a speaker to go to their lines. Put the voices away when you are done.',
+      'Listen: the chapter read aloud by your device’s own voice, a sentence at a time from the caret, the one being '
+          'read lit. Back a sentence, On a sentence, pause or change the pace; any key stops it.',
+      'Rhythm: the chapter as a waveform, a bar for every sentence as tall as it is long, dialogue brighter than the '
+          'telling. Runs that keep one beat are marked; press a bar to go to its sentence.',
+      'Time-lapse: the chapter writing itself, from its first saved copy to now, each copy’s new paragraphs inked '
+          'in. Press Play, or drag through it.',
+      'Under the chapter’s heading, In this chapter shows who and what the page names, most mentioned first; press '
+          'one to open their page. Today’s ink (in the text settings) marks each paragraph written or changed today.',
+    ],
+    example:
+        'Turn on Voices in Chapter 4: Kael’s lines in blue, Mira’s in gold, and Kael has the floor. Then press Listen '
+        'to hear the argument read aloud from where you are.',
+  ),
+  Topic(
     id: 'outline',
     title: 'The outline',
     group: 'Writing',
@@ -263,34 +313,47 @@ const tutorialTopics = <Topic>[
     matches: ['/organize/character'],
     what: 'Your cast: a library to find characters in, and a profile for each with sections you shape yourself.',
     steps: [
-      'An empty cast is a playbill: name the hero, who stands against them and by them, and press Raise the '
-          'curtain. Or press New character and write them in a line (“Mira Vance, 34, a smuggler from Glass River, '
-          'Kai’s sister”): age, gender, work, hometown and ties to the cast are recorded from it. Names you keep '
-          'writing wait at the top: Add one '
-          'in a press, or set it aside with Not a character.',
-      'On the profile, add sections and fields, or press Interview: questions, one at a time, that fill it in. Each '
-          'card says how well you know them (Known 4 of 11); a press there asks the next. With no picture, they are '
-          'a cameo drawn from their profile: gender sets the hair, old age silvers it, an elf has pointed ears. At the '
-          'top, the whole cast stands for a photograph, principals in front; press anyone to open them. While the '
-          'cast is three or fewer, the protagonist stands on a stage with empty chairs round them, each a question '
-          '(Who taught Wren? Who is Wren’s rival?): press one, write a name, and they join the cast already tied.',
-      'Use the tabs for relationships, secrets, notes, history and progression. In their pages quotes the '
-          'sentence each chapter first names them in; In their own words, the lines they say (“…,” Wren said). '
-          'A press on either opens the chapter there.',
-      'Search by name, alias or tag; filter by role; switch between Cards, List, Ties and Orbit (on a phone, one row '
-          'under the search, with the order and Arrange for sort and filters). In Ties a “+” between two '
-          'characters says who they are to each other. Orbit sets the cast round the protagonist like planets: the '
-          'principals close in, the minor cast further out, those not on the page yet in the wings; the larger, the '
-          'more chapters they are in, the brighter the line to the middle, the more they share the page with the '
-          'lead, and the ring round each is how well you know them. Under it, the one to interview next. Together on the page, at the top, asks about the pairs the '
-          'book keeps side by side with no tie: How are they tied? records one in a press, Not tied sets it aside.',
-      'Under each card, a line runs through the book: a tick for every chapter, lit where the character appears. '
-          'They are found by name, with nothing to link: their name, a part of it that is theirs alone, an alias, or '
-          'a title (“the Provost”). The World’s entries are found the same way.',
+      'An empty cast is a playbill: name the hero, who stands against them and who stands by them, and press Raise '
+          'the curtain. While the cast is three or fewer, the hero stands on a stage among empty chairs, each a '
+          'question (Who taught Wren?): press one and write a name, and they join the cast already tied.',
+      'Press New character and write them in a line (“Mira Vance, 34, a smuggler from Glass River, Kai’s sister”). '
+          'Age, gender, work, hometown and ties to the cast are recorded from it, and listed before you create them.',
+      'On the profile, add sections and fields, or press Interview for questions, one at a time, that fill it in. '
+          'Each card says how well you know them (Known 4 of 11). With no picture, they are a cameo drawn from their '
+          'profile: gender sets the hair, old age silvers it, an elf has pointed ears.',
+      'Use the profile’s tabs for relationships, secrets, notes, history and progression.',
+      'To find someone, type in Search the cast (name, alias or tag), pick a role, and switch between Cards, List, '
+          'Ties and Orbit. On a phone they are one row under the search; Arrange the cast holds In what order and '
+          'Show only.',
     ],
     example:
         'Create “Kaelen Draven”, role Protagonist, with the epithet “The Oathbreaker”. Searching “oathbreaker” finds '
         'him.',
+  ),
+  Topic(
+    id: 'cast',
+    title: 'The cast in your pages',
+    group: 'Worldbuilding',
+    where: 'In Organize → Characters, and on every character’s profile.',
+    what:
+        'Your chapters already know your cast: each character is found in them by name, with nothing to link, and what '
+        'the book says of them is a press away.',
+    steps: [
+      'Characters are found by their name, a part of it that is theirs alone, an alias or a title (“the Provost”). '
+          'The line under each card ticks every chapter, lit where they are. Names you keep writing that are nobody '
+          'yet wait at the top: Add them, or Not a character.',
+      'On a profile, In their pages quotes the sentence each chapter first names them in; In their own words, the '
+          'lines they say (“…,” Wren said). A press on either opens the chapter there.',
+      'Together on the page, at the top of the cast, names the pairs the book keeps side by side with no tie: How '
+          'are they tied? records one in a press, Not tied sets it aside. In Ties, a “+” between two does the same.',
+      'Orbit sets the cast round the protagonist like planets: principals close in, the minor cast further out, those '
+          'not on the page yet in the wings. The larger, the more chapters; the ring round each, how well you know '
+          'them. Under it, the one to interview next.',
+      'At the top, the whole cast stands for a photograph, the principals in front: press anyone to open them.',
+    ],
+    example:
+        'Write “the Provost” through Chapter 6 and give Aldous Crane that title: his card lights Chapter 6, and In '
+        'their pages quotes the line.',
   ),
   Topic(
     id: 'world',
@@ -302,16 +365,17 @@ const tutorialTopics = <Topic>[
         'Your world’s encyclopedia: places, factions, items, powers, lore and kinds of your own, each with its fields.',
     steps: [
       'An empty world opens on its first page: name a place, who holds power, what everyone wants, fears and '
-          'remembers, and press Begin this world. Later, press New entry and choose a category. Found in your pages, '
-          'at the top, offers what your chapters name (“the Mimir Forest”, “the Smart Atoms skill”): Add it in a '
-          'press, or set it aside with Not an entry.',
-      'Fill in its summary and fields.',
-      'Connect it to other records (“seated in”, “member of”) under Every connection.',
-      'In the editor, select a name and link it to its entry.',
+          'remembers, and press Begin this world. Later, press New entry and choose a category.',
+      'Found in your pages, at the top, offers what your chapters name but the world does not hold yet (“the Mimir '
+          'Forest”, “the Smart Atoms skill”): add it as a place, a power or whatever it is in a press, or set it '
+          'aside with Not an entry.',
+      'Fill in an entry’s summary and fields, and connect it to other records (“seated in”, “member of”) under Every '
+          'connection. In the editor, select a name and link it to its entry.',
       'Each category is a volume on the shelf: press one to read only its entries, and a letter to jump to it. The '
-          'line under an entry lights the chapters it is in, linked or named. The whole world opens on its chart: each place an island, the places inside it within its shore, the larger '
-          'the more chapters it is in, and what is linked to a place as seals on its shore. What is linked to no place '
-          'floats adrift below; press one to say where it belongs. A press on a place or a seal opens it.',
+          'line under an entry lights the chapters it is in, linked or named.',
+      'The whole world opens on its chart: each place an island (the larger, the more chapters it is in), the places '
+          'inside it within its shore, and what is linked to it as seals on the shore. What belongs to no place floats '
+          'adrift below; press one to say where it belongs.',
     ],
     example: 'Create the faction “Ash Guild” and connect it to the place “Emberfall” as “seated in”.',
   ),
@@ -339,7 +403,8 @@ const tutorialTopics = <Topic>[
       'Pick a card: LitRPG, Cultivation, Hard magic or Superhero. Each shows a sheet in it as it would look (a '
           'status window, a cultivation record, an arcane ledger, a threat dossier, its numbers worked out by the '
           'system itself) and its ranks; press Begin with it, or Begin blank. When your chapters already speak of '
-          'one, Your book’s own system comes first: your hero’s status window holding your skills, all in a press.',
+          'one (levels, skills, stats), your book’s own system comes first, your hero’s status window holding the '
+          'skills you wrote: press Begin with your book’s system.',
       'Define attributes and resources, then levels or named stages.',
       'Add groups such as classes and skills, with what they need.',
       'Give a character a sheet, and record what changes chapter by chapter.',
@@ -762,6 +827,29 @@ const tutorialButtonNames = [
   'Search the novel',
   'Sprint',
   'Plan this chapter',
+  'Carry on',
+  'Set a daily goal',
+  'Leave a note for next time',
+  'Done with it',
+  'Stuck? A nudge',
+  'Back to it',
+  'Don’t offer nudges',
+  'Share today’s page',
+  'Include a line I wrote today',
+  'Put the voices away',
+  'Back a sentence',
+  'On a sentence',
+  'Today’s ink',
+  'Search the cast',
+  'Arrange the cast',
+  'In what order',
+  'Show only',
+  'Orbit',
+  'Found in your pages',
+  'In their pages',
+  'In their own words',
+  'Together on the page',
+  'Begin with your book’s system',
   'Add the sample novel',
   'How are they tied?',
   'Not tied',
