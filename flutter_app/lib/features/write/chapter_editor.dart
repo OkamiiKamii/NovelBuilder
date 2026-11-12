@@ -11,6 +11,7 @@ import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/save_status_indicator.dart';
 import '../../shared/data/providers.dart';
+import '../../shared/data/speech.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/manuscript/prose.dart';
 import '../../shared/domain/model/story_order.dart';
@@ -31,6 +32,7 @@ import 'first_page.dart';
 import 'fresh_ink.dart';
 import 'goal_pledge.dart';
 import 'in_chapter.dart';
+import 'listen.dart';
 import 'margin.dart';
 import 'next_note.dart';
 import 'nudge.dart';
@@ -97,6 +99,9 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   /// The voices are drawn the same way (`voices.dart`): dialogue in its speaker's colour.
   final _voices = VoicesLens();
 
+  /// The chapter read aloud, the sentence being read lit (`listen.dart`).
+  late final _listen = ListenReader(ref.read(speakerProvider))..show = _showRange;
+
   /// The paragraphs written or changed today, marked beside the text (`fresh_ink.dart`).
   final _ink = FreshInk();
 
@@ -106,7 +111,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   /// Watches for the writing stopping, to offer a nudge (`nudge.dart`).
   late final _stuck = StuckWatch(focused: () => _focus.hasFocus);
   void _stir([Object? _]) => _stuck.stirred();
-  late final _pencilPhases = [_voices.styler, _pencil.styler];
+  late final _pencilPhases = [_voices.styler, _listen.styler, _pencil.styler];
   DateTime? _dirtySince;
   Timer? _draftTimer;
   Timer? _countTimer;
@@ -151,6 +156,51 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
         if (mounted) ref.read(sprintProvider.notifier).report(widget.node.id, _counts.words);
       });
     }
+  }
+
+  /// Listen out (from the sentence the caret is in, the keyboard put away so the page shows) or put away.
+  void _listenFromCaret(bool on) {
+    final caret = _composer?.selection?.extent;
+    if (on) _focus.unfocus();
+    _listen.setOn(
+      on,
+      startNode: caret?.nodeId,
+      startOffset: switch (caret?.nodePosition) {
+        final TextNodePosition p => p.offset,
+        _ => 0,
+      },
+    );
+  }
+
+  /// Brings a line of the page into view, about a third of the way down, when it is not already well in it.
+  void _showRange(String nodeId, int start, int end) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Object? layout = _layout.currentState;
+      if (!mounted || !_scroll.hasClients || layout is! DocumentLayout) return;
+      final rect = layout.getRectForSelection(
+        DocumentPosition(
+          nodeId: nodeId,
+          nodePosition: TextNodePosition(offset: start),
+        ),
+        DocumentPosition(
+          nodeId: nodeId,
+          nodePosition: TextNodePosition(offset: end),
+        ),
+      );
+      final position = _scroll.position;
+      final viewport = position.context.storageContext.findRenderObject();
+      if (rect == null || viewport is! RenderBox) return;
+      final top = layout.getGlobalOffsetFromDocumentOffset(rect.topLeft).dy - viewport.localToGlobal(Offset.zero).dy;
+      final bottom = top + rect.height;
+      final h = viewport.size.height;
+      if (top >= h * 0.12 && bottom <= h * 0.8) return;
+      final target = (position.pixels + top - h * 0.3).clamp(position.minScrollExtent, position.maxScrollExtent);
+      position.animateTo(
+        target,
+        duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 420),
+        curve: Curves.easeInOutCubic,
+      );
+    });
   }
 
   /// The page's paragraphs as they stood when today began (null when that cannot be known).
@@ -248,6 +298,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _composer!.selectionNotifier.addListener(_stir);
     _pencil.attach(document);
     _voices.attach(document);
+    _listen.attach(document);
     _ink.attach(document, _dayStartText());
     _company.attach(document, pageCompanyOf(ref.read(novelStoreProvider), widget.novelId));
   }
@@ -255,6 +306,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   void _detach() {
     _pencil.detach();
     _voices.detach();
+    _listen.detach();
     _ink.detach();
     _company.detach();
     _document?.removeListener(_changed);
@@ -472,6 +524,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _detach();
     _pencil.dispose();
     _voices.dispose();
+    _listen.dispose();
     _ink.dispose();
     _company.dispose();
     _focus.removeListener(_stir);
@@ -769,7 +822,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
           onTap: () => Navigator.of(sheet).pop(open),
         );
         return SafeArea(
-          // Every tool built at once (eight), so each can be found and read, at any text size.
+          // Every tool built at once (nine), so each can be found and read, at any text size.
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(bottom: 12),
             child: Column(
@@ -817,6 +870,13 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   _openDrafts,
                 ),
                 tool(Icons.history, 'Version history', 'Earlier versions: compare, and bring one back.', _openHistory),
+                if (_editor != null)
+                  tool(
+                    Icons.headphones_outlined,
+                    ref.read(listenProvider) ? 'Stop listening' : 'Listen',
+                    'Hear this chapter read aloud from where you are, the line being read lit.',
+                    () => ref.read(listenProvider.notifier).set(!ref.read(listenProvider)),
+                  ),
                 if (_editor != null)
                   tool(
                     Icons.graphic_eq,
@@ -878,6 +938,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     // The pencil reads the chapter when it is taken out, and its colours follow the theme; both outside the build.
     ref.listen(redPencilProvider, (_, on) => _pencil.on = on);
     final voicesOn = ref.watch(voicesProvider);
+    final listenOn = ref.watch(listenProvider);
+    ref.listen(listenProvider, (_, on) => _listenFromCaret(on));
     final freshOn = ref.watch(freshInkProvider);
     // The cast is read again as the voices come out, so a character added since is heard.
     ref.listen(voicesProvider, (_, on) {
@@ -1072,6 +1134,14 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                         ),
                         if (_editor != null)
                           IconButton(
+                            tooltip: 'Listen: hear this chapter read aloud',
+                            isSelected: listenOn,
+                            onPressed: () => ref.read(listenProvider.notifier).set(!listenOn),
+                            icon: const Icon(Icons.headphones_outlined),
+                            selectedIcon: Icon(Icons.headphones, color: theme.colorScheme.primary),
+                          ),
+                        if (_editor != null)
+                          IconButton(
                             tooltip: 'Rhythm: your sentences as a waveform',
                             onPressed: _openRhythm,
                             icon: const Icon(Icons.graphic_eq),
@@ -1117,6 +1187,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   editor: _editor!,
                   onClose: () => ref.read(redPencilProvider.notifier).set(false),
                 ),
+              if (listenOn && _editor != null && !focus)
+                ListenBar(reader: _listen, onClose: () => ref.read(listenProvider.notifier).set(false)),
               if (voicesOn && _editor != null && !focus)
                 VoicesBar(lens: _voices, editor: _editor!, onClose: () => ref.read(voicesProvider.notifier).set(false)),
               if (_editor != null && !focus)

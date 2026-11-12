@@ -11,6 +11,7 @@ import 'package:novel_builder/features/write/writing_prefs.dart';
 import 'package:novel_builder/shared/data/database.dart';
 import 'package:novel_builder/shared/data/novel_store.dart';
 import 'package:novel_builder/shared/data/providers.dart';
+import 'package:novel_builder/shared/data/speech.dart';
 import 'package:novel_builder/shared/domain/json.dart';
 import 'package:novel_builder/shared/domain/manuscript/prose.dart';
 import 'package:novel_builder/shared/domain/records/story_node.dart';
@@ -27,8 +28,9 @@ Future<({ProviderContainer c, String novel, String chapter})> openWrite(
   Size size = desktop,
   FakeBackupFiles? files,
   bool select = true,
+  Speaker? speaker,
 }) async {
-  final c = await pumpApp(tester, size: size, location: '/write', files: files);
+  final c = await pumpApp(tester, size: size, location: '/write', files: files, speaker: speaker);
   final novel = c.read(libraryServiceProvider).create({'title': 'Ash'});
   final m = c.read(manuscriptServiceProvider);
   final chapter = m.create(novel.id, NodeKind.chapter, title: 'The Gate');

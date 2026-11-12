@@ -11,6 +11,7 @@ import 'package:novel_builder/shared/data/background.dart';
 import 'package:novel_builder/shared/data/backup_files.dart';
 import 'package:novel_builder/shared/data/database.dart';
 import 'package:novel_builder/shared/data/providers.dart';
+import 'package:novel_builder/shared/data/speech.dart';
 
 /// Window sizes used across tests: a phone, a small tablet and a desktop window.
 const phone = Size(390, 844);
@@ -59,6 +60,7 @@ Future<ProviderContainer> pumpApp(
   String location = '/',
   AppDatabase? db,
   FakeBackupFiles? files,
+  Speaker? speaker,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -70,6 +72,7 @@ Future<ProviderContainer> pumpApp(
     overrides: [
       databaseProvider.overrideWithValue(database),
       backupFilesProvider.overrideWithValue(files ?? FakeBackupFiles()),
+      if (speaker != null) speakerProvider.overrideWithValue(speaker),
       routerProvider.overrideWith((ref) => buildRouter(initialLocation: location)),
       // Work the app does in its own isolate runs here in place: a widget test's clock does not wait for isolates.
       // The same functions run either way (`test/shared/data/background_test.dart` runs one in a real isolate).
