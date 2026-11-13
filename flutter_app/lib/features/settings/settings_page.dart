@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../app/shell/app_shortcuts.dart';
+import '../../app/theme/book_tone.dart';
 import '../../app/theme/theme_choice.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
@@ -47,7 +48,10 @@ class SettingsPage extends ConsumerWidget {
           const _ThisNovel(),
           FormSection(
             title: 'Appearance',
-            children: [ThemeSwatches(choice: choice, onChoose: ref.read(themeChoiceProvider.notifier).choose)],
+            children: [
+              ThemeSwatches(choice: choice, onChoose: ref.read(themeChoiceProvider.notifier).choose),
+              const _WearTheBook(),
+            ],
           ),
           const SizedBox(height: 16),
           FormSection(
@@ -226,6 +230,49 @@ class _RestorePoints extends ConsumerWidget {
             ],
           ),
       ],
+    );
+  }
+}
+
+/// Whether the app wears the open book's colour (`app/theme/book_tone.dart`), with the colour it wears now.
+class _WearTheBook extends ConsumerWidget {
+  const _WearTheBook();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final on = ref.watch(wearBookProvider);
+    final worn = ref.watch(wornColourProvider);
+    final id = ref.watch(openNovelProvider);
+    final title = id == null ? null : ref.watch(novelStoreProvider).novel(id)?.title;
+    final scheme = Theme.of(context).colorScheme;
+    final named = title == null || title.isEmpty ? 'this book' : '“$title”';
+    final wears = worn != null && canWear(worn);
+    return SwitchListTile(
+      contentPadding: EdgeInsets.zero,
+      value: on,
+      onChanged: ref.read(wearBookProvider.notifier).set,
+      secondary: ExcludeSemantics(
+        child: Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: worn,
+            border: Border.all(color: scheme.outline, width: wears ? 0 : 1.5),
+          ),
+        ),
+      ),
+      title: const Text('Wear each book’s colour'),
+      subtitle: Text(
+        !on
+            ? 'The app keeps its own colours, whichever book is open.'
+            : worn == null
+            ? 'While a novel is open, the app takes on its cover colour.'
+            : wears
+            ? 'The app is in the colour of $named. Change it in the book’s details.'
+            : 'The cover of $named is too grey to wear, so the app keeps its own colours. Give it a colour in the '
+                  'book’s details and the app takes it on.',
+      ),
     );
   }
 }

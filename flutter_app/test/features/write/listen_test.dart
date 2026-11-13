@@ -37,14 +37,27 @@ class FakeSpeaker implements Speaker {
   }
 }
 
-/// The background of the page's text where the line being read is lit.
-List<String> lit(WidgetTester tester) => [
+/// The background of the page's text where the line being read is lit: each lit run, its pieces side by side joined
+/// (a chapter's raised initial is a piece of its own).
+List<String> lit(WidgetTester tester) {
+  final out = <String>[];
   for (final rich in tester.widgetList<RichText>(
     find.descendant(of: find.byType(SuperEditor), matching: find.byWidgetPredicate((w) => w is RichText)),
-  ))
-    for (final span in [rich.text, if (rich.text is TextSpan) ...?(rich.text as TextSpan).children])
-      if (span is TextSpan && span.style?.backgroundColor != null && (span.text ?? '').isNotEmpty) span.text!,
-];
+  )) {
+    String? run;
+    for (final span in [rich.text, if (rich.text is TextSpan) ...?(rich.text as TextSpan).children]) {
+      if (span is! TextSpan || (span.text ?? '').isEmpty) continue;
+      if (span.style?.backgroundColor != null) {
+        run = '${run ?? ''}${span.text}';
+      } else if (run != null) {
+        out.add(run);
+        run = null;
+      }
+    }
+    if (run != null) out.add(run);
+  }
+  return out;
+}
 
 void main() {
   setUpAll(() => BlinkController.indeterminateAnimationsEnabled = false);

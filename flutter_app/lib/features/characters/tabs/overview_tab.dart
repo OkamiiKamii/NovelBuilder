@@ -11,6 +11,7 @@ import '../../../shared/domain/stable_sort.dart';
 import '../../codex/widgets/connections_panel.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import '../widgets/against_your_pages.dart';
 import '../widgets/in_their_pages.dart';
 import '../widgets/in_their_words.dart';
 import '../widgets/parts.dart';
@@ -72,6 +73,8 @@ class OverviewTab extends StatelessWidget {
         InTheirPages(cast: cast, entryId: entry.id, actions: actions),
         // What they say in the book (`in_their_words.dart`); nothing while they have no lines.
         InTheirWords(cast: cast, entryId: entry.id, actions: actions),
+        // Their looks as the chapters give them, beside the profile (`against_your_pages.dart`); nothing when the page is silent.
+        AgainstYourPages(cast: cast, entryId: entry.id, actions: actions),
         gap,
         _Timeline(cast: cast, entryId: entry.id, name: entry.name),
         gap,

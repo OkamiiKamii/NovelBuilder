@@ -201,6 +201,55 @@ class InChapterStrip extends StatelessWidget {
   );
 }
 
+/// An entry's own colour: a character's cast tone, otherwise its kind's colour.
+Color entryTone(BuildContext context, Entry entry, Category? kind) =>
+    entry.category == 'character' ? castTone(entry.id) : _hex(kind?.color ?? '', Theme.of(context).colorScheme.primary);
+
+/// An entry's face in a round of [size]: a character's picture, else their cameo; anything else, its kind's icon in its
+/// colour.
+Widget entryFace(
+  BuildContext context, {
+  required Entry entry,
+  CharacterProfile? profile,
+  Category? kind,
+  double size = 50,
+}) {
+  final character = entry.category == 'character';
+  final name = entry.name.trim().isEmpty ? 'Unnamed' : entry.name.trim();
+  final tone = entryTone(context, entry, kind);
+  final bytes = character ? uploadedImageBytes(entry.image) : null;
+  if (bytes != null) {
+    return ClipOval(
+      child: Portrait(name: name, image: entry.image, focal: profile?.focal, size: size),
+    );
+  }
+  if (character) {
+    final look = NovelArt.of(context).bound(tone, lift: 0.1, sink: 0.45, tinted: true);
+    // Round, as every face in the line is: the cameo's ground would otherwise fill a square.
+    return ClipOval(
+      child: SizedBox.square(
+        dimension: size,
+        child: Cameo(
+          look: cameoLookOf(entry, profile),
+          ground: look.ground,
+          ink: look.ink,
+          frame: tone.withValues(alpha: 0.8),
+        ),
+      ),
+    );
+  }
+  return Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: tone.withValues(alpha: 0.18),
+      border: Border.all(color: tone.withValues(alpha: 0.8), width: 1.5),
+    ),
+    child: Icon(kindIconOf(entry.category), color: tone, size: size * 0.48),
+  );
+}
+
 class _Player extends StatelessWidget {
   const _Player({
     required this.entry,
@@ -224,41 +273,8 @@ class _Player extends StatelessWidget {
   Widget build(BuildContext context) {
     final character = entry.category == 'character';
     final name = entry.name.trim().isEmpty ? 'Unnamed' : entry.name.trim();
-    final tone = character ? castTone(entry.id) : _hex(kind?.color ?? '', Theme.of(context).colorScheme.primary);
-    const size = 50.0;
-    Widget face;
-    final bytes = character ? uploadedImageBytes(entry.image) : null;
-    if (bytes != null) {
-      face = ClipOval(
-        child: Portrait(name: name, image: entry.image, focal: profile?.focal, size: size),
-      );
-    } else if (character) {
-      final art = NovelArt.of(context);
-      final look = art.bound(tone, lift: 0.1, sink: 0.45, tinted: true);
-      // Round, as every face in the line is: the cameo's ground would otherwise fill a square.
-      face = ClipOval(
-        child: SizedBox.square(
-          dimension: size,
-          child: Cameo(
-            look: cameoLookOf(entry, profile),
-            ground: look.ground,
-            ink: look.ink,
-            frame: tone.withValues(alpha: 0.8),
-          ),
-        ),
-      );
-    } else {
-      face = Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: tone.withValues(alpha: 0.18),
-          border: Border.all(color: tone.withValues(alpha: 0.8), width: 1.5),
-        ),
-        child: Icon(kindIconOf(entry.category), color: tone, size: 24),
-      );
-    }
+    final tone = entryTone(context, entry, kind);
+    final face = entryFace(context, entry: entry, profile: profile, kind: kind, size: 50);
     final what = kind?.singular ?? (character ? 'Character' : 'Entry');
     return Semantics(
       button: true,

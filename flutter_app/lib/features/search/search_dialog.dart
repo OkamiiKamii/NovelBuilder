@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../app/router.dart';
+import '../../app/shell/trail.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../shared/data/providers.dart';
@@ -18,6 +20,7 @@ import '../characters/character_actions.dart' show entryPath;
 import '../collab/collab_providers.dart';
 import '../workspace/open_novel.dart';
 import '../write/write_providers.dart';
+import 'jumps.dart';
 
 /// The open novel's search index and the names of its groups, built from what is saved when search opens.
 ({SearchIndex index, Map<String, String> groups, String title})? _openIndex(WidgetRef ref) {
@@ -58,6 +61,13 @@ Future<void> showNovelSearch(BuildContext context, WidgetRef ref) async {
   }
   final opened = _openIndex(ref);
   if (opened == null) return;
+  // Places and things to do, and where the author has just been (`jumps.dart`).
+  final novelId = ref.read(openNovelProvider)!;
+  final store = ref.read(novelStoreProvider);
+  final jumps = bookJumps(store, novelId, onKeepWriting: () => GoRouter.of(context).go(Destination.write.path));
+  final here = ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
+  final recent = trailJumps(ref.read(trailProvider), store, novelId, here: here);
+  if (!context.mounted) return;
   final compact = WindowSize.of(context) == WindowSize.compact;
   await showDialog<void>(
     context: context,
@@ -67,9 +77,16 @@ Future<void> showNovelSearch(BuildContext context, WidgetRef ref) async {
         index: opened.index,
         groups: opened.groups,
         title: opened.title,
+        jumps: jumps,
+        recent: recent,
         onOpen: (item, snippet) {
           Navigator.of(dialogContext).pop();
           _open(context, ref, item, snippet);
+        },
+        onJump: (jump) {
+          Navigator.of(dialogContext).pop();
+          ref.read(saveControllerProvider).flush();
+          if (context.mounted) jump.go(context, ref);
         },
       );
       return compact
@@ -111,11 +128,24 @@ const _fieldLabels = {
 };
 
 class _SearchPanel extends StatefulWidget {
-  const _SearchPanel({required this.index, required this.groups, required this.title, required this.onOpen});
+  const _SearchPanel({
+    required this.index,
+    required this.groups,
+    required this.title,
+    required this.onOpen,
+    this.jumps = const [],
+    this.recent = const [],
+    this.onJump,
+  });
   final SearchIndex index;
   final Map<String, String> groups;
   final String title;
   final void Function(EntityResult item, Snippet? snippet) onOpen;
+
+  /// Every place and thing to do; and, before anything is typed, where the author has just been.
+  final List<Jump> jumps;
+  final List<Jump> recent;
+  final ValueChanged<Jump>? onJump;
 
   @override
   State<_SearchPanel> createState() => _SearchPanelState();
@@ -148,6 +178,13 @@ class _SearchPanelState extends State<_SearchPanel> {
     final results = widget.index.search(_settled, _scope);
     final total = results.fold(0, (n, g) => n + g.matchCount);
     final tooShort = _settled.trim().length < minQueryLength;
+    // Go to: what answers the words typed; with nothing typed, where the author has just been.
+    final empty = _settled.trim().isEmpty;
+    final going = widget.onJump == null
+        ? const <Jump>[]
+        : empty
+        ? widget.recent
+        : jumpsFor(_settled, widget.jumps);
     return Material(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,11 +199,17 @@ class _SearchPanelState extends State<_SearchPanel> {
                     autofocus: true,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
-                      hintText: 'Search ${widget.title}…',
+                      hintText: widget.onJump == null ? 'Search ${widget.title}…' : 'A word, a name, or a page…',
                       labelText: 'Search the whole novel',
                     ),
                     onChanged: _changed,
                     onSubmitted: (text) {
+                      // Return goes to a place named by what was typed; else to the first match in the text.
+                      final place = jumpsFor(text, widget.jumps).firstOrNull;
+                      if (place != null && widget.onJump != null && jumpScore(place, text) >= 40) {
+                        widget.onJump!(place);
+                        return;
+                      }
                       final found = widget.index.search(text, _scope);
                       final first = found.firstOrNull?.items.firstOrNull;
                       if (first != null) widget.onOpen(first, first.snippets.firstOrNull);
@@ -202,7 +245,9 @@ class _SearchPanelState extends State<_SearchPanel> {
             child: Semantics(
               liveRegion: true,
               child: Text(
-                tooShort
+                empty && going.isNotEmpty
+                    ? 'Type to search the words, or go to a page by its name.'
+                    : tooShort
                     ? 'Type at least two letters. Every word must appear in a chapter or entry for it to be found.'
                     : results.isEmpty
                     ? 'Nothing matches “${_settled.trim()}”${_scope == SearchScope.all ? '' : ' in ${_scope.label.toLowerCase()}'}.'
@@ -217,6 +262,28 @@ class _SearchPanelState extends State<_SearchPanel> {
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 8),
               children: [
+                if (going.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                    child: Semantics(
+                      header: true,
+                      child: Text(empty ? 'Where you were' : 'Go to', style: theme.textTheme.titleSmall),
+                    ),
+                  ),
+                  for (final j in going)
+                    ListTile(
+                      leading: CircleAvatar(
+                        radius: 16,
+                        backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.14),
+                        child: Icon(j.icon, size: 18, color: theme.colorScheme.primary),
+                      ),
+                      title: Text(j.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      subtitle: Text(j.kind, style: muted),
+                      trailing: Icon(Icons.north_east, size: 18, color: theme.colorScheme.onSurfaceVariant),
+                      onTap: () => widget.onJump!(j),
+                    ),
+                  if (results.isNotEmpty) const Divider(indent: 16, endIndent: 16),
+                ],
                 for (final g in results) ...[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),

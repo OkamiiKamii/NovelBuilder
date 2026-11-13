@@ -126,7 +126,7 @@ void main() {
     expect(inSheet(find.textContaining('has been quiet since chapter 1')), findsOneWidget);
     expect(inSheet(find.textContaining('has no plan yet')), findsOneWidget);
     double top(String text) => tester.getTopLeft(inSheet(find.text(text))).dy;
-    expect(top('Search the novel'), lessThan(top('Loose ends')), reason: 'Search is still reached first');
+    expect(top('Search, or go anywhere'), lessThan(top('Loose ends')), reason: 'Search is still reached first');
     expect(top('Loose ends'), lessThan(top('Plan')));
     await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
     await expectLater(tester, meetsGuideline(textContrastGuideline));

@@ -27,8 +27,14 @@ enum ThemeChoice {
 
   /// The themes the app is given for this choice: System Monolith is its own, by day and by night; the others are
   /// parchment and midnight, as the device or the choice asks.
-  ThemeData get dayTheme => this == ThemeChoice.monolith ? AppTheme.monolith() : AppTheme.light();
-  ThemeData get nightTheme => this == ThemeChoice.monolith ? AppTheme.monolith() : AppTheme.dark();
+  ThemeData get dayTheme => dayThemeIn(null);
+  ThemeData get nightTheme => nightThemeIn(null);
+
+  /// The same, worn in [book]'s colour when there is one (`book_tone.dart`).
+  ThemeData dayThemeIn(Color? book) =>
+      this == ThemeChoice.monolith ? AppTheme.monolith(book: book) : AppTheme.light(book: book);
+  ThemeData nightThemeIn(Color? book) =>
+      this == ThemeChoice.monolith ? AppTheme.monolith(book: book) : AppTheme.dark(book: book);
 }
 
 const themeSettingKey = 'appearance.theme';

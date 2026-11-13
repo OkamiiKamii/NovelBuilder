@@ -91,7 +91,7 @@ const tutorialTopics = <Topic>[
           'area switch between its pages.',
       'The ribbon at the right edge of every page in the book holds its ribbons: marks in the pages you keep going '
           'back to (see Ribbons).',
-      'On a phone, More opens the contents of the rest of the book. Under Search the novel, Loose ends: what the story is waiting '
+      'On a phone, More opens the contents of the rest of the book. Under Search, or go anywhere, Loose ends: what the story is waiting '
           'for (today’s words, a thread gone quiet, a chapter with no plan, someone with no ties), each one press '
           'from its page. Then each area with what it holds now, drawn small: threads along the book, the web of ties, the '
           'last fortnight of writing. Library takes you back to the '
@@ -172,6 +172,67 @@ const tutorialTopics = <Topic>[
         'days in a row, and Carry on opens Chapter 9 with the note under its last line.',
   ),
   Topic(
+    id: 'namekeys',
+    title: 'Your names at your thumb',
+    group: 'Writing',
+    where: 'In the editor: over the keyboard on a phone; at the foot of the page on a computer.',
+    what:
+        'Your keyboard knows English, not your book. While you type, the names of your cast and world are offered as '
+        'keys, spelled as you recorded them.',
+    steps: [
+      'Start a name with its capital: “Il”. The names that complete it come up over the keyboard (Ilse, Ilse '
+          'Marrow), this chapter’s people first. Press one and the whole name goes in, in place of what you typed.',
+      'On a computer they show at the foot of the page while you type a name; press Tab for the first.',
+      'On a phone, with nothing typed yet, the keys are the names already on this page: press one to write it at '
+          'the cursor.',
+      'Names come from your characters (with their aliases and titles) and every entry in the world.',
+    ],
+    example:
+        'Typing “Mi” in a chapter set in the woods offers Mimir Forest before Mira Vance. One press, and it is '
+        'spelled right every time.',
+  ),
+  Topic(
+    id: 'glance',
+    title: 'Who was she again?',
+    group: 'Writing',
+    where: 'In the editor: over the keyboard on a phone; at the foot of the page on a computer.',
+    what:
+        'Her eyes, his age, who she is to him: put the caret on a name on the page and their card is there, without '
+        'leaving the sentence.',
+    steps: [
+      'Tap into any name on the page: a character’s, a place’s, anything in your world. A strip shows their face, '
+          'what they are, their first facts and a tie (“Wren Hollis’s mentor”).',
+      'Press the strip for the whole card: the summary, every short fact you recorded (age, eyes, rank) and all '
+          'their ties.',
+      'Open their page goes to the profile, the chapter saved first. Typing a new name brings the name keys back.',
+    ],
+    example:
+        'Halfway through a scene you forget Mira’s eye colour. Tap “Mira” in the line above: Age 34 · Eyes grey · '
+        'Kai’s sister.',
+  ),
+  Topic(
+    id: 'gaps',
+    title: 'Write past a gap',
+    group: 'Writing',
+    where: 'On the page, and in the contents in Write (Gaps to fill, under the day book).',
+    what:
+        'Don’t stop to look up a name or a date: leave a gap and keep writing. Every gap stands out on the page, and '
+        'the contents keep them all a press away.',
+    steps: [
+      'Type TK where something is missing (printers’ shorthand for “to come”), or a note in double square brackets: '
+          '[[the name of the pass]]. Single brackets, as in a status window, are left alone.',
+      'Or press Leave a gap (on a phone, in the ink tray over the keyboard): [[ ]] goes in at the caret, ready for '
+          'your note. With words selected, they become the note.',
+      'Each gap shows on the page as a sticky note. In the contents, Gaps to fill lists every one in the book, with '
+          'its note or the words round it, and its chapter.',
+      'Press a gap there: its chapter opens with the gap selected, so what you type fills it. Once filled, it leaves '
+          'the list.',
+    ],
+    example:
+        'Mid-chase, write “Mira rode to [[the name of the pass]]” and keep going. Tomorrow, Gaps to fill takes you '
+        'straight there, and you type “Sorrow Gap” over it.',
+  ),
+  Topic(
     id: 'pagetools',
     title: 'Ways to see the page',
     group: 'Writing',
@@ -211,6 +272,84 @@ const tutorialTopics = <Topic>[
       'Under a chapter’s last line, Continue to the next one; at the end of the book, Begin the next chapter.',
     ],
     example: 'Move “The Bell” from Act 1 to Act 2 and mark it Revising. Its text and notes move with it, untouched.',
+  ),
+  Topic(
+    id: 'atmosphere',
+    title: 'Writing weather',
+    group: 'Writing',
+    where: 'In the writing settings (the text button); on a phone, also in Desk → Atmosphere.',
+    what:
+        'Write in the room you want: rain, snow, fireflies, candlelight or a night sky around the page. Only the room '
+        'changes; your words never do.',
+    steps: [
+      'Open the writing settings (on a phone, Desk → Atmosphere) and pick under Atmosphere: Rain, Snow, Fireflies, '
+          'Candlelight or Stars.',
+      'On a computer or a tablet it fills the desk around the paper, and lies faintly on the paper behind the words. '
+          'On a phone, where the paper is the whole screen, it stays faint enough to read over.',
+      'It holds still when your device asks for less motion, and None turns it off.',
+    ],
+    example:
+        'Writing a storm scene late at night: choose Rain on a dark page, and the streaks run down the desk while the '
+        'paper stays clear.',
+  ),
+  Topic(
+    id: 'booksetting',
+    title: 'Set like a book',
+    group: 'Writing',
+    where: 'On every page in Write; the switch is in the writing settings (the text button).',
+    what:
+        'Write on a page that looks like your printed book: each chapter opens on a raised initial and small '
+        'capitals, and every scene break is an ornament.',
+    steps: [
+      'Open any chapter: its first letter stands large in the book’s heading face, the first few words after it in '
+          'small capitals, as a printed chapter begins.',
+      'Type a scene break as writers do, *** or * * * or # on a line of its own: it is set centred and spaced, in '
+          'the book’s colour.',
+      'Only the look changes: the words are saved and exported exactly as you typed them.',
+      'Prefer a plain page? In the writing settings, turn off Set like a book.',
+    ],
+    example:
+        'Chapter 4 begins “The bell had not rung in years”: the page shows a tall T and “he bell had not” in small '
+        'capitals, and the *** before the second scene becomes a row of spaced stars.',
+  ),
+  Topic(
+    id: 'titles',
+    title: 'Name this chapter',
+    group: 'Writing',
+    where: 'In the editor, under the chapter’s heading, while it is called “Chapter 1” or Untitled.',
+    what:
+        'A chapter still called “Chapter 7” is offered names from its own pages. Nothing is made up, and nothing is '
+        'named until you pick one.',
+    steps: [
+      'Write a few paragraphs in a chapter that has no name of its own yet.',
+      'Under its heading, Name this chapter offers ideas: who or what is most on its pages, the thing this chapter '
+          'has that the others have little of (“The Lamp”), and the phrase it ends on (“Towards the Inn”).',
+      'Press one to make it the title; you can change it on the heading at any time.',
+      'Happy with the number? Keep “Chapter 7”, and no more ideas are offered for it.',
+    ],
+    example:
+        'Chapter 3 keeps returning to a lighthouse and ends “…and rowed out past the Breakers.” It is offered “The '
+        'Lighthouse” and “Past the Breakers”.',
+  ),
+  Topic(
+    id: 'storyboard',
+    title: 'The storyboard',
+    group: 'Writing',
+    where: 'In Write, the contents: the storyboard button beside Add.',
+    what:
+        'The book as you revise it: under every chapter, the line it opens on, the line it ends on, and who is in it, '
+        'read from your own text.',
+    steps: [
+      'In the contents, press Show the storyboard.',
+      'Each chapter and scene shows OPENS (its first sentence) and ENDS (its last), the faces of those on its pages, '
+          'most present first, and a rule as long as the chapter against the longest.',
+      'Read down the openings, then the endings: does each chapter start on something, and stop on something that '
+          'pulls the reader on?',
+      'Press a chapter to write in it. Show the list puts the plain contents back; your choice is remembered.',
+    ],
+    example:
+        'Three chapters in a row end on someone falling asleep. Seen together on the storyboard, the pattern jumps '
+        'out: rewrite one ending as a door opening.',
   ),
   Topic(
     id: 'drafts',
@@ -281,15 +420,18 @@ const tutorialTopics = <Topic>[
     id: 'search',
     title: 'Search the whole novel',
     group: 'Writing',
-    where: 'Ctrl/⌘+K anywhere, the search button at the top of the rail, or More → Search the novel on a phone.',
-    what: 'Finds a word or phrase across chapters, plans, notes and every record, and goes to the exact place.',
+    where: 'Ctrl/⌘+K anywhere, the search button at the top of the rail, or More → Search, or go anywhere on a phone.',
+    what:
+        'Finds a word across chapters, plans, notes and records, and goes anywhere by name: a page, a chapter, a '
+        'character, a thread, a keepsake.',
     steps: [
-      'Press Ctrl/⌘+K.',
-      'Type what you are looking for.',
-      'Narrow it with the chips: the manuscript, plans and notes, or records.',
+      'Press Ctrl/⌘+K. Before you type, it lists where you were.',
+      'Type a page or a name: Go to lists the places that answer it (“plot” is Plot lanes, “stats” Analytics, '
+          '“dark” the look). Return goes to the first.',
+      'Below, the words found in the text. Narrow them with the chips: manuscript, plans and notes, or records.',
       'Choose a result: a chapter opens with the words found; a record opens its page.',
     ],
-    example: 'Search “silver key”: three chapters, a plan and an item. Choose the chapter and the find bar is on it.',
+    example: 'Type “trai” and Return: the trailer plays. Type “silver key” for the chapters it is in.',
   ),
   Topic(
     id: 'export',
@@ -329,6 +471,164 @@ const tutorialTopics = <Topic>[
     example:
         'Create “Kaelen Draven”, role Protagonist, with the epithet “The Oathbreaker”. Searching “oathbreaker” finds '
         'him.',
+  ),
+  Topic(
+    id: 'bookstory',
+    title: 'Your book so far',
+    group: 'Getting started',
+    where: 'Under More, at the top: So far.',
+    what:
+        'Your novel told back to you as a short story in pages, the way a year in music is: your words, your days, '
+        'your people and the words you lean on. Each page is a picture to share.',
+    steps: [
+      'Open More and press So far.',
+      'Press the right side of the screen (or swipe) to turn the page, the left to go back: what you have written, '
+          'the days you wrote it on, your biggest chapter, who your book is about, who talks most, the words you lean '
+          'on, where it begins and where it stands.',
+      'Share this page makes a picture of the page you are on, the shape of a story post.',
+      'The last page says what comes next on the road to the draft; Keep writing takes you back to your chapter.',
+    ],
+    example:
+        'Forty days in: 31,200 words, 22 days at the desk, a best day of 3,100 words, and your lead named 410 times. '
+        'Share the words you lean on and see if your readers guess the book.',
+  ),
+  Topic(
+    id: 'fingerprint',
+    title: 'Your book’s fingerprint',
+    group: 'Getting started',
+    where: 'Under More, at the top: Fingerprint, beside So far.',
+    what:
+        'Your whole novel as a print: a column a chapter, a thread a paragraph, in the colour of the character it is '
+        'about. No two books make the same one.',
+    steps: [
+      'Open More and press Fingerprint.',
+      'Each chapter hangs as a column, as long as the chapter. Each paragraph is a thread in the colour of the character '
+          'named most in it, or of whoever the scene was with; bright where someone speaks, softer where it tells.',
+      'Under it, whose colour is whose, the most present first. Read it for whose book it is, where each one’s scenes '
+          'fall, and how much of it is talk.',
+      'Share the print makes a picture of it, 1080 by 1350, to post.',
+    ],
+    example:
+        'Your fingerprint shows the antagonist’s colour vanishing for six chapters in the middle: a sign to bring them '
+        'back on the page sooner.',
+  ),
+  Topic(
+    id: 'index',
+    title: 'The index',
+    group: 'Checking your work',
+    where: 'Under More, below Search: The index.',
+    what:
+        'Every name in your book, A to Z, as the index at the back of a printed book: the chapters each is in, and '
+        'names spelled two ways, caught before a reader does.',
+    steps: [
+      'Open More and press The index.',
+      'Names are gathered from your pages: words written with a capital where no sentence begins (“the Mimir Forest”, '
+          '“Wren Hollis”). Each shows how often it appears and the chapters it is in; press a chapter to read it there.',
+      'Spelled two ways? at the top sets names a letter apart side by side (Tobias and Tobiah). If they are one name, '
+          'press See to go to the rarer one and fix it.',
+      'Use the letters along the top to jump through it.',
+    ],
+    example:
+        'Chapter 12 says “Tobias” once; the other 53 times it is “Tobiah”. The index flags it, and See “Tobias” opens '
+        'Chapter 12 at the word.',
+  ),
+  Topic(
+    id: 'jacket',
+    title: 'The full jacket',
+    group: 'Getting started',
+    where: 'Under More, at the top: swipe the keepsakes to Full jacket.',
+    what:
+        'See your novel as a printed book: the back, the spine and the front, laid out flat as a printer lays out a '
+        'cover, ready to share.',
+    steps: [
+      'Open More, swipe the row of keepsakes and press Full jacket.',
+      'The front is your cover as the Library shows it; the spine is as thick as your pages, your title running down '
+          'it; the back sets a line from your book large, then your synopsis (or your opening), the kind of novel, '
+          'your name and a barcode.',
+      'Fill in the synopsis, the genre and the author in Book details, and the back says them.',
+      'Share the jacket makes a picture of it to post.',
+    ],
+    example:
+        'At 90,000 words the spine is thick enough to read across a room; the back quotes “Master, it’s the tide '
+        'bell,” over your synopsis.',
+  ),
+  Topic(
+    id: 'trailer',
+    title: 'The trailer',
+    group: 'Getting started',
+    where: 'Under More, at the top: the first of the keepsakes, Trailer.',
+    what:
+        'Watch your novel cut as a film trailer, from its own lines and the names it is about, and end on a poster '
+        'to share.',
+    steps: [
+      'Open More and press Trailer. It plays between black bars, a shot at a time; press anywhere to cut to the next.',
+      'The lines are your own: short ones, questions, cries, things said aloud, never from your last pages. The '
+          'names are the people you write about most, and the line that lands hardest comes last, before the title.',
+      'It ends on the poster: the names, that line, the title and COMING SOON. Skip to the poster goes straight there.',
+      'Share the poster makes a picture of it to post; Play again runs it once more; Keep writing takes you back.',
+    ],
+    example:
+        '“Is the water going?” … WREN HOLLIS … “Wren, what is that?” … THE DROWNED ROAD. Then the poster, ready to '
+        'post.',
+  ),
+  Topic(
+    id: 'looks',
+    title: 'Checked against your pages',
+    group: 'Worldbuilding',
+    where: 'On every character’s profile, the Overview tab: Checked against your pages.',
+    what:
+        'The profile says grey eyes; chapter 7 says “her blue eyes”. Their looks as your chapters describe them are '
+        'set beside what you recorded, so a slip is caught before a reader catches it.',
+    steps: [
+      'Open a character: their eyes and hair as your chapters give them are checked against the profile.',
+      'A slip shows the chapter and the words. Read it there to fix the page, or press Make it… to put the profile '
+          'right instead.',
+      'A look the page gives and the profile lacks is offered to record (Record black): your profile fills itself '
+          'from your book.',
+      'Only looks that are theirs count: “Wren’s grey eyes”, or Wren the subject (“Wren pushed back her hair”); '
+          'never someone else’s in the same sentence.',
+    ],
+    example:
+        'Ilse’s profile says her eyes are brown. Chapter 9 has “Ilse’s grey eyes narrowed.” The profile flags it, '
+        'and Read it in Chapter 9 takes you to the line.',
+  ),
+  Topic(
+    id: 'charactercard',
+    title: 'Share their card',
+    group: 'Worldbuilding',
+    where: 'On every character’s profile, at the top: Share their card.',
+    what:
+        'Your character as a card to post, the way writers share their people: their face, name, role, facts and '
+        'ties, and a line they say in your book.',
+    steps: [
+      'Open a character and press Share their card.',
+      'The card is made from what you recorded: their picture or cameo on their own colour, their epithet and role, '
+          'the short facts, a tie or two (“Ilse Marrow’s student”), and the book’s name.',
+      'A line they say quotes them from your chapters; turn it off to show their summary instead.',
+      'Press Share: on a phone, the share sheet; on a computer, a picture saved where you choose. 1080 by 1350, the '
+          'shape of a post.',
+    ],
+    example:
+        'Wren’s card: “the apprentice”, Protagonist, Ilse Marrow’s student, and below, “Master, it’s the tide bell.”',
+  ),
+  Topic(
+    id: 'forge',
+    title: 'Forge a name',
+    group: 'Worldbuilding',
+    where: 'Beside the name when you add a character (New character), and under the name of any World entry.',
+    what:
+        'New names in the shape of old ones: your book’s own, or a tradition’s. None is a name it learned from, and '
+        'nothing is named until you pick one.',
+    steps: [
+      'Press Forge a name beside a new character’s name, or under a place’s name in the World.',
+      'Choose A person or A place, and a tradition: Like your book (once it has six names to learn from), Old '
+          'English, Norse, Latin, Lyrical, Desert or Steppe. Places take the tradition’s endings (-ford, -vik, -ium).',
+      'Type a letter or two under Starts with, if you like. Press More names for another dozen.',
+      'Press a name to use it. You can still change it afterwards.',
+    ],
+    example:
+        'Your cast is Wren, Ilse, Tobiah and Ottilie. Like your book offers Quilis, Ottilse and Marden: new, but they '
+        'sound as if they live in the same town.',
   ),
   Topic(
     id: 'cast',
@@ -746,6 +1046,57 @@ const tutorialTopics = <Topic>[
     example: 'Choose midnight for writing at night; your phone keeps its own choice.',
   ),
   Topic(
+    id: 'wearbook',
+    title: 'The app wears your book',
+    group: 'Making it yours',
+    path: '/settings',
+    what:
+        'While a novel is open, the whole app takes on its cover colour: buttons, tabs, links and rules, and a breath '
+        'of it in the paper.',
+    steps: [
+      'Open a novel: the app changes to its colour, slowly, in any look. Open another, and it changes with it.',
+      'Change the colour in the book’s details (Settings, Edit details) and the app follows at once.',
+      'The colour is made readable: only how light it is moves, never its hue. A grey cover is not worn, since grey '
+          'buttons read as turned off; Settings says so.',
+      'Turn it off in Settings, under Appearance: Wear each book’s colour.',
+    ],
+    example: 'A green fantasy makes a green room, a crimson thriller a crimson one: you know which book you are in.',
+  ),
+  Topic(
+    id: 'trail',
+    title: 'Where you were',
+    group: 'Making it yours',
+    where: 'At the top of More, inside a book.',
+    what:
+        'The places you have just been in this book (a character, a place, a thread, a chapter’s plan, a view) by '
+        'name, newest first, each a press from going back.',
+    steps: [
+      'Go about the book as usual: every page past the bar’s own is remembered as you leave it.',
+      'Open More: Where you were shows the last six, each with what kind of place it is and when.',
+      'Press one to go straight back. The page you are on is left out.',
+      'Names are read fresh: a character renamed shows the new name, one deleted drops off. The trail is this '
+          'device’s, a trail for each book.',
+    ],
+    example: 'From Wren’s page to the tide bell thread and on to Plot lanes, then back to Wren in a single press.',
+  ),
+  Topic(
+    id: 'pinbar',
+    title: 'Keep an area on the bar',
+    group: 'Making it yours',
+    where: 'On a phone, inside a book: under More, the pin at the end of an area’s line.',
+    what:
+        'Put the area you use most (Plan, Visualize, Review or Progress) on the phone’s bottom bar, one press away '
+        'instead of two.',
+    steps: [
+      'Open More and press the pin beside an area: it takes a place on the bar, between Organize and More.',
+      'One area at a time: pinning another puts it in the first one’s place. The filled pin takes it off again.',
+      'More notices too: open an area from it four times in a week and it offers, “Keep it on the bar”. Not now '
+          'and it does not ask about that area again.',
+      'Only this device changes; on a computer every area is already in the rail.',
+    ],
+    example: 'Plotting all week? Keep Plan on the bar, and the board is a press away from the chapter.',
+  ),
+  Topic(
     id: 'devices',
     title: 'Phone and tablet',
     group: 'Making it yours',
@@ -824,10 +1175,32 @@ const tutorialButtonNames = [
   'Sort & filter',
   'Covers',
   'Spines',
-  'Search the novel',
+  'Search, or go anywhere',
   'Sprint',
   'Plan this chapter',
   'Carry on',
+  'The index',
+  'Share the jacket',
+  'Share the poster',
+  'Keep it on the bar',
+  'Not now',
+  'Skip to the poster',
+  'Play again',
+  'Share the print',
+  'Share this page',
+  'Keep writing',
+  'Share their card',
+  'A line they say',
+  'Forge a name',
+  'More names',
+  'Like your book',
+  'Atmosphere',
+  'Candlelight',
+  'Set like a book',
+  'Show the storyboard',
+  'Show the list',
+  'Open their page',
+  'Leave a gap',
   'Set a daily goal',
   'Leave a note for next time',
   'Done with it',

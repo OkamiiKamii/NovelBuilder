@@ -6,21 +6,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_editor/super_editor.dart';
 
+import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/save_status_indicator.dart';
+import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/data/speech.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/manuscript/prose.dart';
+import '../../shared/domain/manuscript/title_ideas.dart';
 import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/category.dart';
 import '../../shared/domain/records/entry.dart';
 import '../../shared/domain/records/story_node.dart';
+import '../../shared/domain/text/gaps.dart';
 import '../../shared/domain/text/rhythm.dart';
 import '../characters/character_actions.dart';
 import '../characters/widgets/vault.dart';
+import 'atmosphere.dart';
+import 'book_setting.dart';
 import 'chapter_end.dart';
 import 'chapter_spine.dart';
 import 'data/manuscript_service.dart';
@@ -30,10 +36,13 @@ import 'editor/link_bar.dart';
 import 'editor/prose_document.dart';
 import 'first_page.dart';
 import 'fresh_ink.dart';
+import 'gaps.dart';
+import 'glance.dart';
 import 'goal_pledge.dart';
 import 'in_chapter.dart';
 import 'listen.dart';
 import 'margin.dart';
+import 'name_keys.dart';
 import 'next_note.dart';
 import 'nudge.dart';
 import 'red_pencil.dart';
@@ -108,10 +117,22 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   /// Who and what the page names (`in_chapter.dart`).
   final _company = InChapter();
 
+  /// The book's names as keys, completing the one being typed (`name_keys.dart`).
+  final _names = NameKeys();
+
+  /// The card of the name the caret is on (`glance.dart`).
+  final _glance = Glance();
+
   /// Watches for the writing stopping, to offer a nudge (`nudge.dart`).
   late final _stuck = StuckWatch(focused: () => _focus.hasFocus);
   void _stir([Object? _]) => _stuck.stirred();
-  late final _pencilPhases = [_voices.styler, _listen.styler, _pencil.styler];
+
+  /// Gaps left to fill ("TK", "[[a note]]"), drawn as sticky notes (`gaps.dart`).
+  final _gapStyler = GapStyler();
+
+  /// The page set like a book: the raised initial, small capitals, scene breaks as ornaments (`book_setting.dart`).
+  final _book = BookSetter();
+  late final _pencilPhases = [_book, _gapStyler, _voices.styler, _listen.styler, _pencil.styler];
   DateTime? _dirtySince;
   Timer? _draftTimer;
   Timer? _countTimer;
@@ -136,6 +157,10 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _voices.cast = voiceCastOf(ref.read(novelStoreProvider), widget.novelId);
     _voices.on = ref.read(voicesProvider);
     _load();
+    // Ideas for a chapter still called "Chapter 1", once the page is drawn.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _readTitleIdeas();
+    });
     final pending = ref.read(pendingFindProvider);
     if (pending != null && pending.nodeId == widget.node.id && _editor != null) {
       _findStart = (term: pending.term, block: pending.block);
@@ -143,6 +168,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) ref.read(pendingFindProvider.notifier).request(null);
       });
+    } else if (ref.read(pendingGapProvider) case final gap? when gap.nodeId == widget.node.id && _editor != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _goToGap(gap));
     } else if (ref.read(pendingCaretEndProvider) == widget.node.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -170,6 +197,51 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
         _ => 0,
       },
     );
+  }
+
+  /// The weather to write in (`atmosphere.dart`), from the desk's drawer on a phone.
+  Future<void> _openAtmosphere() => showModalBottomSheet<void>(
+    context: context,
+    useRootNavigator: true,
+    showDragHandle: true,
+    builder: (_) => const SafeArea(
+      child: Padding(padding: EdgeInsets.fromLTRB(20, 0, 20, 24), child: AtmospherePicker()),
+    ),
+  );
+
+  /// Opens an entry's own page from its card (`glance.dart`), the chapter saved first.
+  void _openEntry(Entry entry) {
+    _flush();
+    if (mounted) context.go(entryPath(entry.id, character: entry.category == 'character'));
+  }
+
+  /// Selects a gap from the contents (`gaps.dart`), so what is typed next fills it, and brings it into view.
+  void _goToGap(Gap gap) {
+    if (!mounted) return;
+    ref.read(pendingGapProvider.notifier).request(null);
+    final editor = _editor;
+    final document = _document;
+    if (editor == null || document == null) return;
+    final at = findGap(document, gap);
+    if (at == null) return;
+    editor.execute([
+      ChangeSelectionRequest(
+        DocumentSelection(
+          base: DocumentPosition(
+            nodeId: at.nodeId,
+            nodePosition: TextNodePosition(offset: at.start),
+          ),
+          extent: DocumentPosition(
+            nodeId: at.nodeId,
+            nodePosition: TextNodePosition(offset: at.end),
+          ),
+        ),
+        SelectionChangeType.expandSelection,
+        SelectionReason.userInteraction,
+      ),
+    ]);
+    _focus.requestFocus();
+    _showRange(at.nodeId, at.start, at.end);
   }
 
   /// Brings a line of the page into view, about a third of the way down, when it is not already well in it.
@@ -301,6 +373,15 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _listen.attach(document);
     _ink.attach(document, _dayStartText());
     _company.attach(document, pageCompanyOf(ref.read(novelStoreProvider), widget.novelId));
+    _names.attach(_editor!, _composer!, document, _company);
+    _glance.attach(
+      composer: _composer!,
+      document: document,
+      company: _company,
+      keys: _names,
+      store: ref.read(novelStoreProvider),
+      novelId: widget.novelId,
+    );
   }
 
   void _detach() {
@@ -308,6 +389,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _voices.detach();
     _listen.detach();
     _ink.detach();
+    _glance.detach();
+    _names.detach();
     _company.detach();
     _document?.removeListener(_changed);
     _document?.removeListener(_stir);
@@ -510,6 +593,54 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _saves.saveNow('node:${widget.node.id}:title', () => _service.rename(widget.novelId, widget.node.id, title));
   }
 
+  /// Ideas for naming this chapter from its own pages (`title_ideas.dart`), while it is called by a stand-in ("Chapter
+  /// 1") and its author has not said to keep that.
+  List<String> _titleIdeas = const [];
+
+  String get _keepKey => 'write.keepTitle.${widget.novelId}';
+
+  bool get _keptTitle => (ref.read(settingsStoreProvider).read(_keepKey) as List?)?.contains(widget.node.id) ?? false;
+
+  /// Reads ideas for the chapter's name, away from the screen.
+  void _readTitleIdeas() {
+    if (!placeholderTitle(_title.text) || _keptTitle) {
+      if (_titleIdeas.isNotEmpty) setState(() => _titleIdeas = const []);
+      return;
+    }
+    final company = _company.company;
+    final present = [
+      for (final p in _company.present) company?.entries[p.id]?.name.trim() ?? '',
+    ].where((name) => name.isNotEmpty).toList();
+    final store = ref.read(novelStoreProvider);
+    ref
+        .read(runAsideProvider)(
+          titleIdeasJob(store.rawJsonIn(widget.novelId, 'chapterContents'), widget.node.id, present),
+        )
+        .then(
+          (ideas) {
+            if (mounted && placeholderTitle(_title.text)) setState(() => _titleIdeas = ideas);
+          },
+          onError: (Object e, StackTrace s) {
+            FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'write'));
+          },
+        );
+  }
+
+  /// Names the chapter [idea].
+  void _takeTitle(String idea) {
+    _title.text = idea;
+    _rename();
+    setState(() => _titleIdeas = const []);
+  }
+
+  /// Keeps the stand-in name: no more ideas for this chapter, on this device.
+  void _keepTitle() {
+    final settings = ref.read(settingsStoreProvider);
+    final kept = {...?(settings.read(_keepKey) as List?)?.whereType<String>(), widget.node.id};
+    settings.write(_keepKey, kept.toList());
+    setState(() => _titleIdeas = const []);
+  }
+
   @override
   void didChangeMetrics() {
     if (mounted && WindowSize.of(context) == WindowSize.compact) setState(() {});
@@ -526,6 +657,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     _voices.dispose();
     _listen.dispose();
     _ink.dispose();
+    _glance.dispose();
+    _names.dispose();
     _company.dispose();
     _focus.removeListener(_stir);
     _stuck.dispose();
@@ -890,6 +1023,12 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   'Watch this chapter write itself, from its first saved copy to now.',
                   _openTimeLapse,
                 ),
+                tool(
+                  Icons.filter_drama_outlined,
+                  'Atmosphere',
+                  'Rain, snow, fireflies, a candle or stars behind the page. Nothing changes but the room.',
+                  _openAtmosphere,
+                ),
               ],
             ),
           ),
@@ -941,14 +1080,29 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     final listenOn = ref.watch(listenProvider);
     ref.listen(listenProvider, (_, on) => _listenFromCaret(on));
     final freshOn = ref.watch(freshInkProvider);
+    final atmosphere = ref.watch(atmosphereProvider);
     // The cast is read again as the voices come out, so a character added since is heard.
     ref.listen(voicesProvider, (_, on) {
       if (on) _voices.cast = voiceCastOf(ref.read(novelStoreProvider), widget.novelId);
       _voices.on = on;
     });
     final pencilColors = pencilColorsOf(theme);
+    final gapColor = gapColorOf(theme.colorScheme);
+    // The page set like a book (`book_setting.dart`): its accent, and the face the initial is set in.
+    final bookLook = (
+      accent: theme.colorScheme.primary,
+      initialFamily: BookFaces.of(context).heading,
+      on: ref.watch(bookSettingProvider),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _pencil.colors = pencilColors;
+      if (!mounted) return;
+      _pencil.colors = pencilColors;
+      _gapStyler.color = gapColor;
+      _book.look = bookLook;
+    });
+    // A gap chosen in the contents while this chapter is open already.
+    ref.listen(pendingGapProvider, (_, gap) {
+      if (gap != null && gap.nodeId == widget.node.id) _goToGap(gap);
     });
     final sprint = ref.watch(sprintProvider);
     final sprintResult = ref.watch(sprintResultProvider);
@@ -1217,6 +1371,13 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                   compact: compact,
                   paper: page?.background,
                   width: prefs.width.maxWidth,
+                  // The weather the page is written in (`atmosphere.dart`): around the paper, or faint behind the words on a phone.
+                  atmosphere: AtmosphereLayer(kind: atmosphere, ink: page?.text ?? theme.colorScheme.onSurface),
+                  onPaper: AtmosphereLayer(
+                    kind: atmosphere,
+                    ink: page?.text ?? theme.colorScheme.onSurface,
+                    faint: true,
+                  ),
                   margin: showMargin
                       ? ChapterMargin(novelId: widget.novelId, nodeId: widget.node.id, onLeave: _flush)
                       : null,
@@ -1247,6 +1408,9 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                                   ink: page?.text,
                                   muted: page?.muted,
                                   onRename: _rename,
+                                  ideas: _titleIdeas,
+                                  onIdea: _takeTitle,
+                                  onKeep: _keepTitle,
                                 ),
                               ),
                               // Who and what the chapter names, under its heading (`in_chapter.dart`). Always in the list (empty
@@ -1274,6 +1438,8 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                                   stylesheet: writingStylesheet(theme, prefs),
                                   customStylePhases: _pencilPhases,
                                   contentTapDelegateFactories: const [],
+                                  // Tab puts in the name being typed (`name_keys.dart`), where its keys are shown.
+                                  keyboardActions: [if (!compact && !focus) _names.tab, ...defaultImeKeyboardActions],
                                 ),
                               // The note left for this sitting, pinned under the last line (`next_note.dart`).
                               if (_editor != null)
@@ -1338,6 +1504,16 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
                           ),
                         ),
                       ),
+                      // On a computer, the names completing the one being typed, or the card of the name the caret is
+                      // on, over the page's foot so the page never moves under the writer (`name_keys.dart`,
+                      // `glance.dart`). On a phone they ride in the ink tray.
+                      if (_editor != null && !focus && !compact)
+                        Positioned(
+                          left: 12,
+                          right: 28,
+                          bottom: 12,
+                          child: GlanceOrKeys(glance: _glance, keys: _names, onOpen: _openEntry, tabHint: true),
+                        ),
                       // Stuck? A nudge at the page's corner once the writing has stopped a while (`nudge.dart`).
                       if (_editor != null)
                         Positioned(
@@ -1357,7 +1533,17 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
               ),
               // THE INK TRAY: on a phone, while the keyboard is up, the formatting sits on it, under the thumbs; put the
               // keyboard away to read and the tray goes with it, leaving the page the whole screen.
-              if (_editor != null && !focus && typing) _InkTray(child: toolbar()),
+              if (_editor != null && !focus && typing)
+                _InkTray(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    // The book's names over the formatting (`name_keys.dart`).
+                    children: [
+                      GlanceOrKeys(glance: _glance, keys: _names, onOpen: _openEntry),
+                      toolbar(),
+                    ],
+                  ),
+                ),
               if (sprint != null)
                 SprintBar(sprint: sprint)
               else if (sprintResult != null)
@@ -1384,7 +1570,21 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
 /// THE WRITING DESK: on a tablet or a computer the chapter is a sheet of paper on a desk, as wide as the author's
 /// line length plus its margins. On a phone the paper is the whole screen.
 class _Desk extends StatelessWidget {
-  const _Desk({required this.compact, required this.paper, required this.width, required this.child, this.margin});
+  const _Desk({
+    required this.compact,
+    required this.paper,
+    required this.width,
+    required this.child,
+    this.margin,
+    this.atmosphere,
+    this.onPaper,
+  });
+
+  /// The weather on the desk around the paper.
+  final Widget? atmosphere;
+
+  /// The weather on the paper itself, faint, behind the words (the whole of it, on a phone).
+  final Widget? onPaper;
 
   final bool compact;
 
@@ -1402,34 +1602,56 @@ class _Desk extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final dark = scheme.brightness == Brightness.dark;
     final sheet = paper ?? (dark ? scheme.surfaceContainerHigh : scheme.surfaceContainerLowest);
-    if (compact) return ColoredBox(color: sheet, child: child);
-    return ColoredBox(
-      color: dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          // The text's own width, its 24-point margins, and the paper's edge; then the margin beside it.
-          constraints: BoxConstraints(
-            maxWidth: width.isFinite ? width + 112 + (margin == null ? 0 : marginWidth + _marginGap) : double.infinity,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(child: _paper(scheme, dark, sheet)),
-                if (margin != null) ...[
-                  const SizedBox(width: _marginGap),
-                  SizedBox(
-                    width: marginWidth,
-                    child: SingleChildScrollView(padding: const EdgeInsets.only(bottom: 24), child: margin),
-                  ),
-                ],
+    // The weather behind, always in the tree (nothing drawn when there is none), so choosing one never rebuilds the
+    // page laid over it; the page is given the room it was given before.
+    Widget weather(Widget over) => Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(child: atmosphere ?? const SizedBox.shrink()),
+        over,
+      ],
+    );
+    if (compact) {
+      return ColoredBox(
+        color: sheet,
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Positioned.fill(child: onPaper ?? const SizedBox.shrink()),
+            child,
+          ],
+        ),
+      );
+    }
+    final desk = Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        // The text's own width, its 24-point margins, and the paper's edge; then the margin beside it.
+        constraints: BoxConstraints(
+          maxWidth: width.isFinite ? width + 112 + (margin == null ? 0 : marginWidth + _marginGap) : double.infinity,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: _paper(scheme, dark, sheet)),
+              if (margin != null) ...[
+                const SizedBox(width: _marginGap),
+                SizedBox(
+                  width: marginWidth,
+                  child: SingleChildScrollView(padding: const EdgeInsets.only(bottom: 24), child: margin),
+                ),
               ],
-            ),
+            ],
           ),
         ),
       ),
+    );
+    return ColoredBox(
+      color: dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer,
+      // The weather on the desk, the paper laid over it clean.
+      child: weather(desk),
     );
   }
 
@@ -1456,7 +1678,14 @@ class _Desk extends StatelessWidget {
       borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
       child: ColoredBox(
         color: sheet,
-        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: child),
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            // The weather, faint, behind the words.
+            Positioned.fill(child: onPaper ?? const SizedBox.shrink()),
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: child),
+          ],
+        ),
       ),
     ),
   );
@@ -1472,6 +1701,9 @@ class _ChapterHeading extends StatelessWidget {
     required this.ink,
     required this.muted,
     required this.onRename,
+    this.ideas = const [],
+    this.onIdea,
+    this.onKeep,
   });
 
   final TextEditingController title;
@@ -1481,6 +1713,13 @@ class _ChapterHeading extends StatelessWidget {
   final Color? ink;
   final Color? muted;
   final VoidCallback onRename;
+
+  /// Names the chapter's own pages suggest, while it is called "Chapter 1" (`title_ideas.dart`).
+  final List<String> ideas;
+  final ValueChanged<String>? onIdea;
+
+  /// Keeps the stand-in name: no more ideas for this chapter.
+  final VoidCallback? onKeep;
 
   @override
   Widget build(BuildContext context) {
@@ -1514,7 +1753,57 @@ class _ChapterHeading extends StatelessWidget {
             onTapOutside: (_) => onRename(),
           ),
           ExcludeSemantics(child: _Ornament(color: ink == null ? scheme.primary : faint)),
+          if (ideas.isNotEmpty && onIdea != null) _ideas(context, scheme, faint),
         ],
+      ),
+    );
+  }
+
+  /// NAME THIS CHAPTER: the ideas as chips set in the book face, centred under the ornament, and a way to keep the
+  /// number.
+  Widget _ideas(BuildContext context, ColorScheme scheme, Color faint) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 4),
+      child: Semantics(
+        container: true,
+        label: 'Name this chapter',
+        child: Column(
+          children: [
+            Text(
+              'NAME THIS CHAPTER',
+              style: TextStyle(fontSize: 10.5, letterSpacing: 2.4, fontWeight: FontWeight.w700, color: faint),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 6,
+              runSpacing: 2,
+              children: [
+                for (final idea in ideas)
+                  ActionChip(
+                    label: Text(
+                      idea,
+                      style: TextStyle(
+                        fontFamily: BookFaces.of(context).text,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 15,
+                        color: ink ?? scheme.onSurface,
+                      ),
+                    ),
+                    tooltip: 'Call it “$idea”',
+                    backgroundColor: Colors.transparent,
+                    side: BorderSide(color: (ink == null ? scheme.primary : faint).withValues(alpha: 0.45)),
+                    onPressed: () => onIdea!(idea),
+                  ),
+                if (onKeep != null)
+                  TextButton(
+                    onPressed: onKeep,
+                    child: Text('Keep “${title.text.trim().isEmpty ? hint : title.text.trim()}”'),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1839,6 +2128,8 @@ class _Toolbar extends StatelessWidget {
         children: [
           button(Icons.undo, 'Undo', editor.undo),
           button(Icons.redo, 'Redo', editor.redo),
+          // Write past what you do not know yet (`gaps.dart`).
+          button(Icons.sticky_note_2_outlined, 'Leave a gap', () => leaveGap(editor, composer, document)),
           const SizedBox(width: 8),
           button(Icons.format_bold, 'Bold (⌘B)', () => _style(boldAttribution)),
           button(Icons.format_italic, 'Italic (⌘I)', () => _style(italicsAttribution)),

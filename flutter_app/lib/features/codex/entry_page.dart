@@ -22,6 +22,7 @@ import '../characters/character_actions.dart';
 import '../characters/characters_providers.dart';
 import '../characters/data/portrait_image.dart';
 import '../characters/widgets/in_their_pages.dart';
+import '../characters/widgets/name_forge.dart';
 import '../characters/widgets/parts.dart';
 import '../characters/widgets/portrait.dart';
 import '../characters/widgets/typed_input.dart';
@@ -310,6 +311,29 @@ class _Head extends StatelessWidget {
                         actions.later('name:${entry.id}', (c) => c.updateEntry(entry.id, name: v));
                       }
                     },
+                  ),
+                  // A name in the shape of the book's own places and people, or a tradition's (`name_forge.dart`).
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: () async {
+                        final picked = await showNameForge(
+                          context,
+                          people: [
+                            for (final e in cast.entries)
+                              if (e.category == 'character') e.name,
+                          ],
+                          places: [
+                            for (final e in cast.entries)
+                              if (e.category == 'location') e.name,
+                          ],
+                          place: entry.category != 'character',
+                        );
+                        if (picked != null) actions.now((c) => c.updateEntry(entry.id, name: picked));
+                      },
+                      icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                      label: const Text('Forge a name'),
+                    ),
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(

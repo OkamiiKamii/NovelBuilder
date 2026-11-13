@@ -28,13 +28,11 @@ void main() {
       expect(find.text('The Fall'), findsOneWidget);
       expect(find.text('Volume'), findsOneWidget, reason: 'a part says what kind it is');
       expect(find.text('1'), findsOneWidget, reason: 'The Gate is chapter 1');
+      // The day book and the road to the draft come first: chapter 2 and the scene are further down.
+      final contents = find.descendant(of: find.byType(OutlinePanel), matching: find.byType(Scrollable)).first;
+      await tester.scrollUntilVisible(find.text('2'), 120, scrollable: contents);
       expect(find.text('2'), findsOneWidget, reason: 'The River is chapter 2, inside the volume');
-      // The day book and the road to the draft come first: the scene is further down.
-      await tester.scrollUntilVisible(
-        find.text('§'),
-        120,
-        scrollable: find.descendant(of: find.byType(OutlinePanel), matching: find.byType(Scrollable)).first,
-      );
+      await tester.scrollUntilVisible(find.text('§'), 120, scrollable: contents);
       expect(find.text('§'), findsOneWidget, reason: 'the scene');
       expect(find.text('5'), findsOneWidget, reason: 'The River runs to five words');
 

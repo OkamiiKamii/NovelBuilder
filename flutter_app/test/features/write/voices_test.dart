@@ -12,17 +12,28 @@ import 'package:super_text_layout/super_text_layout.dart';
 import '../../helpers/pump_app.dart';
 import 'write_page_test.dart' show openWrite, storedText;
 
-/// The colour each run of the page's text is drawn in, with its text.
+/// The colour each run of the page's text is drawn in, with its text. Pieces of a paragraph drawn in the same colour
+/// side by side are one run (a chapter's raised initial is a piece of its own, in the same colour as the rest).
 List<(String, Color?)> runs(WidgetTester tester) {
   final out = <(String, Color?)>[];
   for (final rich in tester.widgetList<RichText>(
     find.descendant(of: find.byType(SuperEditor), matching: find.byWidgetPredicate((w) => w is RichText)),
   )) {
+    final pieces = <(String, Color?)>[];
+    if (rich.text case TextSpan(:final text?, :final style) when text.isNotEmpty) pieces.add((text, style?.color));
     rich.text.visitChildren((span) {
-      if (span is TextSpan && (span.text ?? '').isNotEmpty) out.add((span.text!, span.style?.color));
+      if (span is TextSpan && (span.text ?? '').isNotEmpty) pieces.add((span.text!, span.style?.color));
       return true;
     });
-    if (rich.text case TextSpan(:final text?, :final style) when text.isNotEmpty) out.add((text, style?.color));
+    final merged = <(String, Color?)>[];
+    for (final p in pieces) {
+      if (merged.isNotEmpty && merged.last.$2 == p.$2) {
+        merged[merged.length - 1] = ('${merged.last.$1}${p.$1}', p.$2);
+      } else {
+        merged.add(p);
+      }
+    }
+    out.addAll(merged);
   }
   return out;
 }
@@ -69,7 +80,9 @@ void main() {
       expect(colourOf('“It is going,”'), lens.lens.toneOf(wren, darkPage: dark));
       expect(colourOf('“All of it.”'), lens.lens.toneOf(wren, darkPage: dark));
       expect(colourOf('“Go,”'), lens.lens.toneOf(nan, darkPage: dark));
-      expect(colourOf('The river rose all night.')!.a, lessThan(0.5));
+      // The chapter's first words: its raised initial is drawn apart, in the accent; both faded as telling.
+      expect(colourOf('T')!.a, lessThan(0.5));
+      expect(colourOf('he river rose all night.')!.a, lessThan(0.5));
       expect(colourOf('“Who is there?”')!.a, greaterThan(0.9), reason: 'not named: in ink');
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
 

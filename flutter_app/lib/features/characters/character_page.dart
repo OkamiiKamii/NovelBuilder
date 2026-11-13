@@ -31,6 +31,7 @@ import 'tabs/relationships_tab.dart';
 import 'tabs/secrets_tab.dart';
 import 'widgets/cameo.dart';
 import 'widgets/cast_card.dart' show castTone;
+import 'widgets/character_card_share.dart';
 import 'widgets/portrait.dart';
 import 'widgets/vault.dart';
 
@@ -116,6 +117,12 @@ class CharacterPage extends ConsumerWidget {
               icon: const Icon(Icons.record_voice_over_outlined),
               label: Text('Interview ${entry.name}'),
             ),
+          // Their card, as writers share their people (`widgets/character_card_share.dart`).
+          OutlinedButton.icon(
+            onPressed: () => showCharacterCard(context, cast: cast, entryId: entry.id),
+            icon: const Icon(Icons.style_outlined),
+            label: const Text('Share their card'),
+          ),
           _MoreMenu(cast: cast, listed: listed, actions: actions),
         ],
         child: Column(

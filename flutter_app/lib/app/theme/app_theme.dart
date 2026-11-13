@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'book_faces.dart';
+import 'book_tone.dart';
 import 'novel_art.dart';
 
 /// The palette of the original app (src/styles/global.css): parchment by day, midnight by night.
@@ -83,15 +84,19 @@ extension MonolithPalette on Palette {
   );
 }
 
+/// Each theme can be worn in a book's colour ([book]: `book_tone.dart`); without one it is as it was designed.
 abstract final class AppTheme {
-  static ThemeData light() => _build(Palette.light, Brightness.light, BookFaces.book, NovelArt.parchment);
-  static ThemeData dark() => _build(Palette.dark, Brightness.dark, BookFaces.book, NovelArt.midnight);
+  static ThemeData light({Color? book}) =>
+      _build(Palette.light, Brightness.light, BookFaces.book, NovelArt.parchment, book);
+  static ThemeData dark({Color? book}) =>
+      _build(Palette.dark, Brightness.dark, BookFaces.book, NovelArt.midnight, book);
 
   /// SYSTEM MONOLITH: a futuristic, high-contrast system interface, near-black and gold with teal for what informs.
-  static ThemeData monolith() =>
-      _build(MonolithPalette.monolith, Brightness.dark, BookFaces.monolith, NovelArt.monolith);
+  static ThemeData monolith({Color? book}) =>
+      _build(MonolithPalette.monolith, Brightness.dark, BookFaces.monolith, NovelArt.monolith, book);
 
-  static ThemeData _build(Palette p, Brightness brightness, BookFaces f, NovelArt art) {
+  static ThemeData _build(Palette designed, Brightness brightness, BookFaces f, NovelArt art, Color? book) {
+    final p = book == null ? designed : wearing(designed, book, brightness);
     final scheme = ColorScheme(
       brightness: brightness,
       primary: p.accent,

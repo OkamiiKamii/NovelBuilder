@@ -19,6 +19,8 @@ import '../plot/plot_providers.dart' show chapterPlanPath;
 import '../workspace/open_novel.dart';
 import 'day_book.dart';
 import 'draft_road.dart';
+import 'gaps.dart';
+import 'storyboard.dart';
 import 'write_providers.dart';
 
 /// The manuscript in reading order: volumes, acts and arcs grouping chapters and scenes. Selecting a chapter or scene
@@ -40,6 +42,8 @@ class OutlinePanel extends ConsumerWidget {
       if (n.kind == NodeKind.chapter) number[n.id] = number.length + 1;
     }
     final total = nodes.fold(0, (sum, n) => sum + n.wordCount);
+    final storyboard = ref.watch(storyboardOnProvider);
+    final longest = nodes.where((n) => isDocument(n.kind)).fold(0, (m, n) => n.wordCount > m ? n.wordCount : m);
     final theme = Theme.of(context);
 
     return Material(
@@ -80,6 +84,14 @@ class OutlinePanel extends ConsumerWidget {
                       ),
                     ],
                   ),
+                ),
+                // The storyboard: each chapter's opening and closing lines and who is in it (`storyboard.dart`).
+                IconButton(
+                  tooltip: storyboard ? 'Show the list' : 'Show the storyboard',
+                  isSelected: storyboard,
+                  onPressed: () => ref.read(storyboardOnProvider.notifier).set(!storyboard),
+                  icon: const Icon(Icons.view_agenda_outlined),
+                  selectedIcon: const Icon(Icons.view_agenda),
                 ),
                 _AddMenu(novelId: novelId, parentId: null, label: 'Add to the manuscript'),
                 PopupMenuButton<String>(
@@ -132,19 +144,22 @@ class OutlinePanel extends ConsumerWidget {
                     // The day book (`day_book.dart`) and the road to the draft (`draft_road.dart`) head the contents,
                     // scrolling away with them. On a computer, beside a chapter being written, they follow the
                     // chapters instead, so the contents stay at hand.
-                    itemCount: reading.length + 2,
+                    // Then the gaps left to fill (`gaps.dart`), when there are any.
+                    itemCount: reading.length + 3,
                     itemBuilder: (context, i) {
                       final deskLast = selected != null && WindowSize.of(context) != WindowSize.compact;
                       final desk = deskLast ? i - reading.length : i;
                       if (desk == 0) return DayBookCard(novelId: novelId);
                       if (desk == 1) return DraftRoad(novelId: novelId);
-                      final n = reading[deskLast ? i : i - 2];
+                      if (desk == 2) return const GapsCard();
+                      final n = reading[deskLast ? i : i - 3];
                       return _OutlineRow(
                         node: n,
                         depth: depth[n.id] ?? 0,
                         selected: n.id == selected,
                         novelId: novelId,
                         number: number[n.id],
+                        longest: longest,
                       );
                     },
                   ),
@@ -222,6 +237,7 @@ class _OutlineRow extends ConsumerWidget {
     required this.selected,
     required this.novelId,
     this.number,
+    this.longest = 0,
   });
 
   final StoryNode node;
@@ -232,12 +248,17 @@ class _OutlineRow extends ConsumerWidget {
   /// Its number among the chapters, in reading order (chapters only).
   final int? number;
 
+  /// The longest chapter's length, for the storyboard's rule.
+  final int longest;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final service = ref.read(manuscriptServiceProvider);
     final doc = isDocument(node.kind);
     final title = node.displayTitle;
+    final storyboard = ref.watch(storyboardOnProvider);
+    final Storyboard board = storyboard ? ref.watch(storyboardProvider) : (cards: const {}, company: null);
     final menu = PopupMenuButton<String>(
       tooltip: 'More for $title',
       useRootNavigator: true,
@@ -332,6 +353,14 @@ class _OutlineRow extends ConsumerWidget {
       menu: menu,
       onTap: doc ? () => ref.read(selectedNodeProvider.notifier).select(node.id) : null,
       theme: theme,
+      story: doc && storyboard
+          ? StoryLines(
+              card: board.cards[node.id],
+              company: board.company,
+              share: longest == 0 ? 0 : node.wordCount / longest,
+              selected: selected,
+            )
+          : null,
     );
   }
 
@@ -374,6 +403,7 @@ class _ContentsLine extends StatelessWidget {
     required this.menu,
     required this.onTap,
     required this.theme,
+    this.story,
   });
 
   final StoryNode node;
@@ -384,6 +414,9 @@ class _ContentsLine extends StatelessWidget {
   final Widget menu;
   final VoidCallback? onTap;
   final ThemeData theme;
+
+  /// The chapter's storyboard card under its line (`storyboard.dart`), when the storyboard is shown.
+  final Widget? story;
 
   @override
   Widget build(BuildContext context) {
@@ -474,9 +507,12 @@ class _ContentsLine extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: indent),
                   child: Row(
+                    // With its storyboard card under it, the number and the menu stay up by the title.
+                    crossAxisAlignment: story == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      Container(
                         width: 28,
+                        padding: EdgeInsets.only(top: story == null ? 0 : 12),
                         child: Text(
                           scene ? '§' : '${number ?? ''}',
                           style: TextStyle(
@@ -545,6 +581,7 @@ class _ContentsLine extends StatelessWidget {
                               node.status.label,
                               style: theme.textTheme.labelSmall?.copyWith(color: muted, letterSpacing: 0.6),
                             ),
+                            ?story,
                           ],
                         ),
                       ),

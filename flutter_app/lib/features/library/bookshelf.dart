@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/app_theme.dart';
 import '../../app/theme/book_faces.dart';
+import '../../app/theme/book_tone.dart' show colourOf;
 import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../shared/data/providers.dart';
@@ -34,15 +35,7 @@ StoryNode? lastChapterOf(WidgetRef ref, Novel novel) {
 }
 
 /// A novel's cover colour, from its stored `#rrggbb` (the app's rust when it cannot be read).
-Color accentOf(Novel novel) {
-  try {
-    return Color(int.parse(novel.accent.substring(1), radix: 16) | 0xFF000000);
-  } on FormatException {
-    return const Color(0xFFB4532A);
-  } on RangeError {
-    return const Color(0xFFB4532A);
-  }
-}
+Color accentOf(Novel novel) => colourOf(novel.accent);
 
 /// A book's jacket: its cover picture when it has one; otherwise a cover designed from its title and author, in the
 /// theme's way of drawing books (`novel_art.dart`): on the book's colour with a thin rule inside the edge (the book's

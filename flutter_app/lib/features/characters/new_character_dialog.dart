@@ -8,6 +8,7 @@ import '../../shared/domain/records/entry.dart';
 import '../../shared/domain/relationships/relation_types.dart';
 import 'widgets/cameo.dart';
 import 'widgets/cast_card.dart' show castTone;
+import 'widgets/name_forge.dart';
 import 'widgets/vault.dart';
 
 typedef NewCharacter = ({
@@ -200,6 +201,17 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
           decoration: InputDecoration(
             labelText: 'Name *',
             errorText: _tried && _name.text.trim().isEmpty ? 'Give the character a name.' : null,
+            // A name in the shape of the book's own, or a tradition's (`widgets/name_forge.dart`).
+            suffixIcon: IconButton(
+              tooltip: 'Forge a name',
+              icon: const Icon(Icons.auto_fix_high_outlined),
+              onPressed: () async {
+                final picked = await showNameForge(context, people: [for (final c in widget.cast) c.name]);
+                if (picked == null || !mounted) return;
+                _name.text = picked;
+                changed(picked);
+              },
+            ),
           ),
           onChanged: changed,
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'atmosphere.dart';
+import 'book_setting.dart';
 import 'fresh_ink.dart';
 import 'writing_prefs.dart';
 
@@ -119,6 +121,9 @@ class WritingPrefsControls extends ConsumerWidget {
         chips('Text width', WritingWidth.values, prefs.width, (w) => w.label, (w) => set((p) => p.copyWith(width: w))),
         const SizedBox(height: 12),
         chips('Page', WritingPage.values, prefs.page, (pg) => pg.label, (pg) => set((p) => p.copyWith(page: pg))),
+        const SizedBox(height: 12),
+        // The weather the page is written in (`atmosphere.dart`).
+        const AtmospherePicker(),
         const SizedBox(height: 4),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -126,6 +131,13 @@ class WritingPrefsControls extends ConsumerWidget {
           subtitle: const Text('A stroke in the margin beside what you wrote today'),
           value: ref.watch(freshInkProvider),
           onChanged: (on) => ref.read(freshInkProvider.notifier).set(on),
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Set like a book'),
+          subtitle: const Text('A raised initial and small capitals to open each chapter; scene breaks as ornaments'),
+          value: ref.watch(bookSettingProvider),
+          onChanged: (on) => ref.read(bookSettingProvider.notifier).set(on),
         ),
         const SizedBox(height: 4),
         Align(

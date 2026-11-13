@@ -100,7 +100,7 @@ void main() {
     await start(tester, size: phone);
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Search the novel'));
+    await tester.tap(find.text('Search, or go anywhere'));
     await tester.pumpAndSettle();
     await type(tester, 'bell');
     expect(tester.takeException(), isNull);

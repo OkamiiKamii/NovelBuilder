@@ -18,6 +18,7 @@ import '../theme/paper_ground.dart';
 import 'app_shortcuts.dart';
 import 'contents_sheet.dart';
 import 'page_turn.dart';
+import 'pinned_area.dart';
 import 'ribbons.dart';
 
 /// The frame around every page: a navigation rail on wide screens, a bottom bar on phones.
@@ -241,14 +242,15 @@ class _Rail extends StatelessWidget {
   }
 }
 
-class _BottomBar extends StatelessWidget {
+class _BottomBar extends ConsumerWidget {
   const _BottomBar({required this.current});
 
   final Destination? current;
 
   @override
-  Widget build(BuildContext context) {
-    const primary = AppShell.compactPrimary;
+  Widget build(BuildContext context, WidgetRef ref) {
+    // The three, and the area kept on the bar from More, if any (`pinned_area.dart`).
+    final primary = [...AppShell.compactPrimary, ?ref.watch(pinnedAreaProvider)];
     final inMore = current != null && !primary.contains(current);
     final selected = current == null ? null : (inMore ? primary.length : primary.indexOf(current!));
     return NavigationBar(
@@ -259,7 +261,7 @@ class _BottomBar extends StatelessWidget {
         if (index < primary.length) {
           goToArea(context, current, primary[index]);
         } else {
-          _showMore(context);
+          _showMore(context, ref);
         }
       },
       destinations: [
@@ -270,8 +272,9 @@ class _BottomBar extends StatelessWidget {
     );
   }
 
-  void _showMore(BuildContext context) {
-    // More holds the rest of the novel's areas; Settings is the app's, the gear beside the Library.
+  void _showMore(BuildContext context, WidgetRef ref) {
+    // More holds the rest of the novel's areas (the one kept on the bar too, where its pin takes it off); Settings is
+    // the app's, the gear beside the Library.
     final rest = AppShell.bookAreas.where((d) => !AppShell.compactPrimary.contains(d));
     showModalBottomSheet<void>(
       context: context,
@@ -287,6 +290,8 @@ class _BottomBar extends StatelessWidget {
             current: current,
             onArea: (d) {
               Navigator.of(sheetContext).pop();
+              // What is opened from More is remembered, so the bar can offer to keep it.
+              ref.read(pinnedAreaProvider.notifier).opened(d);
               goToArea(context, current, d);
             },
             // A loose end opens the very page that answers it (a thread, a chapter's plan, the web of ties).
@@ -297,8 +302,12 @@ class _BottomBar extends StatelessWidget {
             search: Consumer(
               builder: (context, ref, _) => ListTile(
                 leading: const Icon(Icons.search),
-                title: const Text('Search the novel'),
-                subtitle: const Text('Every chapter, entry and note', maxLines: 1, overflow: TextOverflow.ellipsis),
+                title: const Text('Search, or go anywhere'),
+                subtitle: const Text(
+                  'Words, names, and every page of the book',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 onTap: () {
                   Navigator.of(sheetContext).pop();
                   showNovelSearch(paperContext(context), ref);

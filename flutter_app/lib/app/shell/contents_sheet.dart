@@ -3,13 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../features/characters/widgets/vault.dart';
+import '../../features/progress/book_print_page.dart';
+import '../../features/progress/book_story.dart';
+import '../../features/progress/full_jacket.dart';
+import '../../features/progress/trailer.dart';
+import '../../features/search/book_index_page.dart';
 import '../../features/workspace/open_novel.dart';
+import '../../features/write/write_providers.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/analytics/progress.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../destinations.dart';
+import '../router.dart';
 import 'loose_ends.dart';
+import 'pinned_area.dart';
+import 'trail.dart';
 import 'vignettes.dart';
 
 /// A line of the contents: what an area holds now, said in a few words, and for Progress how far the draft has come
@@ -120,6 +129,7 @@ class ContentsSheet extends ConsumerWidget {
     final pictures = novelId == null || novel == null
         ? const <Destination, Vignette>{}
         : areaVignettes(store, novelId, now: DateTime.now());
+    final pinned = ref.watch(pinnedAreaProvider);
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
@@ -141,7 +151,40 @@ class ContentsSheet extends ConsumerWidget {
             ],
           ),
         ),
+        // An area opened often from here, offered for the bar (`pinned_area.dart`).
+        if (onGo != null) const PinOfferSlot(),
+        // Where the author has just been in this book, a press from each (`trail.dart`).
+        if (onGo != null)
+          TrailRow(current: ref.read(routerProvider).routerDelegate.currentConfiguration.uri.toString(), onGo: onGo!),
         search,
+        // The index at the back of the book (`features/search/book_index_page.dart`): every name, A to Z.
+        if (novelId != null && novel != null && onGo != null && _wordsIn(store, novelId) > 0)
+          ListTile(
+            leading: const Icon(Icons.format_list_bulleted),
+            title: const Text('The index'),
+            subtitle: const Text('Every name in the book, A to Z', maxLines: 1, overflow: TextOverflow.ellipsis),
+            onTap: () => showBookIndex(
+              context,
+              novelId: novelId,
+              onOpen: (nodeId, term, block) {
+                // The chapter opens with find on the name, at the paragraph it is in.
+                ref.read(pendingFindProvider.notifier).request((nodeId: nodeId, term: term, block: block));
+                ref.read(selectedNodeProvider.notifier).select(nodeId);
+                onGo!('/write');
+              },
+            ),
+          ),
+        // The book told back as a story in pages (`features/progress/book_story.dart`), once there is some of it.
+        if (novelId != null && novel != null && _wordsIn(store, novelId) > 0)
+          _Keepsakes(
+            title: novel.title,
+            onStory: () =>
+                showBookStory(context, novelId: novelId, onKeepWriting: onGo == null ? null : () => onGo!('/write')),
+            onPrint: () => showBookPrint(context, novelId: novelId),
+            onJacket: () => showFullJacket(context, novelId: novelId),
+            onTrailer: () =>
+                showTrailer(context, novelId: novelId, onKeepWriting: onGo == null ? null : () => onGo!('/write')),
+          ),
         // What the story is waiting for, under Search (still reached first) and before the list of where things are.
         LooseEndsSlip(ends: ends, onGo: (e) => onGo?.call(e.path)),
         for (final d in areas)
@@ -151,6 +194,25 @@ class ContentsSheet extends ConsumerWidget {
             picture: pictures[d],
             selected: d == current,
             onTap: () => onArea(d),
+            // On a phone's More, each area can be kept on the bar; the one kept says so, and its pin takes it off.
+            pinned: onGo == null || !pinnableAreas.contains(d) ? null : pinned == d,
+            onPin: () {
+              final was = pinned;
+              ref.read(pinnedAreaProvider.notifier).pin(pinned == d ? null : d);
+              final messenger = ScaffoldMessenger.maybeOf(context);
+              messenger?.hideCurrentSnackBar();
+              messenger?.showSnackBar(
+                SnackBar(
+                  content: Text(
+                    pinned == d
+                        ? '${d.label} is off the bar; it is here under More.'
+                        : was == null
+                        ? '${d.label} is on the bar, one press away.'
+                        : '${d.label} is on the bar, in place of ${was.label}.',
+                  ),
+                ),
+              );
+            },
           ),
         if (extras.isNotEmpty) ...[
           const Padding(padding: EdgeInsets.symmetric(horizontal: 72), child: VaultRule()),
@@ -168,10 +230,16 @@ class _ContentsLine extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.picture,
+    this.pinned,
+    this.onPin,
   });
 
   final Destination area;
   final Glimpse? glimpse;
+
+  /// Whether the area is kept on the bar (null: it cannot be, here), and the pin that keeps it or takes it off.
+  final bool? pinned;
+  final VoidCallback? onPin;
 
   /// What the area holds, drawn small under its words (`vignettes.dart`).
   final Vignette? picture;
@@ -262,12 +330,226 @@ class _ContentsLine extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (pinned case final on?)
+                  IconButton(
+                    tooltip: on ? 'Take ${area.label} off the bar' : 'Keep ${area.label} on the bar',
+                    isSelected: on,
+                    color: on ? scheme.primary : scheme.onSurfaceVariant,
+                    onPressed: onPin,
+                    icon: const Icon(Icons.push_pin_outlined),
+                    selectedIcon: const Icon(Icons.push_pin),
+                  ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+int _wordsIn(NovelStore store, String novelId) =>
+    store.rowsIn(novelId, 'chapters').fold(0, (n, r) => n + StoryNode(r).wordCount);
+
+/// THE KEEPSAKES, under Search: the book told back as a story in pages (`features/progress/book_story.dart`), and its
+/// fingerprint, every paragraph a thread in the colour of whose it is (`features/progress/book_print_page.dart`). Two
+/// tiles side by side, in their own colours.
+class _Keepsakes extends StatelessWidget {
+  const _Keepsakes({
+    required this.title,
+    required this.onStory,
+    required this.onPrint,
+    required this.onJacket,
+    required this.onTrailer,
+  });
+  final String title;
+  final VoidCallback onTrailer;
+  final VoidCallback onStory;
+  final VoidCallback onPrint;
+  final VoidCallback onJacket;
+
+  /// Each tile's width: two and a little of the third show on a phone, so the row says it goes on.
+  static const _tile = 168.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final book = title.isEmpty ? 'your novel' : title;
+    Widget tile(Widget child) => SizedBox(width: _tile, child: child);
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            tile(
+              _Keepsake(
+                label: 'The trailer: $book as a film trailer, cut from its own lines',
+                kicker: 'TRAILER',
+                line: 'Your book as a film trailer, cut from its own lines.',
+                icon: Icons.play_circle_outline,
+                colours: const [Color(0xFF07070B), Color(0xFF2A0E12)],
+                bars: true,
+                onOpen: onTrailer,
+              ),
+            ),
+            const SizedBox(width: 10),
+            tile(
+              _Keepsake(
+                label: 'Your book so far: $book told as a story',
+                kicker: 'SO FAR',
+                line: 'Your words, days and people, told as a story.',
+                icon: Icons.auto_stories_outlined,
+                colours: const [Color(0xFF2B2350), Color(0xFF7A2E3A), Color(0xFF8A4B1C)],
+                onOpen: onStory,
+              ),
+            ),
+            const SizedBox(width: 10),
+            tile(
+              _Keepsake(
+                label: 'Its fingerprint: $book as a print, every paragraph a thread',
+                kicker: 'FINGERPRINT',
+                line: 'Every paragraph a thread, in its character’s colour.',
+                icon: Icons.fingerprint,
+                colours: const [Color(0xFF14121A), Color(0xFF1F2B3A)],
+                stripes: true,
+                onOpen: onPrint,
+              ),
+            ),
+            const SizedBox(width: 10),
+            tile(
+              _Keepsake(
+                label: 'The full jacket: $book as a printed cover, back, spine and front',
+                kicker: 'FULL JACKET',
+                line: 'Back, spine and front, as a printer lays them out.',
+                icon: Icons.menu_book_outlined,
+                colours: const [Color(0xFF3A2A1C), Color(0xFF1A130D)],
+                onOpen: onJacket,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Keepsake extends StatelessWidget {
+  const _Keepsake({
+    required this.label,
+    required this.kicker,
+    required this.line,
+    required this.icon,
+    required this.colours,
+    required this.onOpen,
+    this.stripes = false,
+    this.bars = false,
+  });
+
+  final String label;
+  final String kicker;
+  final String line;
+  final IconData icon;
+  final List<Color> colours;
+  final VoidCallback onOpen;
+
+  /// A few threads of colour along its foot, as the print has.
+  final bool stripes;
+
+  /// Black bars above and below, as a film is shown on a wide screen.
+  final bool bars;
+
+  @override
+  Widget build(BuildContext context) {
+    const ink = Color(0xFFF7F1E4);
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: colours, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          ),
+          child: InkWell(
+            onTap: onOpen,
+            child: Container(
+              foregroundDecoration: bars ? const _Letterbox() : null,
+              padding: EdgeInsets.fromLTRB(14, bars ? 20 : 12, 12, bars ? 20 : 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          kicker,
+                          style: vaultHeading(
+                            context,
+                            size: 10,
+                            color: const Color(0xFFE8C46A),
+                            weight: 700,
+                          ).copyWith(letterSpacing: 2),
+                        ),
+                      ),
+                      Icon(icon, color: ink, size: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(line, style: vaultText(context, size: 14.5, color: ink)),
+                  if (stripes) ...[
+                    const Spacer(),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        for (final (i, c) in const [
+                          Color(0xFF5B8DEF),
+                          Color(0xFFE07A5F),
+                          Color(0xFF81B29A),
+                          Color(0xFFF2CC8F),
+                          Color(0xFF9D7BD8),
+                          Color(0xFF5B8DEF),
+                          Color(0xFFE07A5F),
+                        ].indexed)
+                          Expanded(
+                            child: Container(
+                              height: 6.0 + (i * 7 % 11),
+                              margin: const EdgeInsets.only(right: 2),
+                              color: c.withValues(alpha: i.isEven ? 1 : 0.55),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Black bars across the top and foot of a tile, as a film is shown on a wide screen.
+class _Letterbox extends Decoration {
+  const _Letterbox();
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) => _LetterboxPainter();
+}
+
+class _LetterboxPainter extends BoxPainter {
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    final size = configuration.size;
+    if (size == null) return;
+    final paint = Paint()..color = Colors.black;
+    canvas
+      ..drawRect(offset & Size(size.width, 9), paint)
+      ..drawRect(Offset(offset.dx, offset.dy + size.height - 9) & Size(size.width, 9), paint);
   }
 }
 
