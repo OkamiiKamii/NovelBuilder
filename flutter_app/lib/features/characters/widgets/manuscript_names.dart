@@ -8,6 +8,7 @@ import '../../../shared/domain/json.dart';
 import '../../../shared/domain/manuscript/prose.dart';
 import '../characters_providers.dart';
 import 'cast_card.dart' show castTone, monogram;
+import 'page_notes.dart';
 import 'vault.dart';
 
 /// IN YOUR MANUSCRIPT: the names the author keeps writing but has not added to the cast (`name_finder.dart`), as
@@ -15,9 +16,12 @@ import 'vault.dart';
 /// makes the character) and **Not a character** (set aside for this novel on this device). Shown only when there are
 /// such names; nothing is added or changed until a press.
 class ManuscriptNames extends ConsumerStatefulWidget {
-  const ManuscriptNames({super.key, required this.cast, required this.onAdd});
+  const ManuscriptNames({super.key, required this.cast, required this.onAdd, this.onCount});
 
   final CastData cast;
+
+  /// Told how many it shows (the strip of notes counts them, `page_notes.dart`).
+  final ValueChanged<int>? onCount;
   final void Function(String name) onAdd;
 
   @override
@@ -27,7 +31,7 @@ class ManuscriptNames extends ConsumerStatefulWidget {
 /// Where the names set aside as "Not a character" are kept, per novel.
 String notCharactersKey(String novelId) => 'cast.notCharacters.$novelId';
 
-class _ManuscriptNamesState extends ConsumerState<ManuscriptNames> {
+class _ManuscriptNamesState extends ConsumerState<ManuscriptNames> with CountReporter {
   static const _first = 6;
   bool _all = false;
 
@@ -75,6 +79,7 @@ class _ManuscriptNamesState extends ConsumerState<ManuscriptNames> {
       for (final n in _names())
         if (!aside.contains(plainName(n.name))) n,
     ];
+    report(widget.onCount, names.length);
     if (names.isEmpty) return const SizedBox.shrink();
     final shown = _all ? names : names.take(_first).toList();
     final scheme = Theme.of(context).colorScheme;

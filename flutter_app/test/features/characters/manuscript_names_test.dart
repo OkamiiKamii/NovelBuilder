@@ -31,6 +31,9 @@ void main() {
     expect(find.text('Add Mira'), findsNothing, reason: 'now in the cast');
     expect(find.text('Mira is in the cast.'), findsOneWidget);
 
+    // Under the cast, now that there is one.
+    await tester.ensureVisible(find.text('Not a character'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Not a character'));
     await tester.pumpAndSettle();
     expect(find.text('In your manuscript'), findsNothing, reason: 'nothing left to offer');

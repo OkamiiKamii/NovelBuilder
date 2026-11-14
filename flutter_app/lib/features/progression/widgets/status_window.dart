@@ -76,6 +76,8 @@ class StatusWindow extends StatefulWidget {
     required this.held,
     required this.caption,
     this.compact = false,
+    this.profile,
+    this.captureKey,
   });
 
   /// The blueprint, as it would be begun.
@@ -87,6 +89,13 @@ class StatusWindow extends StatefulWidget {
   final List<String> held;
   final String caption;
   final bool compact;
+
+  /// A sheet's own values, progress and experience, when the window shows a sheet as it stands (Systems' live
+  /// window); else only what it holds, as it would begin.
+  final SheetProfile? profile;
+
+  /// Round the window itself (not its caption), for taking its picture.
+  final GlobalKey? captureKey;
 
   @override
   State<StatusWindow> createState() => _StatusWindowState();
@@ -118,7 +127,7 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final look = windowLookOf(widget.presetId);
     final system = SystemBlueprint(widget.content);
-    final sheet = computeSheet(system, SheetProfile(itemIds: widget.held));
+    final sheet = computeSheet(system, widget.profile ?? SheetProfile(itemIds: widget.held));
     final rows = sheet.rows;
     final face = look.mono ? 'JetBrains Mono' : null;
     const ink = Color(0xFFE8F0F6);
@@ -300,20 +309,23 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
         Semantics(
           container: true,
           label: '${look.heading} window for ${widget.holder}',
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [look.top, look.bottom],
+          child: RepaintBoundary(
+            key: widget.captureKey,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [look.top, look.bottom],
+                ),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: look.accent.withValues(alpha: 0.55), width: 1.2),
+                boxShadow: [BoxShadow(color: look.accent.withValues(alpha: 0.22), blurRadius: 18, spreadRadius: 1)],
               ),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: look.accent.withValues(alpha: 0.55), width: 1.2),
-              boxShadow: [BoxShadow(color: look.accent.withValues(alpha: 0.22), blurRadius: 18, spreadRadius: 1)],
-            ),
-            child: CustomPaint(
-              foregroundPainter: _Corners(look.accent),
-              child: Padding(padding: const EdgeInsets.fromLTRB(16, 14, 16, 14), child: body),
+              child: CustomPaint(
+                foregroundPainter: _Corners(look.accent),
+                child: Padding(padding: const EdgeInsets.fromLTRB(16, 14, 16, 14), child: body),
+              ),
             ),
           ),
         ),

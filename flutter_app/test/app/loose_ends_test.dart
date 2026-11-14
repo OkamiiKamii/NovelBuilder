@@ -122,16 +122,33 @@ void main() {
     await tester.pumpAndSettle();
     final sheet = find.byType(BottomSheet);
     Finder inSheet(Finder f) => find.descendant(of: sheet, matching: f);
+    double top(String text) => tester.getTopLeft(inSheet(find.text(text))).dy;
+    final scrollable = inSheet(find.byType(Scrollable)).first;
+    final search = top('Search, or go anywhere');
+    // Down to the loose ends, under the card of the day, the proof and the keepsakes.
+    await tester.scrollUntilVisible(inSheet(find.text('Loose ends')), 200, scrollable: scrollable);
+    await tester.pumpAndSettle();
+    final scrolled = tester.state<ScrollableState>(scrollable).position.pixels;
     expect(inSheet(find.text('Loose ends')), findsOneWidget);
     expect(inSheet(find.textContaining('has been quiet since chapter 1')), findsOneWidget);
     expect(inSheet(find.textContaining('has no plan yet')), findsOneWidget);
-    double top(String text) => tester.getTopLeft(inSheet(find.text(text))).dy;
-    expect(top('Search, or go anywhere'), lessThan(top('Loose ends')), reason: 'Search is still reached first');
+    expect(search, lessThan(top('Loose ends') + scrolled), reason: 'Search is still reached first');
+    // On to the areas, under the loose ends.
+    await tester.scrollUntilVisible(
+      inSheet(find.text('Plan')),
+      200,
+      scrollable: inSheet(find.byType(Scrollable)).first,
+    );
+    await tester.pumpAndSettle();
     expect(top('Loose ends'), lessThan(top('Plan')));
     await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
     await expectLater(tester, meetsGuideline(textContrastGuideline));
 
-    await tester.tap(inSheet(find.textContaining('has been quiet since chapter 1')));
+    // Back up to the loose end (in part one), in the middle of the sheet, clear of the strip of parts held at the top.
+    final quiet = inSheet(find.textContaining('has been quiet since chapter 1'));
+    await tester.runAsync(() => Scrollable.ensureVisible(tester.element(quiet), alignment: 0.5));
+    await tester.pumpAndSettle();
+    await tester.tap(quiet);
     await tester.pumpAndSettle();
     expect(currentLocation(n.c), threadPath(n.thread));
     expect(find.byType(BottomSheet), findsNothing);

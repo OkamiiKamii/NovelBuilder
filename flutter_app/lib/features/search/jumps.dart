@@ -11,9 +11,14 @@ import '../../shared/domain/manuscript/outline.dart';
 import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../characters/character_actions.dart' show entryPath;
+import '../progress/best_lines_page.dart';
 import '../progress/book_print_page.dart';
+import '../progress/book_quiz_page.dart';
 import '../progress/book_story.dart';
 import '../progress/full_jacket.dart';
+import '../progress/gazette_page.dart';
+import '../progress/postcards_page.dart';
+import '../progress/sampler_page.dart';
 import '../progress/trailer.dart';
 import '../write/write_providers.dart';
 import 'book_index_page.dart';
@@ -73,6 +78,41 @@ List<Jump> bookJumps(NovelStore store, String novelId, {VoidCallback? onKeepWrit
       icon: Icons.play_circle_outline,
       words: const ['film', 'movie', 'poster'],
       go: (context, _) => showTrailer(context, novelId: novelId, onKeepWriting: onKeepWriting),
+    ),
+    (
+      title: 'Best lines',
+      kind: 'Keepsake',
+      icon: Icons.format_quote,
+      words: const ['quotes', 'quote', 'lines', 'share'],
+      go: (context, _) => showBestLines(context, novelId: novelId),
+    ),
+    (
+      title: 'The book quiz',
+      kind: 'Keepsake',
+      icon: Icons.quiz_outlined,
+      words: const ['quiz', 'game', 'test', 'who said it', 'trivia', 'play'],
+      go: (context, _) => showBookQuiz(context, novelId: novelId),
+    ),
+    (
+      title: 'The Gazette',
+      kind: 'Keepsake',
+      icon: Icons.newspaper,
+      words: const ['newspaper', 'gazette', 'front page', 'news', 'headline', 'paper'],
+      go: (context, _) => showGazette(context, novelId: novelId),
+    ),
+    (
+      title: 'Postcards',
+      kind: 'Keepsake',
+      icon: Icons.local_post_office_outlined,
+      words: const ['postcard', 'places', 'greetings', 'world', 'travel'],
+      go: (context, _) => showPostcards(context, novelId: novelId),
+    ),
+    (
+      title: 'The sampler',
+      kind: 'Keepsake',
+      icon: Icons.picture_as_pdf_outlined,
+      words: const ['sample', 'pdf', 'beta reader', 'agent', 'query', 'send', 'opening'],
+      go: (context, _) => showSampler(context, novelId: novelId),
     ),
     (
       title: 'Your book so far',

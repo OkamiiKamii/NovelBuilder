@@ -75,6 +75,13 @@ void main() {
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
     final sheet = find.byType(BottomSheet);
+    // The areas, under the card of the day and the keepsakes.
+    await tester.scrollUntilVisible(
+      find.descendant(of: sheet, matching: find.text('Visualize')),
+      200,
+      scrollable: find.descendant(of: sheet, matching: find.byType(Scrollable)).first,
+    );
+    await tester.pumpAndSettle();
     expect(find.descendant(of: sheet, matching: find.byType(VignetteView)), findsNWidgets(2));
     final plan = tester.getRect(find.descendant(of: sheet, matching: find.text('Plan')));
     final first = tester.getRect(find.descendant(of: sheet, matching: find.byType(VignetteView)).first);

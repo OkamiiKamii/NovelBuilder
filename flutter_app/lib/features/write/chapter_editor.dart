@@ -170,6 +170,12 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
       });
     } else if (ref.read(pendingGapProvider) case final gap? when gap.nodeId == widget.node.id && _editor != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _goToGap(gap));
+    } else if (ref.read(pendingInsertProvider) case final insert? when insert.nodeId == widget.node.id) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ref.read(pendingInsertProvider.notifier).request(null);
+        _insertAtEnd(insert.lines);
+      });
     } else if (ref.read(pendingCaretEndProvider) == widget.node.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -319,6 +325,33 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
       if (!mounted) return;
     }
     widget.onBack?.call();
+  }
+
+  /// [lines] written at the chapter's end, each a paragraph (into the last one, when it is empty), the caret after
+  /// them: a system's message from Systems.
+  void _insertAtEnd(List<String> lines) {
+    final editor = _editor;
+    final document = _document;
+    if (editor == null || document == null || lines.isEmpty) return;
+    var after = document.last.id;
+    var rest = lines;
+    final last = document.last;
+    if (last is ParagraphNode && last.text.toPlainText().trim().isEmpty) {
+      editor.execute([
+        InsertTextRequest(
+          documentPosition: DocumentPosition(nodeId: last.id, nodePosition: const TextNodePosition(offset: 0)),
+          textToInsert: lines.first,
+          attributions: const {},
+        ),
+      ]);
+      rest = lines.skip(1).toList();
+    }
+    for (final line in rest) {
+      final node = ParagraphNode(id: Editor.createNodeId(), text: AttributedText(line));
+      editor.execute([InsertNodeAfterNodeRequest(existingNodeId: after, newNode: node)]);
+      after = node.id;
+    }
+    _caretAtEnd();
   }
 
   /// The caret after the chapter's last word, with the editor focused: from "Continue writing" in the library.

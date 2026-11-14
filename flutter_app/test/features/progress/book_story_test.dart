@@ -27,7 +27,10 @@ void main() {
 
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
-    await tester.tap(find.bySemanticsLabel(RegExp('^Your book so far')));
+    final tile = find.bySemanticsLabel(RegExp('^Your book so far'));
+    await tester.ensureVisible(tile);
+    await tester.pumpAndSettle();
+    await tester.tap(tile);
     await tester.pumpAndSettle();
     expect(find.byType(BookStoryScreen), findsOneWidget);
     expect(find.text('YOUR BOOK SO FAR'), findsOneWidget);

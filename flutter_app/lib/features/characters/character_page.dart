@@ -32,7 +32,9 @@ import 'tabs/secrets_tab.dart';
 import 'widgets/cameo.dart';
 import 'widgets/cast_card.dart' show castTone;
 import 'widgets/character_card_share.dart';
+import 'widgets/face_sketch.dart';
 import 'widgets/portrait.dart';
+import 'widgets/this_or_that.dart';
 import 'widgets/vault.dart';
 
 enum ProfilePage {
@@ -117,6 +119,12 @@ class CharacterPage extends ConsumerWidget {
               icon: const Icon(Icons.record_voice_over_outlined),
               label: Text('Interview ${entry.name}'),
             ),
+          // Their temperament a quick choice at a time, into Core Traits (`widgets/this_or_that.dart`).
+          OutlinedButton.icon(
+            onPressed: () => showThisOrThat(context, entry: entry, profile: profile, actions: actions),
+            icon: const Icon(Icons.swap_horiz),
+            label: const Text('This or that'),
+          ),
           // Their card, as writers share their people (`widgets/character_card_share.dart`).
           OutlinedButton.icon(
             onPressed: () => showCharacterCard(context, cast: cast, entryId: entry.id),
@@ -433,6 +441,13 @@ class _PortraitTools extends StatelessWidget {
           ),
         Wrap(
           children: [
+            // With no picture, their cameo is drawn from their profile; here, the author draws it (`face_sketch.dart`).
+            if (!uploaded)
+              TextButton.icon(
+                onPressed: () => showDrawTheirFace(context, entry: entry, profile: profile, actions: actions),
+                icon: const Icon(Icons.brush_outlined, size: 18),
+                label: const Text('Draw their face'),
+              ),
             TextButton(
               onPressed: () => _upload(context),
               child: Text(image == null ? 'Upload portrait' : 'Replace portrait'),

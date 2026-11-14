@@ -9,6 +9,7 @@ import '../../../shared/domain/records/event.dart';
 import '../../../shared/domain/records/thread.dart';
 import '../../../shared/domain/stable_sort.dart';
 import '../../codex/widgets/connections_panel.dart';
+import '../../progression/widgets/levels_view.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
 import '../widgets/against_your_pages.dart';
@@ -16,6 +17,7 @@ import '../widgets/in_their_pages.dart';
 import '../widgets/in_their_words.dart';
 import '../widgets/parts.dart';
 import '../widgets/sections_view.dart';
+import '../widgets/their_voice.dart';
 import '../widgets/vault.dart';
 
 /// The overview: the profile's own sections beside the character's web of relationships (stacked on a narrow
@@ -66,6 +68,9 @@ class OverviewTab extends StatelessWidget {
           },
         ),
         if (symbolOf(cast, entry) case final symbol?) ...[gap, _Symbol(symbol)],
+        // Their level and those of what they carry, as the chapters give them (`progression/widgets/levels_view.dart`);
+        // nothing while the pages level nothing of theirs.
+        TheirLevels(cast: cast, entryId: entry.id),
         gap,
         _InTheManuscript(cast: cast, listed: listed, actions: actions),
         // What the book says where they are in it (`in_their_pages.dart`), with its own space above; nothing while they
@@ -73,6 +78,8 @@ class OverviewTab extends StatelessWidget {
         InTheirPages(cast: cast, entryId: entry.id, actions: actions),
         // What they say in the book (`in_their_words.dart`); nothing while they have no lines.
         InTheirWords(cast: cast, entryId: entry.id, actions: actions),
+        // How they talk, against the cast, and whom they sound like (`widgets/their_voice.dart`).
+        TheirVoice(cast: cast, entryId: entry.id, actions: actions),
         // Their looks as the chapters give them, beside the profile (`against_your_pages.dart`); nothing when the page is silent.
         AgainstYourPages(cast: cast, entryId: entry.id, actions: actions),
         gap,

@@ -10,6 +10,7 @@ import '../../relationships/relationship_page.dart' show relate;
 import '../character_actions.dart';
 import '../characters_providers.dart';
 import 'cast_card.dart' show castTone, monogram;
+import 'page_notes.dart';
 import 'portrait.dart';
 import 'vault.dart';
 
@@ -24,15 +25,18 @@ String notTiedKey(String novelId) => 'cast.notTied.$novelId';
 ///
 /// It only says who is on the page together. Nothing is recorded until a press, and then only what was chosen.
 class TogetherOnPage extends ConsumerStatefulWidget {
-  const TogetherOnPage({super.key, required this.cast});
+  const TogetherOnPage({super.key, required this.cast, this.onCount});
 
   final CastData cast;
+
+  /// Told how many it shows (the strip of notes counts them, `page_notes.dart`).
+  final ValueChanged<int>? onCount;
 
   @override
   ConsumerState<TogetherOnPage> createState() => _TogetherOnPageState();
 }
 
-class _TogetherOnPageState extends ConsumerState<TogetherOnPage> {
+class _TogetherOnPageState extends ConsumerState<TogetherOnPage> with CountReporter {
   static const _first = 3;
   bool _all = false;
 
@@ -68,6 +72,7 @@ class _TogetherOnPageState extends ConsumerState<TogetherOnPage> {
       for (final r in cast.snapshot.rows('characterRelations').map(CharacterRelation.new)) pairKey(r.fromId, r.toId),
     };
     final pairs = untiedTogether(cast.list, cast.model.order, related: related, setAside: _setAside());
+    report(widget.onCount, pairs.length);
     if (pairs.isEmpty) return const SizedBox.shrink();
     final shown = _all ? pairs : pairs.take(_first).toList();
     final scheme = Theme.of(context).colorScheme;

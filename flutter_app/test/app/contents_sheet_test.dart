@@ -47,6 +47,13 @@ void main() {
     Finder inSheet(Finder f) => find.descendant(of: sheet, matching: f);
     expect(inSheet(find.text('Contents')), findsOneWidget);
     expect(inSheet(find.text('Ash Road')), findsOneWidget);
+    // The areas, under the card of the day and the keepsakes.
+    await tester.scrollUntilVisible(
+      inSheet(find.text('2,500 of 10,000 words')),
+      200,
+      scrollable: inSheet(find.byType(Scrollable)).first,
+    );
+    await tester.pumpAndSettle();
     expect(inSheet(find.text('IV')), findsOneWidget, reason: 'Plan is the fourth area');
     expect(inSheet(find.text('2 characters · 1 tie')), findsOneWidget);
     expect(inSheet(find.text('Threads, structure and the board')), findsOneWidget, reason: 'no threads yet');

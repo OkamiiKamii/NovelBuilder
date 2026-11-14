@@ -20,15 +20,22 @@ import 'characters_providers.dart';
 import 'interview.dart';
 import 'new_character_dialog.dart';
 import 'widgets/cast_card.dart';
+import 'widgets/cast_check.dart';
 import 'widgets/cast_orbit.dart';
 import 'widgets/cast_photo.dart';
+import 'widgets/cast_stakes.dart';
 import 'widgets/cast_ties.dart';
 import 'widgets/empty_chairs.dart';
 import 'widgets/manuscript_names.dart';
+import 'widgets/name_board.dart';
+import 'widgets/page_notes.dart';
 import 'widgets/playbill.dart';
 import 'widgets/portrait.dart';
+import 'widgets/roll_call.dart';
 import 'widgets/together_on_page.dart';
 import 'widgets/vault.dart';
+import 'widgets/waiting_for_a_name.dart';
+import 'widgets/whose_eyes.dart';
 
 const _page = 60;
 
@@ -50,6 +57,17 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
 
   /// Ticks with every change of the page's state, so the Arrange sheet (drawn from it) follows each choice made in it.
   final _changed = ValueNotifier<int>(0);
+
+  /// How many notes each panel from the pages shows, as each tells it, for the strip of notes.
+  final _notes = <PageNote, int>{};
+
+  /// Where each panel from the pages is, for the strip of notes to go to.
+  final _noteKeys = {for (final n in PageNote.values) n: GlobalKey()};
+
+  void _counted(PageNote note, int count) {
+    if (_notes[note] == count) return;
+    setState(() => _notes[note] = count);
+  }
 
   @override
   void setState(VoidCallback fn) {
@@ -142,23 +160,23 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
             )
           else
             CastPhoto(cast: active, onOpen: (l) => CharacterActions(context, cast.novelId).openCharacter(l.entry.id)),
-          // The ties the book already shows: who keeps being on the page together, with none recorded.
-          TogetherOnPage(cast: cast),
-          // The names written in the manuscript that are not in the cast yet, one press from it.
-          ManuscriptNames(
-            cast: cast,
-            onAdd: (name) {
-              final actions = CharacterActions(context, cast.novelId);
-              final made = actions.now((c) => c.create(name: name));
-              if (made != null) {
-                actions.tell(
-                  '$name is in the cast.',
-                  actionLabel: 'Open',
-                  onAction: () => actions.openCharacter(made.id),
+          // What the pages say of the cast, counted, a press from each; the notes themselves are under the cast, so the
+          // cast comes first (`widgets/page_notes.dart`).
+          NotesStrip(
+            counts: _notes,
+            onNote: (n) {
+              final at = _noteKeys[n]!.currentContext;
+              if (at != null) {
+                Scrollable.ensureVisible(
+                  at,
+                  alignment: 0.05,
+                  duration: const Duration(milliseconds: 350),
+                  curve: Curves.easeOut,
                 );
               }
             },
           ),
+          const SizedBox(height: 8),
           if (list.isEmpty)
             Playbill(novelId: cast.novelId, onCreate: () => _create(cast))
           else ...[
@@ -208,6 +226,19 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
             else if (view == CastView.ties)
               // Who they are to each other: every pair, one press to record a tie (`widgets/cast_ties.dart`).
               CastTies(found: found, cast: cast)
+            else if (view == CastView.roll)
+              // The whole cast's basics in one table, written in place (`widgets/roll_call.dart`).
+              RollCall(found: found, cast: cast)
+            else if (view == CastView.names)
+              // Every name in the book on a board of the alphabet, the look-alikes and the free letters
+              // (`widgets/name_board.dart`).
+              NameBoard(cast: cast)
+            else if (view == CastView.eyes)
+              // Whose eyes each chapter is told through, as a ribbon of the book (`widgets/whose_eyes.dart`).
+              WhoseEyes(cast: cast)
+            else if (view == CastView.stakes)
+              // What drives each of them, answered or asked, and where they collide (`widgets/cast_stakes.dart`).
+              CastStakes(found: found, cast: cast)
             else if (view == CastView.orbit)
               // The cast as an orrery round the heart of the book, and the one to know next (`widgets/cast_orbit.dart`).
               CastOrbit(
@@ -251,6 +282,46 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
               ),
             ],
           ],
+          // FROM YOUR PAGES, under the cast: what the book says of it, each telling the strip of notes how many.
+          if (_notes.values.any((n) => n > 0)) ...[
+            const SizedBox(height: 20),
+            const Divider(),
+            const SizedBox(height: 4),
+          ],
+          // The ties the book already shows: who keeps being on the page together, with none recorded.
+          KeyedSubtree(
+            key: _noteKeys[PageNote.together],
+            child: TogetherOnPage(cast: cast, onCount: (n) => _counted(PageNote.together, n)),
+          ),
+          // What an editor would ask of the cast: forgotten, gone quiet, always together, light (`widgets/cast_check.dart`).
+          KeyedSubtree(
+            key: _noteKeys[PageNote.check],
+            child: CastCheck(cast: cast, onCount: (n) => _counted(PageNote.check, n)),
+          ),
+          // People the pages keep coming back to without a name (`widgets/waiting_for_a_name.dart`).
+          KeyedSubtree(
+            key: _noteKeys[PageNote.waiting],
+            child: WaitingForAName(cast: cast, onCount: (n) => _counted(PageNote.waiting, n)),
+          ),
+          // The names written in the manuscript that are not in the cast yet, one press from it.
+          KeyedSubtree(
+            key: _noteKeys[PageNote.names],
+            child: ManuscriptNames(
+              cast: cast,
+              onCount: (n) => _counted(PageNote.names, n),
+              onAdd: (name) {
+                final actions = CharacterActions(context, cast.novelId);
+                final made = actions.now((c) => c.create(name: name));
+                if (made != null) {
+                  actions.tell(
+                    '$name is in the cast.',
+                    actionLabel: 'Open',
+                    onAction: () => actions.openCharacter(made.id),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -334,6 +405,10 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
         ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), label: Text('List')),
         ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), label: Text('Ties')),
         ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), label: Text('Orbit')),
+        ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), label: Text('Stakes')),
+        ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), label: Text('Roll call')),
+        ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), label: Text('Eyes')),
+        ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), label: Text('Names')),
       ],
       selected: {view},
       showSelectedIcon: false,
@@ -367,6 +442,10 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                   ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), tooltip: 'List'),
                   ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), tooltip: 'Ties'),
                   ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), tooltip: 'Orbit'),
+                  ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), tooltip: 'Stakes'),
+                  ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), tooltip: 'Roll call'),
+                  ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), tooltip: 'Eyes'),
+                  ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), tooltip: 'Names'),
                 ],
                 selected: {view},
                 showSelectedIcon: false,
@@ -443,6 +522,10 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
         ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), tooltip: 'List'),
         ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), tooltip: 'Ties'),
         ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), tooltip: 'Orbit'),
+        ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), tooltip: 'Stakes'),
+        ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), tooltip: 'Roll call'),
+        ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), tooltip: 'Eyes'),
+        ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), tooltip: 'Names'),
       ],
       selected: {view},
       showSelectedIcon: false,

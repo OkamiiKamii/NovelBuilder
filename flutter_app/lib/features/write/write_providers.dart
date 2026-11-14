@@ -81,3 +81,16 @@ class PendingCaretNotifier extends Notifier<String?> {
 }
 
 final pendingCaretEndProvider = NotifierProvider<PendingCaretNotifier, String?>(PendingCaretNotifier.new);
+
+/// Lines to be written at the end of a chapter as it opens (a system's message, from Systems), each a paragraph of
+/// its own, the caret after them. The chapter's editor takes them when it opens.
+typedef PendingInsert = ({String nodeId, List<String> lines});
+
+class PendingInsertNotifier extends Notifier<PendingInsert?> {
+  @override
+  PendingInsert? build() => null;
+
+  void request(PendingInsert? insert) => state = insert;
+}
+
+final pendingInsertProvider = NotifierProvider<PendingInsertNotifier, PendingInsert?>(PendingInsertNotifier.new);

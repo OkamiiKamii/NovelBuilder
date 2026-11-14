@@ -553,6 +553,173 @@ const tutorialTopics = <Topic>[
         'bell,” over your synopsis.',
   ),
   Topic(
+    id: 'bestlines',
+    title: 'Your best lines',
+    group: 'Getting started',
+    where: 'Under More, at the top: the keepsakes, Best lines.',
+    what:
+        'The sentences of your book most worth quoting, found in your pages, each a card to share the way authors '
+        'post their lines.',
+    steps: [
+      'Open More and press Best lines. Swipe through twelve cards, the best first.',
+      'They are chosen for what stays with a reader: a turn (but, yet, a dash), the sound of a truth (never, every), '
+          'the senses (salt, stone, bells), an echo; never business like “he walked to the door”.',
+      'Dress a card as Paper, Night or The book (your book’s own colour).',
+      'Share this line makes a square picture of it; Read it there opens the chapter at the line.',
+    ],
+    example: '“The sea does not care how excited you are.” Chapter 4, on paper, ready to post.',
+  ),
+  Topic(
+    id: 'todayfromyourbook',
+    title: 'Today from your book',
+    group: 'Getting started',
+    where: 'Under More, above the keepsakes: Today from your book.',
+    what: 'A card made from your book that is new each day, so the contents are never the same twice.',
+    steps: [
+      'One day, a line of the day: one of your best lines, on paper. Read it there, or All your best lines.',
+      'The next, a question of the day from the book quiz: press a choice to answer it there. Play the whole quiz '
+          'for ten.',
+      'The next, your book in numbers: its words, chapters and people, and how long it takes to read. See it told '
+          'as a story.',
+      'Then round again, with another line and another question.',
+    ],
+    example: '9,645 words · 15 chapters · 8 characters · 39 minutes to read.',
+  ),
+  Topic(
+    id: 'beforeareader',
+    title: 'Before a reader sees it',
+    group: 'Getting started',
+    where: 'Under More, above the keepsakes: Before a reader sees it.',
+    what:
+        'The slips a proofreader would mark, over the whole book, so a draft can go to a beta reader or an agent '
+        'without them.',
+    steps: [
+      'Open More: the card says how many there are, and of which kinds, or that the book reads clean.',
+      'Name slips (a word a letter off a name), doubled words, a past form after “didn’t”, a line of speech never '
+          'closed, straight quotes in a book of curly ones, spacing, a sentence starting small, a chapter with no '
+          'title.',
+      'Press the card for the list: each in its sentence, the slip marked in red. Show one kind at a time.',
+      'Read it there opens the chapter at it. Nothing changes your words: you put each right yourself.',
+    ],
+    example: '“With that the waitress left and didn’t looked back.” After “didn’t”, the plain verb: “look”?',
+  ),
+  Topic(
+    id: 'contentsparts',
+    title: 'More, in parts',
+    group: 'Getting started',
+    where: 'Under More: the strip of parts under Search, and a heading for each part.',
+    what: 'More is laid out as a book’s contents are, in four parts, each a press away.',
+    steps: [
+      'Part one, Today: the card of the day, and the loose ends the story is waiting for.',
+      'Part two, Before it goes out: what a proofreader would mark, and the submission kit.',
+      'Part three, Made from the book: the keepsakes, and the shelf.',
+      'Part four, The book: Plan, Visualize, Review and Progress, each with what it holds now.',
+      'The strip of parts stays at the top as you scroll: press Today, Polish, Keepsakes or The book to go there.',
+    ],
+    example: 'Press Polish: Before it goes out comes to the top, under the strip.',
+  ),
+  Topic(
+    id: 'submissionkit',
+    title: 'The submission kit',
+    group: 'Getting started',
+    where: 'Under More, under Before a reader sees it: Send it out.',
+    what: 'What an agent or a publisher asks for, how far your book has come, and a query letter laid out for it.',
+    steps: [
+      'Open More: the card says how many of the six are ready, and which is next.',
+      'A title, your name, a genre; a length the genre expects (fantasy usually runs 90,000 to 120,000 words); a '
+          'synopsis of about a page; opening chapters with nothing a proofreader would mark.',
+      'Each that is not ready says how to make it so: Edit the book’s details, or See the slips. Once the opening is '
+          'clean, Make the sample pages.',
+      'Under the list, the query letter, from your title, genre, length and synopsis. The marked parts (the agent’s '
+          'name, books like yours, a few lines about you) are yours to write.',
+      'Copy the letter, or Save it as text.',
+    ],
+    example: 'Submission kit: 4 of 6 ready. Next: a length the genre expects.',
+  ),
+  Topic(
+    id: 'keepsakeshelf',
+    title: 'The keepsake shelf',
+    group: 'Getting started',
+    where: 'Under More, above the keepsakes: See the shelf.',
+    what: 'Everything your book can be made into, all at once: each keepsake standing on a wooden shelf.',
+    steps: [
+      'Open More. The keepsakes row says how many you have not opened yet, and those come first.',
+      'One not yet opened wears a gold ribbon, NEW, until you open it.',
+      'Press See the shelf for all of them at once, a few to a shelf. Press one to open it.',
+    ],
+    example: 'KEEPSAKES · 7 new, and on the shelf the quiz, the postcards and the trailer still wear their ribbons.',
+  ),
+  Topic(
+    id: 'gazette',
+    title: 'The Gazette',
+    group: 'Getting started',
+    where: 'Under More, the first of the keepsakes: The Gazette.',
+    what: 'Every chapter of your book as the front page of its world’s newspaper, an edition a chapter.',
+    steps: [
+      'Open More and press The Gazette. It opens on the latest edition; swipe, or the arrows, for earlier ones.',
+      'The paper is named for the place your book names most, like The Old Merrow Gazette.',
+      'The headline is the chapter’s title, with its best line beneath, and its opening is the lead story.',
+      'At the foot: what was said about town and who said it, the weather the chapter’s words bring, and who is in '
+          'the news.',
+      'Print it makes a picture of the page; Read it there opens the chapter. Under the last edition, tomorrow’s '
+          'paper is blank: Keep writing.',
+    ],
+    example: 'The Old Merrow Gazette, chapter 15 edition: THE FULL MAP. Weather: a long night, and a clear one.',
+  ),
+  Topic(
+    id: 'postcards',
+    title: 'Postcards',
+    group: 'Getting started',
+    where: 'Under More, among the keepsakes: Postcards.',
+    what: 'Each place in your book as a vintage postcard: greetings from the front, a line of your book on the back.',
+    steps: [
+      'Open More and press Postcards. Swipe through the places in the order your book first names them.',
+      'The places are your world’s locations, and the places your pages name that are not kept yet, like the Mimir '
+          'Forest or the Kingdom of Aldia.',
+      'The front is painted from what the place is (the sea, trees, peaks, roofs, a tower, a lighthouse), in its own '
+          'light.',
+      'Tap a postcard, or Turn it over, for the back: the line your book sets there, its chapter, a stamp and the '
+          'postmark.',
+      'Send it makes a picture of the side showing; Read it there opens the chapter at the line.',
+    ],
+    example: 'Greetings from Hollow Light: a lighthouse in a storm, and on the back, chapter 15.',
+  ),
+  Topic(
+    id: 'bookquiz',
+    title: 'The book quiz',
+    group: 'Getting started',
+    where: 'Under More, at the top: the first of the keepsakes, Quiz.',
+    what:
+        'How well do you know your own book? Ten questions made from your pages. Play it yourself, or hand the phone '
+        'to a reader.',
+    steps: [
+      'Open More and press Quiz.',
+      'Who said it? A line someone says, and the cast to choose from. Which chapter? A line, and four chapters.',
+      'The missing word: a line with a word taken out. Which comes first? Two lines from far apart in the book.',
+      'Press a choice: it says whether you were right and where the line is; Read it there opens the chapter at it.',
+      'After the last, See your score: your score as a card. Share your score makes a square picture; Play again '
+          'asks other lines.',
+    ],
+    example: 'At the third stone, they ______. stopped, chapter 6 · First Marker.',
+  ),
+  Topic(
+    id: 'sampler',
+    title: 'The sampler',
+    group: 'Getting started',
+    where: 'Under More, at the top: the keepsakes, Sampler.',
+    what:
+        'The opening of your book as a reader’s sample, a PDF to send to a beta reader, a writing group or an '
+        'agent.',
+    steps: [
+      'Open More and press Sampler. Swipe through its pages as they will print.',
+      'The title page has your title, your name, your best line and your synopsis (from the book’s details).',
+      'Then your first chapters, each on a new page, until a reader has enough to judge: about 1,500 words, three '
+          'chapters at most.',
+      'The last page says how much more there is. Make the PDF saves it, ready to send.',
+    ],
+    example: 'The Drowned Road: a title page, the first 3 chapters, 1,947 words, about 8 minutes to read.',
+  ),
+  Topic(
     id: 'trailer',
     title: 'The trailer',
     group: 'Getting started',
@@ -591,6 +758,179 @@ const tutorialTopics = <Topic>[
     example:
         'Ilse’s profile says her eyes are brown. Chapter 9 has “Ilse’s grey eyes narrowed.” The profile flags it, '
         'and Read it in Chapter 9 takes you to the line.',
+  ),
+  Topic(
+    id: 'theirvoice',
+    title: 'Their voice',
+    group: 'Worldbuilding',
+    where: 'A character’s profile, under In their own words, once they have five lines or more.',
+    what:
+        'How a character talks, measured from their lines and set against the rest of the cast: so no two of them '
+        'sound the same.',
+    steps: [
+      'Write dialogue as you do, tied to its speaker (“Go,” Wren said). Their lines are counted from the book.',
+      'Meters show words a line, questions, exclamations, contractions and word length, a tick for the cast’s average.',
+      'What sets them apart is said (“Asks more than the others”), and the words that are theirs and no one else’s.',
+      'It names whom they sound most like, and says so plainly when a reader could not tell the two apart.',
+    ],
+    example: 'Wren: 6.6 words a line, 8% questions; her words “master”, “bell”, “tide”. Sounds most like Tobiah Fenn.',
+  ),
+  Topic(
+    id: 'thisorthat',
+    title: 'This or that',
+    group: 'Worldbuilding',
+    where: 'A character’s profile, at the top: This or that.',
+    what:
+        'A character’s temperament a quick choice at a time: quiet or loud, planner or improviser, head or heart. '
+        'Sixteen cards, into their Core Traits.',
+    steps: [
+      'Open a character and press This or that.',
+      'Each card asks one thing and holds two answers: swipe the card towards one, or press it. Skip passes; Back '
+          'returns.',
+      'What their Core Traits already say is chosen when its card comes up; choose again and the other word takes '
+          'its place.',
+      'At the end, their compass: where they fell on each. Keep these traits writes them in; other traits stay.',
+    ],
+    example: 'Wren: loud, an improviser, head, bold, honest. Thirty seconds, and her Core Traits are written.',
+  ),
+  Topic(
+    id: 'castcheck',
+    title: 'The cast, checked',
+    group: 'Worldbuilding',
+    path: '/organize',
+    where: 'Organize, Characters: under the cast photograph, once the book has three chapters or more.',
+    what:
+        'What an editor would ask of your cast, read from where each of them is in the book: who the book forgets, '
+        'who goes quiet, who is always together, who is light.',
+    steps: [
+      'A principal the book forgets: a lead or supporting character in a fifth of the chapters or fewer.',
+      'Gone quiet: in a stretch of chapters, then gone long before the end. A thread left hanging?',
+      'Always together: two (neither a lead) on the same pages every time. Could they be one character?',
+      'Light enough to cut: in one chapter and tied to no one. Press a face to open them; Not now sets a note aside.',
+    ],
+    example: '“Nan Ottilie is in chapters 3 to 8, then gone: 7 chapters without them.” Bring her back, or let her go.',
+  ),
+  Topic(
+    id: 'waitingname',
+    title: 'Waiting for a name',
+    group: 'Worldbuilding',
+    path: '/organize',
+    where: 'Organize, Characters: above the names in your manuscript, when your pages have someone without a name.',
+    what:
+        'The people your pages keep coming back to without naming them (“the waitress”, “the old guard”): a character '
+        'in all but name, named in a press.',
+    steps: [
+      'Write as you do. Someone mentioned twice or more as “the waitress”, “the captain”, “a guard” is listed, with '
+          'how often, where, and the sentence.',
+      'Name them opens the name forge; Write a name asks for one. Either makes them a character.',
+      'They keep “the waitress” as their title and alias, so every mention in your pages is theirs, and “Waitress” '
+          'as their Occupation.',
+      'Not a character sets one aside. Those the cast already is (their title, occupation, summary) are left out.',
+    ],
+    example: '“The waitress” 3 times in chapter 1. Name them: Mira, the waitress, and all 3 mentions are hers.',
+  ),
+  Topic(
+    id: 'fromyourpages',
+    title: 'The cast first',
+    group: 'Getting started',
+    where: 'Organize, Characters: From your pages, under the cast photograph.',
+    what: 'The cast comes first; what the pages say about it is counted at the top and kept under the cast.',
+    steps: [
+      'Under the photograph, From your pages: a note for each kind with something to say, and how many.',
+      'Pairs often together with no tie, notes on the cast, people waiting for a name, names in your pages not in the '
+          'cast yet.',
+      'Then the search, the views and the cast itself, on the first screen.',
+      'Press a note to go to it, under the cast. Deal with one and its count goes down.',
+    ],
+    example: '15 pairs often together · 1 note on the cast · 1 waiting for a name · 2 names in your pages',
+  ),
+  Topic(
+    id: 'nameboard',
+    title: 'The name board',
+    group: 'Getting started',
+    where: 'Organize, Characters: the Names view, the last of the views.',
+    what:
+        'Every name in your book on a board of the alphabet, the names a reader could take for one another, and the '
+        'letters still free.',
+    steps: [
+      'Choose Names. Each letter shows how many names start with it, shaded as it fills, gold when crowded (three or '
+          'more).',
+      'Press a letter for its names; press a name to open its page.',
+      'Look-alikes: two names one letter apart (Marrow and Merrow), beginning and ending alike, or with the same first '
+          'three letters. A surname a family shares is left alone.',
+      'Free letters: no name begins with them yet. Forge a name for the next character, and they join the cast.',
+    ],
+    example: 'Bell · Vell, one letter apart: Merrow’s Bell Tower and Vell.',
+  ),
+  Topic(
+    id: 'whoseeyes',
+    title: 'Whose eyes',
+    group: 'Getting started',
+    where: 'Organize, Characters: the Eyes view, beside Roll call.',
+    what: 'Whose eyes each chapter is told through, read from who thinks, feels and notices in it.',
+    steps: [
+      'Choose Eyes. The book is a ribbon, a band a chapter, as wide as it is long, in the colour of the one it is told '
+          'through.',
+      'Press a band: the chapter, through whom, and the sentence that shows it (“Tobiah saw it first.”). Read it there '
+          'opens the chapter.',
+      'Under it, each one the book is told through, with their chapters and their share of it; first person and unclear '
+          'chapters on their own.',
+      'Then what it means: the longest run through the same eyes, and anyone not seen through for a while.',
+    ],
+    example: 'Tobiah Fenn has not been seen through for 11 chapters, since chapter 4.',
+  ),
+  Topic(
+    id: 'rollcall',
+    title: 'The roll call',
+    group: 'Worldbuilding',
+    path: '/organize',
+    where: 'Organize, Characters: the Roll call view (the table), last of the views.',
+    what:
+        'The whole cast as one table of the basics (age, gender, species, occupation, what they want), written in '
+        'place: no profile to open.',
+    steps: [
+      'Press Roll call. Each character is a row, their name and role pinned at the left; the columns scroll sideways.',
+      'A blank is a cell to fill: write in it and it is kept in that character’s profile, in the field that holds it.',
+      'What is already written shows, and can be changed in place. The line at the top counts what is filled.',
+      'Press a name to open their whole profile.',
+    ],
+    example: 'Eight characters, forty blanks: two minutes down the Age and Gender columns, and the cast is sketched.',
+  ),
+  Topic(
+    id: 'stakes',
+    title: 'The stakes',
+    group: 'Worldbuilding',
+    path: '/organize',
+    where: 'Organize, Characters: the Stakes view (the flag), beside Cards, List, Ties and Orbit.',
+    what:
+        'The cast by what drives them: what each wants, what stands in the way, what is at stake, and where they '
+        'end; and where their wants collide.',
+    steps: [
+      'Press Stakes. Each character is a card: Wants, In the way, At stake, Ends, from whichever profile field '
+          'answers it (What they want, Initial Goals, External Conflict, Intended Resolution…).',
+      'What is not answered yet is asked: “What does Wren want?” Press it, write a line, Keep: it is in their profile.',
+      'Where they collide: two whose wants name each other, one in the other’s way, or both after the same thing.',
+      'The line at the top says how many of them you know the wants of.',
+    ],
+    example: 'Wren wants to finish the chart; Sefa wants a chart for the Guild: Both want “chart”. That is a scene.',
+  ),
+  Topic(
+    id: 'drawface',
+    title: 'Draw their face',
+    group: 'Worldbuilding',
+    where: 'A character’s profile, under their portrait: Draw their face.',
+    what:
+        'A character with no picture is a cameo drawn from their profile: their hair, eyes and skin, and what marks '
+        'them. Draw it in a few presses.',
+    steps: [
+      'Open a character and press Draw their face.',
+      'Choose their hair (its colour, and bald, cropped, short, shoulder-length, long or braided, curly or not), their '
+          'eyes and their skin; and what marks them: a beard, glasses, a scar, an eyepatch, freckles, a hood, a crown.',
+      'The cameo changes as you choose. Keep this face writes it into their Appearance fields as words.',
+      'Or write it yourself: Hair “Long, curly black”, Eyes “Green”, a scar in Distinguishing Features. The cameo is '
+          'drawn from the words, everywhere they appear. Nothing unsaid is guessed.',
+    ],
+    example: 'Wren: braided red hair, green eyes, freckles. Now she is herself in the cast photograph.',
   ),
   Topic(
     id: 'charactercard',
@@ -705,11 +1045,145 @@ const tutorialTopics = <Topic>[
           'system itself) and its ranks; press Begin with it, or Begin blank. When your chapters already speak of '
           'one (levels, skills, stats), your book’s own system comes first, your hero’s status window holding the '
           'skills you wrote: press Begin with your book’s system.',
-      'Define attributes and resources, then levels or named stages.',
+      'A system has two halves, switched at the top: In the story (its window, the climb, the face-off, the ledger, '
+          'what the pages name) and The blueprint (its rules and sheets). A system just begun opens on its blueprint.',
+      'In The blueprint, define attributes and resources, then levels or named stages.',
       'Add groups such as classes and skills, with what they need.',
       'Give a character a sheet, and record what changes chapter by chapter.',
     ],
     example: 'Set Health = Vitality × 10. Give Kael Vitality 14: his sheet shows Health 140. At 15, it is 150.',
+  ),
+  Topic(
+    id: 'livewindow',
+    title: 'The window',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: under the system’s name, first.',
+    what:
+        'Your system’s status window as the story would show it: a character’s sheet as it stands, live, in its own '
+        'dress. Share it as a picture.',
+    steps: [
+      'Open Systems: the window shows the first character with a sheet (choose another above it), or, with none yet, '
+          'a hero as a sheet would begin.',
+      'It is worked out as it is drawn: their level from the experience logged, their stats, what their class and '
+          'skills add, what they hold.',
+      'Change the system in the tabs below (a stat renamed, a formula, a starting value) and the window changes at once.',
+      'Share the window makes a picture of it to post.',
+    ],
+    example: 'A cultivation system shows a jade record: Qi Condensation, 100 qi, [Azure Breathing] MORTAL.',
+  ),
+  Topic(
+    id: 'faceoff',
+    title: 'The face-off',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: under the climb, once two characters have sheets in the system.',
+    what:
+        'Two characters’ sheets side by side, stat by stat: who would win? Is your antagonist still ahead, is the '
+        'rival keeping pace?',
+    steps: [
+      'Give two characters sheets in a system. The face-off sets them either side of VS, in the system’s own dress.',
+      'Each number both have is a bar out to each side, the leader’s lit: levels, stats, resources, what follows.',
+      'Beneath: who leads in how many, the widest gap, and what each holds that the other does not.',
+      'Swap sides, or choose others when there are more. Share the face-off makes a picture of it.',
+    ],
+    example: 'Aldous Crane leads in 5 of 13; Wren Hollis only in Agility. The widest gap: Strength, 25 to 10.',
+  ),
+  Topic(
+    id: 'climb',
+    title: 'The climb',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: under the window, once a sheet has experience logged against chapters.',
+    what:
+        'How fast a character rises: their level chapter by chapter, by your system’s own curve, and where the pace '
+        'leads. Too fast, nothing is earned; too slow, nothing happens.',
+    steps: [
+      'Log experience on a character’s sheet (Sheets, Levelling), each with the chapter it was earned in.',
+      'The climb draws their level at the end of each chapter, solid, and carries it on dashed at the pace so far, '
+          'the cap ruled across the top.',
+      'It says where the pace leads: their level when the chapters written end, the next round level, the cap.',
+      'A chapter that gives far more than the others is named. Choose another character above the chart.',
+    ],
+    example: 'At this pace (158 XP a chapter), Level 24 by the end of chapter 15. The cap, Level 50, in chapter 31.',
+  ),
+  Topic(
+    id: 'systemspeaks',
+    title: 'The system speaks',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: The system speaks, under the system’s name.',
+    what:
+        'Write the messages your system shows its characters (a level up, a new skill, a stat, a title, a quest, a '
+        'warning), filled in from their sheet.',
+    steps: [
+      'Press The system speaks. Choose who it is to (a character with a sheet, or You) and what it says.',
+      'It fills in from their sheet: the level they have reached, their stats, the skills and titles they hold with '
+          'their ranks. Change anything; add a line more.',
+      'Choose your book’s brackets: [ ], 【 】, < > or none. They are remembered for the book.',
+      'Copy it, or Write it in the chapter: it goes at the end of the chapter you were writing, a line each.',
+    ],
+    example: '[Level up!] [Wren Hollis has reached Level 5.] [+5 attribute points to assign]',
+  ),
+  Topic(
+    id: 'ledger',
+    title: 'The ledger',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: the ledger, under The system speaks.',
+    what:
+        'Every number your pages give for the system (its stats and levels), in order, and where they do not add up, '
+        'as a sharp-eyed reader would find it.',
+    steps: [
+      'Write numbers as you do: “Strength 14”, “Level 5”, or the system’s own “[Strength +2 (12 → 14)]”.',
+      'Open Systems: each stat and level is a line of what it was, chapter by chapter.',
+      'The slips come first: a sum that does not come out, a rise from the wrong number, a level that goes down, the '
+          'pages ending on a number the sheet does not hold.',
+      'Read it in chapter N opens the chapter on that sentence.',
+    ],
+    example: '“Strength rises from 12 in chapter 5, but it was 13 in chapter 4.” Fix one, and the ledger is clean.',
+  ),
+  Topic(
+    id: 'levelsinpages',
+    title: 'Levels in your pages',
+    group: 'Getting started',
+    where:
+        'A character’s page, Overview: their levels. Organize, Systems: In the story (or under the systems), for what '
+        'is no one’s and who holds the rest.',
+    what:
+        'Everything your chapters give a level to (an armor and its versions, a skill, a weapon, a character), kept '
+        'as you write, never by hand, and kept with the character it belongs to.',
+    steps: [
+      'Write the level in the chapter: “the Hunter Armor reached Level 100”, “Hunter Armor Lv. 2”, “a Level 3 Hunter '
+          'Armor”, “the Hunter Armor’s level rose to 4”, or “the Hunter Armor leveled up”. From that chapter on it is '
+          'at that level, until your pages say it changed.',
+      'Whose it is comes from the pages: “Kade’s Hunter Armor”, then who is in the sentence, then whose eyes the '
+          'chapter is seen through. “Kade reached Level 5” is Kade’s own level.',
+      'Open the character: their levels are on the Overview. Systems shows who holds what and what is no one’s.',
+      'Things that share their last word are versions of one thing: Archer Armor and Hunter Armor under Armor. Press '
+          'one for every step: its chapter, its level, the sentence, and Read it there.',
+      'Wrong person? Not theirs sends it back to Systems, and Give to… hands it to someone. Not a level sets a wrong '
+          'one aside. A level lower than before, where the page does not say it fell, is marked.',
+    ],
+    example: 'On Kade’s page: Hunter Armor, Level 100, since chapter 100. Archer Armor, Level 2, since chapter 2.',
+  ),
+  Topic(
+    id: 'pagesnames',
+    title: 'In your pages, not in the system',
+    group: 'Worldbuilding',
+    path: '/organize/systems',
+    where: 'Organize, Systems: under the ledger, when your chapters name something the system does not hold.',
+    what:
+        'The skills, titles, classes and items your chapters name the system’s way, and the system does not hold '
+        'yet. Add them in a press.',
+    steps: [
+      'Write as you do: “[Skill acquired: Tide Sense (E)]”, “Title earned: Giant Slayer”, or just “[Power Strike]”.',
+      'Open Systems: each name it does not hold is listed, with its kind, its rank and where it is.',
+      'Add to Skills (or Titles, Classes, Items) puts it in the system, and on the sheet when it has one; a group is '
+          'made if there is none.',
+      'Not part of it sets a name aside. Add all takes them all at once.',
+    ],
+    example: '[Tide Sense] Skill · rank E, 2 times from chapter 1. Add to Skills: it is on Wren’s sheet.',
   ),
   Topic(
     id: 'progression',
@@ -1190,6 +1664,40 @@ const tutorialButtonNames = [
   'Share this page',
   'Keep writing',
   'Share their card',
+  'Draw their face',
+  'Keep this face',
+  'This or that',
+  'Keep these traits',
+  'The system speaks',
+  'Write it in the chapter',
+  'Not part of it',
+  'Share the window',
+  'Share the face-off',
+  'Swap sides',
+  'In the story',
+  'Name them',
+  'Write a name',
+  'Share this line',
+  'Read it there',
+  'Not a level',
+  'Not theirs',
+  'Give to…',
+  'Make the PDF',
+  'See your score',
+  'Share your score',
+  'All your best lines',
+  'Turn it over',
+  'Send it',
+  'Print it',
+  'See the shelf',
+  'Edit the book’s details',
+  'See the slips',
+  'Make the sample pages',
+  'Copy the letter',
+  'Save it',
+  'Play the whole quiz',
+  'See it told as a story',
+  'The blueprint',
   'A line they say',
   'Forge a name',
   'More names',

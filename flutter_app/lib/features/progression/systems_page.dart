@@ -21,9 +21,22 @@ import '../characters/characters_providers.dart';
 import '../characters/widgets/parts.dart';
 import '../workspace/organize_switch.dart';
 import 'progression_providers.dart';
+import 'widgets/climb_view.dart';
+import 'widgets/face_off_view.dart';
+import 'widgets/levels_view.dart';
+import 'widgets/live_window.dart';
+import 'widgets/number_ledger_view.dart';
+import 'widgets/pages_names_view.dart';
 import 'widgets/sheet_editor.dart';
 import 'widgets/sheet_view.dart';
 import 'widgets/system_gallery.dart';
+import 'widgets/system_speaks.dart';
+
+/// The two halves of a system's page: in the story, and its blueprint.
+enum SystemsMode { story, blueprint }
+
+/// Where the half last shown is kept: on this device.
+const systemsModeKey = 'systems.mode';
 
 const _tabs = {
   'variables': 'Attributes & resources',
@@ -54,11 +67,26 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
   late String _tab = _tabs.containsKey(widget.tab) ? widget.tab! : 'variables';
   late String? _sheetId = widget.sheetId;
 
+  /// Which half of the page is shown: the system in the story, or its blueprint. A link to a tab or a sheet opens the
+  /// blueprint; otherwise where the author last was (this device), the story by default.
+  late SystemsMode _mode = widget.tab != null || widget.sheetId != null
+      ? SystemsMode.blueprint
+      : SystemsMode.values.where((m) => m.name == ref.read(settingsStoreProvider).read(systemsModeKey)).firstOrNull ??
+            SystemsMode.story;
+
+  void _setMode(SystemsMode mode) {
+    setState(() => _mode = mode);
+    ref.read(settingsStoreProvider).write(systemsModeKey, mode.name);
+  }
+
   @override
   void didUpdateWidget(SystemsPage old) {
     super.didUpdateWidget(old);
     if (old.systemId != widget.systemId) _systemId = widget.systemId;
-    if (old.tab != widget.tab && _tabs.containsKey(widget.tab)) _tab = widget.tab!;
+    if (old.tab != widget.tab && _tabs.containsKey(widget.tab)) {
+      _tab = widget.tab!;
+      _mode = SystemsMode.blueprint;
+    }
     if (old.sheetId != widget.sheetId) _sheetId = widget.sheetId;
   }
 
@@ -75,9 +103,15 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
     });
     final system = systems.where((s) => s.id == _systemId).firstOrNull ?? systems.firstOrNull;
 
+    // A system just begun is about to be shaped: its blueprint.
     void create(JsonMap content) {
       final made = actions.systems((x) => x.createSystem(content));
-      if (made != null) setState(() => _systemId = made.id);
+      if (made != null) {
+        setState(() {
+          _systemId = made.id;
+          _mode = SystemsMode.blueprint;
+        });
+      }
     }
 
     final start = Wrap(
@@ -130,7 +164,7 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
             child: OrganizeSwitch(current: OrganizePart.systems),
           ),
           const SizedBox(height: 12),
-          if (system == null)
+          if (system == null) ...[
             Builder(
               builder: (context) {
                 final own = _ownSystem(cast);
@@ -142,8 +176,11 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
                   onFromPages: own == null ? null : () => _beginOwn(actions, own),
                 );
               },
-            )
-          else ...[
+            ),
+            // Levels need no system: what the chapters give a level to is kept all the same (`widgets/levels_view.dart`).
+            const SizedBox(height: 20),
+            LevelsView(key: ValueKey('levels-${cast.novelId}'), cast: cast),
+          ] else ...[
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -156,37 +193,88 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
                   ),
               ],
             ),
-            const SizedBox(height: 8),
-            start,
-            const SizedBox(height: 16),
-            _BlueprintHead(system: system, actions: actions, onDeleted: () => setState(() => _systemId = null)),
             const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final MapEntry(:key, :value) in _tabs.entries)
-                  ChoiceChip(
-                    label: Text('$value (${_count(system, model, key)})'),
-                    selected: _tab == key,
-                    onSelected: (_) => setState(() => _tab = key),
-                  ),
+            // The two halves: the system in the story (what it looks like, how it is used, what the pages say of it),
+            // and its blueprint (its rules and sheets).
+            SegmentedButton<SystemsMode>(
+              showSelectedIcon: false,
+              segments: const [
+                ButtonSegment(
+                  value: SystemsMode.story,
+                  icon: Icon(Icons.auto_stories_outlined),
+                  label: Text('In the story'),
+                ),
+                ButtonSegment(
+                  value: SystemsMode.blueprint,
+                  icon: Icon(Icons.architecture),
+                  label: Text('The blueprint'),
+                ),
               ],
+              selected: {_mode},
+              onSelectionChanged: (s) => _setMode(s.single),
             ),
-            const SizedBox(height: 12),
-            switch (_tab) {
-              'variables' => _VariablesTab(system: system, actions: actions),
-              'tracks' => _TracksTab(system: system, actions: actions),
-              'kits' => _KitsTab(system: system, actions: actions),
-              'tables' => _TablesTab(system: system, actions: actions),
-              _ => _SheetsTab(
-                model: model,
-                system: system,
-                actions: actions,
-                sheetId: _sheetId,
-                onSelect: (id) => setState(() => _sheetId = id),
+            const SizedBox(height: 16),
+            if (_mode == SystemsMode.blueprint) ...[
+              start,
+              const SizedBox(height: 16),
+              _BlueprintHead(system: system, actions: actions, onDeleted: () => setState(() => _systemId = null)),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final MapEntry(:key, :value) in _tabs.entries)
+                    ChoiceChip(
+                      label: Text('$value (${_count(system, model, key)})'),
+                      selected: _tab == key,
+                      onSelected: (_) => setState(() => _tab = key),
+                    ),
+                ],
               ),
-            },
+              const SizedBox(height: 12),
+              switch (_tab) {
+                'variables' => _VariablesTab(system: system, actions: actions),
+                'tracks' => _TracksTab(system: system, actions: actions),
+                'kits' => _KitsTab(system: system, actions: actions),
+                'tables' => _TablesTab(system: system, actions: actions),
+                _ => _SheetsTab(
+                  model: model,
+                  system: system,
+                  actions: actions,
+                  sheetId: _sheetId,
+                  onSelect: (id) => setState(() => _sheetId = id),
+                ),
+              },
+            ] else ...[
+              // Its status window, live: a sheet as the story shows it, changing as the system is (`widgets/live_window.dart`).
+              LiveWindow(key: ValueKey('window-${system.id}'), model: model, system: system),
+              const SizedBox(height: 12),
+              // How fast each rises, chapter by chapter, and where the pace leads (`widgets/climb_view.dart`).
+              ClimbView(key: ValueKey('climb-${system.id}'), model: model, system: system),
+              const SizedBox(height: 12),
+              // Two sheets side by side: who would win (`widgets/face_off_view.dart`).
+              FaceOffView(key: ValueKey('faceoff-${system.id}'), model: model, system: system),
+              const SizedBox(height: 12),
+              // The messages the system shows its characters, written for the chapter (`widgets/system_speaks.dart`).
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FilledButton.tonalIcon(
+                  onPressed: () => showSystemSpeaks(context, novelId: cast.novelId, model: model, system: system),
+                  icon: const Icon(Icons.campaign_outlined),
+                  label: const Text('The system speaks'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              // The numbers the chapters give for it, and where they do not add up (`widgets/number_ledger_view.dart`).
+              NumberLedgerView(key: ValueKey(system.id), novelId: cast.novelId, model: model, system: system),
+              const SizedBox(height: 16),
+              // Everything the chapters give a level to (an armor and its versions, a skill, a weapon…), kept as the
+              // book is written (`widgets/levels_view.dart`).
+              LevelsView(key: ValueKey('levels-${cast.novelId}'), cast: cast),
+              const SizedBox(height: 12),
+              // Skills, titles, classes and items the chapters name that it does not hold yet (`widgets/pages_names_view.dart`).
+              PagesNamesView(key: ValueKey('names-${system.id}'), novelId: cast.novelId, model: model, system: system),
+            ],
           ],
         ],
       ),
@@ -241,7 +329,13 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
       }
       return system;
     });
-    if (made != null) setState(() => _systemId = made.id);
+    // Begun from the pages, it already holds the hero and what they can do: shown in the story, their window first.
+    if (made != null) {
+      setState(() {
+        _systemId = made.id;
+        _mode = SystemsMode.story;
+      });
+    }
   }
 
   static int _count(SystemBlueprint s, StoryModel model, String tab) => switch (tab) {
