@@ -47,7 +47,8 @@ void main() {
     expect(find.text('Mira’s compass'), findsOneWidget);
     await tester.tap(find.text('Keep these traits'));
     await tester.pumpAndSettle();
-    expect(fieldNamed(entry(), 'Core Traits'), 'Quiet\nAn improviser');
+    // Kept as the traits they make Mira, not the words pressed.
+    expect(fieldNamed(entry(), 'Core Traits'), 'Quiet\nSpontaneous');
     expect(find.text('Mira’s traits are in their profile, under Core Traits.'), findsOneWidget);
 
     // Again: what is there is chosen when the card comes up; a choice changed takes the other word's place.
@@ -64,6 +65,6 @@ void main() {
     }
     await tester.tap(find.text('Keep these traits'));
     await tester.pumpAndSettle();
-    expect(fieldNamed(entry(), 'Core Traits'), 'Loud\nAn improviser');
+    expect(fieldNamed(entry(), 'Core Traits'), 'Loud\nSpontaneous');
   });
 }

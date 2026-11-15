@@ -33,12 +33,16 @@ Speech::Speech(flutter::BinaryMessenger* messenger, HWND window) : window_(windo
     } else if (method == "speak") {
       std::string text;
       double rate = 1.0;
+      double pitch = 1.0;
       if (const auto* args = std::get_if<flutter::EncodableMap>(call.arguments())) {
         if (const auto* t = Field(*args, "text")) {
           if (const auto* s = std::get_if<std::string>(t)) text = *s;
         }
         if (const auto* r = Field(*args, "rate")) {
           if (const auto* d = std::get_if<double>(r)) rate = *d;
+        }
+        if (const auto* p = Field(*args, "pitch")) {
+          if (const auto* d = std::get_if<double>(p)) pitch = *d;
         }
       }
       if (!Ready()) {
@@ -50,7 +54,26 @@ Speech::Speech(flutter::BinaryMessenger* messenger, HWND window) : window_(windo
       voice_->SetRate(steps < -10 ? -10 : (steps > 10 ? 10 : steps));
       ULONG stream = 0;
       const std::wstring wide = Wide(text);
-      const HRESULT hr = voice_->Speak(wide.c_str(), SPF_ASYNC | SPF_PURGEBEFORESPEAK | SPF_IS_NOT_XML, &stream);
+      // SAPI's pitch runs from -10 to 10, 0 the voice's own, about 10 steps to an octave: given as its pitch tag round
+      // the text (the text escaped, so nothing in it is read as a tag). At the voice's own pitch, plain text as ever.
+      long tone = static_cast<long>(std::lround(10.0 * std::log2(pitch > 0.1 ? pitch : 0.1)));
+      tone = tone < -10 ? -10 : (tone > 10 ? 10 : tone);
+      HRESULT hr;
+      if (tone == 0) {
+        hr = voice_->Speak(wide.c_str(), SPF_ASYNC | SPF_PURGEBEFORESPEAK | SPF_IS_NOT_XML, &stream);
+      } else {
+        std::wstring escaped;
+        for (const wchar_t c : wide) {
+          switch (c) {
+            case L'&': escaped += L"&amp;"; break;
+            case L'<': escaped += L"&lt;"; break;
+            case L'>': escaped += L"&gt;"; break;
+            default: escaped += c;
+          }
+        }
+        const std::wstring xml = L"<pitch absmiddle=\"" + std::to_wstring(tone) + L"\">" + escaped + L"</pitch>";
+        hr = voice_->Speak(xml.c_str(), SPF_ASYNC | SPF_PURGEBEFORESPEAK | SPF_IS_XML, &stream);
+      }
       if (FAILED(hr)) {
         result->Success();
         return;

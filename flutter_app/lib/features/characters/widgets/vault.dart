@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../app/theme/book_faces.dart';
 import '../../../app/theme/novel_art.dart';
 import '../../../shared/domain/characters/character_records.dart';
+import '../../../shared/domain/characters/field_kinds.dart';
 import '../../../shared/domain/codex/field_values.dart';
 import '../../../shared/domain/collation.dart';
 import '../../../shared/domain/model/story_order.dart';
@@ -162,10 +163,12 @@ List<({String name, String value})> identityFacts(CastData cast, Entry entry, Ch
     final f = byId[id];
     if (f == null) continue;
     final def = f.defId == null ? null : cast.characterCategory.fields.where((d) => d.id == f.defId).firstOrNull;
-    final type = def?.type ?? f.type ?? FieldType.text;
+    // A field of a known shape (a Gender, an Age) is read as that shape, whatever it was made as (`field_kinds.dart`).
+    final kind = def == null ? kindOf(f.key) : null;
+    final type = def?.type ?? kind?.type ?? f.type ?? FieldType.text;
     if (type == FieldType.longtext || type == FieldType.references || type == FieldType.tags) continue;
     final name = def != null && def.name.isNotEmpty ? def.name : f.key;
-    final value = displayValue(type, f.value, cast.nameOf);
+    final value = displayValue(type, settled(kind, f.value), cast.nameOf);
     // The symbol has a row of its own on the overview.
     if (name.trim().isEmpty || value.trim().isEmpty || name.trim().toLowerCase() == 'symbol') continue;
     facts.add((name: name, value: value));

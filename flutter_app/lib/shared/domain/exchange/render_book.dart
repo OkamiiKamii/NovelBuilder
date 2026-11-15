@@ -110,6 +110,8 @@ p.quote { margin: 0 2em; text-indent: 0; font-style: italic; }
 .matter { text-align: center; margin-top: 20%; }
 .matter p { margin: 0.4em 0; }
 .epigraph .source { margin-top: 1em; font-style: italic; }
+h3.cast-group { text-align: center; font-size: 0.8em; font-weight: normal; letter-spacing: 0.12em; text-transform: uppercase; margin: 1.6em 0 0.6em; }
+p.cast { text-indent: 0; margin: 0.35em 0; }
 .title h1 { font-size: 2em; page-break-before: auto; }
 .title .subtitle { font-size: 1.2em; margin-bottom: 2em; }
 .cover { text-align: center; margin: 0; }
@@ -262,6 +264,15 @@ EpubResult renderEpub(Book book, {required String identifier, required String la
           '${_chapterHeading(s)}\n${_bodyHtml(s, book.sceneBreak)}',
           epubType: 'chapter',
         );
+      case SectionKind.cast:
+        toc.add((file: file, title: s.title, depth: 0));
+        final cast = [
+          for (final l in castLines(s.text))
+            l.group
+                ? '<h3 class="cast-group">${_xml(l.name)}</h3>'
+                : '<p class="cast"><b>${_xml(l.name)}</b>${l.about.isEmpty ? '' : ' — ${_xml(l.about)}'}</p>',
+        ].join('\n');
+        files[file] = _page(s.title, lang, '<h2>${_xml(s.title)}</h2>\n$cast', epubType: 'dramatis-personae');
       case SectionKind.acknowledgements || SectionKind.about:
         toc.add((file: file, title: s.title, depth: 0));
         files[file] = _page(s.title, lang, '<h2>${_xml(s.title)}</h2>\n${_linesHtml(s.text)}');

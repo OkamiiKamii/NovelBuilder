@@ -11,7 +11,7 @@ import io.flutter.plugin.common.MethodChannel
  * own text-to-speech engine, over the channel `novel_builder/speech`:
  *
  * - `available` → whether an engine is there and ready;
- * - `speak {text, rate}` → an id for what is being said (null when it cannot be said); `done(id)` is sent back when it
+ * - `speak {text, rate, pitch}` → an id for what is being said (null when it cannot be said); `done(id)` is sent back when it
  *   has been said (or could not be);
  * - `stop` → silence. What was being said is not reported as done.
  *
@@ -34,12 +34,15 @@ class MainActivity : FlutterActivity() {
                 "speak" -> {
                     val text = call.argument<String>("text") ?: ""
                     val rate = call.argument<Double>("rate") ?: 1.0
+                    val pitch = call.argument<Double>("pitch") ?: 1.0
                     whenReady { ok ->
                         val engine = tts
                         if (!ok || engine == null) {
                             result.success(null)
                         } else {
                             engine.setSpeechRate(rate.toFloat())
+                            // Set on every line, so one speaker's pitch never carries over to the next.
+                            engine.setPitch(pitch.toFloat())
                             val id = "a-${++said}"
                             val r = engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, id)
                             result.success(if (r == TextToSpeech.SUCCESS) id else null)

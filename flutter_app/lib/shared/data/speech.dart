@@ -8,9 +8,10 @@ abstract class Speaker {
   /// Whether there is a voice to read with here.
   Future<bool> available();
 
-  /// Says [text] at [rate] (1 the voice's own pace) and completes once it has been said, or as soon as [stop] is
+  /// Says [text] at [rate] (1 the voice's own pace) and [pitch] (1 its own; lower deeper, higher brighter) and
+  /// completes once it has been said, or as soon as [stop] is
   /// called. False when it could not be said.
-  Future<bool> say(String text, {double rate = 1});
+  Future<bool> say(String text, {double rate = 1, double pitch = 1});
 
   /// Silence, at once.
   Future<void> stop();
@@ -40,10 +41,10 @@ class PlatformSpeaker implements Speaker {
   }
 
   @override
-  Future<bool> say(String text, {double rate = 1}) async {
+  Future<bool> say(String text, {double rate = 1, double pitch = 1}) async {
     final String? id;
     try {
-      id = await _channel.invokeMethod<String>('speak', {'text': text, 'rate': rate});
+      id = await _channel.invokeMethod<String>('speak', {'text': text, 'rate': rate, 'pitch': pitch});
     } on MissingPluginException {
       return false;
     } on PlatformException {

@@ -176,6 +176,27 @@ class _Select extends StatelessWidget {
   Widget build(BuildContext context) {
     // A value that is not among the choices (written before they changed) is kept and shown as it is.
     final choices = [...options, if (value.isNotEmpty && !options.contains(value)) value];
+    // A few short choices (Male or Female) are buttons side by side, one press; pressed again, the choice is cleared.
+    if (options.isNotEmpty && choices.length <= 3 && choices.every((c) => c.length <= 14)) {
+      return InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          errorText: errorText,
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: SegmentedButton<String>(
+            segments: [for (final c in choices) ButtonSegment(value: c, label: Text(c))],
+            selected: {if (value.isNotEmpty) value},
+            emptySelectionAllowed: true,
+            showSelectedIcon: false,
+            onSelectionChanged: (v) => onChosen(v.isEmpty ? '' : v.first),
+          ),
+        ),
+      );
+    }
     return DropdownButtonFormField<String>(
       // Keyed by the value: a dropdown only reads its starting value, so a new stored value makes a new one.
       key: ValueKey(value),

@@ -15,6 +15,13 @@ const _fields = <({String field, String label, String hint, int lines})>[
   (field: 'epigraph', label: 'Epigraph', hint: 'A quotation that opens the book.', lines: 3),
   (field: 'epigraphSource', label: 'Epigraph source', hint: 'Who said or wrote it.', lines: 1),
   (field: 'copyright', label: 'Copyright page', hint: 'Copyright © 2026 …. All rights reserved.', lines: 3),
+  (field: 'castTitle', label: 'Cast list title', hint: 'Dramatis Personae', lines: 1),
+  (
+    field: 'castList',
+    label: 'Cast list, before the story',
+    hint: 'One a line: Name — who they are. A line ending in ":" heads a group. Characters can make it for you.',
+    lines: 6,
+  ),
   (field: 'acknowledgements', label: 'Acknowledgements', hint: 'Thanks, at the back of the book.', lines: 4),
   (field: 'aboutAuthor', label: 'About the author', hint: 'A few lines about you, at the very end.', lines: 4),
 ];
@@ -26,8 +33,8 @@ String _breakName(String mark) => switch (mark) {
   _ => mark,
 };
 
-/// The pages around the story, which the reader and publishing formats print: dedication, epigraph, copyright,
-/// acknowledgements, about the author, and the mark between scenes. Each field saves as it is typed.
+/// The pages around the story, which the reader and publishing formats print: dedication, epigraph, copyright, the cast
+/// list, acknowledgements, about the author, and the mark between scenes. Each field saves as it is typed.
 class BookDetailsPage extends ConsumerWidget {
   const BookDetailsPage({super.key});
 

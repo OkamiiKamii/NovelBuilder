@@ -6,6 +6,7 @@ import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
 import 'package:novel_builder/shared/data/sample_novel.dart';
 
+import '../../helpers/cast_views.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -48,9 +49,7 @@ void main() {
     final novel = addSampleNovel(c.read(novelStoreProvider), now: DateTime(2026, 11, 10).millisecondsSinceEpoch);
     c.read(openNovelProvider.notifier).open(novel.id);
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Orbit'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Orbit'));
+    await showCastView(tester, CastView.orbit);
     await tester.pumpAndSettle();
     expect(c.read(castViewProvider), CastView.orbit);
     expect(find.byType(CastOrbit), findsOneWidget);
@@ -89,9 +88,7 @@ void main() {
     final novel = addSampleNovel(c.read(novelStoreProvider), now: DateTime(2026, 11, 10).millisecondsSinceEpoch);
     c.read(openNovelProvider.notifier).open(novel.id);
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byTooltip('Orbit'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Orbit'));
+    await showCastView(tester, CastView.orbit);
     await tester.pumpAndSettle();
     expect(find.byType(CastOrbit), findsOneWidget);
     expect(tester.takeException(), isNull);

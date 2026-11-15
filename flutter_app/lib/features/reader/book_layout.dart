@@ -291,6 +291,38 @@ List<FlowItem> sectionItems(Book book, Section s, BookLook look) {
             splittable: true,
           ),
       ];
+    case SectionKind.cast:
+      // The cast as printed books set it: a group's name in small capitals, each person's name in bold and who they
+      // are after it.
+      final cast = castLines(s.text);
+      return [
+        FlowItem(
+          runs: _plainRuns(s.title),
+          style: heading,
+          role: FlowRole.heading,
+          align: TextAlign.center,
+          spaceBefore: line * 2,
+          keepWithNext: true,
+        ),
+        for (final (i, l) in cast.indexed)
+          if (l.group)
+            FlowItem(
+              runs: _plainRuns(l.name.toUpperCase()),
+              style: small,
+              role: FlowRole.label,
+              align: TextAlign.center,
+              spaceBefore: i == 0 ? line : line * 1.4,
+              keepWithNext: true,
+            )
+          else
+            FlowItem(
+              runs: [Run(l.name, bold: true), if (l.about.isNotEmpty) Run(' — ${l.about}')],
+              style: body,
+              role: FlowRole.body,
+              spaceBefore: i == 0 ? line : line * 0.35,
+              splittable: true,
+            ),
+      ];
     case SectionKind.chapter:
       break;
   }

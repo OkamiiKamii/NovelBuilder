@@ -19,21 +19,27 @@ import 'character_actions.dart';
 import 'characters_providers.dart';
 import 'interview.dart';
 import 'new_character_dialog.dart';
+import 'widgets/cast_arcs.dart';
 import 'widgets/cast_card.dart';
 import 'widgets/cast_check.dart';
+import 'widgets/cast_compass.dart';
 import 'widgets/cast_orbit.dart';
 import 'widgets/cast_photo.dart';
 import 'widgets/cast_stakes.dart';
 import 'widgets/cast_ties.dart';
+import 'widgets/dramatis_page.dart';
 import 'widgets/empty_chairs.dart';
+import 'widgets/entrances_view.dart';
 import 'widgets/manuscript_names.dart';
 import 'widgets/name_board.dart';
 import 'widgets/page_notes.dart';
 import 'widgets/playbill.dart';
 import 'widgets/portrait.dart';
 import 'widgets/roll_call.dart';
+import 'widgets/table_read_view.dart';
 import 'widgets/together_on_page.dart';
 import 'widgets/vault.dart';
+import 'widgets/view_chooser.dart';
 import 'widgets/waiting_for_a_name.dart';
 import 'widgets/whose_eyes.dart';
 
@@ -190,14 +196,28 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
               _roleTabs(list.length - archivedCount, archivedCount, roleTabs),
             ],
             const SizedBox(height: 8),
-            Semantics(
-              liveRegion: true,
-              child: Text(
-                found.length == kept.length && query.trim().isEmpty
-                    ? plural(found.length, 'character')
-                    : '${formatNumber(found.length)} of ${plural(kept.length, 'character')}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+            // The count, and the cast list for the front of the book beside it (`widgets/dramatis_page.dart`); on two
+            // lines when large text needs them.
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 12,
+              children: [
+                Semantics(
+                  liveRegion: true,
+                  child: Text(
+                    found.length == kept.length && query.trim().isEmpty
+                        ? plural(found.length, 'character')
+                        : '${formatNumber(found.length)} of ${plural(kept.length, 'character')}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => showDramatis(context, cast),
+                  icon: const Icon(Icons.auto_stories_outlined, size: 18),
+                  label: const Text('Cast list for the book'),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             if (found.isEmpty)
@@ -236,6 +256,22 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
             else if (view == CastView.eyes)
               // Whose eyes each chapter is told through, as a ribbon of the book (`widgets/whose_eyes.dart`).
               WhoseEyes(cast: cast)
+            else if (view == CastView.arcs)
+              // Each one's line through the book from the words of feeling around them, beside the arc planned
+              // (`widgets/cast_arcs.dart`).
+              CastArcs(cast: cast)
+            else if (view == CastView.tableRead)
+              // A chapter as a script, read aloud by the cast in voices of their own
+              // (`widgets/table_read_view.dart`).
+              CastTableRead(cast: cast)
+            else if (view == CastView.compass)
+              // The cast's temperaments on a board, the foils, the twins, what all share
+              // (`widgets/cast_compass.dart`).
+              CastCompass(found: found, cast: cast)
+            else if (view == CastView.entrances)
+              // The cast in order of appearance, a door a chapter, and what each first moment gives
+              // (`widgets/entrances_view.dart`).
+              CastEntrances(cast: cast)
             else if (view == CastView.stakes)
               // What drives each of them, answered or asked, and where they collide (`widgets/cast_stakes.dart`).
               CastStakes(found: found, cast: cast)
@@ -399,21 +435,8 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
       icon: Icon(_showFilters ? Icons.filter_alt_off_outlined : Icons.filter_alt_outlined),
       label: Text(active > 0 ? 'Filters ($active)' : 'Filters'),
     );
-    final views = SegmentedButton<CastView>(
-      segments: const [
-        ButtonSegment(value: CastView.cards, icon: Icon(Icons.grid_view), label: Text('Cards')),
-        ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), label: Text('List')),
-        ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), label: Text('Ties')),
-        ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), label: Text('Orbit')),
-        ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), label: Text('Stakes')),
-        ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), label: Text('Roll call')),
-        ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), label: Text('Eyes')),
-        ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), label: Text('Names')),
-      ],
-      selected: {view},
-      showSelectedIcon: false,
-      onSelectionChanged: (v) => ref.read(castViewProvider.notifier).set(v.first),
-    );
+    // On a wide screen the view in use is named beside its icon; the others say their names when pointed at.
+    final views = _viewButtons(view, named: true);
     // On a phone the controls share a row, so the cast itself stays near the top of the screen.
     if (compact) {
       return Column(
@@ -436,20 +459,9 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 ),
               ),
               const SizedBox(width: 8),
-              SegmentedButton<CastView>(
-                segments: const [
-                  ButtonSegment(value: CastView.cards, icon: Icon(Icons.grid_view), tooltip: 'Cards'),
-                  ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), tooltip: 'List'),
-                  ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), tooltip: 'Ties'),
-                  ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), tooltip: 'Orbit'),
-                  ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), tooltip: 'Stakes'),
-                  ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), tooltip: 'Roll call'),
-                  ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), tooltip: 'Eyes'),
-                  ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), tooltip: 'Names'),
-                ],
-                selected: {view},
-                showSelectedIcon: false,
-                onSelectionChanged: (v) => ref.read(castViewProvider.notifier).set(v.first),
+              // Ten views do not fit beside the order and the filters: they scroll sideways.
+              Flexible(
+                child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: _viewButtons(view)),
               ),
             ],
           ),
@@ -468,6 +480,24 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
       ],
     );
   }
+
+  /// The buttons that choose the view of the cast, one an icon each, in [castViews]' order. With [named], the view in
+  /// use also says its name; every other says it when pointed at or held. [dense] for the phone's catalogue bar.
+  Widget _viewButtons(CastView view, {bool named = false, bool dense = false}) => SegmentedButton<CastView>(
+    segments: [
+      for (final (view: value, :icon, :name, group: _, about: _) in castViews)
+        ButtonSegment(
+          value: value,
+          icon: Icon(icon),
+          label: named && value == view ? Text(name) : null,
+          tooltip: named && value == view ? null : name,
+        ),
+    ],
+    selected: {view},
+    showSelectedIcon: false,
+    style: dense ? const ButtonStyle(visualDensity: VisualDensity.compact) : null,
+    onSelectionChanged: (v) => ref.read(castViewProvider.notifier).set(v.first),
+  );
 
   /// THE CATALOGUE BAR, on a phone: a rounded search field with **Arrange** in it (sort and filters together, in a
   /// sheet, its count of filters on its badge), and under it one row swiped sideways: Cards, List or Ties, the order
@@ -516,22 +546,9 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
         ),
       ),
     );
-    final views = SegmentedButton<CastView>(
-      segments: const [
-        ButtonSegment(value: CastView.cards, icon: Icon(Icons.grid_view), tooltip: 'Cards'),
-        ButtonSegment(value: CastView.list, icon: Icon(Icons.view_list), tooltip: 'List'),
-        ButtonSegment(value: CastView.ties, icon: Icon(Icons.hub_outlined), tooltip: 'Ties'),
-        ButtonSegment(value: CastView.orbit, icon: Icon(Icons.track_changes), tooltip: 'Orbit'),
-        ButtonSegment(value: CastView.stakes, icon: Icon(Icons.flag_outlined), tooltip: 'Stakes'),
-        ButtonSegment(value: CastView.roll, icon: Icon(Icons.table_rows_outlined), tooltip: 'Roll call'),
-        ButtonSegment(value: CastView.eyes, icon: Icon(Icons.visibility_outlined), tooltip: 'Eyes'),
-        ButtonSegment(value: CastView.names, icon: Icon(Icons.sort_by_alpha), tooltip: 'Names'),
-      ],
-      selected: {view},
-      showSelectedIcon: false,
-      style: const ButtonStyle(visualDensity: VisualDensity.compact),
-      onSelectionChanged: (v) => ref.read(castViewProvider.notifier).set(v.first),
-    );
+    // Eleven views do not fit a phone's width as icons: the one in use, by name, and the rest in a sheet that says what
+    // each shows (`widgets/view_chooser.dart`).
+    final views = CastViewButton(view: view, onPick: (v) => ref.read(castViewProvider.notifier).set(v));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

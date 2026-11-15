@@ -36,6 +36,13 @@ class BookMatter extends JsonRecord {
   String get acknowledgements => str(raw['acknowledgements']);
   String get aboutAuthor => str(raw['aboutAuthor']);
 
+  /// The cast list printed before the story, as the author keeps it: one a line, "Name — who they are", a line ending
+  /// in ":" heading a group (`castLines` reads it).
+  String get castList => str(raw['castList']);
+
+  /// What the cast list is called on its page and in the contents.
+  String get castTitle => str(raw['castTitle']).trim().isEmpty ? 'Dramatis Personae' : str(raw['castTitle']).trim();
+
   /// What is printed where a scene ends and another begins.
   String get sceneBreak => str(raw['sceneBreak'], '* * *');
 
@@ -57,7 +64,19 @@ class BreakPiece extends Piece {
   const BreakPiece();
 }
 
-enum SectionKind { cover, title, copyright, dedication, epigraph, contents, part, chapter, acknowledgements, about }
+enum SectionKind {
+  cover,
+  title,
+  copyright,
+  dedication,
+  epigraph,
+  contents,
+  cast,
+  part,
+  chapter,
+  acknowledgements,
+  about,
+}
 
 /// A stretch of the book that starts on its own page.
 @immutable
@@ -312,6 +331,8 @@ Book buildBook(BookSource source, BookFormat format) {
     if (format == BookFormat.ebook) {
       front.add(const Section(id: 'contents', kind: SectionKind.contents, title: 'Contents'));
     }
+    // The cast, last before the story, where a reader turns back to it.
+    front.addAll(page(SectionKind.cast, matter.castTitle, matter.castList));
     back
       ..addAll(page(SectionKind.acknowledgements, 'Acknowledgements', matter.acknowledgements))
       ..addAll(page(SectionKind.about, 'About the author', matter.aboutAuthor));
@@ -347,6 +368,24 @@ double progressAt(Book book, BookPlace place) {
   final here = place.index < sections.length ? sections[place.index].words : 0;
   return ((before + here * place.fraction.clamp(0, 1)) / book.words).clamp(0, 1).toDouble();
 }
+
+/// One line of a cast list: a group's heading, or a person with who they are (empty when the line gives only a name).
+typedef CastLine = ({bool group, String name, String about});
+
+final _castDash = RegExp(r'\s+[—–-]\s+');
+
+/// The lines of a cast list as the author writes it: "Name — who they are" (an em dash, an en dash or a hyphen with
+/// spaces round it), a line ending in ":" heading a group, a line with neither a name alone. Blank lines are skipped.
+List<CastLine> castLines(String text) => [
+  for (final raw in text.split('\n'))
+    if (raw.trim() case final line when line.isNotEmpty)
+      if (_castDash.firstMatch(line) case final dash?)
+        (group: false, name: line.substring(0, dash.start).trim(), about: line.substring(dash.end).trim())
+      else if (line.endsWith(':'))
+        (group: true, name: line.substring(0, line.length - 1).trim(), about: '')
+      else
+        (group: false, name: line, about: ''),
+];
 
 /// Minutes to read some words, at an unhurried 250 a minute.
 int readingMinutes(int words) => (words / 250).round() < 1 ? 1 : (words / 250).round();

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/novel_art.dart';
 import '../../../shared/domain/characters/cast.dart';
+import '../../../shared/domain/characters/field_kinds.dart';
 import '../../../shared/domain/characters/record_look.dart';
 import '../../../shared/domain/characters/stakes.dart';
+import '../../../shared/domain/records/category.dart' show FieldType;
 import '../../../shared/domain/records/entry.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
@@ -276,11 +278,37 @@ class _CellState extends State<_Cell> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    // A column whose answer has a known shape (`field_kinds.dart`): a Gender is chosen, not typed; an Age is a number.
+    final kind = kindOf(widget.column.field);
+    if (kind != null && kind.type == FieldType.select) {
+      final value = settled(kind, widget.value);
+      final choices = [...kind.options, if (value.isNotEmpty && !kind.options.contains(value)) value];
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        child: Semantics(
+          label: '${widget.name.isEmpty ? 'Unnamed' : widget.name}, ${widget.column.label}',
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              key: ValueKey('${widget.column.label}:$value'),
+              value: value.isEmpty ? null : value,
+              isExpanded: true,
+              hint: Text('—', style: TextStyle(color: scheme.onSurfaceVariant.withValues(alpha: 0.6))),
+              style: vaultText(context, size: 15, color: scheme.onSurface),
+              items: [for (final c in choices) DropdownMenuItem(value: c, child: Text(c))],
+              onChanged: (v) {
+                if (v != null) widget.onChanged(v);
+              },
+            ),
+          ),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       child: Semantics(
         label: '${widget.name.isEmpty ? 'Unnamed' : widget.name}, ${widget.column.label}',
         child: TextField(
+          keyboardType: kind?.type == FieldType.number ? const TextInputType.numberWithOptions(decimal: true) : null,
           controller: _text,
           focusNode: _focus,
           maxLines: 1,

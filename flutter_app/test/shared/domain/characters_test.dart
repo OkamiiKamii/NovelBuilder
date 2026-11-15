@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/shared/domain/characters/cast.dart';
 import 'package:novel_builder/shared/domain/characters/character_changes.dart';
 import 'package:novel_builder/shared/domain/characters/character_records.dart';
+import 'package:novel_builder/shared/domain/characters/field_kinds.dart';
+import 'package:novel_builder/shared/domain/characters/record_look.dart';
 import 'package:novel_builder/shared/domain/characters/templates.dart';
 import 'package:novel_builder/shared/domain/codex/codex_changes.dart';
 import 'package:novel_builder/shared/domain/codex/field_values.dart';
@@ -353,7 +355,8 @@ void main() {
         'name': 'Core Identity',
         'tab': 'overview',
         'fields': [
-          {'name': 'Age', 'type': 'text'},
+          // An Age is a number (`field_kinds.dart`), so the layout keeps it as one.
+          {'name': 'Age', 'type': 'number'},
         ],
       });
       final b = w.createCharacter('B', templateId: saved.id);
@@ -790,6 +793,56 @@ void main() {
       expect(theirs.secrets(kael2.id).single.knows, [cast.firstWhere((e) => e.name == 'Mira').id]);
       expect(theirs.notes(kael2.id), hasLength(1));
       expect(foreignReferences(w.snapshot, copy), isEmpty);
+    });
+  });
+
+  group('fields whose answer has a known shape', () {
+    test('a Gender is a choice of Male or Female; Pronouns follow; an Age is a number; a birth a date', () {
+      expect((kindOf('Gender')!.type, kindOf('Gender')!.options.join('/')), (FieldType.select, 'Male/Female'));
+      expect(kindOf(' gender '), isNotNull);
+      expect(kindOf('Pronouns')!.options, ['He/him', 'She/her']);
+      expect(kindOf('Age')!.type, FieldType.number);
+      expect(kindOf('Date of Birth')!.type, FieldType.date);
+      expect(kindOf('Alignment')!.options, hasLength(9));
+      expect(kindOf('Occupation'), isNull, reason: 'any other field is what its author makes it');
+    });
+
+    test('a value read as its choice, however it was written; one that is none of them kept as it is', () {
+      final g = kindOf('Gender');
+      expect(
+        [
+          for (final v in ['male', 'Man', 'boy', 'F', 'woman', 'She']) settled(g, v),
+        ],
+        ['Male', 'Male', 'Male', 'Female', 'Female', 'Female'],
+      );
+      expect(settled(g, 'Unknown'), 'Unknown');
+      expect(settled(kindOf('Pronouns'), 'he'), 'He/him');
+      expect(settled(kindOf('Alignment'), 'chaotic neutral'), 'Chaotic Neutral');
+      expect(settled(kindOf('Age'), ' 21 '), ' 21 ', reason: 'a number is kept as written');
+      expect(kindNote('Gender', g!), 'Gender is a choice: Male or Female.');
+    });
+
+    test('made a choice when added by name; a field made before as text takes its shape when next written', () {
+      final w = World();
+      final a = w.createCharacter('Mark', templateId: 'general');
+      final made = w.act((c) => c.addField(a, w.sectionId(a, 0), const FieldSuggestion('Gender'), value: 'man'));
+      expect((made['type'], (made['options']! as List).join('/'), made['value']), ('select', 'Male/Female', 'Male'));
+      final age = w.act((c) => c.addField(a, w.sectionId(a, 0), const FieldSuggestion('Age'), value: '21'));
+      expect(age['type'], 'number');
+      // Asked for otherwise, as otherwise.
+      final own = w.act(
+        (c) => c.addField(a, w.sectionId(a, 0), const FieldSuggestion('Gender', FieldType.tags), value: 'x'),
+      );
+      expect(own['type'], 'tags');
+
+      // A Gender made as text before: written through the cast's tools, it becomes the choice.
+      final b = w.createCharacter('Wren', templateId: 'general');
+      final old = w.act((c) => c.addField(a, w.sectionId(a, 0), const FieldSuggestion('Sex'), value: ''));
+      w.act((c) => c.updateField(a, old['id']! as String, type: FieldType.text, options: const []));
+      w.act((c) => c.addField(b, w.sectionId(b, 0), const FieldSuggestion('Nickname'), value: 'Wee'));
+      w.act((c) => recordIn(c, a, 'Sex', const ['sex'], 'female', sections: const ['identity'], newSection: 'X'));
+      final sex = w.entry(a).fields.firstWhere((f) => f.key == 'Sex');
+      expect((sex.type, sex.options.join('/'), sex.value), (FieldType.select, 'Male/Female', 'Female'));
     });
   });
 }

@@ -13,6 +13,7 @@ import '../../progression/widgets/levels_view.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
 import '../widgets/against_your_pages.dart';
+import '../widgets/in_one_sentence.dart';
 import '../widgets/in_their_pages.dart';
 import '../widgets/in_their_words.dart';
 import '../widgets/parts.dart';
@@ -37,6 +38,10 @@ class OverviewTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // Who they are, what they want, what is in the way, what they would lose: one sentence, its blanks filled in
+        // place (`widgets/in_one_sentence.dart`).
+        InOneSentence(cast: cast, entryId: entry.id, actions: actions),
+        gap,
         LayoutBuilder(
           builder: (context, box) {
             final sections = SectionsView(

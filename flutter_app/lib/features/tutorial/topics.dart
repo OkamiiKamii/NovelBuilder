@@ -789,9 +789,10 @@ const tutorialTopics = <Topic>[
           'returns.',
       'What their Core Traits already say is chosen when its card comes up; choose again and the other word takes '
           'its place.',
-      'At the end, their compass: where they fell on each. Keep these traits writes them in; other traits stay.',
+      'At the end, their compass: where they fell on each. Keep these traits writes in the traits the answers make them '
+          '(Heart is Emotional, Break them is Rebellious); other traits stay.',
     ],
-    example: 'Wren: loud, an improviser, head, bold, honest. Thirty seconds, and her Core Traits are written.',
+    example: 'Wren: loud, spontaneous, rational, bold, honest. Thirty seconds, and her Core Traits are written.',
   ),
   Topic(
     id: 'castcheck',
@@ -878,6 +879,152 @@ const tutorialTopics = <Topic>[
       'Then what it means: the longest run through the same eyes, and anyone not seen through for a while.',
     ],
     example: 'Tobiah Fenn has not been seen through for 11 chapters, since chapter 4.',
+  ),
+  Topic(
+    id: 'journal',
+    title: 'Their journal',
+    group: 'Getting started',
+    where: 'A character’s page, at the top: their journal.',
+    what: 'Write as the character, in the first person, to a prompt: the way writers find a voice. Every page is kept.',
+    steps: [
+      'Open a character and press their journal. A prompt waits at the head of a ruled page, made of what you know of '
+          'them: a letter they will never send to someone they are tied to, what they want and why.',
+      'Write as them. The page is kept as you write, in their notes; nothing is lost if you close it.',
+      'Another prompt deals the next; A new page starts one after you have written.',
+      'Earlier pages are under the page, newest first; press one to go on with it.',
+    ],
+    example: '“A letter Mark will never send, to Kai (Rival).” Twenty minutes, and you know how Mark talks.',
+  ),
+  Topic(
+    id: 'tableread',
+    title: 'The table read',
+    group: 'Getting started',
+    where: 'Organize, Characters: Table read, in Ways to see your cast (In your pages).',
+    what: 'A chapter as a script, read aloud by the cast, each in a voice of their own: hear who sounds like whom.',
+    steps: [
+      'Choose Table read and a chapter. Each line stands under the name of the one who says it, the narration between.',
+      'Lines followed from the talk (“she said”, who acts, whose turn it is) are marked likely; “Who says this?” marks a '
+          'line no one can be told saying. A reader may not know either.',
+      'Read it aloud: the narration in the device’s own voice, each character in theirs. Press a part to read from '
+          'there.',
+      'The cast’s voices: lower or raise anyone’s; the app remembers it for the book.',
+    ],
+    example: 'WREN HOLLIS: “The tide bell.” ILSE MARROW (likely): “So soon.” Two voices, one low, one high.',
+  ),
+  Topic(
+    id: 'castviews',
+    title: 'Ways to see your cast',
+    group: 'Getting started',
+    where: 'Organize, Characters: on a phone, the button with the view’s name; on a wide screen, the row of views.',
+    what: 'Eleven ways to see the same cast, each showing something the others do not, all in one place.',
+    steps: [
+      'On a phone, press the button that names the view you are in (Cards, at first).',
+      'Ways to see your cast: every view by name and what it shows, in three groups: the cast, between them, and in '
+          'your pages.',
+      'Press one to see the cast that way; the one in use is marked. The app remembers it next time.',
+    ],
+    example: 'Compass: their temperaments side by side, the foils, the ones too alike, what all share.',
+  ),
+  Topic(
+    id: 'compass',
+    title: 'The compass',
+    group: 'Getting started',
+    where: 'Organize, Characters: the Compass view, beside Arcs.',
+    what:
+        'The cast’s temperaments set against each other: who are foils, who are too alike, what the whole cast shares.',
+    steps: [
+      'Choose Compass. Each face sits on a board of two temperaments (Rational or Emotional, Cautious or Bold…), from '
+          'what This or that keeps in their Core Traits. Choose any two, Across and Down.',
+      'Foils: pairs opposed on most of what both answered, with every trait they differ on.',
+      'Too alike: pairs alike on nearly everything, whom a reader may mix up; and a trait the whole cast shares.',
+      'Not on the compass yet: whoever has not answered, one press from This or that.',
+    ],
+    example: 'Kai & Mark: opposite on 5 of 6. Emotional · Rational, Cautious · Bold, Deceitful · Honest.',
+  ),
+  Topic(
+    id: 'onesentence',
+    title: 'In one sentence',
+    group: 'Getting started',
+    where: 'A character’s page, Overview: In one sentence, at the top.',
+    what:
+        'The character pitched in a sentence: who they are, what they want, what is in the way, what they would lose.',
+    steps: [
+      'Open a character. Their sentence is at the top, made from their profile; what it does not say yet is a blank.',
+      'Press a blank (who he is, what he wants…), write a few words, and Keep it: it goes into their profile, in the '
+          'field it belongs to.',
+      'Press a part already said to change it. Their stakes, and the sparks to write them in, read the same fields.',
+      'Whole, the sentence can be copied, ready to pitch them.',
+    ],
+    example: 'Mark, 21, a locksmith’s apprentice, wants to open the last door, but the Architect stands in his way.',
+  ),
+  Topic(
+    id: 'writethemin',
+    title: 'Write them in',
+    group: 'Getting started',
+    where: 'A character’s page: Write them in, first at the top.',
+    what: 'From a character straight to the page: a scene with them, started from what you know of them.',
+    steps: [
+      'Where it goes: a chapter still blank (your empty first chapter, say), a new chapter at the end, or a new scene '
+          'in the latest chapter.',
+      'Who else is there: those they are tied to first, then the cast; and whether it is told through their eyes.',
+      'The spark, from what you wrote about them (what they want, what is in the way, what they could lose, a tie), '
+          'a few that fit anyone, or your own.',
+      'Start writing: the chapter opens, saying what it is for and who is on the page. No words are written for you.',
+    ],
+    example: 'This chapter is for: Mark goes after what they want: “To open the last door.” On the page: Mark.',
+  ),
+  Topic(
+    id: 'dramatis',
+    title: 'Dramatis personae',
+    group: 'Getting started',
+    where: 'Organize, Characters: Cast list for the book, beside the count of the cast. Book details edits it after.',
+    what: 'The cast list printed before chapter one, as epic and ensemble novels have it, made from your cast.',
+    steps: [
+      'Press Cast list for the book. The list is shown as it will be printed: each name in bold, who they are after it.',
+      'Group it By faction, By part (principal, supporting, and the rest) or as One list; As they appear or By name; '
+          'only those on the page, or the whole cast.',
+      'Who each one is comes from what a reader may know at the start: the title they go by, the first line of their '
+          'summary, or their trade. Never their fate or their secrets.',
+      'Put it in the book: the reader, the PDF and the ebook print it before chapter one. Copy takes the text; Book '
+          'details changes it, one a line (Name — who they are, a line ending in ":" for a group).',
+    ],
+    example: 'THE FERRYMEN’S COMPANY · Tobiah Fenn — a ferryman’s son · Nan Ottilie — Tobiah’s grandmother',
+  ),
+  Topic(
+    id: 'arcs',
+    title: 'Arcs',
+    group: 'Getting started',
+    where: 'Organize, Characters: the Arcs view, beside Stakes.',
+    what:
+        'Each character’s line through the book, read from the words of feeling around them, beside the arc you planned.',
+    steps: [
+      'Choose Arcs. Each character named in three chapters or more has a line: bright above the middle (hope, laughed, '
+          'safe), dark below (fear, wept, alone). A “not” turns a word over.',
+      'Its shape is said plainly, with its classic name: Rises (rags to riches), Falls (a tragedy), Falls, then rises '
+          '(a man in a hole), Rises, then falls (an Icarus), or Flat.',
+      'Press the line at a chapter: how it reads there, and the sentences that put it there, each with Read it there.',
+      'Under it, the arc you planned in their profile (Starting Point, Current State, Intended Resolution), or Plan '
+          'their arc to write one.',
+    ],
+    example: 'Tobiah Fenn: Falls, then rises: a man in a hole. Brightest in chapter 3, darkest in chapter 12.',
+  ),
+  Topic(
+    id: 'entrances',
+    title: 'Entrances',
+    group: 'Getting started',
+    where: 'Organize, Characters: the Entrances view, beside Eyes.',
+    what: 'The cast in the order a reader meets them, and what each first moment on the page gives the reader.',
+    steps: [
+      'Choose Entrances. The book is a row of doors, a door a chapter, with a bead for each one who first comes through '
+          'it. Press a door to see only them.',
+      'Under it, the cast in order of appearance, like a playbill: the chapter, the sentence each enters in, and Read it '
+          'there.',
+      'Each entrance says what it gives: Seen, Speaks, Acts, In their head; or Only named, when the reader gets nothing '
+          'but a name.',
+      'What an editor would say: three or more entering in one paragraph, a crowded chapter, a lead who comes late, '
+          'those talked of before they appear, and who is not on the page yet.',
+    ],
+    example: 'Kit Marrow and Aldous Crane enter with nothing but a name. A look, a line or something done helps.',
   ),
   Topic(
     id: 'rollcall',
@@ -1679,6 +1826,14 @@ const tutorialButtonNames = [
   'Write a name',
   'Share this line',
   'Read it there',
+  'Plan their arc',
+  'Cast list for the book',
+  'Put it in the book',
+  'Start writing',
+  'Keep it',
+  'Read it aloud',
+  'Another prompt',
+  'A new page',
   'Not a level',
   'Not theirs',
   'Give to…',

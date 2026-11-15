@@ -11,6 +11,7 @@ import '../records/link.dart';
 import '../snapshot/novel_snapshot.dart';
 import '../stable_sort.dart';
 import 'character_records.dart';
+import 'field_kinds.dart';
 import 'knowledge.dart';
 import 'templates.dart';
 
@@ -428,12 +429,17 @@ class CharacterChanges extends CodexChanges {
     final profile = profileOf(entry);
     _section(profile, sectionId);
     if (field.name.trim().isEmpty) throw ChangeRefused('Give the field a name.');
+    // A field whose answer has a known shape (a Gender is chosen, an Age a number: `field_kinds.dart`) is made that
+    // way when nothing else is asked for, and its value read as its choice.
+    final kind = field.type == FieldType.text ? kindOf(field.name) : null;
+    final type = kind?.type ?? field.type;
+    final options = field.options.isNotEmpty ? field.options : (kind?.options ?? const <String>[]);
     final made = <String, Object?>{
       'id': newId(),
       'key': field.name.trim(),
-      'value': value,
-      if (field.type != FieldType.text) 'type': field.type.name,
-      if (field.options.isNotEmpty) 'options': cleanList(field.options),
+      'value': settled(kind, value),
+      if (type != FieldType.text) 'type': type.name,
+      if (options.isNotEmpty) 'options': cleanList(options),
     };
     _putFields(entry, [...listOf(entry.raw['fields']), made]);
     _saveProfile(profile, {

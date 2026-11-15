@@ -8,6 +8,7 @@ import 'package:novel_builder/shared/domain/characters/record_look.dart';
 import 'package:novel_builder/shared/domain/characters/stakes.dart';
 import 'package:novel_builder/shared/domain/records/entry.dart';
 
+import '../../helpers/cast_views.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -22,7 +23,7 @@ void main() {
     final kai = s.change(novel, (x) => x.create(name: 'Kai')).id;
     s.change(novel, (x) => recordStake(x, kai, Stake.wants, 'To see Mira hanged for the fire'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Stakes'));
+    await showCastView(tester, CastView.stakes);
     await tester.pumpAndSettle();
     expect(c.read(castViewProvider), CastView.stakes);
     expect(find.textContaining('You know what 1 of 2 characters want'), findsOneWidget);
@@ -60,7 +61,7 @@ void main() {
     c.read(openNovelProvider.notifier).open(novel);
     c.read(characterServiceProvider).change(novel, (x) => x.create(name: 'James'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Stakes'));
+    await showCastView(tester, CastView.stakes);
     await tester.pumpAndSettle();
     expect(find.textContaining('No one’s wants are written yet.'), findsOneWidget);
     expect(find.bySemanticsLabel('What does James want?'), findsOneWidget);

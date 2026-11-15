@@ -1,6 +1,7 @@
 import '../records/category.dart' show FieldType;
 import 'character_changes.dart';
 import 'character_records.dart';
+import 'field_kinds.dart';
 import 'likeness.dart';
 import 'looks.dart';
 import 'stakes.dart';
@@ -32,7 +33,9 @@ void recordIn(
   final entry = c.character(entryId);
   final field = entry.fields.where((f) => names.contains(f.key.trim().toLowerCase())).firstOrNull;
   if (field != null) {
-    c.updateField(entryId, field.id, value: value);
+    // A field whose answer has a known shape (`field_kinds.dart`), made before as plain text, takes its shape now.
+    final kind = field.defId == null && (field.type ?? FieldType.text) == FieldType.text ? kindOf(field.key) : null;
+    c.updateField(entryId, field.id, value: settled(kind, value), type: kind?.type, options: kind?.options);
     return;
   }
   ProfileSection? sectionOf(CharacterProfile profile) =>

@@ -33,9 +33,11 @@ import 'widgets/cameo.dart';
 import 'widgets/cast_card.dart' show castTone;
 import 'widgets/character_card_share.dart';
 import 'widgets/face_sketch.dart';
+import 'widgets/journal_page.dart';
 import 'widgets/portrait.dart';
 import 'widgets/this_or_that.dart';
 import 'widgets/vault.dart';
+import 'widgets/write_them_in_page.dart';
 
 enum ProfilePage {
   overview('Overview'),
@@ -111,9 +113,16 @@ class CharacterPage extends ConsumerWidget {
             icon: const Icon(Icons.arrow_back),
             label: const Text('All characters'),
           ),
+          // From them to the page: a scene with them, started from what is known of them
+          // (`widgets/write_them_in_page.dart`).
+          FilledButton.icon(
+            onPressed: () => showWriteThemIn(context, cast, entry.id),
+            icon: const Icon(Icons.edit_note),
+            label: Text('Write ${entry.name} in'),
+          ),
           // Getting to know them, a question at a time, while their profile still has empty answers.
           if (interviewFor(entry, profile, cast.templates).isNotEmpty)
-            FilledButton.icon(
+            OutlinedButton.icon(
               onPressed: () =>
                   interviewCharacter(context, actions, entry: entry, profile: profile, templates: cast.templates),
               icon: const Icon(Icons.record_voice_over_outlined),
@@ -124,6 +133,12 @@ class CharacterPage extends ConsumerWidget {
             onPressed: () => showThisOrThat(context, entry: entry, profile: profile, actions: actions),
             icon: const Icon(Icons.swap_horiz),
             label: const Text('This or that'),
+          ),
+          // Writing as them, to a prompt, on ruled paper; every page kept in their notes (`widgets/journal_page.dart`).
+          OutlinedButton.icon(
+            onPressed: () => showJournal(context, entry.id),
+            icon: const Icon(Icons.history_edu),
+            label: Text('${entry.name}’s journal'),
           ),
           // Their card, as writers share their people (`widgets/character_card_share.dart`).
           OutlinedButton.icon(
@@ -731,21 +746,32 @@ class _IdentityFormState extends State<_IdentityForm> {
           onChanged: (v) => _save('aliases', IdentityChanges(aliases: v.split(','))),
         ),
         gap,
-        SavedTextField(
-          label: 'Status',
-          hint: 'Alive, Deceased… or your own',
-          value: profile.status,
-          onChanged: (v) => _save('status', IdentityChanges(status: v)),
-        ),
+        // Status is chosen (Alive, Deceased, Missing, Unknown), the one set marked; a status of the author's own is
+        // written under Your own, and kept and shown as one of the choices.
+        Text('Status', style: Theme.of(context).textTheme.labelLarge),
+        const SizedBox(height: 4),
         Wrap(
-          spacing: 6,
+          spacing: 8,
+          runSpacing: 4,
           children: [
-            for (final s in characterStatuses)
-              ActionChip(
+            for (final s in {...characterStatuses, if (profile.status.trim().isNotEmpty) profile.status.trim()})
+              ChoiceChip(
                 label: Text(s),
-                onPressed: () => widget.actions.now((c) => c.identity(entry.id, IdentityChanges(status: s))),
+                selected: profile.status.trim() == s,
+                onSelected: (on) =>
+                    widget.actions.now((c) => c.identity(entry.id, IdentityChanges(status: on ? s : ''))),
               ),
           ],
+        ),
+        const SizedBox(height: 4),
+        SavedTextField(
+          key: ValueKey('status-own:${characterStatuses.contains(profile.status.trim())}'),
+          label: 'Your own',
+          hint: 'Imprisoned, Exiled, Ascended…',
+          value: characterStatuses.contains(profile.status.trim()) ? '' : profile.status,
+          onChanged: (v) {
+            if (v.trim().isNotEmpty) _save('status', IdentityChanges(status: v));
+          },
         ),
         gap,
         SavedTextField(

@@ -26,7 +26,7 @@ class FakeSpeaker implements Speaker {
   Future<bool> available() async => there;
 
   @override
-  Future<bool> say(String text, {double rate = 1}) {
+  Future<bool> say(String text, {double rate = 1, double pitch = 1}) {
     said.add((text, rate));
     return (_now = Completer<bool>()).future;
   }

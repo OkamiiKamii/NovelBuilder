@@ -107,6 +107,7 @@ class ContentsList extends StatelessWidget {
       for (final (i, s) in book.sections.indexed)
         if (s.kind == SectionKind.part ||
             s.kind == SectionKind.chapter ||
+            s.kind == SectionKind.cast ||
             s.kind == SectionKind.acknowledgements ||
             s.kind == SectionKind.about)
           (i, s),

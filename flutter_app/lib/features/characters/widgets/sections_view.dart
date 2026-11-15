@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/text_prompt.dart';
 import '../../../shared/domain/characters/character_records.dart';
+import '../../../shared/domain/characters/field_kinds.dart';
 import '../../../shared/domain/characters/templates.dart';
 import '../../../shared/domain/codex/field_values.dart';
 import '../../../shared/domain/records/category.dart';
@@ -333,21 +335,44 @@ class _FieldCardState extends State<_FieldCard> {
     final def = field.defId == null
         ? null
         : w.cast.characterCategory.fields.where((d) => d.id == field.defId).firstOrNull;
-    final type = def?.type ?? field.type ?? FieldType.text;
-    final options = def?.options ?? field.options;
+    // A field whose answer has a known shape (`field_kinds.dart`: a Gender is chosen, Male or Female; an Age is a
+    // number) is shown and edited that way, whatever it was made as; it is stored that way when it is next changed.
+    final kind = def == null ? kindOf(field.key) : null;
+    final type = def?.type ?? kind?.type ?? field.type ?? FieldType.text;
+    final options = def?.options ?? kind?.options ?? field.options;
+    final value = settled(kind, field.value);
+    final reshape =
+        kind != null &&
+        (field.type != kind.type || (kind.options.isNotEmpty && !listEquals(field.options, kind.options)));
     final name = def != null && def.name.isNotEmpty ? def.name : (field.key.isNotEmpty ? field.key : 'Untitled field');
     final linkable = [
       for (final e
           in w.cast.characters(except: w.entry.id).followedBy(w.cast.entries.where((e) => e.category != 'character')))
         if (def?.target == null || e.category == def!.target) e,
     ];
-    final shown = displayValue(type, field.value, w.cast.nameOf);
+    final shown = displayValue(type, value, w.cast.nameOf);
     // A shared field's rules: checked and said, never enforced; the value is kept as written.
     final issue = def == null ? null : checkValue(def, field.value, w.cast.model.entries, categoryName: (k) => k);
     final required = def?.required ?? false;
-    void typed(String value) =>
-        w.actions.later('field:${w.entry.id}:${field.id}', (c) => c.updateField(w.entry.id, field.id, value: value));
-    void chosen(String value) => w.actions.now((c) => c.updateField(w.entry.id, field.id, value: value));
+    void typed(String value) => w.actions.later(
+      'field:${w.entry.id}:${field.id}',
+      (c) => c.updateField(
+        w.entry.id,
+        field.id,
+        value: value,
+        type: reshape ? kind.type : null,
+        options: reshape ? kind.options : null,
+      ),
+    );
+    void chosen(String value) => w.actions.now(
+      (c) => c.updateField(
+        w.entry.id,
+        field.id,
+        value: value,
+        type: reshape ? kind.type : null,
+        options: reshape ? kind.options : null,
+      ),
+    );
 
     if (!_editing) {
       final linkedId = type == FieldType.reference && w.cast.model.entries.containsKey(field.value)
@@ -410,7 +435,7 @@ class _FieldCardState extends State<_FieldCard> {
             TypedInput(
               label: '$name${required ? ' *' : ''}',
               type: type,
-              value: field.value,
+              value: value,
               options: options,
               entries: linkable,
               onTyped: typed,
@@ -441,19 +466,23 @@ class _FieldCardState extends State<_FieldCard> {
                     },
                   ),
                   const SizedBox(height: 8),
-                  DropdownButtonFormField<FieldType>(
-                    key: ValueKey('${field.id}:${type.name}'),
-                    initialValue: type,
-                    isExpanded: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Type',
-                      helperText: 'Changing the type never changes what is written.',
+                  // A field of a known shape keeps it: a Gender is always a choice, an Age always a number.
+                  if (kind != null)
+                    Text(kindNote(field.key, kind), style: theme.textTheme.bodySmall)
+                  else
+                    DropdownButtonFormField<FieldType>(
+                      key: ValueKey('${field.id}:${type.name}'),
+                      initialValue: type,
+                      isExpanded: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Type',
+                        helperText: 'Changing the type never changes what is written.',
+                      ),
+                      items: [for (final t in FieldType.values) DropdownMenuItem(value: t, child: Text(t.label))],
+                      onChanged: (t) =>
+                          t == null ? null : w.actions.now((c) => c.updateField(w.entry.id, field.id, type: t)),
                     ),
-                    items: [for (final t in FieldType.values) DropdownMenuItem(value: t, child: Text(t.label))],
-                    onChanged: (t) =>
-                        t == null ? null : w.actions.now((c) => c.updateField(w.entry.id, field.id, type: t)),
-                  ),
-                  if (type == FieldType.select || type == FieldType.multiselect) ...[
+                  if (kind == null && (type == FieldType.select || type == FieldType.multiselect)) ...[
                     const SizedBox(height: 8),
                     _SettingText(
                       label: 'Choices (one per line)',

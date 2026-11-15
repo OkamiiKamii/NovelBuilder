@@ -8,6 +8,8 @@ const matterFields = [
   'copyright',
   'acknowledgements',
   'aboutAuthor',
+  'castTitle',
+  'castList',
   'sceneBreak',
 ];
 

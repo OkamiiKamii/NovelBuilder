@@ -16,7 +16,7 @@ void main() {
     final kai = s.change(novel, (x) => x.create(name: 'Kai')).id;
     final orrin = s.change(novel, (x) => x.create(name: 'Orrin')).id;
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Ties'));
+    await tester.tap(find.byTooltip('Ties'));
     await tester.pumpAndSettle();
     expect(c.read(castViewProvider), CastView.ties);
     expect(find.bySemanticsLabel('Kai and Mira: no tie yet. Add one'), findsOneWidget);

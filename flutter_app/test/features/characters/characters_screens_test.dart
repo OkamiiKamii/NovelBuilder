@@ -191,7 +191,7 @@ void main() {
     expect(find.text('Old Tam'), findsOneWidget);
     expect(find.text('Seraphina Valdris'), findsNothing);
 
-    await tester.tap(find.text('List'));
+    await tester.tap(find.byTooltip('List'));
     await tester.pumpAndSettle();
     expect(w.c.read(settingsStoreProvider).read('characters.view'), 'list');
     await tester.tap(find.widgetWithText(ChoiceChip, 'All (2)'));
@@ -319,6 +319,9 @@ void main() {
       findsOneWidget,
       reason: 'the card says all of it to a screen reader',
     );
+    // Brought into sight first, as a finger would scroll to it.
+    await tester.ensureVisible(find.descendant(of: find.byType(CastWall), matching: find.text('Kael')));
+    await tester.pumpAndSettle();
     await tester.tap(find.descendant(of: find.byType(CastWall), matching: find.text('Kael')));
     await tester.pumpAndSettle();
     expect(currentLocation(w.c), '/organize/character/$kael');

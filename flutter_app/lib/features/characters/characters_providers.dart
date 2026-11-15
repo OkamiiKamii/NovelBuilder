@@ -232,7 +232,7 @@ class NamedInNotifier extends Notifier<Map<String, List<String>>> {
 final namedInProvider = NotifierProvider.autoDispose<NamedInNotifier, Map<String, List<String>>>(NamedInNotifier.new);
 
 /// Cards, a list, the ties or the orbit, remembered on this device.
-enum CastView { cards, list, ties, orbit, stakes, roll, eyes, names }
+enum CastView { cards, list, ties, orbit, stakes, arcs, compass, roll, eyes, entrances, tableRead, names }
 
 const _viewKey = 'characters.view';
 
