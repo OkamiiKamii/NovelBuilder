@@ -198,7 +198,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 ContinueWriting(key: ValueKey('continue:${current.id}'), novel: current),
                 const SizedBox(height: 24),
               ],
-            ShelfTotals(active: active),
+            ShelfTotals(active: active, stats: stats),
             const SizedBox(height: 16),
             _Toolbar(
               search: _search,
@@ -234,7 +234,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 container: true,
                 // The whole library stands on shelves by stage; a search, filter or the archive is one shelf.
                 child: !_filtering && !_archived
-                    ? StageShelves(novels: visible, spines: spines)
+                    ? StageShelves(novels: visible, spines: spines, stats: stats)
                     : spines
                     ? Bookcase(novels: visible)
                     : Bookshelf(novels: visible),

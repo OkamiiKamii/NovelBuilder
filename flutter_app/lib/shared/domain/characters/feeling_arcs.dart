@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import '../manuscript/prose.dart';
+import 'cast_names.dart';
 import 'pov.dart' show EyesPerson;
 
 /// The shape of a line through the book.
@@ -285,13 +286,9 @@ const arcReadings = 2;
 
 /// The arcs of [people] through [chapters] (in reading order).
 FeelingArcs feelingArcs(List<ArcChapter> chapters, List<EyesPerson> people) {
-  final finders = {
-    for (final p in people)
-      p.id: [
-        for (final name in ({...p.names}.toList()..sort((a, b) => b.length - a.length)))
-          if (name.trim().isNotEmpty) RegExp('(?<![\\p{L}])${RegExp.escape(name.trim())}(?![\\p{L}])', unicode: true),
-      ],
-  };
+  // The cast's names, found in one reading of each sentence (`cast_names.dart`), not a search per name per character.
+  final names = CastNames(people);
+  final order = {for (final (i, p) in people.indexed) p.id: i};
   final points = {for (final p in people) p.id: <ArcPoint>[]};
 
   for (final (c, chapter) in chapters.indexed) {
@@ -303,10 +300,7 @@ FeelingArcs feelingArcs(List<ArcChapter> chapters, List<EyesPerson> people) {
       if (block.heading || block.text.trim().isEmpty) continue;
       for (final s in _sentence.allMatches(block.text)) {
         final sentence = s[0]!;
-        final named = [
-          for (final p in people)
-            if (finders[p.id]!.any((f) => f.hasMatch(sentence))) p.id,
-        ];
+        final named = names.named(sentence).toList()..sort((a, b) => order[a]! - order[b]!);
         if (named.isEmpty) continue;
         final (up, down) = _weigh(sentence);
         for (final id in named) {

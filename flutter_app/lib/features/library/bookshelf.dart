@@ -8,6 +8,7 @@ import '../../app/theme/book_faces.dart';
 import '../../app/theme/book_tone.dart' show colourOf;
 import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
+import '../../shared/data/novel_store.dart' show NovelStats;
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
 import '../../shared/domain/manuscript/prose.dart';
@@ -21,6 +22,7 @@ import 'book_opening.dart';
 import 'cover_art.dart';
 import 'cover_picker.dart';
 import 'library_actions.dart';
+import 'stage_shelves.dart' show ShelfStage, shelfLine, shelfOf;
 
 /// THE BOOKSHELF: the library as books, not records. Each novel is a jacket (its cover picture, or one designed from
 /// its title, author and colour) on a shelf that fills the width; the book you were last in waits at the top, one
@@ -502,7 +504,6 @@ class _ShelfBookState extends ConsumerState<ShelfBook> {
     final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
     final isOpen = ref.watch(openNovelProvider) == novel.id;
     final review = ReviewMark.of(novel.raw);
-    final genres = [novel.primaryGenre, ...novel.secondaryGenres].where((g) => g.isNotEmpty).join(', ');
     // The whole book opens it: jacket, title and all. Only its menu is apart, over the jacket's corner.
     final book = Semantics(
       button: true,
@@ -519,7 +520,7 @@ class _ShelfBookState extends ConsumerState<ShelfBook> {
               const SizedBox(height: 8),
               Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleSmall),
               Text(
-                [novel.status.label, if (genres.isNotEmpty) genres].join(' · '),
+                shelfLine(novel, ref.watch(novelStatsProvider)[novel.id], DateTime.now()),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: muted,
@@ -652,13 +653,18 @@ class Bookshelf extends StatelessWidget {
 
 /// What the library holds, in a line: books, those in progress, those complete. Words belong inside a book.
 class ShelfTotals extends StatelessWidget {
-  const ShelfTotals({super.key, required this.active});
+  const ShelfTotals({super.key, required this.active, this.stats = const {}, this.now});
   final List<Novel> active;
+
+  /// What each novel holds and when it was last written in: an idea written in lately counts as in progress.
+  final Map<String, NovelStats> stats;
+  final DateTime? now;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final inProgress = active.where((n) => n.status == NovelStatus.drafting || n.status == NovelStatus.revising).length;
+    final today = now ?? DateTime.now();
+    final inProgress = active.where((n) => shelfOf(n, stats[n.id], today) == ShelfStage.writing).length;
     final complete = active.where((n) => n.status == NovelStatus.complete).length;
     Widget pair(int value, String label) => Row(
       mainAxisSize: MainAxisSize.min,

@@ -4,6 +4,7 @@ import '../../../app/theme/app_theme.dart';
 import '../../../app/theme/novel_art.dart';
 import '../../../core/format.dart';
 import '../../../core/layout/breakpoints.dart';
+import '../../../core/widgets/gradually.dart';
 import '../../../shared/domain/model/story_order.dart';
 import '../../../shared/domain/records/category.dart';
 import '../../../shared/domain/records/entry.dart';
@@ -231,53 +232,79 @@ class Encyclopedia extends StatefulWidget {
 class _EncyclopediaState extends State<Encyclopedia> {
   final _keys = <String, GlobalKey>{};
 
+  /// The articles are built a screenful at a time (`gradually.dart`): a world of six hundred entries is there at once.
+  final _gradually = GraduallyController();
+
   void _jump(String letter) {
-    final target = _keys[letter]?.currentContext;
-    if (target != null) {
-      Scrollable.ensureVisible(target, duration: const Duration(milliseconds: 300), curve: Curves.easeOutCubic);
-    }
+    // A letter further down may not be built yet: all are built first, then the page goes to it.
+    _gradually.buildAll(
+      then: () {
+        final target = _keys[letter]?.currentContext;
+        if (target != null) {
+          Scrollable.ensureVisible(target, duration: const Duration(milliseconds: 300), curve: Curves.easeOutCubic);
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final filed = fileByLetter(widget.entries);
+    final all = fileByLetter(widget.entries);
     final compact = WindowSize.of(context) == WindowSize.compact;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (filed.length > 1) ...[
-          _LetterIndex(letters: [for (final (l, _) in filed) l], onJump: _jump),
-          const SizedBox(height: 8),
-        ],
-        for (final (letter, entries) in filed) ...[
-          _LetterHeading(key: _keys.putIfAbsent(letter, GlobalKey.new), letter: letter),
-          LayoutBuilder(
-            builder: (context, box) {
-              final columns = compact || box.maxWidth < 760 ? 1 : 2;
-              final width = (box.maxWidth - 32 * (columns - 1)) / columns;
-              return Wrap(
-                spacing: 32,
-                children: [
-                  for (final e in entries)
-                    SizedBox(
-                      width: width,
-                      child: _Article(
-                        entry: e,
-                        kind: widget.kindOf(e),
-                        chapters: widget.mentions[e.id] ?? const {},
-                        chapterCount: widget.chapterCount,
-                        onOpen: () => widget.onOpen(e),
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 12),
-        ],
-      ],
+    return Gradually(
+      total: widget.entries.length,
+      controller: _gradually,
+      builder: (count) {
+        // The letters, each with as many of its articles as are built so far.
+        final filed = <(String, List<Entry>)>[];
+        var left = count;
+        for (final (letter, entries) in all) {
+          if (left <= 0) break;
+          filed.add((letter, entries.length <= left ? entries : entries.take(left).toList()));
+          left -= entries.length;
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (all.length > 1) ...[
+              _LetterIndex(letters: [for (final (l, _) in all) l], onJump: _jump),
+              const SizedBox(height: 8),
+            ],
+            ..._letters(filed, compact),
+          ],
+        );
+      },
     );
   }
+
+  List<Widget> _letters(List<(String, List<Entry>)> filed, bool compact) => [
+    for (final (letter, entries) in filed) ...[
+      _LetterHeading(key: _keys.putIfAbsent(letter, GlobalKey.new), letter: letter),
+      LayoutBuilder(
+        builder: (context, box) {
+          final columns = compact || box.maxWidth < 760 ? 1 : 2;
+          final width = (box.maxWidth - 32 * (columns - 1)) / columns;
+          return Wrap(
+            spacing: 32,
+            children: [
+              for (final e in entries)
+                SizedBox(
+                  width: width,
+                  child: _Article(
+                    entry: e,
+                    kind: widget.kindOf(e),
+                    chapters: widget.mentions[e.id] ?? const {},
+                    chapterCount: widget.chapterCount,
+                    onOpen: () => widget.onOpen(e),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+      const SizedBox(height: 12),
+    ],
+  ];
 }
 
 class _LetterIndex extends StatelessWidget {

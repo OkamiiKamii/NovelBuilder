@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/novel_art.dart';
+import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
 import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
 import 'book_opening.dart';
 import 'bookshelf.dart';
 import 'cover_art.dart';
+import 'stage_shelves.dart' show lastWritten, shelfLine, writtenInLately;
 
 /// THE BOOKCASE: the library as spines standing on wooden shelves, so a long shelf of novels is seen at a glance. Each
 /// spine carries the book's colour, its title down the spine in the vault's capitals and its author's initials at the
@@ -233,6 +235,9 @@ class _SpineState extends ConsumerState<Spine> {
         title,
         if (novel.author.isNotEmpty) novel.author,
         novel.status.label,
+        if (ref.watch(novelStatsProvider)[novel.id] case final stats?
+            when writtenInLately(novel, stats, DateTime.now()))
+          lastWritten(stats.lastWrittenAt!, DateTime.now()),
         if (novel.pinned) 'Pinned',
         if (review) 'Review copy',
       ].join(', '),
@@ -313,16 +318,15 @@ Future<void> showBookInHand(BuildContext context, WidgetRef ref, Novel novel, {G
   }
 }
 
-class _BookInHand extends StatelessWidget {
+class _BookInHand extends ConsumerWidget {
   const _BookInHand({required this.novel});
   final Novel novel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final title = novel.title.isEmpty ? 'Untitled novel' : novel.title;
     final narrow = MediaQuery.sizeOf(context).width < 600;
-    final genres = [novel.primaryGenre, ...novel.secondaryGenres].where((g) => g.isNotEmpty).join(', ');
     final all = bookActions(novel);
     final startable = all.any((a) => a.$1 == 'start');
     final actions = all.where((a) => a.$1 != 'open' && a.$1 != 'start').toList();
@@ -339,7 +343,7 @@ class _BookInHand extends StatelessWidget {
         if (novel.author.isNotEmpty) Text(novel.author, style: vaultText(context, size: 17)),
         const SizedBox(height: 6),
         Text(
-          [novel.status.label, if (genres.isNotEmpty) genres].join(' · '),
+          shelfLine(novel, ref.watch(novelStatsProvider)[novel.id], DateTime.now()),
           style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
         if (novel.synopsis.trim().isNotEmpty) ...[

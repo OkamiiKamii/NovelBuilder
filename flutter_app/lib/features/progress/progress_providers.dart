@@ -6,6 +6,7 @@ import '../../shared/domain/analytics/analytics.dart';
 import '../../shared/domain/analytics/goal_changes.dart';
 import '../../shared/domain/analytics/journal.dart';
 import '../../shared/domain/analytics/progress.dart';
+import '../../shared/domain/characters/named_in.dart' show namesToFind;
 import '../../shared/domain/codex/codex_changes.dart' show ChangeRefused;
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
@@ -87,6 +88,8 @@ final progressDataProvider = Provider.autoDispose<ProgressData?>((ref) {
       sessions: sessions,
       goals: goals,
       now: now,
+      // By every name Characters finds them by, so the two agree on where each one is.
+      names: namesToFind(cast.entries, cast.profiles),
     ),
     scopes: [
       for (final t in flattenTree(buildTree(nodes)))

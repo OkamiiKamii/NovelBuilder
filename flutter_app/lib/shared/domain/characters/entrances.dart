@@ -10,6 +10,7 @@ library;
 import 'dart:convert';
 
 import '../manuscript/prose.dart';
+import 'cast_names.dart';
 import 'pov.dart' show EyesPerson, perceiving;
 
 /// What an entrance gives the reader.
@@ -261,13 +262,9 @@ final _anyWord = RegExp(r"[\p{L}][\p{L}’'\-]*", unicode: true);
 
 /// The cast's entrances over [chapters] (in reading order) among [people].
 Entrances entrancesIn(List<EntranceChapter> chapters, List<EyesPerson> people) {
-  final finders = {
-    for (final p in people)
-      p.id: [
-        for (final name in ({...p.names}.toList()..sort((a, b) => b.length - a.length)))
-          if (name.trim().isNotEmpty) RegExp('(?<![\\p{L}])${RegExp.escape(name.trim())}(?![\\p{L}])', unicode: true),
-      ],
-  };
+  // The cast's names, found in one reading of each paragraph (`cast_names.dart`), not a search per name per character.
+  final names = CastNames(people);
+  final order = {for (final (i, p) in people.indexed) p.id: i};
   final entered = <String, Entrance>{};
   final talked = <String, EntrancePlace>{};
   final perChapter = List.filled(chapters.length, 0);
@@ -282,28 +279,29 @@ Entrances entrancesIn(List<EntranceChapter> chapters, List<EyesPerson> people) {
       final quotes = [for (final q in _quoted.allMatches(text)) (q.start, q.end)];
       bool quoted(int at) => quotes.any((q) => at > q.$1 && at < q.$2);
       final here = <String>[];
-      for (final p in people) {
-        if (entered.containsKey(p.id)) continue;
-        // The first time a name of theirs is in the narration of this paragraph; and the first time in its speech.
-        ({int start, int end})? onPage;
-        int? spoken;
-        for (final find in finders[p.id]!) {
-          for (final m in find.allMatches(text)) {
-            if (quoted(m.start)) {
-              if (spoken == null || m.start < spoken) spoken = m.start;
-            } else if (onPage == null || m.start < onPage.start) {
-              onPage = (start: m.start, end: m.end);
-            }
-          }
+      // The first time a name of each is in the narration of this paragraph, and the first time in its speech: the
+      // names are found in the order they stand (at one place, the longest first), so the first of each is the one.
+      final onPages = <String, ({int start, int end})>{};
+      final spokens = <String, int>{};
+      for (final h in names.all(text)) {
+        if (entered.containsKey(h.id)) continue;
+        if (quoted(h.start)) {
+          spokens.putIfAbsent(h.id, () => h.start);
+        } else {
+          onPages.putIfAbsent(h.id, () => (start: h.start, end: h.end));
         }
-        if (spoken != null && !talked.containsKey(p.id) && (onPage == null || spoken < onPage.start)) {
-          talked[p.id] = (chapter: c + 1, nodeId: chapter.id, block: b, sentence: _sentenceAt(text, spoken));
+      }
+      for (final id in ({...onPages.keys, ...spokens.keys}.toList()..sort((a, b) => order[a]! - order[b]!))) {
+        final onPage = onPages[id];
+        final spoken = spokens[id];
+        if (spoken != null && !talked.containsKey(id) && (onPage == null || spoken < onPage.start)) {
+          talked[id] = (chapter: c + 1, nodeId: chapter.id, block: b, sentence: _sentenceAt(text, spoken));
         }
         if (onPage == null) continue;
         final at = (chapter: c + 1, nodeId: chapter.id, block: b, sentence: _sentenceAt(text, onPage.start));
-        entered[p.id] = (id: p.id, at: at, gives: _gives(text, onPage, quotes), talkedOf: talked[p.id], onStage: true);
-        where[p.id] = (c, b, onPage.start);
-        here.add(p.id);
+        entered[id] = (id: id, at: at, gives: _gives(text, onPage, quotes), talkedOf: talked[id], onStage: true);
+        where[id] = (c, b, onPage.start);
+        here.add(id);
       }
       perChapter[c] += here.length;
       if (here.length >= crowdedParagraph) {

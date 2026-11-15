@@ -39,6 +39,31 @@ class NovelStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// How many times each collection of each novel has been written since the app started ('project' for the novel's
+  /// own row), and how many times each novel was written whole (stored anew, or deleted). Counted in memory, after a
+  /// write succeeds: work done from some collections can be kept until [versionOf] them moves, whatever else changes.
+  final _written = <String, int>{};
+  final _wholly = <String, int>{};
+
+  void _wrote(String projectId, Iterable<String> collections) {
+    for (final c in collections) {
+      final key = '$projectId\u0000$c';
+      _written[key] = (_written[key] ?? 0) + 1;
+    }
+  }
+
+  void _wroteWhole(String projectId) => _wholly[projectId] = (_wholly[projectId] ?? 0) + 1;
+
+  /// A number that moves whenever any of [collections] of [projectId] (or the novel's own row, as 'project') is
+  /// written, and stays the same otherwise. Cheap to ask on every build: nothing is read.
+  int versionOf(String projectId, Iterable<String> collections) {
+    var v = _wholly[projectId] ?? 0;
+    for (final c in collections) {
+      v += _written['$projectId\u0000$c'] ?? 0;
+    }
+    return v;
+  }
+
   /// REVIEW COPY GUARD. In a review copy, every change is judged by its role's rule before anything is written, as
   /// the original app's guard sat under every write: a change the role may not make is refused with
   /// [PermissionException], and nothing of the write is saved. The keys of the changes it does allow are kept in the
@@ -129,6 +154,7 @@ class NovelStore extends ChangeNotifier {
         insert.close();
       }
     });
+    _wroteWhole(id);
     _changed();
   }
 
@@ -140,6 +166,9 @@ class NovelStore extends ChangeNotifier {
     final id = before.projectId;
     if (after.projectId != id) throw ArgumentError('Changes must stay within one novel.');
     final now = _now;
+    // What this save writes, counted once it has succeeded.
+    // The novel's own row counts as written only when more than its time changed (every save touches that).
+    final wrote = <String>{if (!_sameButTime(after.project, before.project)) 'project'};
     db.transaction(() {
       final stored = db.raw.select('SELECT json FROM novels WHERE id = ?', [id]);
       if (stored.isEmpty) throw StaleWriteException('The novel');
@@ -180,6 +209,7 @@ class NovelStore extends ChangeNotifier {
           expectStored(rowId);
           if (mark != null) changed.addAll(_guarded(mark, name, str(rowId), old[rowId], null));
           db.raw.execute('DELETE FROM records WHERE project_id = ? AND collection = ? AND id = ?', [id, name, rowId]);
+          wrote.add(name);
         }
         var position =
             (db.raw.select('SELECT MAX(position) AS p FROM records WHERE project_id = ? AND collection = ?', [
@@ -193,6 +223,7 @@ class NovelStore extends ChangeNotifier {
           if (was != null && jsonEquals(was, e.value)) continue;
           expectStored(e.key);
           if (mark != null) changed.addAll(_guarded(mark, name, str(e.key), was, e.value));
+          wrote.add(name);
           if (was == null) {
             db.raw.execute(
               'INSERT INTO records (project_id, collection, id, json, position, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
@@ -213,6 +244,7 @@ class NovelStore extends ChangeNotifier {
         ]);
       }
     });
+    _wrote(id, wrote);
     _changed();
   }
 
@@ -288,6 +320,7 @@ class NovelStore extends ChangeNotifier {
   /// With [touchNovel], the novel's `updatedAt` becomes now.
   void writeRows(String projectId, List<RowWrite> writes, {bool touchNovel = true}) {
     final now = _now;
+    var markChanged = false;
     db.transaction(() {
       final head = db.raw.select('SELECT json FROM novels WHERE id = ?', [projectId]);
       if (head.isEmpty) throw StateError('That novel is no longer in the library.');
@@ -335,7 +368,8 @@ class NovelStore extends ChangeNotifier {
         }
       }
       final project = jsonDecode(head.single['json']! as String) as JsonMap;
-      final marked = mark != null && changed.isNotEmpty ? _marked(project, mark, changed) : project;
+      markChanged = mark != null && changed.isNotEmpty;
+      final marked = mark != null && markChanged ? _marked(project, mark, changed) : project;
       if (touchNovel) {
         db.raw.execute('UPDATE novels SET json = ?, updated_at = ? WHERE id = ?', [
           jsonEncode({...marked, 'updatedAt': now}),
@@ -346,6 +380,8 @@ class NovelStore extends ChangeNotifier {
         db.raw.execute('UPDATE novels SET json = ? WHERE id = ?', [jsonEncode(marked), projectId]);
       }
     });
+    // The novel's own row: only when the review copy's mark changed, not for its time.
+    _wrote(projectId, {if (markChanged) 'project', for (final w in writes) w.collection});
     _changed();
   }
 
@@ -361,6 +397,7 @@ class NovelStore extends ChangeNotifier {
       if (others.isNotEmpty) throw const PermissionException('Only the owner changes the project itself.');
     }
     db.raw.execute('UPDATE novels SET json = ?, updated_at = ? WHERE id = ?', [jsonEncode(novel.raw), _now, novel.id]);
+    _wrote(novel.id, const {'project'});
     _changed();
   }
 
@@ -375,7 +412,9 @@ class NovelStore extends ChangeNotifier {
         SUM(CASE WHEN collection = 'loreEntries' AND json_extract(json, '\$.category') = 'character' THEN 1 ELSE 0 END) AS characters,
         SUM(CASE WHEN collection = 'loreEntries' THEN 1 ELSE 0 END) AS entries,
         SUM(CASE WHEN collection = 'timelineEvents' THEN 1 ELSE 0 END) AS events,
-        SUM(CASE WHEN collection = 'plotThreads' THEN 1 ELSE 0 END) AS threads
+        SUM(CASE WHEN collection = 'plotThreads' THEN 1 ELSE 0 END) AS threads,
+        MAX(CASE WHEN collection = 'writingSessions' AND (COALESCE(json_extract(json, '\$.added'), 0) > 0
+          OR COALESCE(json_extract(json, '\$.removed'), 0) > 0) THEN json_extract(json, '\$.lastActiveAt') END) AS last_written
       FROM records GROUP BY project_id
     ''',
     ))
@@ -387,12 +426,14 @@ class NovelStore extends ChangeNotifier {
         entries: r['entries']! as int,
         events: r['events']! as int,
         threads: r['threads']! as int,
+        lastWrittenAt: r['last_written'] as num?,
       ),
   };
 
   /// Deletes a novel and everything it owns (its drafts too). Restore points are kept, so it can be brought back.
   void deleteNovel(String projectId) {
     db.transaction(() => db.raw.execute('DELETE FROM novels WHERE id = ?', [projectId]));
+    _wroteWhole(projectId);
     _changed();
   }
 }
@@ -408,6 +449,7 @@ class NovelStats {
     this.entries = 0,
     this.events = 0,
     this.threads = 0,
+    this.lastWrittenAt,
   });
 
   static const empty = NovelStats();
@@ -419,6 +461,10 @@ class NovelStats {
   final int entries;
   final int events;
   final int threads;
+
+  /// When the novel was last written in (or revised): the end of its latest writing session that added or removed
+  /// words, in milliseconds. Null when it has none (a save that changed no words is not writing).
+  final num? lastWrittenAt;
 }
 
 /// One record to write ([RowWrite.put]) or remove ([RowWrite.delete]), optionally only if it is still as read.
@@ -440,3 +486,6 @@ class RowWrite {
 class _Unchecked {
   const _Unchecked();
 }
+
+/// Whether two versions of a novel's own row differ in nothing but when it was last written.
+bool _sameButTime(JsonMap a, JsonMap b) => jsonEquals({...a}..remove('updatedAt'), {...b}..remove('updatedAt'));

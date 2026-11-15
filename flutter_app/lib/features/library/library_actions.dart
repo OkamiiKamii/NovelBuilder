@@ -87,6 +87,29 @@ void startWritingFlow(BuildContext context, WidgetRef ref, Novel novel) {
   );
 }
 
+/// "Mark it Drafting": ideas the author has been writing in are given the label they have earned, on the shelf they
+/// already stand on; nothing opens. Undo puts each back as it was.
+void markDraftingFlow(BuildContext context, WidgetRef ref, List<Novel> novels) {
+  final scope = _Scope(context);
+  final library = scope.container.read(libraryServiceProvider);
+  final done = <Novel>[];
+  for (final n in novels) {
+    if (!scope.attempt('Marking it Drafting', () => library.setStatus(n.id, NovelStatus.drafting))) break;
+    done.add(n);
+  }
+  if (done.isEmpty) return;
+  String title(Novel n) => '“${n.title.isEmpty ? 'Untitled novel' : n.title}”';
+  scope.tell(
+    done.length == 1 ? '${title(done.single)} is marked Drafting.' : '${done.length} books are marked Drafting.',
+    actionLabel: 'Undo',
+    onAction: () => scope.attempt('Undoing', () {
+      for (final n in done) {
+        library.setStatus(n.id, n.status);
+      }
+    }),
+  );
+}
+
 /// "Continue writing": the novel open at the chapter it was left at, with the caret after the last word written.
 void continueWritingFlow(BuildContext context, WidgetRef ref, Novel novel, StoryNode chapter) {
   final scope = _Scope(context);

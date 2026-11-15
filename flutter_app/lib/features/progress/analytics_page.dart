@@ -217,7 +217,8 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
           Text(
             '${_count(cast.total, 'character', 'characters')} · ${cast.appearing} '
             '${cast.appearing == 1 ? 'appears' : 'appear'} in the manuscript. A chapter counts when the character is '
-            'linked in it, listed in its plan or named in its text.',
+            'linked in it, listed in its plan or named in its text: by their name, an alias, or a part of their name no one '
+            'else has (“Ilse” for Ilse Marrow), as Characters finds them.',
             style: small,
           ),
           const SizedBox(height: 8),

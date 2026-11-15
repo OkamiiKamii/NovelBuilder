@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/gradually.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
@@ -229,18 +230,22 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 }),
               )
             else if (view == CastView.cards)
-              CastWall(
-                found: found.take(_shown).toList(),
-                order: cast.model.order,
-                onOpen: (l) => context.go(characterPath(l.entry.id)),
-                // How well each is known, and the interview to know them better (`interview.dart`).
-                known: (l) => acquaintance(l.entry, l.profile, cast.templates),
-                onInterview: (l) => interviewCharacter(
-                  context,
-                  CharacterActions(context, cast.novelId),
-                  entry: l.entry,
-                  profile: l.profile,
-                  templates: cast.templates,
+              // A screenful of cards in the first frame, the rest a handful a frame after (`core/widgets/gradually.dart`).
+              Gradually(
+                total: found.length < _shown ? found.length : _shown,
+                builder: (count) => CastWall(
+                  found: found.take(count).toList(),
+                  order: cast.model.order,
+                  onOpen: (l) => context.go(characterPath(l.entry.id)),
+                  // How well each is known, and the interview to know them better (`interview.dart`).
+                  known: (l) => acquaintance(l.entry, l.profile, cast.templates),
+                  onInterview: (l) => interviewCharacter(
+                    context,
+                    CharacterActions(context, cast.novelId),
+                    entry: l.entry,
+                    profile: l.profile,
+                    templates: cast.templates,
+                  ),
                 ),
               )
             else if (view == CastView.ties)
@@ -291,11 +296,14 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
                 ),
               )
             else
-              _ListView(
-                found.take(_shown).toList(),
-                reorder: _sort == CastSort.custom && query.trim().isEmpty
-                    ? (l, by) => _move(found, l, by, cast.novelId)
-                    : null,
+              Gradually(
+                total: found.length < _shown ? found.length : _shown,
+                builder: (count) => _ListView(
+                  found.take(count).toList(),
+                  reorder: _sort == CastSort.custom && query.trim().isEmpty
+                      ? (l, by) => _move(found, l, by, cast.novelId)
+                      : null,
+                ),
               ),
             if (found.length > _shown)
               Padding(

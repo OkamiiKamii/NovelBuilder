@@ -28,8 +28,12 @@ class CharacterService {
   int get _now => _clock().millisecondsSinceEpoch;
 
   /// The novel without its chapter text: what the character screens show and search.
-  NovelSnapshot? read(String projectId) =>
-      store.loadPart(projectId, {...novelCollections.keys}.difference(_manuscriptText));
+  NovelSnapshot? read(String projectId) => store.loadPart(projectId, readCollections);
+
+  /// The collections [read] reads (everything but the chapter text), and the novel's own row: what the cast is made
+  /// of, so it can be kept until one of these is written (`NovelStore.versionOf`).
+  static final readCollections = {...novelCollections.keys}.difference(_manuscriptText);
+  static final castSource = {...readCollections, 'project'};
 
   /// Applies [apply] to the character records as stored now, and saves the result in one transaction.
   T change<T>(String projectId, T Function(CharacterChanges c) apply) {

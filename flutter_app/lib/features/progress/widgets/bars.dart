@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart' show listEquals, setEquals;
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart' show SemanticsProperties;
+import 'package:flutter/services.dart' show KeyDownEvent, KeyEvent, KeyRepeatEvent, LogicalKeyboardKey;
 
 import '../../../shared/domain/analytics/progress.dart' show TrendPoint, grouped;
 
@@ -131,6 +134,37 @@ class ColumnChart extends StatefulWidget {
 
 class _ColumnChartState extends State<ColumnChart> {
   String? _told;
+  bool _focused = false;
+
+  void _tell(BarDatum b) {
+    setState(() => _told = b.key);
+    if (b.selectable) widget.onSelect?.call(b);
+  }
+
+  /// The arrow keys walk the columns (one stop for the whole chart, not one per column); Enter or Space selects.
+  KeyEventResult _key(KeyEvent event, bool rtl) {
+    if (event is! KeyDownEvent && event is! KeyRepeatEvent) return KeyEventResult.ignored;
+    final bars = widget.bars;
+    if (bars.isEmpty) return KeyEventResult.ignored;
+    final at = bars.indexWhere((b) => b.key == _told);
+    final key = event.logicalKey;
+    final forward = rtl ? LogicalKeyboardKey.arrowLeft : LogicalKeyboardKey.arrowRight;
+    final back = rtl ? LogicalKeyboardKey.arrowRight : LogicalKeyboardKey.arrowLeft;
+    int? next;
+    if (key == forward) next = at < 0 ? bars.length - 1 : math.min(at + 1, bars.length - 1);
+    if (key == back) next = at < 0 ? bars.length - 1 : math.max(at - 1, 0);
+    if (key == LogicalKeyboardKey.home) next = 0;
+    if (key == LogicalKeyboardKey.end) next = bars.length - 1;
+    if (next != null) {
+      setState(() => _told = bars[next!].key);
+      return KeyEventResult.handled;
+    }
+    if ((key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.space) && at >= 0) {
+      _tell(bars[at]);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,76 +185,8 @@ class _ColumnChartState extends State<ColumnChart> {
     final small = theme.textTheme.labelSmall!.copyWith(color: scheme.onSurfaceVariant);
     final told = bars.where((b) => b.key == _told).firstOrNull;
     String words(BarDatum b) => '${b.label}: ${widget.words(b.value)}${b.detail.isEmpty ? '' : '. ${b.detail}'}';
-
-    Widget column(int i, BarDatum b, double width, int every) {
-      final size = b.value.abs() / range * h;
-      final selected = b.key == widget.selectedKey || b.key == _told;
-      final fill = b.value < 0
-          ? scheme.outline
-          : (b.current || !trend ? scheme.primary : scheme.primary.withValues(alpha: 0.55));
-      final labelled = b.value != 0 && (b.current || b.key == peak?.key);
-      final radius = Radius.circular(math.min(4, width / 3));
-      return Semantics(
-        container: true,
-        button: true,
-        selected: b.key == widget.selectedKey,
-        label: words(b),
-        excludeSemantics: true,
-        child: InkWell(
-          onTap: () {
-            setState(() => _told = b.key);
-            if (b.selectable) widget.onSelect?.call(b);
-          },
-          child: SizedBox(
-            width: width,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: h,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      if (b.value != 0)
-                        Positioned(
-                          left: 1,
-                          right: 1,
-                          top: b.value > 0 ? zero - size : zero,
-                          height: math.max(size, 1),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: fill,
-                              border: selected ? Border.all(color: scheme.onSurface, width: 2) : null,
-                              borderRadius: b.value > 0
-                                  ? BorderRadius.vertical(top: radius)
-                                  : BorderRadius.vertical(bottom: radius),
-                            ),
-                          ),
-                        ),
-                      if (labelled)
-                        Positioned(
-                          left: -24,
-                          right: -24,
-                          top: b.value > 0 ? zero - size - 15 : zero + size + 1,
-                          child: Text(compactNumber(b.value), textAlign: TextAlign.center, style: small),
-                        ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 18,
-                  child: (bars.length - 1 - i) % every == 0
-                      ? OverflowBox(
-                          maxWidth: 60,
-                          child: Text(b.short, style: small, maxLines: 1, textAlign: TextAlign.center),
-                        )
-                      : null,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
+    final direction = Directionality.of(context);
+    final rtl = direction == TextDirection.rtl;
 
     return Semantics(
       container: true,
@@ -263,9 +229,20 @@ class _ColumnChartState extends State<ColumnChart> {
                     // Axis labels never run into each other: every nth, by how wide the longest is.
                     final widest = bars.fold(0, (m, b) => math.max(m, b.short.length)) * 7.0 + 8;
                     final every = math.max(widget.labelEvery, (widest / width).ceil());
+                    final all = width * bars.length;
+                    double left(int i) => rtl ? all - (i + 1) * width : i * width;
+                    int? indexAt(double x) {
+                      final i = (rtl ? (all - x) / width : x / width).floor();
+                      return i >= 0 && i < bars.length ? i : null;
+                    }
+
+                    // The columns are painted, not built: one picture for hundreds of chapters. Only the few numbers
+                    // on them and under them are text.
                     final plot = SizedBox(
-                      width: width * bars.length,
+                      width: all,
+                      height: h + 18,
                       child: Stack(
+                        clipBehavior: Clip.none,
                         children: [
                           Positioned(
                             top: 0,
@@ -279,13 +256,94 @@ class _ColumnChartState extends State<ColumnChart> {
                             right: 0,
                             child: Container(height: 1, color: scheme.outline),
                           ),
-                          Row(children: [for (final (i, b) in bars.indexed) column(i, b, width, every)]),
+                          Positioned.fill(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTapUp: (d) {
+                                if (indexAt(d.localPosition.dx) case final i?) _tell(bars[i]);
+                              },
+                              child: CustomPaint(
+                                painter: ColumnsPainter(
+                                  bars: bars,
+                                  labels: [for (final b in bars) words(b)],
+                                  width: width,
+                                  height: h,
+                                  zero: zero,
+                                  range: range,
+                                  rtl: rtl,
+                                  direction: direction,
+                                  quiet: trend,
+                                  selectedKey: widget.selectedKey,
+                                  told: _told,
+                                  on: scheme.primary,
+                                  cut: scheme.outline,
+                                  edge: scheme.onSurface,
+                                  onTap: (i) => _tell(bars[i]),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ExcludeSemantics(
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                const SizedBox.shrink(),
+                                for (final (i, b) in bars.indexed) ...[
+                                  if (b.value != 0 && (b.current || b.key == peak?.key))
+                                    Positioned(
+                                      left: left(i) - 24,
+                                      width: width + 48,
+                                      top: b.value > 0
+                                          ? zero - b.value.abs() / range * h - 15
+                                          : zero + b.value.abs() / range * h + 1,
+                                      child: IgnorePointer(
+                                        child: Text(compactNumber(b.value), textAlign: TextAlign.center, style: small),
+                                      ),
+                                    ),
+                                  if ((bars.length - 1 - i) % every == 0)
+                                    // Under its column; at either end of the plot, kept inside it rather than cut.
+                                    () {
+                                      final centred = left(i) + width / 2 - 30;
+                                      final start = centred.clamp(0.0, math.max(all - 60, 0.0)).toDouble();
+                                      return Positioned(
+                                        left: start,
+                                        width: 60,
+                                        top: h,
+                                        height: 18,
+                                        child: IgnorePointer(
+                                          child: Text(
+                                            b.short,
+                                            style: small,
+                                            maxLines: 1,
+                                            textAlign: start > centred
+                                                ? TextAlign.left
+                                                : (start < centred ? TextAlign.right : TextAlign.center),
+                                          ),
+                                        ),
+                                      );
+                                    }(),
+                                ],
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     );
-                    return width * bars.length > box.maxWidth + 0.5
-                        ? SingleChildScrollView(scrollDirection: Axis.horizontal, reverse: true, child: plot)
-                        : plot;
+                    final framed = Focus(
+                      onFocusChange: (f) => setState(() => _focused = f),
+                      onKeyEvent: (_, e) => _key(e, rtl),
+                      child: DecoratedBox(
+                        position: DecorationPosition.foreground,
+                        decoration: BoxDecoration(
+                          border: _focused ? Border.all(color: scheme.primary, width: 2) : null,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: plot,
+                      ),
+                    );
+                    return all > box.maxWidth + 0.5
+                        ? SingleChildScrollView(scrollDirection: Axis.horizontal, reverse: true, child: framed)
+                        : framed;
                   },
                 ),
               ),
@@ -296,6 +354,124 @@ class _ColumnChartState extends State<ColumnChart> {
       ),
     );
   }
+}
+
+/// A [ColumnChart]'s columns in one picture, each also a node of its own for a screen reader, said in full. A column/// wide enough to press (48 px, as for any button) is a button there too, choosing it as a tap does; a narrower one is/// said only, as its number is in the table under the chart.
+class ColumnsPainter extends CustomPainter {
+  ColumnsPainter({
+    required this.bars,
+    required this.labels,
+    required this.width,
+    required this.height,
+    required this.zero,
+    required this.range,
+    required this.rtl,
+    required this.direction,
+    required this.quiet,
+    required this.selectedKey,
+    required this.told,
+    required this.on,
+    required this.cut,
+    required this.edge,
+    required this.onTap,
+  });
+
+  final List<BarDatum> bars;
+  final List<String> labels;
+
+  /// Each column's width, the plot's height above the axis labels, and where zero is from the top.
+  final double width;
+  final double height;
+  final double zero;
+  final int range;
+  final bool rtl;
+  final TextDirection direction;
+
+  /// Whether the periods before the current one are the quieter step.
+  final bool quiet;
+  final String? selectedKey;
+  final String? told;
+  final Color on;
+  final Color cut;
+  final Color edge;
+  final void Function(int index) onTap;
+
+  double _left(int i) => rtl ? bars.length * width - (i + 1) * width : i * width;
+
+  /// Column [i]'s filled part, or null when it is zero.
+  RRect? column(int i) {
+    final b = bars[i];
+    if (b.value == 0) return null;
+    final size = b.value.abs() / range * height;
+    final r = Radius.circular(math.min(4, width / 3));
+    final rect = Rect.fromLTWH(_left(i) + 1, b.value > 0 ? zero - size : zero, width - 2, math.max(size, 1));
+    return b.value > 0
+        ? RRect.fromRectAndCorners(rect, topLeft: r, topRight: r)
+        : RRect.fromRectAndCorners(rect, bottomLeft: r, bottomRight: r);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final fill = Paint();
+    final ring = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..color = edge;
+    final earlier = on.withValues(alpha: 0.55);
+    for (var i = 0; i < bars.length; i++) {
+      final shape = column(i);
+      if (shape == null) continue;
+      final b = bars[i];
+      fill.color = b.value < 0 ? cut : (b.current || !quiet ? on : earlier);
+      canvas.drawRRect(shape, fill);
+      if (b.key == selectedKey || b.key == told) canvas.drawRRect(shape.deflate(1), ring);
+    }
+  }
+
+  /// Whether the columns are wide enough to be buttons to a screen reader.
+  bool get pressable => width >= kMinInteractiveDimension;
+
+  @override
+  SemanticsBuilderCallback get semanticsBuilder =>
+      (size) => [
+        for (var i = 0; i < bars.length; i++)
+          CustomPainterSemantics(
+            key: ValueKey<String>(bars[i].key),
+            rect: Rect.fromLTWH(_left(i), 0, width, size.height),
+            properties: SemanticsProperties(
+              label: labels[i],
+              textDirection: direction,
+              button: pressable,
+              selected: bars[i].key == selectedKey,
+              onTap: pressable ? () => onTap(i) : null,
+            ),
+          ),
+      ];
+
+  bool _same(ColumnsPainter o) =>
+      o.width == width &&
+      o.height == height &&
+      o.zero == zero &&
+      o.range == range &&
+      o.rtl == rtl &&
+      o.quiet == quiet &&
+      o.selectedKey == selectedKey &&
+      o.told == told &&
+      o.on == on &&
+      o.cut == cut &&
+      o.edge == edge &&
+      listEquals(o.labels, labels) &&
+      o.bars.length == bars.length &&
+      Iterable<int>.generate(bars.length).every((i) {
+        final (a, b) = (o.bars[i], bars[i]);
+        return a.key == b.key && a.value == b.value && a.current == b.current && a.selectable == b.selectable;
+      });
+
+  @override
+  bool shouldRepaint(ColumnsPainter oldDelegate) => !_same(oldDelegate);
+
+  @override
+  bool shouldRebuildSemantics(ColumnsPainter oldDelegate) => !_same(oldDelegate) || oldDelegate.direction != direction;
 }
 
 /// Values as bars for things that have names, longest first as given, each named beside its bar with its number, so
@@ -609,28 +785,87 @@ class ChapterStrip extends StatelessWidget {
   final List<int> chapters;
   final String label;
 
+  /// Narrower than this, a chapter's cell has no gap after it: the chapters are painted as runs instead.
+  static const gapFrom = 4.0;
+
+  /// The least a chapter that is filled is painted, so one chapter in hundreds is still seen.
+  static const least = 2.0;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final filled = chapters.toSet();
     return Semantics(
       image: true,
       label: label,
+      // Painted, not built: one strip, however many chapters (a long book's strips were thousands of boxes each).
       child: SizedBox(
         height: 12,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (var i = 1; i <= math.max(total, 1); i++)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 1),
-                  child: ColoredBox(color: filled.contains(i) ? scheme.primary : scheme.outlineVariant),
-                ),
-              ),
-          ],
+        width: double.infinity,
+        child: CustomPaint(
+          painter: StripPainter(
+            total: math.max(total, 1),
+            filled: chapters.toSet(),
+            on: scheme.primary,
+            off: scheme.outlineVariant,
+            rtl: Directionality.maybeOf(context) == TextDirection.rtl,
+          ),
         ),
       ),
     );
   }
+}
+
+/// A [ChapterStrip]'s cells: one per chapter with a gap after each while there is room; on a long book, where cells
+/// would be narrower than their gap, the track whole and the filled chapters on it as runs, each at least [least] wide.
+class StripPainter extends CustomPainter {
+  StripPainter({required this.total, required this.filled, required this.on, required this.off, this.rtl = false});
+
+  final int total;
+  final Set<int> filled;
+  final Color on;
+  final Color off;
+  final bool rtl;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cell = size.width / total;
+    final h = size.height;
+    // The cell for chapter [i] (from 1), [width] wide, from the start of the line.
+    Rect at(int i, double width) {
+      final start = (i - 1) * cell;
+      return Rect.fromLTWH(rtl ? size.width - start - cell : start, 0, width, h);
+    }
+
+    final paint = Paint();
+    if (cell >= ChapterStrip.gapFrom) {
+      for (var i = 1; i <= total; i++) {
+        canvas.drawRect(at(i, cell - 1), paint..color = filled.contains(i) ? on : off);
+      }
+      return;
+    }
+    canvas.drawRect(Offset.zero & size, paint..color = off);
+    paint.color = on;
+    final numbers = [
+      for (final n in filled)
+        if (n >= 1 && n <= total) n,
+    ]..sort();
+    for (var k = 0; k < numbers.length;) {
+      final first = numbers[k];
+      var last = first;
+      while (++k < numbers.length && numbers[k] == last + 1) {
+        last = numbers[k];
+      }
+      final width = math.max((last - first + 1) * cell, ChapterStrip.least);
+      final start = math.min((first - 1) * cell, size.width - width);
+      canvas.drawRect(Rect.fromLTWH(rtl ? size.width - start - width : start, 0, width, h), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(StripPainter oldDelegate) =>
+      oldDelegate.total != total ||
+      oldDelegate.on != on ||
+      oldDelegate.off != off ||
+      oldDelegate.rtl != rtl ||
+      !setEquals(oldDelegate.filled, filled);
 }

@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
+import '../characters/named_in.dart' show namedIn;
 import '../collation.dart';
-import '../continuity/text.dart' show findWords, paragraphsOf;
+import '../continuity/text.dart' show paragraphsOf;
 import '../manuscript/board.dart' show buildTree, flattenTree;
 import '../manuscript/outline.dart' show isDocument;
 import '../model/navigate.dart' show threadStatusName;
@@ -12,10 +13,6 @@ import '../progression/snapshots.dart' show ProgressSnapshot;
 import '../records/story_node.dart';
 import '../stable_sort.dart';
 import 'progress.dart';
-
-/// Runs of letters and digits: the words [findWords] matches whole.
-final _wordRuns = RegExp(r'[\p{L}\p{N}]+', unicode: true);
-Set<String> _runsOf(String text) => {for (final m in _wordRuns.allMatches(text)) m[0]!};
 
 /// PROJECT ANALYTICS (as in the original app)
 /// OBJECTIVE DIAGNOSTICS RULE: counts things. Every number here is read straight off the project: the manuscript's
@@ -183,6 +180,10 @@ Analytics computeAnalytics(
   required List<WritingSession> sessions,
   required List<Goal> goals,
   required num now,
+
+  /// The names each character goes by (`namesToFind`: their name, aliases, the parts of it that are theirs alone),
+  /// by character: a chapter that names them by any of these counts. Without it, only their name as entered does.
+  Map<String, List<String>>? names,
 }) {
   final nodes = [...model.nodes.values];
   final today = dayKeyOf(now);
@@ -275,10 +276,23 @@ Analytics computeAnalytics(
           number: number,
           mentions: doc.mentions.toSet(),
           involved: (model.plans[doc.id]?.entityIds ?? const <String>[]).toSet(),
-          text: text[doc.id] ?? '',
-          words: _runsOf(text[doc.id] ?? ''),
         ),
   ];
+  // Where each character is named: every page read once for the whole cast, by every name each goes by (as given, or
+  // their name as entered), whole words as written.
+  final named = namedIn(
+    {
+      for (final doc in documents)
+        if (numberOf(doc.id) != null) doc.id: text[doc.id] ?? '',
+    },
+    {
+      for (final c in characters)
+        c.id: [
+          for (final n in names?[c.id] ?? [c.name])
+            if (n.trim().isNotEmpty) n.trim(),
+        ],
+    },
+  );
   Map<String, int> count(Iterable<String> ids) {
     final m = <String, int>{};
     for (final id in ids) {
@@ -294,23 +308,11 @@ Analytics computeAnalytics(
   final rows = [
     for (final entry in characters)
       () {
-        final numbers = <int>{};
-        final name = entry.name.trim();
-        // A name found as whole words has each of its runs of letters and digits as a whole word of the text, so a
-        // chapter lacking one of them cannot match: it is skipped before the slower search, with the same result.
-        final runs = _runsOf(name);
-        for (final part in parts) {
-          if (numbers.contains(part.number)) continue;
-          // The name search is exact and case-sensitive, so text without the name cannot match: it is skipped.
-          if (part.mentions.contains(entry.id) ||
-              part.involved.contains(entry.id) ||
-              (name.isNotEmpty &&
-                  runs.every(part.words.contains) &&
-                  part.text.contains(name) &&
-                  findWords(part.text, [entry.name]).isNotEmpty)) {
-            numbers.add(part.number);
-          }
-        }
+        final numbers = <int>{
+          for (final part in parts)
+            if (part.mentions.contains(entry.id) || part.involved.contains(entry.id)) part.number,
+          for (final nodeId in named[entry.id] ?? const <String>[]) ?numberOf(nodeId),
+        };
         final list = numbers.toList()..sort();
         final relationships = relationCount[entry.id] ?? 0;
         final milestones = snapshotCount[entry.id] ?? 0;

@@ -61,8 +61,15 @@ class CastData {
   /// Where each entry's name is on the page, by entry: chapters and scenes (`named_in.dart`, [namedInProvider]).
   final Map<String, List<String>> named;
 
-  /// For each entry, the chapters (by number) it is in: linked in their text, or named there.
-  Map<String, Set<int>> chaptersOf() {
+  /// For each entry, the chapters (by number) it is in: linked in their text, or named there. Worked out once for this
+  /// cast (which does not change once made) and shared, so it cannot be changed by those who read it.
+  Map<String, Set<int>> chaptersOf() => _chaptersOf;
+
+  late final Map<String, Set<int>> _chaptersOf = Map.unmodifiable({
+    for (final MapEntry(:key, :value) in _workOutChapters().entries) key: Set<int>.unmodifiable(value),
+  });
+
+  Map<String, Set<int>> _workOutChapters() {
     final out = <String, Set<int>>{};
     for (final node in model.nodes.values) {
       final n = model.order.chapterNumber[node.id];
@@ -129,13 +136,29 @@ class CastNotifier extends Notifier<CastData?> {
     // Where names are on the page arrives from the background a moment later; the cast is read again with it then (as
     // it arrives, never in the middle of building a page).
     var named = const <String, List<String>>{};
+    final kept = ref.read(_castKeptProvider);
+    // The cast is made again only when what it is made of was written, or where names are changed: a visit with
+    // nothing new, or a change to anything else (a chapter typed, a setting), takes the cast already made at once.
     CastData? read() {
+      final version = store.versionOf(novelId, CharacterService.castSource);
+      if (kept.novelId == novelId && kept.version == version && _sameNamed(kept.named, named) && kept.data != null) {
+        return kept.data;
+      }
       final snapshot = service.read(novelId);
-      return snapshot == null ? null : CastData(novelId, snapshot, named: named);
+      final data = snapshot == null ? null : CastData(novelId, snapshot, named: named);
+      kept
+        ..novelId = novelId
+        ..version = version
+        ..named = named
+        ..data = data;
+      return data;
     }
 
     void update() {
-      if (store.exists(novelId)) state = read();
+      if (!store.exists(novelId)) return;
+      final next = read();
+      // Unchanged: the screens showing the cast are not built again for nothing.
+      if (!identical(next, state)) state = next;
     }
 
     ref.listen(namedInProvider, (_, next) {
@@ -150,6 +173,21 @@ class CastNotifier extends Notifier<CastData?> {
 }
 
 final castProvider = NotifierProvider.autoDispose<CastNotifier, CastData?>(CastNotifier.new);
+
+/// The cast last made, and what it was made from: kept while the app runs (one novel's cast, the open one), so going
+/// back to Characters, or a change to something the cast is not made of, does not make it again.
+class _CastKept {
+  String? novelId;
+  int version = -1;
+  Map<String, List<String>>? named;
+  CastData? data;
+}
+
+/// Made anew with the store, so a cast is never kept across stores (whose counts start again).
+final _castKeptProvider = Provider<_CastKept>((ref) {
+  ref.watch(novelStoreProvider);
+  return _CastKept();
+});
 
 /// Where each entry of the open novel is named in its text (`named_in.dart`), by entry: chapters and scenes. Read away
 /// from the screen when a screen first needs it, and again shortly after the text, the entries or the profiles
@@ -250,3 +288,17 @@ class CastViewNotifier extends Notifier<CastView> {
 }
 
 final castViewProvider = NotifierProvider<CastViewNotifier, CastView>(CastViewNotifier.new);
+
+/// Whether two readings of where names are hold the same (each a fresh map from the background, often the same).
+bool _sameNamed(Map<String, List<String>>? a, Map<String, List<String>> b) {
+  if (identical(a, b)) return true;
+  if (a == null || a.length != b.length) return false;
+  for (final MapEntry(:key, :value) in b.entries) {
+    final was = a[key];
+    if (was == null || was.length != value.length) return false;
+    for (var i = 0; i < value.length; i++) {
+      if (was[i] != value[i]) return false;
+    }
+  }
+  return true;
+}

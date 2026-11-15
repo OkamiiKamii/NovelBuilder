@@ -12,6 +12,7 @@ library;
 import 'dart:convert';
 
 import '../manuscript/prose.dart';
+import 'cast_names.dart';
 
 /// How a chapter is told: through someone, in the first person, or unclear.
 enum Telling { through, firstPerson, unclear }
@@ -101,12 +102,17 @@ final _word = RegExp(r"[\p{L}][\p{L}’'\-]*", unicode: true);
 final _sentence = RegExp(r'[^.!?…]+[.!?…]+["”’]*|[^.!?…]+$');
 final _firstPerson = RegExp(r"\b(I|me|my|myself|I’m|I'm|I’d|I'd)\b");
 
+/// What follows a name that counts: a word, and perhaps the word after it. And a possessive, which does not.
+final _following = RegExp(r"\s+([\p{L}’']+)(?:\s+([\p{L}’']+))?", unicode: true);
+final _possessive = RegExp(r"[’']");
+
 /// The point of view of each of [chapters] (each its id, title and paragraphs, in reading order), among [people].
 List<ChapterEyes> chapterEyes(
   List<({String id, String title, List<String> paragraphs})> chapters,
   List<EyesPerson> people,
 ) {
   final out = <ChapterEyes>[];
+  final finder = CastNames(people);
   for (final (c, chapter) in chapters.indexed) {
     final words = chapter.paragraphs.fold(0, (n, p) => n + _word.allMatches(p).length);
     if (words == 0) continue;
@@ -115,33 +121,40 @@ List<ChapterEyes> chapterEyes(
     final narrated = narration.fold(0, (n, p) => n + _word.allMatches(p).length);
     final firstPerson = narration.fold(0, (n, p) => n + _firstPerson.allMatches(p).length);
 
-    final scores = <String, double>{};
-    final shows = <String, String>{};
-    for (final person in people) {
-      var perceives = 0;
-      var named = 0;
-      String? shown;
-      for (final paragraph in narration) {
-        for (final name in person.names) {
-          final find = RegExp(
-            '(?<![\\p{L}])${RegExp.escape(name)}(?![\\p{L}’\'])\\s+([\\p{L}’\']+)(?:\\s+([\\p{L}’\']+))?',
-            unicode: true,
-          );
-          for (final m in find.allMatches(paragraph)) {
-            named++;
-            final verb = m[1]!.toLowerCase();
-            final next = m[2]?.toLowerCase() ?? '';
-            final helped = {'could', 'couldn’t', "couldn't", 'did', 'didn’t', "didn't", 'had'}.contains(verb);
-            if (perceiving.contains(verb) && (!helped || _helped.contains(next) || perceiving.contains(next))) {
-              perceives++;
-              shown ??= _sentenceAt(paragraph, m.start);
-            }
+    // The cast's names, found in one reading of each paragraph (`cast_names.dart`), not a search per name per
+    // character: a name counts with a word after it (not "Kade’s"), as it always has.
+    final perceives = <String, int>{};
+    final named = <String, int>{};
+    // The sentence that shows each one, the first by paragraph, then by which of their names, then by place.
+    final shown = <String, ({int paragraph, int name, int start, String sentence})>{};
+    for (final (pi, paragraph) in narration.indexed) {
+      for (final h in finder.all(paragraph)) {
+        if (h.end < paragraph.length && _possessive.matchAsPrefix(paragraph, h.end) != null) continue;
+        final m = _following.matchAsPrefix(paragraph, h.end);
+        if (m == null) continue;
+        named[h.id] = (named[h.id] ?? 0) + 1;
+        final verb = m[1]!.toLowerCase();
+        final next = m[2]?.toLowerCase() ?? '';
+        final helped = {'could', 'couldn’t', "couldn't", 'did', 'didn’t', "didn't", 'had'}.contains(verb);
+        if (perceiving.contains(verb) && (!helped || _helped.contains(next) || perceiving.contains(next))) {
+          perceives[h.id] = (perceives[h.id] ?? 0) + 1;
+          final was = shown[h.id];
+          final earlier =
+              was == null ||
+              pi < was.paragraph ||
+              (pi == was.paragraph && (h.name < was.name || (h.name == was.name && h.start < was.start)));
+          if (earlier) {
+            shown[h.id] = (paragraph: pi, name: h.name, start: h.start, sentence: _sentenceAt(paragraph, h.start));
           }
         }
       }
-      final score = perceives * 3 + named * 0.5;
+    }
+    final scores = <String, double>{};
+    final shows = <String, String>{};
+    for (final person in people) {
+      final score = (perceives[person.id] ?? 0) * 3 + (named[person.id] ?? 0) * 0.5;
       if (score > 0) scores[person.id] = score;
-      if (shown != null) shows[person.id] = shown;
+      if (shown[person.id] case final s?) shows[person.id] = s.sentence;
     }
     final ranked = scores.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     final top = ranked.firstOrNull;

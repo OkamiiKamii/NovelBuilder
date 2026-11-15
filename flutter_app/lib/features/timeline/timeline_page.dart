@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/gradually.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/records/event.dart';
@@ -317,14 +318,19 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
           else if (visible.isEmpty)
             NoResultsState(query: _query.trim().isEmpty ? null : _query.trim(), onClear: _clear)
           else
-            Chronicle(
-              groups: groups,
-              card: (p) => _EventCard(
-                data: data,
-                placed: p,
-                age: ages[p.event.id],
-                problems: problemsOf(p),
-                onOpen: () => actions.openEvent(p.event.id),
+            // The events a screenful at a time (`gradually.dart`): eight hundred of them are there at once, not after
+            // all are built.
+            Gradually(
+              total: visible.length,
+              builder: (count) => Chronicle(
+                groups: _firstOf(groups, count),
+                card: (p) => _EventCard(
+                  data: data,
+                  placed: p,
+                  age: ages[p.event.id],
+                  problems: problemsOf(p),
+                  onOpen: () => actions.openEvent(p.event.id),
+                ),
               ),
             ),
           if (_filtered && placed.isNotEmpty)
@@ -447,4 +453,16 @@ class _EventCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The first [count] events of [groups], in their years: the years they reach, the last one cut where they stop.
+List<ChronicleGroup> _firstOf(List<ChronicleGroup> groups, int count) {
+  final out = <ChronicleGroup>[];
+  var left = count;
+  for (final g in groups) {
+    if (left <= 0) break;
+    out.add(g.items.length <= left ? g : (key: g.key, heading: g.heading, items: g.items.take(left).toList()));
+    left -= g.items.length;
+  }
+  return out;
 }
