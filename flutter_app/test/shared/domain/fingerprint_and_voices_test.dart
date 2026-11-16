@@ -157,4 +157,28 @@ void main() {
     }
     expect(said, greaterThanOrEqualTo(4), reason: 'Wren, Kai, Mary-Jane and Ren Vane speak');
   });
+
+  test('everyone’s lines in one reading: for each, the same lines as asking for them alone', () {
+    // The long book: its names and the first names its pages use, all at once.
+    final everyone = {
+      for (final (i, list) in [...names.values.take(300), ...names.values.skip(names.length - 12)].indexed) i: list,
+    };
+    final each = spokenByEach(pages, pages.keys.toList(), everyone, limit: 400);
+    for (final MapEntry(key: i, value: list) in everyone.entries) {
+      expect(each[i].toString(), oldSpokenBy(pages, pages.keys.toList(), list, limit: 400).toString(), reason: '$list');
+    }
+    // The book of hard cases, all talk; and with a limit that stops part way.
+    for (final limit in [1, 2, 60]) {
+      final hardEach = spokenByEach(hard, ['h1'], hardNames, limit: limit);
+      for (final MapEntry(key: who, value: list) in hardNames.entries) {
+        expect(
+          hardEach[who].toString(),
+          oldSpokenBy(hard, ['h1'], list, limit: limit).toString(),
+          reason: '$who $limit',
+        );
+      }
+    }
+    expect(spokenByEach(hard, ['h1'], hardNames)['wren'], isNotEmpty);
+    expect(spokenByEach(hard, ['missing'], hardNames)['wren'], isEmpty, reason: 'a chapter with no pages');
+  });
 }

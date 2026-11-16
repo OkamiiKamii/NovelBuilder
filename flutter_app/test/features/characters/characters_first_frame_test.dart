@@ -1,5 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/gradually.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/characters/widgets/cast_card.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
@@ -12,6 +14,7 @@ import 'package:super_text_layout/super_text_layout.dart';
 
 import '../../helpers/large_novel.dart';
 import '../../helpers/pump_app.dart';
+import '../../helpers/scroll_to_end.dart';
 
 /// Characters on a large novel (400 characters, 300,000 words): the cast kept between visits until what it is made
 /// of is written, and the cards built a screenful at a time so the page is there at once.
@@ -87,7 +90,8 @@ void main() {
   );
 
   testWidgets(
-    'the first frame builds a screenful of cards; the rest follow in the frames after, all sixty in the end',
+    'the first frame builds a screenful of cards; the rest follow in the frames after, as far as can be reached; '
+    'all sixty as the page is scrolled to its end',
     (tester) async {
       final c = await pumpApp(tester, size: phone);
       final s = largeNovel();
@@ -98,10 +102,22 @@ void main() {
       c.read(routerProvider).go('/organize');
       await tester.pump();
       expect(cards().evaluate().length, 8, reason: 'a screenful, so the page is there at once');
+      // A handful more the next frame, if the end of the first is within reach of what is seen (the page's view and
+      // two more of it below).
+      final view =
+          Scrollable.of(tester.element(find.byType(CastWall)), axis: Axis.vertical).context.findRenderObject()!
+              as RenderBox;
+      final end = tester.getRect(find.byType(CastWall)).bottom - view.localToGlobal(Offset.zero).dy;
       await tester.pump();
-      expect(cards().evaluate().length, 20, reason: 'a handful more each frame');
+      expect(
+        cards().evaluate().length,
+        end < view.size.height * (1 + Gradually.ahead) ? 20 : 8,
+        reason: 'a handful more each frame, while within reach',
+      );
       await tester.pumpAndSettle();
-      expect(cards().evaluate().length, 60, reason: 'all of the first page of the cast, as before');
+      expect(cards().evaluate().length, lessThan(60), reason: 'only as far as the reader can reach');
+      await scrollToEnd(tester, find.byType(CastWall), done: () => cards().evaluate().length == 60);
+      expect(cards().evaluate().length, 60, reason: 'all of the first page of the cast, as the page is scrolled');
       expect(
         find.textContaining(RegExp(r'^Show \d+ more')),
         findsOneWidget,

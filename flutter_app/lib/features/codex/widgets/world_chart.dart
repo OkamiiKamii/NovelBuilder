@@ -233,12 +233,38 @@ class WorldChart extends StatefulWidget {
   State<WorldChart> createState() => _WorldChartState();
 }
 
+/// The chart laid out at a width: how tall it is, the sea along its foot, and where each place, seal and thing adrift
+/// is drawn.
+typedef _Laid = ({double height, double sea, bool compact, List<_Drawn> drawn, List<_Seal> seals, List<_Seal> adrift});
+
+/// How many times a chart has been laid out (for a test to see one kept).
+@visibleForTesting
+int worldChartsLaidOut = 0;
+
 class _WorldChartState extends State<WorldChart> {
   String? _lit;
 
+  /// The chart's places, kept while the book's model and its chapters are the same: the page round it is built
+  /// again for every letter typed in its search, and the chart is not what is searched.
+  ({StoryModel model, Map<String, Set<int>> chapters, WorldChartData data})? _read;
+
+  /// The chart laid out (names measured, islands packed), kept while its places, its width and its faces are the
+  /// same: a pointer over a place lights it without laying the world out again.
+  ({WorldChartData data, double width, BookFaces faces, _Laid laid})? _laid;
+
+  WorldChartData _data() {
+    final read = _read;
+    if (read != null && identical(read.model, widget.model) && identical(read.chapters, widget.chapters)) {
+      return read.data;
+    }
+    final data = worldChartOf(widget.model, widget.chapters);
+    _read = (model: widget.model, chapters: widget.chapters, data: data);
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final data = worldChartOf(widget.model, widget.chapters);
+    final data = _data();
     if (data.islands.isEmpty) return const SizedBox.shrink();
     final scheme = Theme.of(context).colorScheme;
     final theme = Theme.of(context);
@@ -284,6 +310,155 @@ class _WorldChartState extends State<WorldChart> {
 
   Widget _chart(BuildContext context, double width, WorldChartData data) {
     final scheme = Theme.of(context).colorScheme;
+    final faces = BookFaces.of(context);
+    final kept = _laid;
+    final _Laid laid;
+    if (kept != null && identical(kept.data, data) && kept.width == width && identical(kept.faces, faces)) {
+      laid = kept.laid;
+    } else {
+      laid = _layOut(width, data, faces);
+      _laid = (data: data, width: width, faces: faces, laid: laid);
+    }
+    // The same chart, lit the same, in the same colours: the very widget built last, so nothing under it is built
+    // again (its places, seals and those adrift are hundreds of targets, each with its tip and its label).
+    final title = widget.title;
+    final brightness = Theme.of(context).brightness;
+    final shown = _shown;
+    if (shown != null &&
+        identical(shown.laid, laid) &&
+        shown.lit == _lit &&
+        shown.scheme == scheme &&
+        shown.brightness == brightness &&
+        shown.title == title) {
+      return shown.chart;
+    }
+    final chart = _draw(context, data, laid, scheme, faces);
+    _shown = (laid: laid, lit: _lit, scheme: scheme, brightness: brightness, title: title, chart: chart);
+    return chart;
+  }
+
+  ({_Laid laid, String? lit, ColorScheme scheme, Brightness brightness, String title, Widget chart})? _shown;
+
+  Widget _draw(BuildContext context, WorldChartData data, _Laid laid, ColorScheme scheme, BookFaces faces) {
+    final (:height, :sea, :compact, :drawn, :seals, :adrift) = laid;
+
+    Color sealColor(Entry e) => kindColor(widget.kindOf(e));
+
+    Widget hit(Offset at, double r, String label, String tip, VoidCallback onTap, {String? id}) {
+      final h = math.max(r, 24.0);
+      return Positioned(
+        left: at.dx - h,
+        top: at.dy - h,
+        width: h * 2,
+        height: h * 2,
+        child: Semantics(
+          button: true,
+          label: label,
+          excludeSemantics: true,
+          child: Tooltip(
+            message: tip,
+            child: ClipOval(
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                onEnter: id == null ? null : (_) => setState(() => _lit = id),
+                onExit: id == null ? null : (_) => setState(() => _lit = _lit == id ? null : _lit),
+                child: GestureDetector(onTap: onTap, behavior: HitTestBehavior.opaque),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    String where(ChartPlace p) {
+      final inside = p.children.length;
+      return [
+        if (widget.model.order.chapters.isNotEmpty)
+          p.chapters == 0 ? 'not in the manuscript yet' : 'in ${plural(p.chapters, 'chapter')}',
+        if (inside > 0) '${plural(inside, 'place')} inside',
+        if (p.seals.isNotEmpty) '${formatNumber(p.seals.length)} on its shore',
+      ].join(', ');
+    }
+
+    return SizedBox(
+      height: height,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: CustomPaint(
+              painter: _ChartPainter(
+                drawn: drawn,
+                seals: seals,
+                adrift: adrift,
+                seaHeight: sea,
+                compact: compact,
+                title: widget.title,
+                lit: _lit,
+                sealColor: sealColor,
+                face: faces.heading,
+                book: faces.text,
+                caps: faces.headingCaps,
+                brightness: Theme.of(context).brightness,
+                scheme: scheme,
+              ),
+            ),
+          ),
+          for (final d in drawn)
+            if (d.r >= 6)
+              hit(
+                d.centre,
+                d.r,
+                '${d.place.entry.name}, a place on the chart, ${where(d.place)}',
+                [d.place.entry.name, where(d.place)].where((s) => s.isNotEmpty).join(' · '),
+                () => widget.onOpen(d.place.entry),
+                id: d.place.entry.id,
+              ),
+          for (final s in seals)
+            s.more > 0
+                ? hit(
+                    s.at,
+                    s.r,
+                    '${s.more} more on this shore',
+                    '${s.more} more',
+                    () => _list(context, 'On this shore', [
+                      for (final d in drawn)
+                        if (d.place.seals.contains(s.entry)) ...d.place.seals,
+                    ], place: false),
+                  )
+                : hit(
+                    s.at,
+                    s.r,
+                    '${s.entry.name}, ${widget.kindOf(s.entry).singular}, on the shore',
+                    '${s.entry.name} · ${widget.kindOf(s.entry).singular}',
+                    () => widget.onOpen(s.entry),
+                    id: s.entry.id,
+                  ),
+          for (final s in adrift)
+            s.more > 0
+                ? hit(
+                    s.at,
+                    s.r,
+                    '${s.more} more adrift. Say where they belong',
+                    '${s.more} more adrift',
+                    () => _list(context, 'Adrift', data.adrift, place: true),
+                  )
+                : hit(
+                    s.at,
+                    s.r,
+                    '${s.entry.name}, adrift: linked to no place. Say where it belongs',
+                    '${s.entry.name} · adrift: where does it belong?',
+                    () => _belong(context, s.entry, data),
+                    id: s.entry.id,
+                  ),
+        ],
+      ),
+    );
+  }
+
+  /// Lays the chart out at [width]: names measured in [faces], the islands packed, the seals and what is adrift set
+  /// along the shores and the sea.
+  _Laid _layOut(double width, WorldChartData data, BookFaces faces) {
+    worldChartsLaidOut++;
     final compact = width < 600;
     final sea = data.adrift.isEmpty ? 0.0 : 84.0;
     const margin = 34.0;
@@ -293,7 +468,6 @@ class _WorldChartState extends State<WorldChart> {
     final roomHeight = most - margin * 2 - cartouche - sea;
 
     // How wide each name with places inside it is, at the least size it is written (on the chart, in pixels).
-    final faces = BookFaces.of(context);
     final nameWidth = <String, double>{};
     void measure(List<ChartPlace> places) {
       for (final p in places) {
@@ -411,117 +585,7 @@ class _WorldChartState extends State<WorldChart> {
       }
     }
 
-    Color sealColor(Entry e) => kindColor(widget.kindOf(e));
-
-    Widget hit(Offset at, double r, String label, String tip, VoidCallback onTap, {String? id}) {
-      final h = math.max(r, 24.0);
-      return Positioned(
-        left: at.dx - h,
-        top: at.dy - h,
-        width: h * 2,
-        height: h * 2,
-        child: Semantics(
-          button: true,
-          label: label,
-          excludeSemantics: true,
-          child: Tooltip(
-            message: tip,
-            child: ClipOval(
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                onEnter: id == null ? null : (_) => setState(() => _lit = id),
-                onExit: id == null ? null : (_) => setState(() => _lit = _lit == id ? null : _lit),
-                child: GestureDetector(onTap: onTap, behavior: HitTestBehavior.opaque),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    String where(ChartPlace p) {
-      final inside = p.children.length;
-      return [
-        if (widget.model.order.chapters.isNotEmpty)
-          p.chapters == 0 ? 'not in the manuscript yet' : 'in ${plural(p.chapters, 'chapter')}',
-        if (inside > 0) '${plural(inside, 'place')} inside',
-        if (p.seals.isNotEmpty) '${formatNumber(p.seals.length)} on its shore',
-      ].join(', ');
-    }
-
-    return SizedBox(
-      height: height,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: CustomPaint(
-              painter: _ChartPainter(
-                drawn: drawn,
-                seals: seals,
-                adrift: adrift,
-                seaHeight: sea,
-                compact: compact,
-                title: widget.title,
-                lit: _lit,
-                sealColor: sealColor,
-                face: BookFaces.of(context).heading,
-                book: BookFaces.of(context).text,
-                caps: BookFaces.of(context).headingCaps,
-                brightness: Theme.of(context).brightness,
-                scheme: scheme,
-              ),
-            ),
-          ),
-          for (final d in drawn)
-            if (d.r >= 6)
-              hit(
-                d.centre,
-                d.r,
-                '${d.place.entry.name}, a place on the chart, ${where(d.place)}',
-                [d.place.entry.name, where(d.place)].where((s) => s.isNotEmpty).join(' · '),
-                () => widget.onOpen(d.place.entry),
-                id: d.place.entry.id,
-              ),
-          for (final s in seals)
-            s.more > 0
-                ? hit(
-                    s.at,
-                    s.r,
-                    '${s.more} more on this shore',
-                    '${s.more} more',
-                    () => _list(context, 'On this shore', [
-                      for (final d in drawn)
-                        if (d.place.seals.contains(s.entry)) ...d.place.seals,
-                    ], place: false),
-                  )
-                : hit(
-                    s.at,
-                    s.r,
-                    '${s.entry.name}, ${widget.kindOf(s.entry).singular}, on the shore',
-                    '${s.entry.name} · ${widget.kindOf(s.entry).singular}',
-                    () => widget.onOpen(s.entry),
-                    id: s.entry.id,
-                  ),
-          for (final s in adrift)
-            s.more > 0
-                ? hit(
-                    s.at,
-                    s.r,
-                    '${s.more} more adrift. Say where they belong',
-                    '${s.more} more adrift',
-                    () => _list(context, 'Adrift', data.adrift, place: true),
-                  )
-                : hit(
-                    s.at,
-                    s.r,
-                    '${s.entry.name}, adrift: linked to no place. Say where it belongs',
-                    '${s.entry.name} · adrift: where does it belong?',
-                    () => _belong(context, s.entry, data),
-                    id: s.entry.id,
-                  ),
-        ],
-      ),
-    );
+    return (height: height, sea: sea, compact: compact, drawn: drawn, seals: seals, adrift: adrift);
   }
 
   /// Several entries in a sheet: a press opens one, or (adrift) asks where it belongs.

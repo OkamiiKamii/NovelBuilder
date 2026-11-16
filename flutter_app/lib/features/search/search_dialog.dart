@@ -9,6 +9,7 @@ import '../../app/router.dart';
 import '../../app/shell/trail.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/codex_changes.dart' show categoriesOf;
 import '../../shared/domain/json.dart';
@@ -22,17 +23,35 @@ import '../workspace/open_novel.dart';
 import '../write/write_providers.dart';
 import 'jumps.dart';
 
-/// The open novel's search index and the names of its groups, built from what is saved when search opens.
-({SearchIndex index, Map<String, String> groups, String title})? _openIndex(WidgetRef ref) {
+typedef _Opened = ({SearchIndex index, Map<String, String> groups, String title});
+
+/// What search is made of: a write to anything else leaves the index as it was.
+const _indexed = {'chapters', 'chapterContents', 'chapterPlans', 'loreEntries', 'loreSchemas', 'project'};
+
+/// The index last made, by store: the novel, the store's count of writes to what it is made of then, and the index.
+/// Opening search again with nothing of it written since takes it as it is, instead of reading the book again.
+final _keptIndex = Expando<({String novelId, int version, _Opened opened})>('search index');
+
+/// How many times an index has been made (for a test to see one kept).
+@visibleForTesting
+int searchIndexesMade = 0;
+
+/// The open novel's search index and the names of its groups, built from what is saved when search opens (or kept
+/// from the last opening, when nothing it is made of was written since).
+_Opened? _openIndex(WidgetRef ref) {
   final id = ref.read(openNovelProvider);
   if (id == null) return null;
-  final s = ref.read(novelStoreProvider).loadPart(id, const {
-    'chapters',
-    'chapterContents',
-    'chapterPlans',
-    'loreEntries',
-    'loreSchemas',
-  });
+  final store = ref.read(novelStoreProvider);
+  final version = store.versionOf(id, _indexed);
+  if (_keptIndex[store] case final kept? when kept.novelId == id && kept.version == version) return kept.opened;
+  final opened = _makeIndex(store, id);
+  if (opened != null) _keptIndex[store] = (novelId: id, version: version, opened: opened);
+  return opened;
+}
+
+_Opened? _makeIndex(NovelStore store, String id) {
+  searchIndexesMade++;
+  final s = store.loadPart(id, const {'chapters', 'chapterContents', 'chapterPlans', 'loreEntries', 'loreSchemas'});
   if (s == null) return null;
   final docs = {for (final r in s.rows('chapterContents')) str(r['id']): r['doc']};
   final plans = {for (final r in s.rows('chapterPlans')) str(r['id']): r};
@@ -151,11 +170,30 @@ class _SearchPanel extends StatefulWidget {
   State<_SearchPanel> createState() => _SearchPanelState();
 }
 
+/// How many times the panel has searched (for a test to see a rebuild not search again).
+@visibleForTesting
+int searchesRun = 0;
+
 class _SearchPanelState extends State<_SearchPanel> {
   final _query = TextEditingController();
   var _scope = SearchScope.all;
   var _settled = '';
   Timer? _debounce;
+
+  /// The results of the words and the scope last searched. The panel is built again for much else (on a phone, every
+  /// frame of the keyboard sliding up or down): only new words or another scope search again.
+  ({SearchIndex index, String query, SearchScope scope, List<GroupResult> results})? _found;
+
+  List<GroupResult> _resultsFor(String query, SearchScope scope) {
+    final found = _found;
+    if (found != null && identical(found.index, widget.index) && found.query == query && found.scope == scope) {
+      return found.results;
+    }
+    searchesRun++;
+    final results = widget.index.search(query, scope);
+    _found = (index: widget.index, query: query, scope: scope, results: results);
+    return results;
+  }
 
   @override
   void dispose() {
@@ -175,7 +213,7 @@ class _SearchPanelState extends State<_SearchPanel> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
-    final results = widget.index.search(_settled, _scope);
+    final results = _resultsFor(_settled, _scope);
     final total = results.fold(0, (n, g) => n + g.matchCount);
     final tooShort = _settled.trim().length < minQueryLength;
     // Go to: what answers the words typed; with nothing typed, where the author has just been.

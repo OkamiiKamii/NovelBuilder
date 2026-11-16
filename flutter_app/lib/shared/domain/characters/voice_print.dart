@@ -218,8 +218,9 @@ List<VoicePrint> Function() voicePrintsJob(
       continue;
     }
   }
+  // Everyone's lines in one reading of the book's lines (`spokenByEach`), not a reading a person.
+  final spoken = spokenByEach(pages, nodeIds, people, limit: 400);
   return voicePrints({
-    for (final MapEntry(key: id, value: names) in people.entries)
-      id: [for (final s in spokenBy(pages, nodeIds, names, limit: 400)) s.words],
+    for (final id in people.keys) id: [for (final s in spoken[id]!) s.words],
   });
 };

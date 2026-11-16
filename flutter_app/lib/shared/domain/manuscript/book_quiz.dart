@@ -327,9 +327,14 @@ List<QuizQuestion> Function() bookQuizJob(
   final pages = {
     for (final id in order) id: [for (final b in blocks[id] ?? const <({bool heading, String text})>[]) b.text],
   };
-  final speakers = <String, QuizSpeaker>{
+  // Everyone's lines in one reading of the book's lines (`spokenByEach`), not a reading a person.
+  final named = {
     for (final MapEntry(key: id, value: names) in people.entries)
-      if (names.isNotEmpty) id: (name: names.first, lines: spokenBy(pages, order, names, limit: 60)),
+      if (names.isNotEmpty) id: names,
+  };
+  final spoken = spokenByEach(pages, order, named, limit: 60);
+  final speakers = <String, QuizSpeaker>{
+    for (final MapEntry(key: id, value: names) in named.entries) id: (name: names.first, lines: spoken[id]!),
   };
   return bookQuiz(
     [

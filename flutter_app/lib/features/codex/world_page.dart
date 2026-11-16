@@ -24,6 +24,8 @@ import 'widgets/world_charter.dart';
 /// THE WORLD: places, factions, items, powers, lore and the author's own kinds of record. Characters live in their own
 /// library and are the same entries; they can be linked from here. The kinds are volumes on a shelf and the entries an
 /// encyclopedia filed by letter (`widgets/encyclopedia.dart`).
+typedef _Shelves = ({List<Category> kinds, List<Entry> all, List<String> tags, Map<String, int> counts});
+
 class WorldPage extends ConsumerStatefulWidget {
   const WorldPage({super.key});
 
@@ -40,6 +42,36 @@ class _WorldPageState extends ConsumerState<WorldPage> {
   void dispose() {
     _search.dispose();
     super.dispose();
+  }
+
+  /// The world as the book holds it now: its kinds in order, every entry that is not a character in name order, the
+  /// tags they carry and how many of each kind. Kept while the book is the same (the page is built again for every
+  /// letter typed in its search, which only chooses among these).
+  ({CastData cast, _Shelves shelves})? _shelved;
+
+  _Shelves _shelvesOf(CastData cast) {
+    final kept = _shelved;
+    if (kept != null && identical(kept.cast, cast)) return kept.shelves;
+    final kinds = [
+      for (final c in cast.model.categories.values)
+        if (c.key != 'character') c,
+    ]..sort((a, b) => a.order != b.order ? a.order.compareTo(b.order) : localeCompare(a.name, b.name));
+    final all = stableSorted([
+      for (final e in cast.entries)
+        if (e.category != 'character') e,
+    ], (a, b) => localeCompare(a.name, b.name));
+    final counts = <String, int>{};
+    for (final e in all) {
+      counts[e.category] = (counts[e.category] ?? 0) + 1;
+    }
+    final shelves = (
+      kinds: kinds,
+      all: all,
+      tags: {for (final e in all) ...e.tags}.toList()..sort(localeCompare),
+      counts: counts,
+    );
+    _shelved = (cast: cast, shelves: shelves);
+    return shelves;
   }
 
   @override
@@ -59,24 +91,17 @@ class _WorldPageState extends ConsumerState<WorldPage> {
         ),
       );
     }
-    final kinds = [
-      for (final c in cast.model.categories.values)
-        if (c.key != 'character') c,
-    ]..sort((a, b) => a.order != b.order ? a.order.compareTo(b.order) : localeCompare(a.name, b.name));
-    final all = [
-      for (final e in cast.entries)
-        if (e.category != 'character') e,
-    ];
-    final tags = {for (final e in all) ...e.tags}.toList()..sort(localeCompare);
+    final (:kinds, :all, :tags, :counts) = _shelvesOf(cast);
     final query = _search.text;
-    final visible = stableSorted([
+    // `all` is in name order already: what matches keeps it.
+    final visible = [
       for (final e in all)
         if ((_category == null || e.category == _category) &&
             (_tag == null || e.tags.contains(_tag)) &&
             matchesEntry(e, query))
           e,
-    ], (a, b) => localeCompare(a.name, b.name));
-    int count(String key) => all.where((e) => e.category == key).length;
+    ];
+    int count(String key) => counts[key] ?? 0;
     Category kindOf(Entry e) => cast.model.categories[e.category] ?? Category.unknown(e.category);
     final compact = WindowSize.of(context) == WindowSize.compact;
 

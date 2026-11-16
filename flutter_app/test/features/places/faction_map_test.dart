@@ -11,6 +11,7 @@ import 'package:super_text_layout/super_text_layout.dart';
 
 import '../../helpers/large_novel.dart';
 import '../../helpers/pump_app.dart';
+import '../../helpers/scroll_to_end.dart';
 
 /// The faction map on a large novel (190 factions, 4,000 links): the most tied when none is looked at, one faction's
 /// own web when one is; each faction's ties found from its own links, as reading every link found them.
@@ -90,7 +91,8 @@ void main() {
         .length;
     expect(cards(), lessThanOrEqualTo(Gradually.first), reason: 'a screenful, not 190 cards');
     await tester.pumpAndSettle();
-    expect(cards(), factions.length, reason: 'every faction in the end');
+    await scrollToEnd(tester, find.byType(Gradually), done: () => cards() == factions.length);
+    expect(cards(), factions.length, reason: 'every faction, as the page is scrolled to its end');
 
     expect(
       find.text(

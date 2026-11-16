@@ -52,26 +52,62 @@ const _speech = [
 
 final _quote = RegExp(r'“([^”]+)”|"([^"]+)"');
 
+/// The words of speaking, as one pattern's alternatives.
+final _verb = '(?:${_speech.join('|')})';
+
+/// Anyone named as speaking at all, for telling a paragraph of one speaker from one of two (the same for everyone:
+/// made once).
+final _anyone = RegExp(r"(\p{Lu}[\p{L}'’-]+)\s+" + _verb + r'\b|\b' + _verb + r"\s+(\p{Lu}[\p{L}'’-]+)", unicode: true);
+
 /// Every line [names] speak in [pages] (each chapter's paragraphs), in the order of [nodeIds], at most [limit].
-List<Spoken> spokenBy(Map<String, List<String>> pages, List<String> nodeIds, List<String> names, {int limit = 60}) {
+List<Spoken> spokenBy(Map<String, List<String>> pages, List<String> nodeIds, List<String> names, {int limit = 60}) =>
+    _spoken(pages, nodeIds, names, limit, (_, _, text) => _quote.allMatches(text).toList());
+
+/// [spokenBy] for each of [people] (their names, by whatever key), the book read for its lines once for all of them:
+/// each paragraph's lines are found once, not once a person, and a person's patterns are made only when a paragraph of
+/// lines names them. The same lines for each as [spokenBy].
+Map<K, List<Spoken>> spokenByEach<K>(
+  Map<String, List<String>> pages,
+  List<String> nodeIds,
+  Map<K, List<String>> people, {
+  int limit = 60,
+}) {
+  final quotes = {
+    for (final id in nodeIds)
+      if (pages[id] case final blocks?) id: [for (final text in blocks) _quote.allMatches(text).toList()],
+  };
+  return {
+    for (final MapEntry(key: who, value: names) in people.entries)
+      who: _spoken(pages, nodeIds, names, limit, (id, block, _) => quotes[id]![block]),
+  };
+}
+
+List<Spoken> _spoken(
+  Map<String, List<String>> pages,
+  List<String> nodeIds,
+  List<String> names,
+  int limit,
+  List<RegExpMatch> Function(String id, int block, String text) quotesOf,
+) {
   final wanted = {for (final n in names) n.trim()}.where((n) => n.isNotEmpty).toList()
     ..sort((a, b) => b.length - a.length);
   if (wanted.isEmpty) return const [];
   final name = '(?:${wanted.map(RegExp.escape).join('|')})';
-  final verb = '(?:${_speech.join('|')})';
+  // Made the first time a paragraph of lines names them: most people are named in few of the book's paragraphs.
   // After a line: “…,” Wren said / “…,” said Wren.
-  final after = RegExp(r'^\s*(?:(' + name + r')\s+' + verb + r'\b|' + verb + r'\s+(' + name + r')\b)', unicode: true);
+  late final after = RegExp(
+    r'^\s*(?:(' + name + r')\s+' + _verb + r'\b|' + _verb + r'\s+(' + name + r')\b)',
+    unicode: true,
+  );
   // Before a line: Wren said, “…” / Ilse whispered: “…”.
-  final before = RegExp('($name)\\s+$verb(?:\\s+\\w+)?\\s*[,:]?\\s*\$', unicode: true);
-  // Anyone named as speaking at all, for telling a paragraph of one speaker from one of two.
-  final anyone = RegExp(r"(\p{Lu}[\p{L}'’-]+)\s+" + verb + r'\b|\b' + verb + r"\s+(\p{Lu}[\p{L}'’-]+)", unicode: true);
+  late final before = RegExp('($name)\\s+$_verb(?:\\s+\\w+)?\\s*[,:]?\\s*\$', unicode: true);
 
   final out = <Spoken>[];
   for (final id in nodeIds) {
     final blocks = pages[id];
     if (blocks == null) continue;
     for (final (i, text) in blocks.indexed) {
-      final quotes = _quote.allMatches(text).toList();
+      final quotes = quotesOf(id, i, text);
       if (quotes.isEmpty) continue;
       // A line is theirs only where one of their names is written by it: a paragraph of lines without any is passed
       // over before each line is looked at.
@@ -84,7 +120,7 @@ List<Spoken> spokenBy(Map<String, List<String>> pages, List<String> nodeIds, Lis
       }
       if (theirs.isEmpty) continue;
       // The only one named as speaking here: every line in it is theirs.
-      final speakers = {for (final s in anyone.allMatches(text.replaceAll(_quote, ' '))) (s[1] ?? s[2])!};
+      final speakers = {for (final s in _anyone.allMatches(text.replaceAll(_quote, ' '))) (s[1] ?? s[2])!};
       final mine = speakers.where((s) => wanted.any((w) => w == s || w.split(' ').contains(s))).toSet();
       if (speakers.length == mine.length) theirs = {for (var q = 0; q < quotes.length; q++) q};
       for (final q in theirs.toList()..sort()) {

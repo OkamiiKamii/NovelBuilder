@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
@@ -86,6 +87,44 @@ void main() {
     await tester.tapAt(Offset(shore.center.dx, shore.top + shore.height * 0.16));
     await tester.pumpAndSettle();
     expect(currentLocation(c), '/organize/world/entry/${island.entry.id}');
+  });
+
+  testWidgets('typing in the world’s search does not lay the chart out again; a pointer over a place lights it '
+      'without; a write does', (tester) async {
+    final c = await pumpApp(tester, size: const Size(1400, 2400), location: '/organize/world');
+    final novel = addSampleNovel(c.read(novelStoreProvider), now: DateTime(2026, 11, 10).millisecondsSinceEpoch);
+    c.read(openNovelProvider.notifier).open(novel.id);
+    await tester.pumpAndSettle();
+    expect(find.byType(WorldChart), findsOneWidget);
+    final laid = worldChartsLaidOut;
+    final field = find.widgetWithText(TextField, 'Search names, tags, fields');
+    for (final q in ['h', 'ha', 'har', '']) {
+      await tester.enterText(field, q);
+      await tester.pump();
+    }
+    expect(worldChartsLaidOut, laid, reason: 'what is searched is not what the chart shows');
+    expect(find.byType(WorldChart), findsOneWidget);
+
+    // A pointer over a place: lit, from the same layout.
+    final cast = c.read(castProvider)!;
+    final island = worldChartOf(cast.model, cast.chaptersOf()).islands.first;
+    final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    addTearDown(mouse.removePointer);
+    await mouse.addPointer(location: Offset.zero);
+    await mouse.moveTo(
+      tester.getCenter(find.bySemanticsLabel(RegExp('^${RegExp.escape(island.entry.name)}, a place on the chart'))),
+    );
+    await tester.pumpAndSettle();
+    expect(worldChartsLaidOut, laid);
+
+    // Something adrift given a place: the chart is drawn anew, with it on the shore.
+    final drifting = worldChartOf(cast.model, cast.chaptersOf()).adrift.first;
+    await tester.tap(find.bySemanticsLabel(RegExp('^${RegExp.escape(drifting.name)}, adrift')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.descendant(of: find.byType(BottomSheet), matching: find.text(island.entry.name)));
+    await tester.pumpAndSettle();
+    expect(worldChartsLaidOut, greaterThan(laid));
+    expect(find.bySemanticsLabel(RegExp('^${RegExp.escape(drifting.name)}, .*on the shore')), findsOneWidget);
   });
 
   testWidgets('a world with no places has no chart; a volume of one kind has none either', (tester) async {
