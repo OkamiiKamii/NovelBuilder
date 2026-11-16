@@ -73,6 +73,9 @@ List<Spoken> spokenBy(Map<String, List<String>> pages, List<String> nodeIds, Lis
     for (final (i, text) in blocks.indexed) {
       final quotes = _quote.allMatches(text).toList();
       if (quotes.isEmpty) continue;
+      // A line is theirs only where one of their names is written by it: a paragraph of lines without any is passed
+      // over before each line is looked at.
+      if (!wanted.any(text.contains)) continue;
       var theirs = <int>{};
       for (final (q, m) in quotes.indexed) {
         final tail = text.substring(m.end, (m.end + 80).clamp(0, text.length));

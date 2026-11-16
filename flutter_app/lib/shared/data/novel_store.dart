@@ -356,6 +356,20 @@ class NovelStore extends ChangeNotifier {
       jsonDecode(r['json']! as String) as JsonMap,
   ];
 
+  /// The records of a collection that belong to one chapter or scene (their `nodeId` is [nodeId]), in order: found by
+  /// the index on it (`records_by_node`), so a chapter's history is read without reading every chapter's.
+  List<JsonMap> rowsForNode(String projectId, String collection, String nodeId) {
+    // The index named: left to choose, the database (with no statistics of the table) takes the key (every record of
+    // the collection, each one's chapter read from its JSON) over the index by chapter. Put in order here, as an order
+    // by position would make it take the index in order instead.
+    final rows = db.raw.select(
+      'SELECT json, position FROM records INDEXED BY records_by_node '
+      "WHERE project_id = ? AND collection = ? AND json_extract(json, '\$.nodeId') = ?",
+      [projectId, collection, nodeId],
+    ).toList()..sort((a, b) => (a['position']! as int).compareTo(b['position']! as int));
+    return [for (final r in rows) jsonDecode(r['json']! as String) as JsonMap];
+  }
+
   /// Writes several records in one transaction: all of them, or (if any check fails) none. A write with an
   /// [RowWrite.expect] is refused with [StaleWriteException] when the stored record is no longer what was read.
   /// With [touchNovel], the novel's `updatedAt` becomes now.

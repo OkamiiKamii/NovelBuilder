@@ -46,6 +46,16 @@ const List<Migration> migrations = [
       'CREATE INDEX restore_points_by_novel ON restore_points (project_id, created_at)',
     ],
   ),
+  (
+    version: 2,
+    name: 'records found by the chapter they belong to',
+    statements: [
+      // A chapter's history (and whatever else is kept for one chapter, by its `nodeId`) found without reading every
+      // chapter's: a save reads its own chapter's history, not the book's (`NovelStore.rowsForNode`). Nothing stored
+      // changes: an index is only a way to find.
+      "CREATE INDEX records_by_node ON records (project_id, collection, json_extract(json, '\$.nodeId'))",
+    ],
+  ),
 ];
 
 int get latestSchemaVersion => migrations.last.version;

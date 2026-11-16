@@ -19,6 +19,30 @@ typedef NameHit = ({int start, int end, String id, int name});
 
 final _letters = RegExp(r'\p{L}+', unicode: true);
 final _letter = RegExp(r'\p{L}', unicode: true);
+final _letterLast = RegExp(r'\p{L}$', unicode: true);
+
+/// Every place [name] stands in [text] as a word of its own: no letter just before it, none just after, matched exactly
+/// (the next looked for after the end of the last). Checked by hand rather than by a pattern's look behind, which the
+/// regular expressions here do not always honour: "3PO" was found in "R3PO" in some texts and not in others.
+List<int> standingAt(String text, String name) {
+  final out = <int>[];
+  if (name.isEmpty) return out;
+  var from = 0;
+  while (true) {
+    final at = text.indexOf(name, from);
+    if (at < 0) return out;
+    final end = at + name.length;
+    // The character before (two code units when it is a pair) and the one after.
+    final before = at > 0 && _letterLast.hasMatch(text.substring(at >= 2 ? at - 2 : 0, at));
+    final after = end < text.length && _letter.matchAsPrefix(text, end) != null;
+    if (!before && !after) {
+      out.add(at);
+      from = end;
+    } else {
+      from = at + 1;
+    }
+  }
+}
 
 /// The cast's names, ready to be found in any text.
 class CastNames {
@@ -29,12 +53,8 @@ class CastNames {
         if (name.isEmpty) continue;
         final first = _letters.matchAsPrefix(name);
         if (first == null) {
-          // A name that does not begin with a letter ("3PO"): found the slow way, as before.
-          _slow.add((
-            id: p.id,
-            index: i,
-            find: RegExp('(?<![\\p{L}])${RegExp.escape(name)}(?![\\p{L}])', unicode: true),
-          ));
+          // A name that does not begin with a letter ("3PO"): found where it stands, by hand.
+          _slow.add((id: p.id, index: i, name: name));
         } else {
           _byFirst.putIfAbsent(first[0]!, () => []).add((id: p.id, index: i, name: name));
         }
@@ -44,7 +64,7 @@ class CastNames {
 
   /// The names, by the run of letters each begins with.
   final _byFirst = <String, List<({String id, int index, String name})>>{};
-  final _slow = <({String id, int index, RegExp find})>[];
+  final _slow = <({String id, int index, String name})>[];
 
   /// Whether there is any name to find.
   bool get isEmpty => _byFirst.isEmpty && _slow.isEmpty;
@@ -68,8 +88,8 @@ class CastNames {
       }
     }
     for (final s in _slow) {
-      for (final m in s.find.allMatches(text)) {
-        out.add((start: m.start, end: m.end, id: s.id, name: s.index));
+      for (final at in standingAt(text, s.name)) {
+        out.add((start: at, end: at + s.name.length, id: s.id, name: s.index));
       }
     }
     out.sort((a, b) => a.start != b.start ? a.start - b.start : (b.end - b.start) - (a.end - a.start));

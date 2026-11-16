@@ -10,6 +10,7 @@ library;
 
 import 'dart:convert';
 
+import '../characters/cast_names.dart';
 import 'best_lines.dart';
 import 'prose.dart';
 
@@ -252,14 +253,33 @@ List<Postcard> postcards(List<PostcardChapter> chapters, List<KeptPlace> kept) {
     }
   }
 
+  // The sentences each place is named in, in order: every sentence read once for every place (`cast_names.dart`), not
+  // searched once a place. A place with a name with spaces round it, or an empty one, is searched for as before.
+  bool plain(List<String> names) => names.every((n) => n.isNotEmpty && n == n.trim());
+  final finder = CastNames([
+    for (final (i, p) in places.indexed)
+      if (plain(p.names)) (id: '$i', names: p.names),
+  ]);
+  final namedIn = [for (final _ in places) <int>[]];
+  for (final (i, s) in sentences.indexed) {
+    for (final id in finder.named(s.text)) {
+      namedIn[int.parse(id)].add(i);
+    }
+  }
+  for (final (pi, p) in places.indexed) {
+    if (plain(p.names)) continue;
+    for (final (i, s) in sentences.indexed) {
+      if (p.names.any((n) => standingAt(s.text, n).isNotEmpty)) namedIn[pi].add(i);
+    }
+  }
+
   final out = <({Postcard card, int first})>[];
-  for (final p in places) {
-    final finds = [for (final n in p.names) RegExp('(?<![\\p{L}])${RegExp.escape(n)}(?![\\p{L}])', unicode: true)];
+  for (final (pi, p) in places.indexed) {
     ({String text, int chapter, int block})? best;
     var bestScore = 0;
     int? first;
-    for (final (i, s) in sentences.indexed) {
-      if (!finds.any((f) => f.hasMatch(s.text))) continue;
+    for (final i in namedIn[pi]) {
+      final s = sentences[i];
       first ??= i;
       final n = _word.allMatches(s.text).length;
       if (n < 5 || n > 35) continue;

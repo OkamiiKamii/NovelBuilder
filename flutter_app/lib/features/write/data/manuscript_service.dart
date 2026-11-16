@@ -241,7 +241,7 @@ class ManuscriptService {
   /// Version history of a chapter or scene, newest first.
   List<JsonMap> revisions(String projectId, String nodeId) {
     final all = [
-      for (final r in store.rowsIn(projectId, 'chapterRevisions'))
+      for (final r in store.rowsForNode(projectId, 'chapterRevisions', nodeId))
         if (r['nodeId'] == nodeId) r,
     ];
     all.sort(_byCapture);
@@ -308,7 +308,7 @@ class ManuscriptService {
   /// The oldest automatic copies make room first, the author's own last.
   List<RowWrite> _capture(String projectId, StoryNode node, JsonMap content, {String? reason, String label = ''}) {
     final history = [
-      for (final r in store.rowsIn(projectId, 'chapterRevisions'))
+      for (final r in store.rowsForNode(projectId, 'chapterRevisions', node.id))
         if (r['nodeId'] == node.id) r,
     ]..sort(_byCapture);
     final latest = history.lastOrNull;
@@ -362,7 +362,7 @@ class ManuscriptService {
   List<JsonMap> alternateDrafts(String projectId, String nodeId) {
     _document(projectId, nodeId);
     return [
-      for (final r in store.rowsIn(projectId, 'chapterBranches'))
+      for (final r in store.rowsForNode(projectId, 'chapterBranches', nodeId))
         if (r['nodeId'] == nodeId) r,
     ]..sort((a, b) => (numOrNull(a['createdAt']) ?? 0).compareTo(numOrNull(b['createdAt']) ?? 0));
   }

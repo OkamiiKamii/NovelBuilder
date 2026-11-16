@@ -22,16 +22,29 @@ typedef BookPrint = ({List<PrintChapter> chapters, Map<String, int> shares});
 final _wordRun = RegExp(r'[\p{L}\p{N}’\x27]+', unicode: true);
 final _speech = RegExp('[“”"]');
 
+/// Runs of letters and digits: a name matched as whole words has each of its own runs as a whole run of the text.
+final _runs = RegExp(r'[\p{L}\p{N}]+', unicode: true);
+
 /// The paragraphs of one chapter as threads: each given to the character named most in it, else to the one the
 /// scene was with (the last named before it in the chapter), else to no one. [names] are each character's names.
-List<PrintLine> printLines(List<String> paragraphs, Map<String, RegExp> names) {
+///
+/// With [words] (`nameWords`: each character's names as their runs of letters and digits), a paragraph is read once
+/// for the words it holds, and a character none of whose names has all its words there is passed over without a
+/// search: they cannot be named in it, so cannot be the one named most. The same threads, far fewer searches.
+List<PrintLine> printLines(
+  List<String> paragraphs,
+  Map<String, RegExp> names, {
+  Map<String, List<List<String>>>? words,
+}) {
   final out = <PrintLine>[];
   String? scene;
   for (final p in paragraphs) {
     if (p.trim().isEmpty) continue;
     String? who;
     var most = 0;
+    final held = words == null ? null : {for (final m in _runs.allMatches(p)) m[0]!};
     for (final MapEntry(key: id, value: pattern) in names.entries) {
+      if (held != null && !(words![id] ?? const []).any((w) => w.every(held.contains))) continue;
       final n = pattern.allMatches(p).length;
       if (n > most) {
         most = n;
@@ -54,6 +67,16 @@ Map<String, RegExp> namePatterns(Map<String, List<String>> names) => {
       ),
 };
 
+/// Each character's names (those [namePatterns] looks for) as their runs of letters and digits, for [printLines] to
+/// pass over the characters a paragraph cannot name.
+Map<String, List<List<String>>> nameWords(Map<String, List<String>> names) => {
+  for (final MapEntry(key: id, value: list) in names.entries)
+    id: [
+      for (final n in list)
+        if (n.trim().length >= 2) [for (final m in _runs.allMatches(n)) m[0]!],
+    ],
+};
+
 /// The print of [chapters] (in reading order) from [pages] (each chapter's paragraphs), [names] each character's names.
 BookPrint bookPrint(
   List<({String id, String title})> chapters,
@@ -61,10 +84,11 @@ BookPrint bookPrint(
   Map<String, List<String>> names,
 ) {
   final patterns = namePatterns(names);
+  final words = nameWords(names);
   final out = <PrintChapter>[];
   final shares = <String, int>{};
   for (final c in chapters) {
-    final lines = printLines(pages[c.id] ?? const [], patterns);
+    final lines = printLines(pages[c.id] ?? const [], patterns, words: words);
     for (final l in lines) {
       if (l.who != null) shares[l.who!] = (shares[l.who!] ?? 0) + 1;
     }

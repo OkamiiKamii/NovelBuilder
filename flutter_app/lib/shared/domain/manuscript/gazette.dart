@@ -9,6 +9,7 @@ library;
 
 import 'dart:convert';
 
+import '../characters/cast_names.dart';
 import '../characters/voice.dart';
 import 'best_lines.dart';
 import 'postcards.dart' show placesNamedIn;
@@ -148,22 +149,26 @@ Gazette gazette(
   final pages = {for (final c in chapters) c.id: c.paragraphs};
   final all = [for (final c in chapters) ...c.paragraphs].join('\n');
 
-  // The place named most names the paper.
-  final named = <String, int>{};
-  for (final names in places) {
-    if (names.isEmpty) continue;
-    named[names.first] = names.fold(0, (n, name) => n + _mentions(all, name));
-  }
+  // The place named most names the paper: the world's places, then the places the pages name (a name not already
+  // there, whatever its capitals), all counted over the book in one reading.
+  final placeNames = <(String, List<String>)>[
+    for (final names in places)
+      if (names.isNotEmpty) (names.first, names),
+  ];
+  final known = {for (final (key, _) in placeNames) key.toLowerCase()};
   for (final p in chapters.expand((c) => c.paragraphs)) {
     for (final name in placesNamedIn(p)) {
-      if (!named.keys.any((k) => k.toLowerCase() == name.toLowerCase())) named[name] = _mentions(all, name);
+      if (known.add(name.toLowerCase())) placeNames.add((name, [name]));
     }
   }
+  final placeCounts = _NameCounts([for (final (_, names) in placeNames) names]).inText(all);
+  final named = <String, int>{for (final (i, (key, _)) in placeNames.indexed) key: placeCounts[i]};
   final place = named.entries
       .where((e) => e.value > 0)
       .fold<MapEntry<String, int>?>(null, (best, e) => best == null || e.value > best.value ? e : best);
 
   final editions = <Edition>[];
+  final peopleCounts = _NameCounts([for (final p in people) p.names]);
   for (final (i, c) in chapters.indexed) {
     final text = c.paragraphs.join('\n');
     final words = _count(text);
@@ -176,7 +181,19 @@ Gazette gazette(
         .map((l) => l.text)
         .firstWhere((l) => !leadText.contains(l), orElse: () => best.isEmpty ? '' : best.first.text);
     final said = <Said>[];
+    // Every run of three characters the chapter holds: a name with a run of three that is not among them is not
+    // written in it, and is not looked for.
+    final grams = {for (var k = 0; k + 3 <= text.length; k++) text.substring(k, k + 3)};
+    bool written(String name) {
+      for (var k = 0; k + 3 <= name.length; k++) {
+        if (!grams.contains(name.substring(k, k + 3))) return false;
+      }
+      return text.contains(name);
+    }
+
     for (final p in people) {
+      // A line is someone's only where one of their names is written by it: a chapter without any is passed over.
+      if (!p.names.any((n) => n.trim().isNotEmpty && written(n.trim()))) continue;
       for (final s in spokenBy(pages, [c.id], p.names, limit: 12)) {
         final n = _count(s.words);
         if (n < 3 || n > 18) continue;
@@ -184,9 +201,10 @@ Gazette gazette(
         break;
       }
     }
+    final mentions = peopleCounts.inText(text);
     final news = [
-      for (final p in people)
-        if (p.names.fold(0, (n, name) => n + _mentions(text, name)) case final n when n > 0) (name: p.name, count: n),
+      for (final (i, p) in people.indexed)
+        if (mentions[i] case final n when n > 0) (name: p.name, count: n),
     ]..sort((a, b) => b.count - a.count);
     final weather = weatherOf(text);
     editions.add((
@@ -207,8 +225,38 @@ Gazette gazette(
   return (name: gazetteName(place?.key, title), editions: editions);
 }
 
-int _mentions(String text, String name) =>
-    RegExp('(?<![\\p{L}])${RegExp.escape(name)}(?![\\p{L}])', unicode: true).allMatches(text).length;
+/// How many times [name] stands in [text] as a word of its own (`standingAt`: checked by hand).
+int _mentions(String text, String name) => standingAt(text, name).length;
+
+/// Counts, for each of some lists of names, how many times its names stand in a text (each name counted where it
+/// stands, as [_mentions] counts it): the text read once for all of them (`cast_names.dart`) instead of a search a name,
+/// with the finder made once for every text it reads. A list holding a name with spaces round it, or an empty one, is
+/// counted name by name, as before.
+class _NameCounts {
+  _NameCounts(this.lists)
+    : _plain = [for (final names in lists) names.every((n) => n.isNotEmpty && n == n.trim())],
+      _finder = CastNames([
+        for (final (i, names) in lists.indexed)
+          if (names.every((n) => n.isNotEmpty && n == n.trim())) (id: '$i', names: names),
+      ]);
+
+  final List<List<String>> lists;
+  final List<bool> _plain;
+  final CastNames _finder;
+
+  List<int> inText(String text) {
+    final counts = List.filled(lists.length, 0);
+    for (final h in _finder.all(text)) {
+      counts[int.parse(h.id)]++;
+    }
+    for (final (i, names) in lists.indexed) {
+      if (!_plain[i]) {
+        counts[i] = names.fold(0, (n, name) => n + _mentions(text, name));
+      }
+    }
+    return counts;
+  }
+}
 
 /// [gazette] over the chapters as stored (JSON text, as `NovelStore.rawJsonIn` reads them): [order] is the chapters'
 /// ids in reading order, [titles] their titles. A job for an isolate.
