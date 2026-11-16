@@ -7,6 +7,7 @@
 #   tool\windows.ps1 unit [args]                unit and widget tests
 #   tool\windows.ps1 test [windows|<device>]    integration tests on Windows (default) or an Android device/emulator
 #   tool\windows.ps1 build windows|android      release build, copied to ..\release\flutter\<platform>\
+#   tool\windows.ps1 build android universal    the Android app for every kind of processor (32-bit phones, emulators)
 #
 # Mac and iPhone builds cannot be made on Windows: they are made on the Mac with tool/local_mirror.sh.
 param(
@@ -54,10 +55,24 @@ switch ($Command) {
         # Gradle writes warnings to stderr (an SDK XML version note), which 'Stop' turns into a failure in Windows
         # PowerShell 5.1; the exit code below decides instead.
         $ErrorActionPreference = 'Continue'
-        & $Flutter build apk --release
+        # For 64-bit ARM phones (every Android phone of the last years, and the one this is tried on): 43 MB, not the
+        # 104 MB of an app holding the code of three kinds of processor when a phone runs one. The same version code
+        # as before (not --split-per-abi, which renumbers it), so `adb install -r` over an earlier build keeps the
+        # library. `build android universal` makes NovelBuilder-universal.apk, for a 32-bit phone or an x86 emulator.
+        $universal = $Rest.Count -gt 1 -and $Rest[1] -eq 'universal'
+        if ($universal) { & $Flutter build apk --release } else { & $Flutter build apk --release --target-platform android-arm64 }
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        Copy-Item (Join-Path $App 'build\app\outputs\flutter-apk\app-release.apk') (Join-Path $out 'NovelBuilder.apk') -Force
-        Write-Host "Built $(Join-Path $out 'NovelBuilder.apk')"
+        $apk = Join-Path $out $(if ($universal) { 'NovelBuilder-universal.apk' } else { 'NovelBuilder.apk' })
+        Copy-Item (Join-Path $App 'build\app\outputs\flutter-apk\app-release.apk') $apk -Force
+        # What it holds: the processors it runs on, checked, and its size.
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        $zip = [System.IO.Compression.ZipFile]::OpenRead($apk)
+        try {
+          $abis = @($zip.Entries | Where-Object { $_.FullName -match '^lib/([^/]+)/libapp\.so$' } | ForEach-Object { $Matches[1] } | Sort-Object)
+        } finally { $zip.Dispose() }
+        $expected = if ($universal) { @('arm64-v8a', 'armeabi-v7a', 'x86_64') } else { @('arm64-v8a') }
+        if (($abis -join ',') -ne ($expected -join ',')) { throw "The app holds code for $($abis -join ', '), not $($expected -join ', ')." }
+        Write-Host ("Built {0} ({1:N1} MB, for {2})" -f $apk, ((Get-Item $apk).Length / 1MB), ($abis -join ', '))
       }
       default { throw "Only windows and android are built on Windows; build $platform on the Mac (tool/local_mirror.sh)." }
     }

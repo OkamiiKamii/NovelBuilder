@@ -706,7 +706,9 @@ class _BoardView {
       children: [
         for (final h in here)
           InputChip(
-            visualDensity: VisualDensity.compact,
+            // Pressed at full size (48), on a desktop as on a phone: a compact chip's target is made smaller with it.
+            visualDensity: VisualDensity.standard,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
             label: Text(
               '${h.thread.title} · ${[for (final r in h.roles) _roleWords[r] ?? r, if (h.events > 0) plural(h.events, 'event')].join(', ')}',
               overflow: TextOverflow.ellipsis,

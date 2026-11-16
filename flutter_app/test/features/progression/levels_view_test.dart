@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
 import 'package:novel_builder/features/characters/character_actions.dart' show characterPath;
 import 'package:novel_builder/features/characters/characters_providers.dart';
+import 'package:novel_builder/features/progression/systems_page.dart' show ownSystemReadings;
 import 'package:novel_builder/features/progression/widgets/levels_view.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
@@ -150,6 +151,68 @@ void main() {
     await settle(tester);
     expect(find.text('Archer Armor'), findsNothing);
     expect(b.c.read(settingsStoreProvider).read(levelsAsideKey(b.novel)), ['archer armor']);
+  });
+
+  testWidgets('read once for Systems and every page: on a page in its first frame; a chapter written, read again', (
+    tester,
+  ) async {
+    final b = await book(tester, kades, cast: ['Kade', 'Mira']);
+    expect(find.text('ON THEIR PAGES'), findsOneWidget);
+    final readings = levelsReadings;
+
+    Future<void> go(String path) async {
+      b.c.read(routerProvider).go('/write');
+      await settle(tester);
+      b.c.read(routerProvider).go(path);
+      await tester.pump();
+    }
+
+    // Kade's page: his levels in the very first frame, read before (not read again, nor popping in after).
+    await go(characterPath(b.people['Kade']!));
+    expect(find.text('Kade’s level'), findsOneWidget, reason: 'in the first frame');
+    expect(find.text('100'), findsOneWidget);
+    await settle(tester);
+    await go(characterPath(b.people['Mira']!));
+    await settle(tester);
+    await go('/organize/systems');
+    expect(find.text('ON THEIR PAGES'), findsOneWidget, reason: 'in the first frame');
+    await settle(tester);
+    expect(levelsReadings, readings, reason: 'the same book: read once, for every page');
+
+    // A chapter written: read again, and the page shows it.
+    final m = b.c.read(manuscriptServiceProvider);
+    m.save(
+      b.novel,
+      b.ids[4],
+      textToDoc('At last Kade’s Hunter Armor reached Level 150.'),
+      baseRev: m.open(b.novel, b.ids[4]).rev,
+    );
+    await go(characterPath(b.people['Kade']!));
+    await settle(tester);
+    expect(levelsReadings, readings + 1);
+    expect(find.text('150'), findsOneWidget);
+  });
+
+  testWidgets('Systems with no system yet: the pages read for one once, not on every visit; again when written', (
+    tester,
+  ) async {
+    final b = await book(tester, armor);
+    final readings = ownSystemReadings;
+    expect(readings, greaterThan(0), reason: 'the gallery offers what the pages hold');
+    for (var i = 0; i < 3; i++) {
+      b.c.read(routerProvider).go('/write');
+      await settle(tester);
+      b.c.read(routerProvider).go('/organize/systems');
+      await settle(tester);
+    }
+    expect(ownSystemReadings, readings, reason: 'nothing written: kept');
+    final m = b.c.read(manuscriptServiceProvider);
+    m.save(b.novel, b.ids[0], textToDoc('The armor slept.'), baseRev: m.open(b.novel, b.ids[0]).rev);
+    b.c.read(routerProvider).go('/write');
+    await settle(tester);
+    b.c.read(routerProvider).go('/organize/systems');
+    await settle(tester);
+    expect(ownSystemReadings, readings + 1, reason: 'a chapter written: read again');
   });
 
   testWidgets('a book that levels nothing says how to write one', (tester) async {

@@ -51,6 +51,48 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('the bars fill as the window opens, and only the fill is drawn again: no row of it is built again', (
+    tester,
+  ) async {
+    final litrpg = systemPresets.firstWhere((p) => p.id == 'litrpg');
+    final held = exampleHeld(litrpg.content);
+    await _show(
+      tester,
+      StatusWindow(content: litrpg.content, presetId: 'litrpg', holder: 'James', held: held, caption: 'For example.'),
+    );
+    final bars = find.byWidgetPredicate((w) => w is CustomPaint && w.painter.runtimeType.toString() == '_BarPainter');
+    expect(bars, findsWidgets, reason: 'HP, MP, SP');
+    List<double> drawn() => [
+      for (final p in tester.widgetList<CustomPaint>(bars)) (p.painter! as dynamic).drawn as double,
+    ];
+    expect(drawn().every((d) => d == 0), isTrue, reason: 'empty as the window opens');
+
+    // The filling, frame by frame: the bars grow, and nothing of the window is built again (not the bars' rows, nor
+    // the window round them).
+    var rebuilt = 0;
+    debugOnRebuildDirtyWidget = (e, _) {
+      if (e.widget is StatusWindow || e.findAncestorWidgetOfExactType<StatusWindow>() != null) rebuilt++;
+    };
+    addTearDown(() => debugOnRebuildDirtyWidget = null);
+    final seen = <double>[];
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 60));
+      seen.add(drawn().first);
+    }
+    debugOnRebuildDirtyWidget = null;
+    expect(rebuilt, 0, reason: 'only the fill is painted again');
+    expect(seen.first, greaterThan(0));
+    for (var i = 1; i < seen.length; i++) {
+      expect(seen[i], greaterThanOrEqualTo(seen[i - 1]), reason: 'filling, never emptying');
+    }
+    await tester.pumpAndSettle();
+    // Filled to what is left: HP 100 of the Max Health that follows from Vitality.
+    final sheet = computeSheet(SystemBlueprint(litrpg.content), SheetProfile(itemIds: held));
+    final most = double.parse(sheet.rows.firstWhere((r) => r.variable.name == 'Max Health').display.split(' ').first);
+    expect(drawn().first, closeTo(100 / most, 1e-9));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('every kind of system draws its window on a narrow phone at twice the text size', (tester) async {
     for (final p in systemPresets) {
       await tester.pumpWidget(

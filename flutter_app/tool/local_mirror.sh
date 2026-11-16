@@ -8,6 +8,7 @@
 # Usage:
 #   tool/local_mirror.sh build android|ios|ios-simulator|macos   → copies the app to ../release/flutter/<platform>/
 #                                                                  (the Mac app as NovelBuilder-macOS.zip)
+#   tool/local_mirror.sh build android universal                 → the Android app for every kind of processor
 #   tool/local_mirror.sh test <device-id> [file]                 → runs integration_test (or one file of it) there
 #   tool/local_mirror.sh unit [flutter test args]                → runs the unit and widget tests
 #   tool/local_mirror.sh iphone <device-id>                      → builds, signs (your team) and installs on a
@@ -61,8 +62,16 @@ case "${1:-}" in
     mkdir -p "$out"
     case "$platform" in
       android)
-        flutter build apk --release
-        cp build/app/outputs/flutter-apk/app-release.apk "$out/NovelBuilder.apk" ;;
+        # For 64-bit ARM phones: 43 MB, not 104 (the code of three kinds of processor when a phone runs one), with the
+        # same version code (so `adb install -r` over an earlier build keeps the library). `build android universal`
+        # makes NovelBuilder-universal.apk, for a 32-bit phone or an x86 emulator. As tool/windows.ps1.
+        if [ "${3:-}" = universal ]; then
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk "$out/NovelBuilder-universal.apk"
+        else
+          flutter build apk --release --target-platform android-arm64
+          cp build/app/outputs/flutter-apk/app-release.apk "$out/NovelBuilder.apk"
+        fi ;;
       ios)
         # Unsigned: installing on an iPhone needs a signing team (see README).
         fresh_ios_native

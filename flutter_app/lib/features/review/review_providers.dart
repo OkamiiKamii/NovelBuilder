@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../shared/data/novel_store.dart';
@@ -106,9 +107,24 @@ final reviewDataProvider = Provider.autoDispose<ReviewData?>((ref) {
   final cast = ref.watch(castProvider);
   if (cast == null) return null;
   final store = ref.watch(novelStoreProvider);
+  // The review is made of the cast (every record but the text) and the text: the same cast, and no chapter written
+  // since, is the same review, with what it has worked out already (its findings, warnings and marks).
+  final text = store.versionOf(cast.novelId, const {'chapterContents'});
+  if (_keptReview[store] case final kept? when identical(kept.cast, cast) && kept.text == text) return kept.data;
+  reviewsMade++;
   final docs = {for (final r in store.rowsIn(cast.novelId, 'chapterContents')) str(r['id']): r['doc']};
-  return ReviewData(cast.novelId, cast.snapshot, cast.model, docs);
+  final data = ReviewData(cast.novelId, cast.snapshot, cast.model, docs);
+  _keptReview[store] = (cast: cast, text: text, data: data);
+  return data;
 });
+
+/// The review last made, by store: kept while the app runs, so going back to Review, Canon, Continuity or a map with
+/// its marks, with nothing written since, does not check the whole book again.
+final _keptReview = Expando<({CastData cast, int text, ReviewData data})>('review');
+
+/// How many times a review has been made (for a test to see one kept).
+@visibleForTesting
+int reviewsMade = 0;
 
 /// Canon statements and tracked rules: every change one transaction, made on the records as stored at that moment and
 /// refused if they changed elsewhere since.

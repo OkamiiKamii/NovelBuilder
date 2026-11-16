@@ -50,6 +50,17 @@ const _tabs = {
 const _kindLabels = {'number': 'Attribute', 'resource': 'Resource pool', 'derived': 'Formula', 'choice': 'Choice'};
 const _ops = {'add': '+', 'multiply': '×', 'set': '='};
 
+/// A system read from the book's own pages, and who would hold its powers.
+typedef _Own = ({PagesSystem system, String? holderId, String? holderName});
+
+/// The system last read from the pages, by store, with the cast and the count of writes to the text it was read
+/// from: kept while the app runs.
+final _keptOwn = Expando<({CastData cast, int text, _Own? own})>('system from the pages');
+
+/// How many times the pages have been read for a system of their own (for a test to see a reading kept).
+@visibleForTesting
+int ownSystemReadings = 0;
+
 /// SYSTEMS: the novel's own blueprints for how characters grow, where nothing is a fixed game concept. Variables,
 /// tracks, groups ("Classes", "Titles", "Mutations"…), ranks, units and formulas are all named and shaped by the
 /// author. A character's sheet keeps only what is its own; everything else is read from its blueprint.
@@ -282,13 +293,19 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
     );
   }
 
-  // Read from the saved chapters once per change of the novel, only while the gallery is shown.
-  CastData? _ownFor;
-  ({PagesSystem system, String? holderId, String? holderName})? _own;
+  // Read from the saved chapters only while the gallery is shown, and kept (by store) while the cast is the same and
+  // no chapter was written since: going back to Systems does not read the whole book again (`_keptOwn`).
+  _Own? _ownSystem(CastData cast) {
+    final store = ref.read(novelStoreProvider);
+    final text = store.versionOf(cast.novelId, const {'chapterContents'});
+    if (_keptOwn[store] case final kept? when identical(kept.cast, cast) && kept.text == text) return kept.own;
+    final own = _readOwn(cast);
+    _keptOwn[store] = (cast: cast, text: text, own: own);
+    return own;
+  }
 
-  ({PagesSystem system, String? holderId, String? holderName})? _ownSystem(CastData cast) {
-    if (identical(cast, _ownFor)) return _own;
-    _ownFor = cast;
+  _Own? _readOwn(CastData cast) {
+    ownSystemReadings++;
     final store = ref.read(novelStoreProvider);
     final chapters = [
       for (final row in store.rowsIn(cast.novelId, 'chapterContents'))
@@ -302,13 +319,13 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
         if (f.kind == 'power') f.name,
     ];
     final system = systemFromPages([for (final (_, blocks) in chapters) ...blocks], powers);
-    if (system == null) return _own = null;
+    if (system == null) return null;
     // Who holds them: the protagonist, or the one most in the book.
     final cast_ = [...cast.list]..sort((a, b) => b.seenIn.length.compareTo(a.seenIn.length));
     final holder =
         cast_.where((l) => l.profile.roles.contains('Protagonist')).firstOrNull ??
         cast_.where((l) => l.seenIn.isNotEmpty).firstOrNull;
-    return _own = (
+    return (
       system: system,
       holderId: system.powers.isEmpty ? null : holder?.entry.id,
       holderName: system.powers.isEmpty ? null : holder?.entry.name,
@@ -316,7 +333,7 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
   }
 
   /// Begins the book's own system, and the holder's sheet holding every power in it, in one change.
-  void _beginOwn(ProgressionActions actions, ({PagesSystem system, String? holderId, String? holderName}) own) {
+  void _beginOwn(ProgressionActions actions, _Own own) {
     final made = actions.systems((x) {
       final system = x.createSystem(own.system.content);
       if (own.holderId case final holder?) {

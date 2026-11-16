@@ -30,6 +30,25 @@ String levelsAsideKey(String novelId) => 'levels.aside.$novelId';
 /// of names (in lower case) to a character's id, or '' for no one's.
 String levelsOwnersKey(String novelId) => 'levels.owners.$novelId';
 
+/// The last reading of the levels, and one being read, with what each is read from: kept while the app runs, and
+/// shared by Systems and every character's page, so going to them does not read the whole book again each time.
+class _LevelsKept {
+  Object? key;
+  List<Levelled>? levels;
+  Object? runningKey;
+  Future<List<Levelled>>? running;
+}
+
+/// Made anew with the store (whose counts of writes start again).
+final _levelsKeptProvider = Provider<_LevelsKept>((ref) {
+  ref.watch(novelStoreProvider);
+  return _LevelsKept();
+});
+
+/// How many times the book has been read for its levels (for a test to see a reading kept and shared).
+@visibleForTesting
+int levelsReadings = 0;
+
 /// The levels of the open book, read with its cast and the author's word. [cast] gives who can hold them.
 mixin LevelsReader<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   List<Levelled>? levels;
@@ -49,46 +68,92 @@ mixin LevelsReader<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     };
   }
 
+  /// What the reading is made from that comes of the cast, worked out once for a cast (this is asked on every build).
+  ({CastData cast, List<String> order, List<({String id, List<String> names})> people, String chapters, String who})?
+  _fromCast;
+
   void readLevels(CastData cast) {
     final store = ref.read(novelStoreProvider);
-    final order = [
-      for (final n in readingOrder(cast.model.nodes.values))
-        if (isDocument(n.kind)) n.id,
-    ];
-    final names = namesToFind(cast.entries, cast.profiles);
-    final people = [
-      for (final l in cast.list)
-        if (!l.profile.archived && (names[l.entry.id] ?? const []).isNotEmpty)
-          (id: l.entry.id, names: names[l.entry.id]!),
-    ];
+    var from = _fromCast;
+    if (from == null || !identical(from.cast, cast)) {
+      final order = [
+        for (final n in readingOrder(cast.model.nodes.values))
+          if (isDocument(n.kind)) n.id,
+      ];
+      final names = namesToFind(cast.entries, cast.profiles);
+      final people = [
+        for (final l in cast.list)
+          if (!l.profile.archived && (names[l.entry.id] ?? const []).isNotEmpty)
+            (id: l.entry.id, names: names[l.entry.id]!),
+      ];
+      _fromCast = from = (
+        cast: cast,
+        order: order,
+        people: people,
+        chapters: [for (final id in order) '$id:${cast.model.nodes[id]?.wordCount}'].join(','),
+        who: [for (final p in people) '${p.id}:${p.names.join('|')}'].join(','),
+      );
+    }
     final setAside = aside(cast.novelId);
     final given = assigned(cast.novelId);
+    // Everything the reading is made of: the novel, its chapters and their words, who can hold a level, the author's
+    // word, and the text as stored (the store's count of writes to it: no reading of the book to know it).
     final key = (
-      [for (final id in order) '$id:${cast.model.nodes[id]?.wordCount}'].join(','),
-      [for (final p in people) '${p.id}:${p.names.join('|')}'].join(','),
+      cast.novelId,
+      from.chapters,
+      from.who,
       setAside.join('|'),
       given.entries.map((e) => '${e.key}=${e.value}').join('|'),
-      store.rowsIn(cast.novelId, 'chapterContents').length,
+      store.versionOf(cast.novelId, const {'chapterContents'}),
     );
     if (key == _readFor) return;
     _readFor = key;
-    ref
-        .read(runAsideProvider)(
+    // Read already, for Systems or another character's page, from the same: at once, in this very frame.
+    final kept = ref.read(_levelsKeptProvider);
+    if (kept.key == key) {
+      levels = kept.levels;
+      return;
+    }
+    // Being read for another page now: the same reading, not a second one.
+    if (kept.runningKey != key) {
+      levelsReadings++;
+      kept
+        ..runningKey = key
+        ..running = ref.read(runAsideProvider)(
           levelsInPagesJob(
             store.rawJsonIn(cast.novelId, 'chapterContents'),
-            order,
+            from.order,
             setAside,
-            people: people,
+            people: from.people,
             assigned: given,
           ),
-        )
-        .then(
-          (found) {
-            if (mounted && _readFor == key) setState(() => levels = found);
-          },
-          onError: (Object e, StackTrace s) =>
-              FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'progression')),
         );
+      kept.running!.then(
+        (found) {
+          if (kept.runningKey == key) {
+            kept
+              ..key = key
+              ..levels = found
+              ..runningKey = null
+              ..running = null;
+          }
+        },
+        onError: (Object e, StackTrace s) {
+          if (kept.runningKey == key) {
+            kept
+              ..runningKey = null
+              ..running = null;
+          }
+        },
+      );
+    }
+    kept.running!.then(
+      (found) {
+        if (mounted && _readFor == key) setState(() => levels = found);
+      },
+      onError: (Object e, StackTrace s) =>
+          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'progression')),
+    );
   }
 
   /// Read again on the next build (after the author's word changed).

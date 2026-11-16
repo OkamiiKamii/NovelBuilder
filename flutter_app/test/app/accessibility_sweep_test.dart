@@ -6,6 +6,7 @@ import 'package:novel_builder/app/router.dart';
 import 'package:novel_builder/app/theme/theme_choice.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
+import 'package:novel_builder/shared/data/sample_novel.dart';
 
 import '../helpers/pump_app.dart';
 import '../perf/large_project_test.dart' show screens;
@@ -49,6 +50,38 @@ void main() {
         timeout: const Timeout(Duration(minutes: 10)),
       );
     }
+  }
+
+  // The sample novel holds what the novel above does not: chapters in plot threads (their chips on the board), places
+  // on the world's chart, events on the timeline.
+  for (final size in [desktop, phone]) {
+    testWidgets(
+      'every screen of the sample novel meets the guidelines (${size.width.toInt()} wide)',
+      (tester) async {
+        final semantics = tester.ensureSemantics();
+        final c = await pumpApp(tester, size: size);
+        final novel = addSampleNovel(c.read(novelStoreProvider), now: DateTime(2026, 11, 10).millisecondsSinceEpoch);
+        c.read(openNovelProvider.notifier).open(novel.id);
+        await tester.pumpAndSettle();
+        final failures = <String>[];
+        for (final path in screens) {
+          c.read(routerProvider).go(path);
+          await tester.pumpAndSettle();
+          for (final (name, guideline) in [
+            ('tap target', androidTapTargetGuideline),
+            ('label', labeledTapTargetGuideline),
+            ('contrast', textContrastGuideline),
+          ]) {
+            final reason = await _check(tester, guideline);
+            if (reason != null) failures.add('$path [$name]\n$reason');
+          }
+        }
+        expect(failures, isEmpty, reason: failures.join('\n\n'));
+        await tester.pump(const Duration(seconds: 2));
+        semantics.dispose();
+      },
+      timeout: const Timeout(Duration(minutes: 10)),
+    );
   }
 
   testWidgets('every screen fits a phone at twice the text size', (tester) async {

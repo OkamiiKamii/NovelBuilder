@@ -229,26 +229,24 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
         if (resources.isNotEmpty) ...[
           rule(),
           for (final r in resources)
-            AnimatedBuilder(
-              animation: _fill,
-              builder: (context, _) {
-                final most = maxOf(r);
-                final now = r.value is double ? r.value! as double : null;
-                final top = most?.value is double ? most!.value! as double : now;
-                final part = now == null || top == null || top <= 0 ? 1.0 : (now / top).clamp(0.0, 1.0);
-                final unit = r.variable.unit.trim();
-                return _Bar(
-                  // HP, MP, SP; or the name's first word ("Mana" for Mana Capacity).
-                  name: unit.isNotEmpty && unit.length <= 3 ? unit : r.variable.name.trim().split(RegExp(r'\s+')).first,
-                  value: most == null
-                      ? r.display
-                      : '${now == null ? '?' : _number(now)} / ${plain(most)}${unit.isEmpty ? '' : ' $unit'}',
-                  part: part * Curves.easeOutCubic.transform(_fill.value),
-                  accent: look.accent,
-                  style: text,
-                );
-              },
-            ),
+            () {
+              final most = maxOf(r);
+              final now = r.value is double ? r.value! as double : null;
+              final top = most?.value is double ? most!.value! as double : now;
+              final part = now == null || top == null || top <= 0 ? 1.0 : (now / top).clamp(0.0, 1.0);
+              final unit = r.variable.unit.trim();
+              return _Bar(
+                // HP, MP, SP; or the name's first word ("Mana" for Mana Capacity).
+                name: unit.isNotEmpty && unit.length <= 3 ? unit : r.variable.name.trim().split(RegExp(r'\s+')).first,
+                value: most == null
+                    ? r.display
+                    : '${now == null ? '?' : _number(now)} / ${plain(most)}${unit.isEmpty ? '' : ' $unit'}',
+                part: part,
+                fill: _fill,
+                accent: look.accent,
+                style: text,
+              );
+            }(),
         ],
         if (attributes.isNotEmpty) ...[
           rule(),
@@ -390,12 +388,26 @@ class _Line extends StatelessWidget {
 }
 
 /// A resource: its short name, a bar lit for what is left of its most, and the numbers.
+/// A bar of what is left (HP, MP…): its name, the bar, and the numbers. Built once; as the window opens only the fill
+/// is drawn again, frame by frame ([fill]), not the row, its words or the window round it.
 class _Bar extends StatelessWidget {
-  const _Bar({required this.name, required this.value, required this.part, required this.accent, required this.style});
+  const _Bar({
+    required this.name,
+    required this.value,
+    required this.part,
+    required this.fill,
+    required this.accent,
+    required this.style,
+  });
 
   final String name;
   final String value;
+
+  /// How full it is (0 to 1), once filled.
   final double part;
+
+  /// How far the filling has come (0 to 1, eased here).
+  final Animation<double> fill;
   final Color accent;
   final TextStyle Function(double size, {Color? color, FontWeight? weight, double spacing}) style;
 
@@ -414,24 +426,10 @@ class _Bar extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(
-            height: 9,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(2),
-              border: Border.all(color: accent.withValues(alpha: 0.35), width: 0.8),
-            ),
-            alignment: Alignment.centerLeft,
-            child: FractionallySizedBox(
-              widthFactor: math.max(0.0, part),
-              heightFactor: 1,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  gradient: LinearGradient(colors: [accent.withValues(alpha: 0.65), accent]),
-                  boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.5), blurRadius: 6)],
-                ),
-              ),
+          child: RepaintBoundary(
+            child: CustomPaint(
+              size: const Size.fromHeight(9),
+              painter: _BarPainter(part: part, fill: fill, accent: accent),
             ),
           ),
         ),
@@ -442,6 +440,54 @@ class _Bar extends StatelessWidget {
       ],
     ),
   );
+}
+
+/// The bar itself: a faint track in a thin border, and inside it the fill (a gradient of the accent, glowing), as wide
+/// as [part] of the track times how far [fill] has come. Painted again as [fill] moves, and nothing else is.
+class _BarPainter extends CustomPainter {
+  _BarPainter({required this.part, required this.fill, required this.accent}) : super(repaint: fill);
+
+  final double part;
+  final Animation<double> fill;
+  final Color accent;
+
+  static const _border = 0.8;
+  static const _radius = Radius.circular(2);
+
+  /// How wide the fill is drawn, as a share of the track: for a test to see it filling.
+  @visibleForTesting
+  double get drawn => math.max(0.0, part) * Curves.easeOutCubic.transform(fill.value);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final track = RRect.fromRectAndRadius(Offset.zero & size, _radius);
+    canvas.drawRRect(track, Paint()..color = Colors.white.withValues(alpha: 0.08));
+    canvas.drawRRect(
+      track.deflate(_border / 2),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = _border
+        ..color = accent.withValues(alpha: 0.35),
+    );
+    // Inside the border, as the box's child was.
+    final room = (Offset.zero & size).deflate(_border);
+    final width = room.width * drawn;
+    if (width <= 0) return;
+    final bar = RRect.fromRectAndRadius(Rect.fromLTWH(room.left, room.top, width, room.height), _radius);
+    canvas.drawRRect(
+      bar,
+      Paint()
+        ..color = accent.withValues(alpha: 0.5)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, Shadow.convertRadiusToSigma(6)),
+    );
+    canvas.drawRRect(
+      bar,
+      Paint()..shader = LinearGradient(colors: [accent.withValues(alpha: 0.65), accent]).createShader(bar.outerRect),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_BarPainter old) => old.part != part || old.accent != accent || old.fill != fill;
 }
 
 /// Something held, in brackets as such screens write them: [Smart Atoms], its rank, and what it does.

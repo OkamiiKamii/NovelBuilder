@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart' show FlutterError, FlutterErrorDetails;
+import 'package:flutter/foundation.dart' show FlutterError, FlutterErrorDetails, visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../shared/data/background.dart';
@@ -200,7 +200,12 @@ class NamedInNotifier extends Notifier<Map<String, List<String>>> {
     final store = ref.watch(novelStoreProvider);
     final run = ref.watch(runAsideProvider);
     var alive = true;
-    String? readAt;
+    // The last reading of this novel, kept while the app runs: going back to a screen of the cast starts from it (the
+    // cast made from it is the cast kept, not one made again with no names and again when they arrive), and reads the
+    // book again only if the text, the entries or the profiles were written since.
+    final kept = ref.read(_namedKeptProvider);
+    final mine = kept.novelId == novelId;
+    String? readAt = mine ? kept.stamp : null;
     // One reading at a time; changes while one runs are read once it is done. Changes in the same moment are one.
     var running = false;
     var again = false;
@@ -221,6 +226,7 @@ class NamedInNotifier extends Notifier<Map<String, List<String>>> {
       if (now == readAt) return;
       readAt = now;
       running = true;
+      namedInReadings++;
       final entries = [for (final r in store.rowsIn(novelId, 'loreEntries')) Entry(r)];
       final profiles = <String, CharacterProfile>{
         for (final r in [
@@ -231,7 +237,13 @@ class NamedInNotifier extends Notifier<Map<String, List<String>>> {
       run(namedInJob(store.rawJsonIn(novelId, 'chapterContents'), namesToFind(entries, profiles)))
           .then(
             (found) {
-              if (alive && readAt == now) state = found;
+              if (alive && readAt == now) {
+                state = found;
+                kept
+                  ..novelId = novelId
+                  ..stamp = now
+                  ..named = found;
+              }
             },
             onError: (Object e, StackTrace s) =>
                 FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
@@ -263,9 +275,26 @@ class NamedInNotifier extends Notifier<Map<String, List<String>>> {
     });
     // The first reading too waits until whatever is being built now is done.
     changed();
-    return const {};
+    return mine ? kept.named : const {};
   }
 }
+
+/// Where names are, as last read, and the stamp of what it was read from (`NamedInNotifier`).
+class _NamedKept {
+  String? novelId;
+  String? stamp;
+  Map<String, List<String>> named = const {};
+}
+
+/// Made anew with the store, as the cast kept is.
+final _namedKeptProvider = Provider<_NamedKept>((ref) {
+  ref.watch(novelStoreProvider);
+  return _NamedKept();
+});
+
+/// How many times the book has been read for where names are (for a test to see a reading kept).
+@visibleForTesting
+int namedInReadings = 0;
 
 final namedInProvider = NotifierProvider.autoDispose<NamedInNotifier, Map<String, List<String>>>(NamedInNotifier.new);
 

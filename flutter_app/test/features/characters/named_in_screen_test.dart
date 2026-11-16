@@ -48,6 +48,58 @@ void main() {
     await tester.pumpAndSettle();
     expect(c.read(namedInProvider).length, 2);
   });
+
+  testWidgets('away from the cast and back: the reading kept and the same cast; written while away, read again', (
+    tester,
+  ) async {
+    final c = await pumpApp(tester, size: phone, location: '/organize');
+    final novel = c.read(libraryServiceProvider).create({'title': 'Ash Road'}).id;
+    final m = c.read(manuscriptServiceProvider);
+    final one = m.create(novel, NodeKind.chapter, title: 'One');
+    final two = m.create(novel, NodeKind.chapter, title: 'Two');
+    m.save(novel, one.id, textToDoc('Mira waited at the gate.'), baseRev: 0);
+    m.save(novel, two.id, textToDoc('Nobody came.'), baseRev: 0);
+    final s = c.read(characterServiceProvider);
+    s.change(novel, (x) => x.create(name: 'Mira Vance'));
+    s.change(novel, (x) => x.create(name: 'Kai Doyle'));
+    c.read(openNovelProvider.notifier).open(novel);
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.text('In chapter 1'), findsOneWidget);
+    final cast = c.read(castProvider);
+    final readings = namedInReadings;
+
+    Future<void> away() async {
+      c.read(routerProvider).go('/write');
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> back() async {
+      c.read(routerProvider).go('/organize');
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+    }
+
+    // Nothing written: the book is not read again, and the cast is the one already made (not one made with no names
+    // and again when they arrive).
+    for (var i = 0; i < 3; i++) {
+      await away();
+      await back();
+    }
+    expect(namedInReadings, readings, reason: 'nothing it reads was written');
+    expect(identical(c.read(castProvider), cast), isTrue, reason: 'the same cast');
+    expect(find.text('In chapter 1'), findsOneWidget, reason: 'where Mira is, at once');
+
+    // Kai written into chapter 2 while away: read again on coming back, and the card says so.
+    await away();
+    m.save(novel, two.id, textToDoc('Nobody came but Kai.'), baseRev: 1);
+    await back();
+    expect(namedInReadings, readings + 1);
+    expect(find.text('In chapter 2'), findsOneWidget);
+    expect(find.text('Not in the manuscript yet'), findsNothing);
+  });
 }
 
 void passagesScreenTests() {
