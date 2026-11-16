@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/records/novel.dart';
 import 'cover_picker.dart';
@@ -172,7 +173,7 @@ class _NovelFormState extends State<_NovelForm> {
                       decoration: const InputDecoration(labelText: 'Author'),
                     ),
                     gap,
-                    DropdownButtonFormField<NovelStatus>(
+                    ChoiceField<NovelStatus>(
                       initialValue: _status,
                       decoration: const InputDecoration(labelText: 'Status'),
                       items: [for (final s in NovelStatus.values) DropdownMenuItem(value: s, child: Text(s.label))],
@@ -261,7 +262,7 @@ class _NovelFormState extends State<_NovelForm> {
                     ),
                     if (_creating && widget.others.isNotEmpty) ...[
                       gap,
-                      DropdownButtonFormField<String?>(
+                      ChoiceField<String?>(
                         initialValue: _setupFrom,
                         isExpanded: true,
                         decoration: const InputDecoration(
@@ -284,7 +285,7 @@ class _NovelFormState extends State<_NovelForm> {
                     ],
                     if (_creating && widget.templates.isNotEmpty) ...[
                       gap,
-                      DropdownButtonFormField<String?>(
+                      ChoiceField<String?>(
                         initialValue: _templateId,
                         isExpanded: true,
                         decoration: const InputDecoration(

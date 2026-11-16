@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../core/widgets/states.dart';
@@ -134,7 +135,7 @@ class _ThreadEditorState extends State<_ThreadEditor> {
             runSpacing: 12,
             children: [
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('category:${thread.category}'),
                   initialValue: threadCategories.contains(thread.category) ? thread.category : 'subplot',
                   isExpanded: true,
@@ -146,7 +147,7 @@ class _ThreadEditorState extends State<_ThreadEditor> {
                 ),
               ),
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('status:$status'),
                   initialValue: threadStatuses.contains(status) ? status : 'planned',
                   isExpanded: true,
@@ -214,7 +215,7 @@ class _ThreadEditorState extends State<_ThreadEditor> {
           ProfileBox(
             title: 'Target resolution',
             children: [
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('target:${thread.targetNodeId}'),
                 initialValue: model.nodes.containsKey(thread.targetNodeId) ? thread.targetNodeId : '',
                 isExpanded: true,
@@ -265,7 +266,7 @@ class _ThreadEditorState extends State<_ThreadEditor> {
                 children: [
                   SizedBox(
                     width: 260,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('newNode:$_newNode'),
                       initialValue: documents.any((t) => t.node.id == _newNode) ? _newNode : '',
                       isExpanded: true,
@@ -286,7 +287,7 @@ class _ThreadEditorState extends State<_ThreadEditor> {
                   ),
                   SizedBox(
                     width: 230,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('newRole:$_newRole'),
                       initialValue: _newRole,
                       isExpanded: true,
@@ -440,7 +441,7 @@ class _BeatEditor extends StatelessWidget {
               Text(beatPlace(placed), style: theme.textTheme.labelLarge),
               SizedBox(
                 width: 240,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('node:${beat.id}:${beat.nodeId}'),
                   initialValue: placed.missing ? '\u0000gone' : (beat.nodeId ?? ''),
                   isExpanded: true,
@@ -465,7 +466,7 @@ class _BeatEditor extends StatelessWidget {
               ),
               SizedBox(
                 width: 230,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('role:${beat.id}:$role'),
                   initialValue: beatRoles.contains(role) ? role : 'development',
                   isExpanded: true,

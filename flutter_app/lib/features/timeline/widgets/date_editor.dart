@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/domain/json.dart';
 import '../../../shared/domain/records/calendar.dart';
 import '../../../shared/domain/records/event.dart';
@@ -91,7 +92,7 @@ class DateEditor extends StatelessWidget {
           ),
         ),
         box(
-          DropdownButtonFormField<int>(
+          ChoiceField<int>(
             key: ValueKey('${_named('Month')}:$month'),
             initialValue: month ?? 0,
             isExpanded: true,
@@ -155,7 +156,7 @@ class DateEditor extends StatelessWidget {
           ),
         ),
         box(
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('${_named('Part of the year')}:$month:$season'),
             initialValue: month != null && month != 0 ? 'm$month' : (season?.name ?? ''),
             isExpanded: true,
@@ -193,7 +194,7 @@ class DateEditor extends StatelessWidget {
           120,
         ),
         box(
-          DropdownButtonFormField<TimeUnit>(
+          ChoiceField<TimeUnit>(
             key: ValueKey('${_named('Unit')}:$unit'),
             initialValue: unit,
             isExpanded: true,
@@ -204,7 +205,7 @@ class DateEditor extends StatelessWidget {
           140,
         ),
         box(
-          DropdownButtonFormField<bool>(
+          ChoiceField<bool>(
             key: ValueKey('${_named('Before or after')}:$before'),
             initialValue: before,
             isExpanded: true,
@@ -218,7 +219,7 @@ class DateEditor extends StatelessWidget {
           140,
         ),
         box(
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('${_named('Relative to')}:$anchorId'),
             initialValue: others.any((p) => p.event.id == anchorId) ? anchorId : '',
             isExpanded: true,

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
@@ -336,7 +337,7 @@ class _Head extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('category:${entry.category}'),
                     initialValue: entry.category,
                     isExpanded: true,
@@ -512,7 +513,7 @@ class _OwnFieldsState extends State<_OwnFields> {
                     const SizedBox(width: 8),
                     SizedBox(
                       width: 170,
-                      child: DropdownButtonFormField<FieldType>(
+                      child: ChoiceField<FieldType>(
                         initialValue: FieldType.of(row['type']) ?? FieldType.longtext,
                         isExpanded: true,
                         decoration: const InputDecoration(labelText: 'Type'),
@@ -649,7 +650,7 @@ class _RelatedState extends State<_Related> {
                   width: 190,
                   child: () {
                     final canon = w.cast.links.where((l) => l.id == r.linkId).firstOrNull?.canon ?? CanonStatus.canon;
-                    return DropdownButtonFormField<CanonStatus>(
+                    return ChoiceField<CanonStatus>(
                       key: ValueKey('${r.linkId}:${canon.key}'),
                       initialValue: canon,
                       isExpanded: true,
@@ -681,7 +682,7 @@ class _RelatedState extends State<_Related> {
             children: [
               SizedBox(
                 width: 260,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('link-to:$_to'),
                   initialValue: _to,
                   isExpanded: true,

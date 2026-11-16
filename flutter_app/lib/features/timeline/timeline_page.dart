@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/gradually.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -196,7 +197,7 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
               children: [
                 box(
                   220,
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('life:$character'),
                     initialValue: character ?? '',
                     isExpanded: true,
@@ -214,7 +215,7 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
                 ),
                 box(
                   200,
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('importance:$_minimum'),
                     initialValue: _minimum,
                     isExpanded: true,
@@ -229,7 +230,7 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
                 ),
                 box(
                   200,
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('location:$_location'),
                     initialValue: _location ?? '',
                     isExpanded: true,
@@ -247,7 +248,7 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
                 ),
                 box(
                   200,
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('precision:$_precision'),
                     initialValue: _precision ?? '',
                     isExpanded: true,

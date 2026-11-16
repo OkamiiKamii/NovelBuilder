@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/domain/codex/capabilities.dart';
 import '../../../shared/domain/json.dart';
 import '../../../shared/domain/records/category.dart';
@@ -50,7 +51,7 @@ class KindUsesEditor extends StatelessWidget {
           : null;
       return SizedBox(
         width: 280,
-        child: DropdownButtonFormField<String>(
+        child: ChoiceField<String>(
           key: ValueKey('${category.key}:${slot.key}:$current'),
           initialValue: current,
           isExpanded: true,
@@ -143,7 +144,7 @@ class KindUsesEditor extends StatelessWidget {
           row([
             SizedBox(
               width: 280,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('${category.key}:holding:$holding'),
                 initialValue: holding ?? '',
                 isExpanded: true,

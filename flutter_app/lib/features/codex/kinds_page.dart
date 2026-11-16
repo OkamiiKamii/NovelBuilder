@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../core/widgets/states.dart';
@@ -88,7 +89,7 @@ class _KindsPageState extends ConsumerState<KindsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('kind:${kind.key}:${kinds.length}'),
             initialValue: kind.key,
             isExpanded: true,
@@ -457,7 +458,7 @@ class _FieldRow extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 200,
-                  child: DropdownButtonFormField<FieldType>(
+                  child: ChoiceField<FieldType>(
                     key: ValueKey('${def.id}:${type.name}'),
                     initialValue: type,
                     isExpanded: true,
@@ -536,7 +537,7 @@ class _FieldRow extends StatelessWidget {
                 if (isLink)
                   SizedBox(
                     width: 240,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('${def.id}:target:${def.target}'),
                       initialValue: kinds.any((k) => k.key == def.target) ? def.target : '',
                       isExpanded: true,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/novel_art.dart';
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
 import '../../../shared/data/speech.dart';
@@ -205,7 +206,7 @@ class _CastTableReadState extends ConsumerState<CastTableRead> {
             children: [
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 320),
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('table-chapter-$chapter'),
                   initialValue: chapter,
                   isExpanded: true,

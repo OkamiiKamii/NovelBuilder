@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
@@ -331,7 +332,7 @@ class _FilterBarState extends ConsumerState<_FilterBar> {
         ),
         SizedBox(
           width: compact ? double.infinity : 240,
-          child: DropdownButtonFormField<String>(
+          child: ChoiceField<String>(
             key: ValueKey('involving:$chosen'),
             initialValue: chosen,
             isExpanded: true,

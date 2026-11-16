@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/core/widgets/choice_field.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/characters/widgets/cast_compass.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
@@ -7,6 +8,7 @@ import 'package:novel_builder/shared/data/providers.dart';
 import 'package:novel_builder/shared/domain/characters/record_look.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/choices.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -54,10 +56,7 @@ void main() {
     // Two axes chosen: the board shows them apart.
     final board = find.bySemanticsLabel(RegExp('^The compass: '));
     expect(board, findsOneWidget);
-    await tester.tap(find.byWidgetPredicate((w) => w is DropdownButtonFormField<String>).first);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Rational or Emotional').last);
-    await tester.pumpAndSettle();
+    await chooseIn(tester, find.byWidgetPredicate((w) => w is ChoiceField<String>).first, 'Rational or Emotional');
     final said = tester.getSemantics(find.bySemanticsLabel(RegExp('^The compass: '))).label;
     expect(said, startsWith('The compass: Rational to Emotional across'));
     expect(said, contains('Kai: Emotional'));

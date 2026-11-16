@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/characters/character_changes.dart';
@@ -235,7 +236,7 @@ class _CopyDialogState extends State<_CopyDialog> {
         children: [
           const Text('Its text becomes a field of the character’s record. The note itself is kept.'),
           const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             initialValue: _section,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'Section'),

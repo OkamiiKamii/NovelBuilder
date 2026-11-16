@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../shared/domain/reader/book.dart';
@@ -73,7 +74,7 @@ class BookDetailsPage extends ConsumerWidget {
                 onChanged: (v) => actions.set(novelId, f.field, v),
               ),
             ),
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('scene-break:$novelId:${custom ? 'custom' : mark}'),
             initialValue: custom ? null : mark,
             isExpanded: true,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/model/entity_ref.dart';
@@ -176,7 +177,7 @@ class _TimelineViewPageState extends ConsumerState<TimelineViewPage> {
               if (data.historyList.isNotEmpty)
                 box(
                   260,
-                  DropdownButtonFormField<String>(
+                  ChoiceField<String>(
                     key: ValueKey('shown:$history'),
                     initialValue: history ?? '',
                     isExpanded: true,
@@ -197,7 +198,7 @@ class _TimelineViewPageState extends ConsumerState<TimelineViewPage> {
                 ),
               box(
                 220,
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('group:$_grouping'),
                   initialValue: ways.any((g) => g.value == _grouping) ? _grouping : 'none',
                   isExpanded: true,

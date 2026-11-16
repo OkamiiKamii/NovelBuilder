@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/gradually.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -424,7 +425,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
               ),
       ),
     );
-    final sort = DropdownButtonFormField<CastSort>(
+    final sort = ChoiceField<CastSort>(
       initialValue: _sort,
       isExpanded: true,
       decoration: const InputDecoration(labelText: 'Sort by'),
@@ -631,7 +632,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
   Widget _filtersPanel(BuildContext context, CastData cast, Facets facets) {
     Widget menu(String label, String value, List<String> choices, CastFilters Function(String v) set) => SizedBox(
       width: 200,
-      child: DropdownButtonFormField<String>(
+      child: ChoiceField<String>(
         initialValue: choices.contains(value) ? value : '',
         isExpanded: true,
         decoration: InputDecoration(labelText: label),
@@ -660,7 +661,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
       if (chapters.isNotEmpty)
         SizedBox(
           width: 260,
-          child: DropdownButtonFormField<int?>(
+          child: ChoiceField<int?>(
             initialValue: _filters.firstBy,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'First appears by'),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/continuity/rules.dart';
@@ -134,7 +135,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
     Widget menu<T>(String label, T? value, List<T> options, String Function(T) words, ValueChanged<T?> onChanged) =>
         SizedBox(
           width: 220,
-          child: DropdownButtonFormField<T?>(
+          child: ChoiceField<T?>(
             key: ValueKey('$label:$value'),
             initialValue: value,
             isExpanded: true,
@@ -575,7 +576,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                 ),
                 SizedBox(
                   width: 240,
-                  child: DropdownButtonFormField<bool>(
+                  child: ChoiceField<bool>(
                     key: ValueKey('by:$_byCategory'),
                     initialValue: _byCategory,
                     isExpanded: true,

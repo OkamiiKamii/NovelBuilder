@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/novel_store.dart';
@@ -219,7 +220,7 @@ class _BoardPageState extends ConsumerState<BoardPage> {
                             ),
                             SizedBox(
                               width: 180,
-                              child: DropdownButtonFormField<NodeStatus?>(
+                              child: ChoiceField<NodeStatus?>(
                                 key: ValueKey('status:$_status'),
                                 initialValue: _status,
                                 isExpanded: true,
@@ -234,7 +235,7 @@ class _BoardPageState extends ConsumerState<BoardPage> {
                             if (threads.isNotEmpty)
                               SizedBox(
                                 width: 240,
-                                child: DropdownButtonFormField<String>(
+                                child: ChoiceField<String>(
                                   key: ValueKey('thread:${thread?.id}'),
                                   initialValue: thread?.id ?? '',
                                   isExpanded: true,

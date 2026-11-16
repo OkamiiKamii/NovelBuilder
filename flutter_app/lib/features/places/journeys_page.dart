@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../core/widgets/saved_text_field.dart';
@@ -134,7 +135,7 @@ class _JourneysPageState extends ConsumerState<JourneysPage> {
       children: [
         SizedBox(
           width: 240,
-          child: DropdownButtonFormField<String>(
+          child: ChoiceField<String>(
             key: ValueKey('who:$who'),
             initialValue: who ?? '',
             isExpanded: true,
@@ -149,7 +150,7 @@ class _JourneysPageState extends ConsumerState<JourneysPage> {
         if (map != null && usable.length > 1 && !_list)
           SizedBox(
             width: 220,
-            child: DropdownButtonFormField<String>(
+            child: ChoiceField<String>(
               key: ValueKey('jmap:${map.id}'),
               initialValue: map.id,
               isExpanded: true,
@@ -670,7 +671,7 @@ class _JourneyFormState extends ConsumerState<JourneyForm> {
     final unit = _durationUnit;
     Widget placeMenu(String label, String key) => SizedBox(
       width: 240,
-      child: DropdownButtonFormField<String>(
+      child: ChoiceField<String>(
         initialValue: places.any((p) => p.id == _draft[key]) ? _draft[key]! as String : '',
         isExpanded: true,
         decoration: InputDecoration(labelText: label, isDense: true),
@@ -762,7 +763,7 @@ class _JourneyFormState extends ConsumerState<JourneyForm> {
           ),
           if (others.isNotEmpty) ...[
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: others.any((j) => j.id == _draft['afterId']) ? _draft['afterId']! as String : '',
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Comes after (when only the order is known)', isDense: true),
@@ -785,7 +786,7 @@ class _JourneyFormState extends ConsumerState<JourneyForm> {
             children: [
               SizedBox(
                 width: 240,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   initialValue: _own
                       ? 'own'
                       : (methods.any((m) => m.id == _draft['methodId']) ? _draft['methodId']! as String : ''),
@@ -843,7 +844,7 @@ class _JourneyFormState extends ConsumerState<JourneyForm> {
               ),
               SizedBox(
                 width: 130,
-                child: DropdownButtonFormField<TimeUnit>(
+                child: ChoiceField<TimeUnit>(
                   initialValue: unit,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Duration unit', isDense: true),
@@ -1036,7 +1037,7 @@ class _MethodsDialogState extends ConsumerState<MethodsDialog> {
                     ),
                     SizedBox(
                       width: 130,
-                      child: DropdownButtonFormField<TimeUnit>(
+                      child: ChoiceField<TimeUnit>(
                         initialValue: m.per,
                         isExpanded: true,
                         decoration: InputDecoration(labelText: '${m.name}: per', isDense: true),

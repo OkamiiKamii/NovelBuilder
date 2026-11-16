@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/model/entity_ref.dart';
@@ -196,7 +197,7 @@ class _PlacesPageState extends ConsumerState<PlacesPage> {
               if (data.maps.length > 1 && !_list)
                 SizedBox(
                   width: 260,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('map:${map?.id}'),
                     initialValue: map?.id,
                     isExpanded: true,

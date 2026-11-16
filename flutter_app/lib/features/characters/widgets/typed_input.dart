@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/codex/field_values.dart';
 import '../../../shared/domain/records/category.dart';
@@ -197,7 +198,7 @@ class _Select extends StatelessWidget {
         ),
       );
     }
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       // Keyed by the value: a dropdown only reads its starting value, so a new stored value makes a new one.
       key: ValueKey(value),
       initialValue: value,
@@ -346,7 +347,7 @@ class _Link extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final known = entries.any((e) => e.id == value);
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       key: ValueKey(value),
       initialValue: value.isEmpty || known ? value : '\u0000gone',
       isExpanded: true,

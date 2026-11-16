@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/analytics/charts.dart';
@@ -97,7 +98,7 @@ class _ChartsPageState extends ConsumerState<ChartsPage> {
     final compact = MediaQuery.sizeOf(context).width < 600;
     Widget menu(String label, String? value, String none, List<(String, String)> options, String key) => SizedBox(
       width: compact ? double.infinity : 240,
-      child: DropdownButtonFormField<String>(
+      child: ChoiceField<String>(
         key: ValueKey('$key:$value'),
         initialValue: value ?? '',
         isExpanded: true,
@@ -287,7 +288,7 @@ class _ChartCard extends ConsumerWidget {
                 if (chart.key == 'words')
                   SizedBox(
                     width: 240,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('grain:${layout['cgrain']}'),
                       initialValue: layout['cgrain'] == 'scenes' ? 'scenes' : 'chapters',
                       isExpanded: true,
@@ -302,7 +303,7 @@ class _ChartCard extends ConsumerWidget {
                 if (chart.key == 'appearances')
                   SizedBox(
                     width: 280,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('count:${layout['ccount']}'),
                       initialValue: layout['ccount'] == 'page' ? 'page' : 'any',
                       isExpanded: true,

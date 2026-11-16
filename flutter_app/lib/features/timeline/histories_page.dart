@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../core/widgets/states.dart';
@@ -223,7 +224,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   ),
                   box(
                     220,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('kind:$_kind'),
                       initialValue: _kind,
                       isExpanded: true,
@@ -234,7 +235,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   ),
                   box(
                     220,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('status:$_status'),
                       initialValue: _status,
                       isExpanded: true,
@@ -245,7 +246,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   ),
                   box(
                     300,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('base:$_baseId'),
                       initialValue: _baseId ?? 'main',
                       isExpanded: true,
@@ -260,7 +261,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   ),
                   box(
                     300,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('origin:$_baseId:$_originId'),
                       initialValue: _originId ?? '',
                       isExpanded: true,
@@ -275,7 +276,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   if (_kind == HistoryKind.timeTravel.key)
                     box(
                       300,
-                      DropdownButtonFormField<String>(
+                      ChoiceField<String>(
                         key: ValueKey('cause:$_baseId:$_causeId'),
                         initialValue: _causeId ?? '',
                         isExpanded: true,
@@ -325,7 +326,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                   children: [
                     box(
                       300,
-                      DropdownButtonFormField<String>(
+                      ChoiceField<String>(
                         key: ValueKey('a:$compareA'),
                         initialValue: compareA ?? 'main',
                         isExpanded: true,
@@ -336,7 +337,7 @@ class _HistoriesPageState extends ConsumerState<HistoriesPage> {
                     ),
                     box(
                       300,
-                      DropdownButtonFormField<String>(
+                      ChoiceField<String>(
                         key: ValueKey('b:$compareB'),
                         initialValue: compareB ?? 'main',
                         isExpanded: true,
@@ -510,7 +511,7 @@ class _SelectedHistory extends StatelessWidget {
             ),
             box(
               220,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('status:${h.status.key}'),
                 initialValue: h.status.key,
                 isExpanded: true,
@@ -521,7 +522,7 @@ class _SelectedHistory extends StatelessWidget {
             ),
             box(
               220,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('kind:${h.kind.key}'),
                 initialValue: h.kind.key,
                 isExpanded: true,
@@ -532,7 +533,7 @@ class _SelectedHistory extends StatelessWidget {
             ),
             box(
               300,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('departs:${h.originEventId}'),
                 initialValue: base.containsKey(h.originEventId) ? h.originEventId : '',
                 isExpanded: true,
@@ -736,7 +737,7 @@ class _ChangeDialogState extends State<_ChangeDialog> {
         onChange: (edit) => setState(() => _draft = {..._draft, 'when': edit(mapOrNull(_draft['when']) ?? const {})}),
       ),
       const SizedBox(height: 12),
-      DropdownButtonFormField<String>(
+      ChoiceField<String>(
         initialValue: widget.places.any((p) => p.id == _draft['locationId']) ? _draft['locationId']! as String : '',
         isExpanded: true,
         decoration: const InputDecoration(labelText: 'Where it happens in this history'),

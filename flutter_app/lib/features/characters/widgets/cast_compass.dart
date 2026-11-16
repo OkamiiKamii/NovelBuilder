@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/novel_art.dart';
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/domain/characters/cast.dart';
 import '../../../shared/domain/characters/foils.dart';
 import '../../../shared/domain/characters/this_or_that.dart';
@@ -67,7 +68,7 @@ class _CastCompassState extends State<CastCompass> {
         vaultHeading(context, size: 11.5, color: scheme.primary, weight: 700).copyWith(letterSpacing: 1.6);
 
     Widget axisPicker(String label, String value, ValueChanged<String> onPick, String other) => Expanded(
-      child: DropdownButtonFormField<String>(
+      child: ChoiceField<String>(
         key: ValueKey('compass-$label-$value'),
         initialValue: value,
         isExpanded: true,

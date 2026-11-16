@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/exchange/import_parse.dart';
@@ -143,7 +144,7 @@ class _ImportManuscriptDialogState extends ConsumerState<ImportManuscriptDialog>
           ),
           if (!hasGroups && groups.isNotEmpty) ...[
             const SizedBox(height: 8),
-            DropdownButtonFormField<String?>(
+            ChoiceField<String?>(
               initialValue: _parentId,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Add to'),

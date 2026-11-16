@@ -10,6 +10,7 @@ import 'package:novel_builder/shared/domain/json.dart';
 import 'package:novel_builder/shared/domain/model/entity_ref.dart';
 import 'package:novel_builder/shared/domain/records/link.dart';
 
+import '../../helpers/choices.dart';
 import '../../helpers/pump_app.dart';
 
 const tall = Size(1400, 4000);
@@ -40,15 +41,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add a connection'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'Related to'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Member of').last);
-    await tester.pumpAndSettle();
+    await chooseIn(tester, choiceField('Related to'), 'Member of');
     expect(find.text('From the other end it reads “Has member”.'), findsOneWidget);
-    await tester.tap(find.widgetWithText(DropdownButtonFormField<String>, 'Which one'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Ash Guild').last);
-    await tester.pumpAndSettle();
+    await chooseIn(tester, choiceField('Which one'), 'Ash Guild');
     await tester.tap(find.text('Connect'));
     await tester.pumpAndSettle();
     final link = Link(storeOf(w.c).rowsIn(w.novel, 'loreLinks').single);

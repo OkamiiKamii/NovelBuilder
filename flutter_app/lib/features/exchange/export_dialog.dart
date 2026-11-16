@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/exchange/compile.dart';
@@ -161,7 +162,7 @@ class _ExportManuscriptDialogState extends ConsumerState<ExportManuscriptDialog>
               controlAffinity: ListTileControlAffinity.leading,
             ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<String?>(
+          ChoiceField<String?>(
             initialValue: _scopeId,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'Which part'),

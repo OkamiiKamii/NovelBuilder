@@ -9,6 +9,7 @@ import '../../app/theme/app_theme.dart';
 import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/json.dart';
@@ -343,7 +344,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
           children: [
             box(
               200,
-              DropdownButtonFormField<_WhenKind>(
+              ChoiceField<_WhenKind>(
                 initialValue: _when,
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'When'),
@@ -359,7 +360,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
             if (_when == _WhenKind.at)
               box(
                 220,
-                DropdownButtonFormField<String?>(
+                ChoiceField<String?>(
                   initialValue: _at,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Chapter'),
@@ -370,7 +371,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
             if (_when == _WhenKind.across) ...[
               box(
                 200,
-                DropdownButtonFormField<String?>(
+                ChoiceField<String?>(
                   initialValue: _from,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'From'),
@@ -383,7 +384,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
               ),
               box(
                 200,
-                DropdownButtonFormField<String?>(
+                ChoiceField<String?>(
                   initialValue: _to,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'To'),
@@ -397,7 +398,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
             ],
             box(
               220,
-              DropdownButtonFormField<String?>(
+              ChoiceField<String?>(
                 initialValue: _type,
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'Type'),
@@ -415,7 +416,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
             if (factions.isNotEmpty)
               box(
                 220,
-                DropdownButtonFormField<String?>(
+                ChoiceField<String?>(
                   initialValue: _faction,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Faction'),
@@ -432,7 +433,7 @@ class _RelationshipMapPageState extends ConsumerState<RelationshipMapPage> {
               ),
             box(
               220,
-              DropdownButtonFormField<String?>(
+              ChoiceField<String?>(
                 key: ValueKey('focus:$_focus'),
                 initialValue: _focus,
                 isExpanded: true,

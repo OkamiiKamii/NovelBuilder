@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/in_view_rows.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/model/entity_ref.dart';
 import '../../shared/domain/records/event.dart';
@@ -230,15 +231,18 @@ class _SideBySide extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  children: [
-                    for (final n in nodes)
-                      item(
-                        n.id,
-                        n.label,
-                        '${n.label} tells ${n.tellings.map((t) => '${eventName(t.eventId)} (${revealChoices[t.role]!.toLowerCase()}, ${orderWords(t)})').join('; ')}',
-                      ),
-                  ],
+                // Built as they come into view: a long book's hundreds of chapters are not all built to open the page.
+                child: InViewRows(
+                  count: nodes.length,
+                  height: _row,
+                  builder: (context, i) {
+                    final n = nodes[i];
+                    return item(
+                      n.id,
+                      n.label,
+                      '${n.label} tells ${n.tellings.map((t) => '${eventName(t.eventId)} (${revealChoices[t.role]!.toLowerCase()}, ${orderWords(t)})').join('; ')}',
+                    );
+                  },
                 ),
               ),
               SizedBox(
@@ -264,17 +268,19 @@ class _SideBySide extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: [
-                    for (final e in events)
-                      item(
-                        e.id,
-                        e.title.isEmpty ? 'Untitled event' : e.title,
-                        '${e.title}, ${e.storyRank == null ? 'not placed in time' : e.when}: '
-                        '${e.tellings.isEmpty ? 'not told in any chapter yet' : 'told in ${e.tellings.length} ${e.tellings.length == 1 ? 'place' : 'places'}'}',
-                        onLong: () => onOpenEvent(e.id),
-                      ),
-                  ],
+                child: InViewRows(
+                  count: events.length,
+                  height: _row,
+                  builder: (context, i) {
+                    final e = events[i];
+                    return item(
+                      e.id,
+                      e.title.isEmpty ? 'Untitled event' : e.title,
+                      '${e.title}, ${e.storyRank == null ? 'not placed in time' : e.when}: '
+                      '${e.tellings.isEmpty ? 'not told in any chapter yet' : 'told in ${e.tellings.length} ${e.tellings.length == 1 ? 'place' : 'places'}'}',
+                      onLong: () => onOpenEvent(e.id),
+                    );
+                  },
                 ),
               ),
             ],

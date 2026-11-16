@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../shared/domain/characters/character_records.dart';
 import '../../shared/domain/characters/one_line.dart';
 import '../../shared/domain/ids.dart';
@@ -248,7 +249,7 @@ class _NewCharacterDialogState extends State<_NewCharacterDialog> {
           onChanged: changed,
         ),
         const SizedBox(height: 12),
-        DropdownButtonFormField<String>(
+        ChoiceField<String>(
           initialValue: _template,
           isExpanded: true,
           decoration: InputDecoration(labelText: 'Profile layout', helperText: template.description, helperMaxLines: 3),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../shared/domain/collation.dart';
 import '../../../shared/domain/json.dart';
@@ -121,7 +122,7 @@ class _ProgressTrackerState extends State<ProgressTracker> {
         ] else ...[
           SizedBox(
             width: 320,
-            child: DropdownButtonFormField<String>(
+            child: ChoiceField<String>(
               key: ValueKey('asOf:$_asOf'),
               initialValue: _asOf,
               isExpanded: true,
@@ -383,7 +384,7 @@ class _ChangeFormState extends State<ChangeForm> {
         children: [
           box(
             220,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: category.id,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'What changes', isDense: true),
@@ -393,7 +394,7 @@ class _ChangeFormState extends State<ChangeForm> {
           ),
           box(
             260,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               key: ValueKey('when:$_when'),
               initialValue: _when,
               isExpanded: true,
@@ -409,7 +410,7 @@ class _ChangeFormState extends State<ChangeForm> {
           if (shape == 'held')
             box(
               160,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 initialValue: action,
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'Gained or lost', isDense: true),
@@ -467,7 +468,7 @@ class _ChangeFormState extends State<ChangeForm> {
           if (shape == 'held' || shape == 'moment')
             box(
               240,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('ref:$_refId'),
                 initialValue: others.any((e) => e.id == _refId) ? _refId : '',
                 isExpanded: true,
@@ -486,7 +487,7 @@ class _ChangeFormState extends State<ChangeForm> {
           if ((shape == 'held' || shape == 'moment') && model.abilities.isNotEmpty)
             box(
               240,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('ability:$_abilityId'),
                 initialValue: model.abilities.containsKey(_abilityId) ? _abilityId : '',
                 isExpanded: true,
@@ -615,7 +616,7 @@ class _TrackedCategoriesDialogState extends ConsumerState<TrackedCategoriesDialo
                             ),
                             SizedBox(
                               width: 220,
-                              child: DropdownButtonFormField<String>(
+                              child: ChoiceField<String>(
                                 key: ValueKey('shape:${c.id}:${c.shape}'),
                                 initialValue: c.shape,
                                 isExpanded: true,
@@ -751,7 +752,7 @@ class _TrackedCategoriesDialogState extends ConsumerState<TrackedCategoriesDialo
                   ),
                   SizedBox(
                     width: 220,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       initialValue: _shape,
                       isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Its shape', isDense: true),

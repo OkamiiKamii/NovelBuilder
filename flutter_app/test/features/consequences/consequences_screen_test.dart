@@ -8,6 +8,7 @@ import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/choices.dart';
 import '../../helpers/pump_app.dart';
 import '../../shared/domain/fixtures.dart';
 
@@ -78,9 +79,7 @@ void main() {
     final c = await start(tester, '/review/consequences');
     expect(find.text('Pick the point you are thinking of changing'), findsOneWidget);
     await tap(tester, find.text('An event'));
-    await tap(tester, find.widgetWithText(DropdownButtonFormField<String>, 'Event'));
-    await tester.tap(find.text('The false coronation').last);
-    await tester.pumpAndSettle();
+    await chooseIn(tester, choiceField('Event').first, 'The false coronation');
     expect(currentLocation(c), startsWith('/review/consequences?event='));
     expect(find.textContaining('If the event'), findsOneWidget);
     await tester.pump(const Duration(seconds: 2));

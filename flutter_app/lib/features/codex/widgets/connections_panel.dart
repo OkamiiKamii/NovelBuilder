@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../shared/domain/collation.dart';
 import '../../../shared/domain/integrity/rules.dart';
@@ -270,7 +271,7 @@ class _ConnectionDialogState extends State<_ConnectionDialog> {
           children: [
             Text('From $selfName', style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: _kind,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Kind of connection'),
@@ -293,7 +294,7 @@ class _ConnectionDialogState extends State<_ConnectionDialog> {
             Text(reads, style: Theme.of(context).textTheme.bodySmall),
             if (widget.editing == null) ...[
               const SizedBox(height: 12),
-              DropdownButtonFormField<EntityType>(
+              ChoiceField<EntityType>(
                 initialValue: _otherType,
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'Connected to a…'),
@@ -307,7 +308,7 @@ class _ConnectionDialogState extends State<_ConnectionDialog> {
               if (options.isEmpty)
                 const NotRecorded('There is nothing of that kind in this novel yet.')
               else
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey(_otherType),
                   initialValue: _to?.id,
                   isExpanded: true,
@@ -343,7 +344,7 @@ class _ConnectionDialogState extends State<_ConnectionDialog> {
               decoration: const InputDecoration(labelText: 'Notes'),
             ),
             const SizedBox(height: 12),
-            DropdownButtonFormField<CanonStatus>(
+            ChoiceField<CanonStatus>(
               initialValue: _canon,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Status'),

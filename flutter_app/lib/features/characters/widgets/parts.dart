@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/domain/records/story_node.dart';
 import '../characters_providers.dart';
 
@@ -96,7 +97,7 @@ class DocumentChooser extends StatelessWidget {
   Widget build(BuildContext context) {
     final docs = cast.documents;
     final known = value == null || docs.any((d) => d.id == value);
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       key: ValueKey('$label:$value'),
       initialValue: known ? (value ?? '') : '\u0000gone',
       isExpanded: true,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
 import '../../core/widgets/states.dart';
@@ -204,7 +205,7 @@ class _EventEditor extends StatelessWidget {
             runSpacing: 12,
             children: [
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('importance:${event.importanceKey}'),
                   initialValue: importanceLabels.containsKey(event.importanceKey) ? event.importanceKey : 'minor',
                   isExpanded: true,
@@ -216,7 +217,7 @@ class _EventEditor extends StatelessWidget {
                 ),
               ),
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('location:${event.locationId}'),
                   initialValue: data.places.any((p) => p.id == event.locationId) ? event.locationId : '',
                   isExpanded: true,
@@ -256,7 +257,7 @@ class _EventEditor extends StatelessWidget {
               ),
               SizedBox(
                 width: 124,
-                child: DropdownButtonFormField<TimeUnit>(
+                child: ChoiceField<TimeUnit>(
                   key: ValueKey('unit:${event.duration?.unit}'),
                   initialValue: event.duration?.unit ?? TimeUnit.days,
                   isExpanded: true,
@@ -276,7 +277,7 @@ class _EventEditor extends StatelessWidget {
             ],
           ),
           gap(),
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('ends:$endMode'),
             initialValue: endMode,
             isExpanded: true,
@@ -343,7 +344,7 @@ class _EventEditor extends StatelessWidget {
             runSpacing: 12,
             children: [
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('status:${event.statusKey}'),
                   initialValue: eventStatusLabels.containsKey(event.statusKey) ? event.statusKey : 'confirmed',
                   isExpanded: true,
@@ -355,7 +356,7 @@ class _EventEditor extends StatelessWidget {
                 ),
               ),
               half(
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('canon:${event.canonKey}'),
                   initialValue: CanonStatus.of(event.canonKey)?.key ?? 'canon',
                   isExpanded: true,
@@ -491,7 +492,7 @@ class _EventEditor extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 210,
-                        child: DropdownButtonFormField<RevealRole>(
+                        child: ChoiceField<RevealRole>(
                           key: ValueKey('role:${t.nodeId}:${t.role}'),
                           initialValue: t.role,
                           isExpanded: true,
@@ -550,7 +551,7 @@ class _EventEditor extends StatelessWidget {
             onChanged: (ids) => update((_) => {'entryIds': ids}),
           ),
           gap(),
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('after:${event.afterId}'),
             initialValue: others.any((p) => p.event.id == event.afterId) ? event.afterId : '',
             isExpanded: true,

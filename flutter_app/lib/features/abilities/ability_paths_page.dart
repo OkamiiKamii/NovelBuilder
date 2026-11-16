@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/abilities/paths.dart';
 import '../../shared/domain/collation.dart';
@@ -257,7 +258,7 @@ class _AbilityPathsPageState extends ConsumerState<AbilityPathsPage> {
             children: [
               SizedBox(
                 width: 280,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('at:$at'),
                   initialValue: at ?? '',
                   isExpanded: true,
@@ -1269,7 +1270,7 @@ class _DetailsState extends State<_Details> {
             children: [
               SizedBox(
                 width: 220,
-                child: DropdownButtonFormField<bool>(
+                child: ChoiceField<bool>(
                   key: ValueKey('way:$key:$_out'),
                   initialValue: _out,
                   isExpanded: true,
@@ -1289,7 +1290,7 @@ class _DetailsState extends State<_Details> {
               ),
               SizedBox(
                 width: 240,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('kind:$key:$_type'),
                   initialValue: _type,
                   isExpanded: true,
@@ -1316,7 +1317,7 @@ class _DetailsState extends State<_Details> {
                 ),
               SizedBox(
                 width: 260,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('other:$key:$_other'),
                   initialValue: _other,
                   isExpanded: true,

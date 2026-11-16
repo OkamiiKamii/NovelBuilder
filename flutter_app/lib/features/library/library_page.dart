@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/novel_store.dart';
@@ -300,7 +301,7 @@ class _Toolbar extends StatelessWidget {
               ),
       ),
     );
-    final statusField = DropdownButtonFormField<NovelStatus?>(
+    final statusField = ChoiceField<NovelStatus?>(
       initialValue: status,
       isExpanded: true,
       decoration: const InputDecoration(labelText: 'Status'),
@@ -312,7 +313,7 @@ class _Toolbar extends StatelessWidget {
     );
     final genreField = genres.isEmpty
         ? null
-        : DropdownButtonFormField<String?>(
+        : ChoiceField<String?>(
             initialValue: genres.contains(genre) ? genre : null,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'Genre'),
@@ -326,7 +327,7 @@ class _Toolbar extends StatelessWidget {
             ],
             onChanged: onGenre,
           );
-    final sortField = DropdownButtonFormField<LibrarySort>(
+    final sortField = ChoiceField<LibrarySort>(
       initialValue: sort,
       isExpanded: true,
       decoration: const InputDecoration(labelText: 'Sort by'),

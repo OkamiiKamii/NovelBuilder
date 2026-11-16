@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/collation.dart';
@@ -139,7 +140,7 @@ class _OwnershipPageState extends ConsumerState<OwnershipPage> {
             children: [
               SizedBox(
                 width: 240,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('item:${item.id}'),
                   initialValue: item.id,
                   isExpanded: true,
@@ -287,7 +288,7 @@ class _OwnershipFormState extends ConsumerState<OwnershipForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             initialValue: _what,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'What happens', isDense: true),
@@ -312,7 +313,7 @@ class _OwnershipFormState extends ConsumerState<OwnershipForm> {
           ],
           if (!ends) ...[
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: _holder,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Who has it next', isDense: true),
@@ -329,7 +330,7 @@ class _OwnershipFormState extends ConsumerState<OwnershipForm> {
           ],
           if (open.length > 1) ...[
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: which,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Whose holding', isDense: true),

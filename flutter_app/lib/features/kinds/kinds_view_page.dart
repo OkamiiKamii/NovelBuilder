@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
+import '../../core/widgets/in_view_rows.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/capabilities.dart';
@@ -181,7 +183,7 @@ class _KindsViewPageState extends ConsumerState<KindsViewPage> {
             children: [
               SizedBox(
                 width: 280,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('kind:${category.key}'),
                   initialValue: category.key,
                   isExpanded: true,
@@ -306,39 +308,81 @@ class _Part {
   Widget notDrawn(List<Unplaced> items, String what) => _NotDrawn(items: items, what: what);
 
   /// Every record and its fields, each value as a reader sees it.
-  Widget table() {
-    final t = kindTable(model, category.key);
-    String short(String s) => s.length > 120 ? '${s.substring(0, 119)}…' : s;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        headingRowHeight: 40,
-        dataRowMinHeight: 40,
-        dataRowMaxHeight: 72,
-        columns: [
-          const DataColumn(label: Text('Name')),
-          for (final c in t.columns) DataColumn(label: Text(c.name)),
-        ],
-        rows: [
-          for (final r in t.rows)
-            if (keep(r.entry.id))
-              DataRow(
-                selected: selectedId == r.entry.id,
-                cells: [
-                  DataCell(name(r.entry)),
-                  for (final cell in r.cells)
-                    DataCell(
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 260),
-                        child: Text(short(cell), maxLines: 3, overflow: TextOverflow.ellipsis),
+  /// The table's measures: the name column, a field's column, a row (two lines of a value), the heading.
+  static const _nameW = 200.0, _fieldW = 240.0, _rowH = 64.0, _headH = 44.0;
+
+  Widget table() => Builder(
+    builder: (context) {
+      final theme = Theme.of(context);
+      final t = kindTable(model, category.key);
+      final rows = [
+        for (final r in t.rows)
+          if (keep(r.entry.id)) r,
+      ];
+      String short(String s) => s.length > 120 ? '${s.substring(0, 119)}…' : s;
+      final line = BorderSide(color: theme.dividerColor);
+      Widget cell(double width, Widget child) => SizedBox(
+        width: width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Align(alignment: AlignmentDirectional.centerStart, child: child),
+        ),
+      );
+      final width = _nameW + t.columns.length * _fieldW;
+      return Semantics(
+        container: true,
+        label: '${category.name}: ${rows.length} ${rows.length == 1 ? 'record' : 'records'}, a row each',
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(border: Border(bottom: line)),
+                  child: SizedBox(
+                    height: _headH,
+                    child: DefaultTextStyle.merge(
+                      style: theme.textTheme.titleSmall,
+                      child: Row(
+                        children: [
+                          cell(_nameW, const Text('Name')),
+                          for (final c in t.columns)
+                            cell(_fieldW, Text(c.name, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                        ],
                       ),
                     ),
-                ],
-              ),
-        ],
-      ),
-    );
-  }
+                  ),
+                ),
+                // A row a record, built as it comes into view: a kind with hundreds of records opens at once.
+                InViewRows(
+                  count: rows.length,
+                  height: _rowH,
+                  builder: (context, i) {
+                    final r = rows[i];
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: selectedId == r.entry.id ? theme.colorScheme.primary.withValues(alpha: 0.08) : null,
+                        border: Border(bottom: line),
+                      ),
+                      child: Row(
+                        children: [
+                          cell(_nameW, name(r.entry)),
+                          for (final value in r.cells)
+                            cell(_fieldW, Text(short(value), maxLines: 2, overflow: TextOverflow.ellipsis)),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 
   /// On the story's timeline: one row a record, a dot for a moment, a bar from start to end.
   Widget timeline() {
@@ -1177,7 +1221,7 @@ class _HolderEditorState extends State<_HolderEditor> {
                 children: [
                   SizedBox(
                     width: 260,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('holder:$_holder'),
                       initialValue: _holder,
                       isExpanded: true,
@@ -1197,7 +1241,7 @@ class _HolderEditorState extends State<_HolderEditor> {
                   ),
                   SizedBox(
                     width: 260,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('when:$_when'),
                       initialValue: _when,
                       isExpanded: true,

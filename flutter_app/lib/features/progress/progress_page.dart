@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -569,7 +570,7 @@ class _GoalDialogState extends State<_GoalDialog> {
           ),
           gap,
           if (_task)
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: _category,
               decoration: const InputDecoration(labelText: 'Task type'),
               items: [for (final c in taskCategories) DropdownMenuItem(value: c, child: Text(taskLabels[c]!))],
@@ -583,7 +584,7 @@ class _GoalDialogState extends State<_GoalDialog> {
               decoration: const InputDecoration(labelText: 'Word target (optional)'),
             ),
             gap,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: widget.scopes.any((t) => t.node.id == _nodeId) ? _nodeId : '',
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Deadline covers'),

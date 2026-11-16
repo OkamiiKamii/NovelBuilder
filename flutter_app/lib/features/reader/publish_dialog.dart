@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/exchange/render_book.dart';
@@ -184,7 +185,7 @@ class _PublishDialogState extends ConsumerState<PublishDialog> {
               ),
               if (_kind != PublishKind.epub) ...[
                 const SizedBox(height: 8),
-                DropdownButtonFormField<SerialFormat>(
+                ChoiceField<SerialFormat>(
                   initialValue: _format,
                   decoration: const InputDecoration(labelText: 'Each chapter as'),
                   items: [
@@ -196,7 +197,7 @@ class _PublishDialogState extends ConsumerState<PublishDialog> {
               ],
               if (_kind == PublishKind.serialOne && chapters.isNotEmpty) ...[
                 const SizedBox(height: 12),
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   initialValue: _chapterId,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Chapter'),

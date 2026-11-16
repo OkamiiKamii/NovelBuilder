@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart' show formatRelative;
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
@@ -150,7 +151,7 @@ class _CanonPageState extends ConsumerState<CanonPage> {
               ),
               SizedBox(
                 width: 200,
-                child: DropdownButtonFormField<CanonStatus?>(
+                child: ChoiceField<CanonStatus?>(
                   initialValue: _status,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Canon status', isDense: true),
@@ -167,7 +168,7 @@ class _CanonPageState extends ConsumerState<CanonPage> {
               ),
               SizedBox(
                 width: 180,
-                child: DropdownButtonFormField<String?>(
+                child: ChoiceField<String?>(
                   initialValue: _kind,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Kind', isDense: true),
@@ -181,7 +182,7 @@ class _CanonPageState extends ConsumerState<CanonPage> {
               if (about.isNotEmpty)
                 SizedBox(
                   width: 200,
-                  child: DropdownButtonFormField<String?>(
+                  child: ChoiceField<String?>(
                     initialValue: _about,
                     isExpanded: true,
                     decoration: const InputDecoration(labelText: 'About', isDense: true),
@@ -440,7 +441,7 @@ class _FactDetailsState extends State<FactDetails> {
             if (fact.status == CanonStatus.retconned)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('replaced:${fact.replacedById}'),
                   initialValue: others.any((f) => f.id == fact.replacedById) ? fact.replacedById : '',
                   isExpanded: true,
@@ -459,7 +460,7 @@ class _FactDetailsState extends State<FactDetails> {
             const SizedBox(height: 8),
             SizedBox(
               width: 220,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('kind:${fact.kind}'),
                 initialValue: fact.kind,
                 isExpanded: true,
@@ -533,7 +534,7 @@ class _FactDetailsState extends State<FactDetails> {
               children: [
                 SizedBox(
                   width: 190,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     initialValue: _sourceType,
                     isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Kind of source', isDense: true),
@@ -547,7 +548,7 @@ class _FactDetailsState extends State<FactDetails> {
                 if (_sourceType != 'note')
                   SizedBox(
                     width: 240,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('ref:$_sourceType:$_sourceRef'),
                       initialValue: _sourceRef,
                       isExpanded: true,

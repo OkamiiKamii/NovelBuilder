@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
@@ -568,7 +569,7 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
                         onChanged: (v) => setState(() => v == true ? _picked.add(c.key) : _picked.remove(c.key)),
                       ),
                     if (systems.isNotEmpty)
-                      DropdownButtonFormField<String>(
+                      ChoiceField<String>(
                         initialValue: _systemId ?? '',
                         isExpanded: true,
                         decoration: const InputDecoration(labelText: 'System rules'),

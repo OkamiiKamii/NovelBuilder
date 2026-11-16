@@ -11,6 +11,7 @@ import 'package:novel_builder/shared/domain/model/entity_ref.dart';
 import 'package:novel_builder/shared/domain/records/category.dart';
 import 'package:novel_builder/shared/domain/records/link.dart';
 
+import '../../helpers/choices.dart';
 import '../../helpers/pump_app.dart';
 
 const tall = Size(1400, 5000);
@@ -87,15 +88,8 @@ Future<void> tapText(WidgetTester tester, String text) async {
   await tester.pumpAndSettle();
 }
 
-Future<void> choose(WidgetTester tester, String label, String option) async {
-  final field = find.widgetWithText(DropdownButtonFormField<String>, label).first;
-  await tester.ensureVisible(field);
-  await tester.pumpAndSettle();
-  await tester.tap(field);
-  await tester.pumpAndSettle();
-  await tester.tap(find.textContaining(option).last);
-  await tester.pumpAndSettle();
-}
+Future<void> choose(WidgetTester tester, String label, String option) =>
+    chooseIn(tester, choiceField(label).first, option, containing: true);
 
 void main() {
   testWidgets('the views a kind is shown in are chosen field by field, and what is missing is said', (tester) async {

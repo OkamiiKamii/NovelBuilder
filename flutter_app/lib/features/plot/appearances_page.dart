@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/characters/appearances.dart';
 import '../../shared/domain/collation.dart';
@@ -180,7 +181,7 @@ class _AppearancesPageState extends ConsumerState<AppearancesPage> {
         ),
         box(
           200,
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('from:${filter.from}'),
             initialValue: documents.any((d) => d.id == filter.from) ? filter.from : '',
             isExpanded: true,
@@ -198,7 +199,7 @@ class _AppearancesPageState extends ConsumerState<AppearancesPage> {
         ),
         box(
           200,
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('to:${filter.to}'),
             initialValue: documents.any((d) => d.id == filter.to) ? filter.to : '',
             isExpanded: true,
@@ -217,7 +218,7 @@ class _AppearancesPageState extends ConsumerState<AppearancesPage> {
         if (threads.isNotEmpty)
           box(
             200,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               key: ValueKey('thread:${filter.threadId}'),
               initialValue: threads.any((t) => t.id == filter.threadId) ? filter.threadId : '',
               isExpanded: true,
@@ -236,7 +237,7 @@ class _AppearancesPageState extends ConsumerState<AppearancesPage> {
         if (places.isNotEmpty)
           box(
             200,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               key: ValueKey('place:${filter.placeId}'),
               initialValue: places.any((p) => p.id == filter.placeId) ? filter.placeId : '',
               isExpanded: true,
@@ -254,7 +255,7 @@ class _AppearancesPageState extends ConsumerState<AppearancesPage> {
           ),
         box(
           170,
-          DropdownButtonFormField<NodeStatus?>(
+          ChoiceField<NodeStatus?>(
             key: ValueKey('status:$_status'),
             initialValue: _status,
             isExpanded: true,

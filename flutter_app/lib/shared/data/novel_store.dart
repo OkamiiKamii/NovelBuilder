@@ -54,6 +54,27 @@ class NovelStore extends ChangeNotifier {
 
   void _wroteWhole(String projectId) => _wholly[projectId] = (_wholly[projectId] ?? 0) + 1;
 
+  /// And each record: how many times it was written (stored, changed or removed) since the app started, by novel, then
+  /// collection, then record.
+  final _rowsWritten = <String, Map<String, Map<String, int>>>{};
+
+  void _wroteRows(String projectId, Iterable<(String collection, String id)> rows) {
+    final byCollection = _rowsWritten[projectId] ??= {};
+    for (final (collection, id) in rows) {
+      final counts = byCollection[collection] ??= {};
+      counts[id] = (counts[id] ?? 0) + 1;
+    }
+  }
+
+  /// For each record of a collection of [projectId] written since the app started, how many times; records not in it
+  /// are as they were when the novel was last [wholeVersionOf] stored. Work kept per record (a chapter's gaps, say)
+  /// is done again for those whose count moved, and for all when [wholeVersionOf] does. Nothing is read.
+  Map<String, int> rowVersionsIn(String projectId, String collection) =>
+      Map.of(_rowsWritten[projectId]?[collection] ?? const {});
+
+  /// A number that moves whenever [projectId] is stored whole (put anew: imported, restored) or deleted.
+  int wholeVersionOf(String projectId) => _wholly[projectId] ?? 0;
+
   /// A number that moves whenever any of [collections] of [projectId] (or the novel's own row, as 'project') is
   /// written, and stays the same otherwise. Cheap to ask on every build: nothing is read.
   int versionOf(String projectId, Iterable<String> collections) {
@@ -169,6 +190,7 @@ class NovelStore extends ChangeNotifier {
     // What this save writes, counted once it has succeeded.
     // The novel's own row counts as written only when more than its time changed (every save touches that).
     final wrote = <String>{if (!_sameButTime(after.project, before.project)) 'project'};
+    final rowsWrote = <(String, String)>[];
     db.transaction(() {
       final stored = db.raw.select('SELECT json FROM novels WHERE id = ?', [id]);
       if (stored.isEmpty) throw StaleWriteException('The novel');
@@ -210,6 +232,7 @@ class NovelStore extends ChangeNotifier {
           if (mark != null) changed.addAll(_guarded(mark, name, str(rowId), old[rowId], null));
           db.raw.execute('DELETE FROM records WHERE project_id = ? AND collection = ? AND id = ?', [id, name, rowId]);
           wrote.add(name);
+          rowsWrote.add((name, str(rowId)));
         }
         var position =
             (db.raw.select('SELECT MAX(position) AS p FROM records WHERE project_id = ? AND collection = ?', [
@@ -224,6 +247,7 @@ class NovelStore extends ChangeNotifier {
           expectStored(e.key);
           if (mark != null) changed.addAll(_guarded(mark, name, str(e.key), was, e.value));
           wrote.add(name);
+          rowsWrote.add((name, str(e.key)));
           if (was == null) {
             db.raw.execute(
               'INSERT INTO records (project_id, collection, id, json, position, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
@@ -245,6 +269,7 @@ class NovelStore extends ChangeNotifier {
       }
     });
     _wrote(id, wrote);
+    _wroteRows(id, rowsWrote);
     _changed();
   }
 
@@ -278,6 +303,22 @@ class NovelStore extends ChangeNotifier {
     ))
       r['json']! as String,
   ];
+
+  /// Only the records of a collection named by [ids], as stored (JSON text, in order): to read again the few written
+  /// since, not the whole collection.
+  List<String> rawJsonOf(String projectId, String collection, Iterable<String> ids) {
+    final all = ids.toList();
+    return [
+      // A few hundred at a time, within the database's limit on values in one query.
+      for (var i = 0; i < all.length; i += 400)
+        for (final r in db.raw.select(
+          'SELECT json FROM records WHERE project_id = ? AND collection = ? AND id IN '
+          '(${List.filled(all.skip(i).take(400).length, '?').join(', ')}) ORDER BY position',
+          [projectId, collection, ...all.skip(i).take(400)],
+        ))
+          r['json']! as String,
+    ];
+  }
 
   /// How many records each collection of each of [projectIds] holds (by book, then by collection), in one query from
   /// the index, without reading the records. A collection a book has no records in is absent.
@@ -382,6 +423,7 @@ class NovelStore extends ChangeNotifier {
     });
     // The novel's own row: only when the review copy's mark changed, not for its time.
     _wrote(projectId, {if (markChanged) 'project', for (final w in writes) w.collection});
+    _wroteRows(projectId, [for (final w in writes) (w.collection, w.id)]);
     _changed();
   }
 
@@ -401,10 +443,16 @@ class NovelStore extends ChangeNotifier {
     _changed();
   }
 
-  /// What each novel holds, for the library: counted in the database, without loading any novel.
-  Map<String, NovelStats> stats() => {
-    for (final r in db.raw.select(
-      '''
+  /// The collections [stats] counts from: a write to any other leaves a novel's numbers as they were.
+  static const statsCollections = {'chapters', 'loreEntries', 'timelineEvents', 'plotThreads', 'writingSessions'};
+
+  /// What each novel holds, for the library: counted in the database, without loading any novel. [only]: just those
+  /// novels (each read by its own records, not the whole library's).
+  Map<String, NovelStats> stats({Iterable<String>? only}) => only != null && only.isEmpty
+      ? const {}
+      : {
+          for (final r in db.raw.select(
+            '''
       SELECT project_id,
         SUM(CASE WHEN collection = 'chapters' THEN COALESCE(json_extract(json, '\$.wordCount'), 0) ELSE 0 END) AS words,
         SUM(CASE WHEN collection = 'chapters' AND json_extract(json, '\$.kind') = 'chapter' THEN 1 ELSE 0 END) AS chapters,
@@ -415,20 +463,23 @@ class NovelStore extends ChangeNotifier {
         SUM(CASE WHEN collection = 'plotThreads' THEN 1 ELSE 0 END) AS threads,
         MAX(CASE WHEN collection = 'writingSessions' AND (COALESCE(json_extract(json, '\$.added'), 0) > 0
           OR COALESCE(json_extract(json, '\$.removed'), 0) > 0) THEN json_extract(json, '\$.lastActiveAt') END) AS last_written
-      FROM records GROUP BY project_id
+      FROM records
+      ${only == null ? '' : 'WHERE project_id IN (${List.filled(only.length, '?').join(', ')})'}
+      GROUP BY project_id
     ''',
-    ))
-      r['project_id']! as String: NovelStats(
-        words: (r['words'] as num? ?? 0).toInt(),
-        chapters: r['chapters']! as int,
-        scenes: r['scenes']! as int,
-        characters: r['characters']! as int,
-        entries: r['entries']! as int,
-        events: r['events']! as int,
-        threads: r['threads']! as int,
-        lastWrittenAt: r['last_written'] as num?,
-      ),
-  };
+            [...?only],
+          ))
+            r['project_id']! as String: NovelStats(
+              words: (r['words'] as num? ?? 0).toInt(),
+              chapters: r['chapters']! as int,
+              scenes: r['scenes']! as int,
+              characters: r['characters']! as int,
+              entries: r['entries']! as int,
+              events: r['events']! as int,
+              threads: r['threads']! as int,
+              lastWrittenAt: r['last_written'] as num?,
+            ),
+        };
 
   /// Deletes a novel and everything it owns (its drafts too). Restore points are kept, so it can be brought back.
   void deleteNovel(String projectId) {

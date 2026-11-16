@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/form_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
@@ -307,7 +308,7 @@ class _ContinuityPageState extends ConsumerState<ContinuityPage> {
                 children: [
                   SizedBox(
                     width: 200,
-                    child: DropdownButtonFormField<Severity?>(
+                    child: ChoiceField<Severity?>(
                       initialValue: _severity,
                       isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Severity', isDense: true),
@@ -321,7 +322,7 @@ class _ContinuityPageState extends ConsumerState<ContinuityPage> {
                   ),
                   SizedBox(
                     width: 220,
-                    child: DropdownButtonFormField<String?>(
+                    child: ChoiceField<String?>(
                       initialValue: _category,
                       isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Kind of check', isDense: true),
@@ -336,7 +337,7 @@ class _ContinuityPageState extends ConsumerState<ContinuityPage> {
                   ),
                   SizedBox(
                     width: 220,
-                    child: DropdownButtonFormField<String?>(
+                    child: ChoiceField<String?>(
                       initialValue: chapter,
                       isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Chapter', isDense: true),
@@ -613,36 +614,34 @@ class _RuleFormState extends ConsumerState<RuleForm> {
       model.nodes.values.where((n) => model.order.position.containsKey(n.id)),
       (a, b) => model.order.position[a.id]!.compareTo(model.order.position[b.id]!),
     );
-    Widget entryMenu(String label, String? value, List<Entry> list, ValueChanged<String?> set) =>
-        DropdownButtonFormField<String>(
-          initialValue: list.any((e) => e.id == value) ? value : null,
-          isExpanded: true,
-          decoration: InputDecoration(labelText: label, isDense: true),
-          hint: const Text('Choose…'),
-          items: [
-            for (final e in list)
-              DropdownMenuItem(
-                value: e.id,
-                child: Text(e.name, overflow: TextOverflow.ellipsis),
-              ),
-          ],
-          onChanged: set,
-        );
-    Widget chapterMenu(String label, String? value, String none, ValueChanged<String?> set) =>
-        DropdownButtonFormField<String>(
-          initialValue: chapters.any((n) => n.id == value) ? value : '',
-          isExpanded: true,
-          decoration: InputDecoration(labelText: label, isDense: true),
-          items: [
-            DropdownMenuItem(value: '', child: Text(none)),
-            for (final n in chapters)
-              DropdownMenuItem(
-                value: n.id,
-                child: Text(nodeLabel(model, n.id), overflow: TextOverflow.ellipsis),
-              ),
-          ],
-          onChanged: (v) => set(v == null || v.isEmpty ? null : v),
-        );
+    Widget entryMenu(String label, String? value, List<Entry> list, ValueChanged<String?> set) => ChoiceField<String>(
+      initialValue: list.any((e) => e.id == value) ? value : null,
+      isExpanded: true,
+      decoration: InputDecoration(labelText: label, isDense: true),
+      hint: const Text('Choose…'),
+      items: [
+        for (final e in list)
+          DropdownMenuItem(
+            value: e.id,
+            child: Text(e.name, overflow: TextOverflow.ellipsis),
+          ),
+      ],
+      onChanged: set,
+    );
+    Widget chapterMenu(String label, String? value, String none, ValueChanged<String?> set) => ChoiceField<String>(
+      initialValue: chapters.any((n) => n.id == value) ? value : '',
+      isExpanded: true,
+      decoration: InputDecoration(labelText: label, isDense: true),
+      items: [
+        DropdownMenuItem(value: '', child: Text(none)),
+        for (final n in chapters)
+          DropdownMenuItem(
+            value: n.id,
+            child: Text(nodeLabel(model, n.id), overflow: TextOverflow.ellipsis),
+          ),
+      ],
+      onChanged: (v) => set(v == null || v.isEmpty ? null : v),
+    );
     const gap = SizedBox(height: 12);
 
     return FormDialog(
@@ -665,7 +664,7 @@ class _RuleFormState extends ConsumerState<RuleForm> {
           ),
           if (kind == 'status' || kind == 'possession') ...[
             gap,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: _state,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'State', isDense: true),
@@ -697,7 +696,7 @@ class _RuleFormState extends ConsumerState<RuleForm> {
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 140,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     initialValue: _unit,
                     isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Unit', isDense: true),
@@ -732,7 +731,7 @@ class _RuleFormState extends ConsumerState<RuleForm> {
           ],
           if (kind == 'power') ...[
             gap,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               initialValue: _scope,
               isExpanded: true,
               decoration: const InputDecoration(labelText: 'Look for those words', isDense: true),

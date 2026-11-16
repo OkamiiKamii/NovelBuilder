@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/choice_field.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/places/places_providers.dart';
 import 'package:novel_builder/features/visualize/visualize_providers.dart';
@@ -11,6 +12,7 @@ import 'package:novel_builder/shared/domain/json.dart';
 import 'package:novel_builder/shared/domain/model/entity_ref.dart';
 import 'package:novel_builder/shared/domain/travel/travel.dart';
 
+import '../../helpers/choices.dart';
 import '../../helpers/pump_app.dart';
 
 typedef World = ({
@@ -55,15 +57,11 @@ Future<void> tapText(WidgetTester tester, String text) async {
   await tester.pumpAndSettle();
 }
 
-Future<void> choose<T>(WidgetTester tester, String label, String option) async {
-  final field = find.widgetWithText(DropdownButtonFormField<T>, label).last;
-  await tester.ensureVisible(field);
-  await tester.pumpAndSettle();
-  await tester.tap(field);
-  await tester.pumpAndSettle();
-  await tester.tap(find.text(option).last);
-  await tester.pumpAndSettle();
-}
+Future<void> choose<T>(WidgetTester tester, String label, String option) => chooseIn(
+  tester,
+  find.ancestor(of: find.text(label), matching: find.byWidgetPredicate((w) => w is ChoiceField<T>)).last,
+  option,
+);
 
 void main() {
   testWidgets('levels of place start from a preset; a place gets its level and what it is inside', (tester) async {

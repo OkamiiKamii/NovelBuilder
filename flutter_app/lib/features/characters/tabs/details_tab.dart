@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/characters/character_records.dart';
 import '../../../shared/domain/codex/codex_changes.dart';
@@ -146,7 +147,7 @@ class _LinkRow extends StatelessWidget {
           if (withStatus)
             SizedBox(
               width: 170,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('${link.linkId}:$status'),
                 initialValue: status,
                 isExpanded: true,
@@ -210,7 +211,7 @@ class _AddLinkState extends State<_AddLink> {
       children: [
         SizedBox(
           width: 260,
-          child: DropdownButtonFormField<String>(
+          child: ChoiceField<String>(
             key: ValueKey('add:$_to'),
             initialValue: _to,
             isExpanded: true,

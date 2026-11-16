@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:super_editor/super_editor.dart';
@@ -188,7 +189,13 @@ final pendingGapProvider = NotifierProvider<PendingGapNotifier, Gap?>(PendingGap
   return best;
 }
 
-/// Every gap in the open novel, in reading order, read away from the screen after each save.
+/// How many chapters written since the last reading are read again on the spot; more (a book replaced, many chapters
+/// changed at once) are read away from the screen.
+const gapsReadHere = 12;
+
+/// Every gap in the open novel, in reading order. Kept chapter by chapter: a save reads again only the chapters written
+/// since (one, as a rule: the one being written), on the spot, not the whole book away from the screen. The first
+/// reading of a book, and a book stored anew (imported, restored), are read whole, away from the screen.
 class GapsNotifier extends Notifier<List<Gap>> {
   @override
   List<Gap> build() {
@@ -196,17 +203,34 @@ class GapsNotifier extends Notifier<List<Gap>> {
     if (novelId == null) return const [];
     final store = ref.watch(novelStoreProvider);
     final run = ref.watch(runAsideProvider);
-    final service = ref.read(manuscriptServiceProvider);
     var alive = true;
-    String? readAt;
     var running = false;
     var again = false;
     var queued = false;
 
-    String stamp() => [
-      for (final c in const ['chapterContents', 'chapters'])
-        if (store.stampOf(novelId, c) case (:final count, :final latest)) '$count:$latest',
-    ].join('|');
+    // Each chapter's gaps, and the store's count of writes to its text when they were read; and the count of the book
+    // stored whole they go with.
+    final pageGaps = <String, List<Gap>>{};
+    var pageVersions = <String, int>{};
+    int? wholeAt;
+
+    // In reading order (the outline the page keeps already, not read again here), from the chapters' gaps as kept.
+    void show() {
+      final out = [
+        for (final n in readingOrder(ref.read(outlineProvider)))
+          if (isDocument(n.kind)) ...?pageGaps[n.id],
+      ];
+      if (!listEquals(out, state)) state = out;
+    }
+
+    void keep(Iterable<String> read, List<Gap> found) {
+      for (final id in read) {
+        pageGaps.remove(id);
+      }
+      for (final g in found) {
+        (pageGaps[g.nodeId] ??= []).add(g);
+      }
+    }
 
     void read() {
       if (!alive || !store.exists(novelId)) return;
@@ -214,18 +238,34 @@ class GapsNotifier extends Notifier<List<Gap>> {
         again = true;
         return;
       }
-      final now = stamp();
-      if (now == readAt) return;
-      readAt = now;
+      final whole = store.wholeVersionOf(novelId);
+      // Counted before reading: a write meanwhile moves its count again, and is read next time.
+      final versions = store.rowVersionsIn(novelId, 'chapterContents');
+      if (wholeAt == whole) {
+        final written = [
+          for (final MapEntry(:key, :value) in versions.entries)
+            if (pageVersions[key] != value) key,
+        ];
+        if (written.length <= gapsReadHere) {
+          // The chapters written since (none, when the save was of something else), read on the spot.
+          keep(written, gapsJob(store.rawJsonOf(novelId, 'chapterContents', written), written)());
+          pageVersions = versions;
+          show();
+          return;
+        }
+      }
+      // The whole book, away from the screen.
       running = true;
-      final order = [
-        for (final n in readingOrder(service.nodes(novelId)))
-          if (isDocument(n.kind)) n.id,
-      ];
-      run(gapsJob(store.rawJsonIn(novelId, 'chapterContents'), order))
+      final all = [for (final n in readingOrder(ref.read(outlineProvider))) n.id];
+      run(gapsJob(store.rawJsonIn(novelId, 'chapterContents'), all))
           .then(
             (found) {
-              if (alive && readAt == now) state = found;
+              if (!alive) return;
+              pageGaps.clear();
+              keep(const [], found);
+              pageVersions = versions;
+              wholeAt = whole;
+              show();
             },
             onError: (Object e, StackTrace s) =>
                 FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'write')),

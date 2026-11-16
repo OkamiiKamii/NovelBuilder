@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
@@ -215,7 +216,7 @@ class _ShareDialogState extends State<_ShareDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 initialValue: _source.key,
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'Template'),
@@ -254,7 +255,7 @@ class _ShareDialogState extends State<_ShareDialog> {
                 onChanged: (_) => setState(() {}),
               ),
               const SizedBox(height: 8),
-              DropdownButtonFormField<TemplateLicense>(
+              ChoiceField<TemplateLicense>(
                 initialValue: _license,
                 isExpanded: true,
                 decoration: InputDecoration(labelText: 'Terms', helperText: _license.terms, helperMaxLines: 3),

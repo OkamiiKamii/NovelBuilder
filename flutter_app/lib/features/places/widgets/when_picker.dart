@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../shared/domain/json.dart';
 import '../../../shared/domain/model/story_model.dart';
 import '../../../shared/domain/model/validity.dart';
@@ -76,7 +77,7 @@ class _WhenPickerState extends State<WhenPicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        DropdownButtonFormField<String>(
+        ChoiceField<String>(
           key: ValueKey('${widget.label}:$kind'),
           initialValue: known ? kind : '',
           isExpanded: true,
@@ -143,7 +144,7 @@ class AsOfField extends StatelessWidget {
       EventAnchor(:final eventId) => 'e:$eventId',
       _ => '',
     };
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       key: ValueKey('asOf:$label:$current'),
       initialValue: points.any((p) => p.value == current) ? current : '',
       isExpanded: true,

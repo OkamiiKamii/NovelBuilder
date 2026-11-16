@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
@@ -313,7 +314,7 @@ class _StartChooser extends StatelessWidget {
   Widget build(BuildContext context) {
     final docs = cast.documents;
     final known = value.isEmpty || value == _unknown || docs.any((d) => d.id == value);
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       key: ValueKey('start:$value'),
       initialValue: known ? value : '',
       isExpanded: true,
@@ -361,7 +362,7 @@ class _StageCard extends StatelessWidget {
   Widget _eventChooser(String label, String? value, void Function(String? id) onChanged) {
     final events = cast.model.events.values.toList();
     final known = value == null || cast.model.events.containsKey(value);
-    return DropdownButtonFormField<String>(
+    return ChoiceField<String>(
       key: ValueKey('${stage.id}:$label:$value'),
       initialValue: known ? (value ?? '') : '\u0000gone',
       isExpanded: true,
@@ -438,7 +439,7 @@ class _StageCard extends StatelessWidget {
               ),
             ),
             gap,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               key: ValueKey('${stage.id}:type:${stage.preset}'),
               initialValue: types.any((t) => t.key == stage.preset) ? stage.preset : 'custom',
               isExpanded: true,
@@ -490,7 +491,7 @@ class _StageCard extends StatelessWidget {
                 ],
               ),
               gap,
-              DropdownButtonFormField<RelationCategory>(
+              ChoiceField<RelationCategory>(
                 key: ValueKey('${stage.id}:group:${stage.category}'),
                 initialValue: RelationCategory.of(stage.category),
                 decoration: const InputDecoration(labelText: 'Group'),
@@ -546,7 +547,7 @@ class _StageCard extends StatelessWidget {
               ),
             ],
             gap,
-            DropdownButtonFormField<String>(
+            ChoiceField<String>(
               key: ValueKey('${stage.id}:story:${story?['kind']}'),
               initialValue: story?['kind'] == 'date' ? 'date' : (story?['kind'] == 'event' ? 'event' : ''),
               isExpanded: true,
@@ -649,7 +650,7 @@ class _AttributeField extends StatelessWidget {
   final ValueChanged<int?> onChanged;
 
   @override
-  Widget build(BuildContext context) => DropdownButtonFormField<int?>(
+  Widget build(BuildContext context) => ChoiceField<int?>(
     key: ValueKey('$label:$value'),
     initialValue: value,
     isExpanded: true,
@@ -695,7 +696,7 @@ Future<String?> addRelationshipFlow(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   initialValue: other,
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'With'),
@@ -703,7 +704,7 @@ Future<String?> addRelationshipFlow(
                   onChanged: (v) => setState(() => other = v),
                 ),
                 const SizedBox(height: 12),
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   initialValue: type,
                   isExpanded: true,
                   decoration: const InputDecoration(

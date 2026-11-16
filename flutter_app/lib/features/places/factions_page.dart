@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
+import '../../core/widgets/gradually.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/factions/ties.dart';
@@ -113,7 +115,7 @@ class _FactionsPageState extends ConsumerState<FactionsPage> {
         if (factions.isNotEmpty)
           SizedBox(
             width: 240,
-            child: DropdownButtonFormField<String>(
+            child: ChoiceField<String>(
               key: ValueKey('faction:${focus?.id}'),
               initialValue: focus?.id ?? '',
               isExpanded: true,
@@ -166,18 +168,33 @@ class _FactionsPageState extends ConsumerState<FactionsPage> {
               model: model,
               at: at,
               selectedId: selected,
-              onPick: (id) => notifier.select(EntityRef(EntityType.entry, id)),
+              around: focus?.id,
+              onPick: (id) {
+                notifier.select(EntityRef(EntityType.entry, id));
+                // A faction tapped is looked at: the map turns round it, its card and its history below.
+                if (factions.any((f) => f.id == id)) setState(() => _faction = id);
+              },
+              onEvery: () => setState(() => _faction = null),
             ),
             const SizedBox(height: 12),
           ],
-          for (final f in shown)
-            _FactionCard(
-              model: model,
-              faction: f,
-              at: at,
-              selected: selected == f.id,
-              onPick: () => notifier.select(EntityRef(EntityType.entry, f.id)),
+          // A screenful of cards first, the rest as frames go by.
+          Gradually(
+            total: shown.length,
+            builder: (count) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final f in shown.take(count))
+                  _FactionCard(
+                    model: model,
+                    faction: f,
+                    at: at,
+                    selected: selected == f.id,
+                    onPick: () => notifier.select(EntityRef(EntityType.entry, f.id)),
+                  ),
+              ],
             ),
+          ),
           Text(
             'As of ${pointWords(at, model)}. A tie with no time given holds as far as anyone has said: nothing here is '
             'assumed to last. “May hold” marks a tie whose time cannot be compared with this point (a chapter against '
@@ -351,13 +368,29 @@ class _FactionHistoryState extends State<FactionHistory> {
 }
 
 /// Factions on a circle, their territory beyond them, and the ties holding at the point: allies, enemies, influence,
-/// control.
+/// control. Around one faction ([around]): that faction in the middle and its own web round it (the factions it is
+/// tied to, what it holds). With none looked at and many factions, the most tied (`mapMost`), and how many are left
+/// out: a map, not a ball of string.
 class FactionMap extends StatefulWidget {
-  const FactionMap({super.key, required this.model, required this.at, required this.selectedId, required this.onPick});
+  const FactionMap({
+    super.key,
+    required this.model,
+    required this.at,
+    required this.selectedId,
+    required this.onPick,
+    this.around,
+    this.onEvery,
+  });
   final StoryModel model;
   final Anchor? at;
   final String? selectedId;
   final ValueChanged<String> onPick;
+
+  /// The faction looked at, drawn in the middle with its own ties.
+  final String? around;
+
+  /// Back to every faction (shown while one is looked at).
+  final VoidCallback? onEvery;
 
   @override
   State<FactionMap> createState() => _FactionMapState();
@@ -377,24 +410,42 @@ class _FactionMapState extends State<FactionMap> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final model = widget.model;
-    final (:factions, :edges, :territories) = factionNetwork(model, widget.at);
-    final r = math.max(150.0, factions.length * 45.0);
+    final around = widget.around;
+    final (:factions, :edges, :territories, :left) = factionNetwork(model, widget.at, around: around);
     final pos = <String, Offset>{};
-    for (final (i, f) in factions.indexed) {
-      final a = (i / factions.length) * math.pi * 2 - math.pi / 2;
-      pos[f.id] = Offset(math.cos(a) * r, math.sin(a) * r);
+    if (around != null) {
+      // The faction in the middle; the factions it is tied to and what it holds round it.
+      final ring = [
+        for (final f in factions)
+          if (f.id != around) f.id,
+        for (final t in territories) t.id,
+      ];
+      final r = math.max(170.0, ring.length * 24.0);
+      pos[around] = Offset.zero;
+      for (final (i, id) in ring.indexed) {
+        final a = (i / ring.length) * math.pi * 2 - math.pi / 2;
+        pos[id] = Offset(math.cos(a) * r, math.sin(a) * r);
+      }
+    } else {
+      // About 140 apart round the circle: near enough that the names read when the map fits a phone.
+      final r = math.max(150.0, factions.length * 22.0);
+      for (final (i, f) in factions.indexed) {
+        final a = (i / factions.length) * math.pi * 2 - math.pi / 2;
+        pos[f.id] = Offset(math.cos(a) * r, math.sin(a) * r);
+      }
+      // Territory just beyond the first faction that controls or influences it.
+      for (final (i, t) in territories.indexed) {
+        final owner = edges.firstWhere((e) => e.other.id == t.id);
+        final from = pos[owner.link.fromId] ?? Offset.zero;
+        final len = from.distance == 0 ? 1.0 : from.distance;
+        final spread = (i % 3) - 1;
+        pos[t.id] = Offset(
+          from.dx + (from.dx / len) * 110 - (from.dy / len) * spread * 60,
+          from.dy + (from.dy / len) * 110 + (from.dx / len) * spread * 60,
+        );
+      }
     }
-    // Territory just beyond the first faction that controls or influences it.
-    for (final (i, t) in territories.indexed) {
-      final owner = edges.firstWhere((e) => e.other.id == t.id);
-      final from = pos[owner.link.fromId] ?? Offset.zero;
-      final len = from.distance == 0 ? 1.0 : from.distance;
-      final spread = (i % 3) - 1;
-      pos[t.id] = Offset(
-        from.dx + (from.dx / len) * 110 - (from.dy / len) * spread * 60,
-        from.dy + (from.dy / len) * 110 + (from.dx / len) * spread * 60,
-      );
-    }
+    if (pos.isEmpty) return const SizedBox.shrink();
     final xs = [for (final p in pos.values) p.dx];
     final ys = [for (final p in pos.values) p.dy];
     final minX = xs.reduce(math.min) - 120;
@@ -422,7 +473,7 @@ class _FactionMapState extends State<FactionMap> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final box = constraints.biggest;
-                  final key = '${pos.length}|${edges.length}|${box.width.round()}';
+                  final key = '$around|${pos.length}|${edges.length}|${box.width.round()}';
                   if (_fittedFor != key) {
                     _fittedFor = key;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -535,6 +586,35 @@ class _FactionMapState extends State<FactionMap> {
               ),
           ],
         ),
+        // What the map shows, when it is not every faction.
+        if (around != null)
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            children: [
+              Text(
+                '${model.entries[around]?.name ?? 'This faction'} and its own ties: '
+                '${factions.length - 1} ${factions.length == 2 ? 'faction' : 'factions'}, '
+                '${territories.length} held in sway.',
+                style: theme.textTheme.bodySmall,
+              ),
+              if (widget.onEvery != null)
+                TextButton.icon(
+                  onPressed: widget.onEvery,
+                  icon: const Icon(Icons.hub_outlined),
+                  label: const Text('Every faction'),
+                ),
+            ],
+          )
+        else if (left > 0)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              'The ${factions.length} factions with the most ties, of ${factions.length + left}. Tap one to see its '
+              'own ties round it; every faction is in the cards below.',
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
       ],
     );
   }
@@ -662,21 +742,20 @@ class _TieFormState extends ConsumerState<TieForm> {
     if (cast == null) return const SizedBox.shrink();
     final model = cast.model;
     final entries = stableSorted(model.entries.values, (a, b) => localeCompare(a.name, b.name));
-    DropdownButtonFormField<String> pick(String label, String? value, ValueChanged<String?> set) =>
-        DropdownButtonFormField<String>(
-          initialValue: entries.any((e) => e.id == value) ? value : null,
-          isExpanded: true,
-          decoration: InputDecoration(labelText: label, isDense: true),
-          hint: const Text('Choose…'),
-          items: [
-            for (final e in entries)
-              DropdownMenuItem(
-                value: e.id,
-                child: Text(e.name, overflow: TextOverflow.ellipsis),
-              ),
-          ],
-          onChanged: set,
-        );
+    ChoiceField<String> pick(String label, String? value, ValueChanged<String?> set) => ChoiceField<String>(
+      initialValue: entries.any((e) => e.id == value) ? value : null,
+      isExpanded: true,
+      decoration: InputDecoration(labelText: label, isDense: true),
+      hint: const Text('Choose…'),
+      items: [
+        for (final e in entries)
+          DropdownMenuItem(
+            value: e.id,
+            child: Text(e.name, overflow: TextOverflow.ellipsis),
+          ),
+      ],
+      onChanged: set,
+    );
     return FormDialog(
       title: 'Record a tie',
       width: 480,
@@ -686,7 +765,7 @@ class _TieFormState extends ConsumerState<TieForm> {
         children: [
           pick('Who or what', _from, (v) => setState(() => _from = v)),
           const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             initialValue: _type,
             isExpanded: true,
             decoration: const InputDecoration(labelText: 'Kind of tie', isDense: true),

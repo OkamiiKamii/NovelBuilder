@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/codex/codex_changes.dart';
@@ -166,7 +167,7 @@ class _WorldPageState extends ConsumerState<WorldPage> {
                 if (tags.isNotEmpty)
                   SizedBox(
                     width: compact ? double.infinity : 200,
-                    child: DropdownButtonFormField<String?>(
+                    child: ChoiceField<String?>(
                       initialValue: _tag,
                       isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Tag'),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/characters/character_records.dart';
 import '../../shared/domain/characters/knowledge.dart';
@@ -174,7 +175,7 @@ class _KnowledgePageState extends ConsumerState<KnowledgePage> {
             children: [
               SizedBox(
                 width: 300,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('secret:${secret.id}'),
                   initialValue: secret.id,
                   isExpanded: true,
@@ -194,7 +195,7 @@ class _KnowledgePageState extends ConsumerState<KnowledgePage> {
               ),
               SizedBox(
                 width: 300,
-                child: DropdownButtonFormField<KnowledgeAxis>(
+                child: ChoiceField<KnowledgeAxis>(
                   key: ValueKey('axis:$_axis'),
                   initialValue: _axis,
                   isExpanded: true,

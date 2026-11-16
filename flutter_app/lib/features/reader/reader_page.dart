@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/reader/book.dart';
@@ -435,7 +436,7 @@ class AppearanceControls extends ConsumerWidget {
     Widget choice<T>(String label, T value, List<T> values, String Function(T) name, ReaderPrefs Function(T) change) =>
         Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: DropdownButtonFormField<T>(
+          child: ChoiceField<T>(
             initialValue: value,
             isExpanded: true,
             decoration: InputDecoration(labelText: label),

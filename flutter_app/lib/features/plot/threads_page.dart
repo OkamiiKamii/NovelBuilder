@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
@@ -217,7 +218,7 @@ class _ThreadsPageState extends ConsumerState<ThreadsPage> {
                   ),
                   box(
                     180,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('status:$_status'),
                       initialValue: _status ?? '',
                       isExpanded: true,
@@ -232,7 +233,7 @@ class _ThreadsPageState extends ConsumerState<ThreadsPage> {
                   ),
                   box(
                     200,
-                    DropdownButtonFormField<String>(
+                    ChoiceField<String>(
                       key: ValueKey('category:$_category'),
                       initialValue: _category ?? '',
                       isExpanded: true,
@@ -247,7 +248,7 @@ class _ThreadsPageState extends ConsumerState<ThreadsPage> {
                   ),
                   box(
                     250,
-                    DropdownButtonFormField<int>(
+                    ChoiceField<int>(
                       key: ValueKey('quiet:$quietAfter'),
                       initialValue: quietChoices.contains(quietAfter) ? quietAfter : defaultQuietAfter,
                       isExpanded: true,

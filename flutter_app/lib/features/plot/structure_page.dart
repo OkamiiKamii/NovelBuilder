@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/json.dart';
@@ -186,7 +187,7 @@ class _StructurePageState extends ConsumerState<StructurePage> {
               ),
               SizedBox(
                 width: 220,
-                child: DropdownButtonFormField<String>(
+                child: ChoiceField<String>(
                   key: ValueKey('label:$label'),
                   initialValue: label ?? '',
                   isExpanded: true,
@@ -201,7 +202,7 @@ class _StructurePageState extends ConsumerState<StructurePage> {
               if (parts.isNotEmpty)
                 SizedBox(
                   width: 220,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('part:$partId'),
                     initialValue: partId ?? '',
                     isExpanded: true,
@@ -888,7 +889,7 @@ class _MarkersState extends State<_Markers> {
             ),
             box(
               240,
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('mnode:$_nodeId'),
                 initialValue: _nodeId,
                 isExpanded: true,
@@ -910,7 +911,7 @@ class _MarkersState extends State<_Markers> {
             if (events.isNotEmpty)
               box(
                 240,
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('mevent:$_eventId'),
                   initialValue: _eventId,
                   isExpanded: true,

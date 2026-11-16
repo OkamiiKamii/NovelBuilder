@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/text_prompt.dart';
 import '../../../shared/domain/characters/character_records.dart';
@@ -470,7 +471,7 @@ class _FieldCardState extends State<_FieldCard> {
                   if (kind != null)
                     Text(kindNote(field.key, kind), style: theme.textTheme.bodySmall)
                   else
-                    DropdownButtonFormField<FieldType>(
+                    ChoiceField<FieldType>(
                       key: ValueKey('${field.id}:${type.name}'),
                       initialValue: type,
                       isExpanded: true,
@@ -496,7 +497,7 @@ class _FieldCardState extends State<_FieldCard> {
                   ],
                 ],
                 const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('${field.id}:${w.section?.id}'),
                   initialValue: w.section?.id ?? '',
                   isExpanded: true,
@@ -664,7 +665,7 @@ class _AddFieldState extends State<_AddField> {
                 ),
                 SizedBox(
                   width: 200,
-                  child: DropdownButtonFormField<FieldType>(
+                  child: ChoiceField<FieldType>(
                     initialValue: _type,
                     isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Type'),

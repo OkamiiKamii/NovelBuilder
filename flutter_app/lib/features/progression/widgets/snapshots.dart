@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/collation.dart';
@@ -107,7 +108,7 @@ class _SnapshotsSectionState extends State<SnapshotsSection> {
           children: [
             SizedBox(
               width: 260,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 initialValue: documents.any((t) => t.node.id == _at) ? _at : '',
                 isExpanded: true,
                 decoration: const InputDecoration(labelText: 'Snapshot is true from', isDense: true),
@@ -174,7 +175,7 @@ class _SnapshotsSectionState extends State<SnapshotsSection> {
           if (_view == 'inspect') ...[
             SizedBox(
               width: 320,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('asof:$asOf'),
                 initialValue: asOf ?? '',
                 isExpanded: true,
@@ -211,7 +212,7 @@ class _SnapshotsSectionState extends State<SnapshotsSection> {
                 ])
                   SizedBox(
                     width: 280,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('$label:${current.id}'),
                       initialValue: current.id,
                       isExpanded: true,
@@ -433,7 +434,7 @@ class _SnapshotEditorState extends State<SnapshotEditor> {
           children: [
             SizedBox(
               width: 260,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('at:${snapshot.id}:$at'),
                 initialValue: at,
                 isExpanded: true,
@@ -559,7 +560,7 @@ class _SnapshotEditorState extends State<SnapshotEditor> {
                 if (codexItems.isNotEmpty)
                   SizedBox(
                     width: 200,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('gearEntry:$_gearEntry'),
                       initialValue: _gearEntry,
                       isExpanded: true,
@@ -754,7 +755,7 @@ class _SystemPart extends StatelessWidget {
                             };
                           }),
                         )
-                      : DropdownButtonFormField<String>(
+                      : ChoiceField<String>(
                           key: ValueKey('$snapshotId:${track.id}:${state.progress[track.id]}'),
                           initialValue: track.stages.any((s) => s.id == state.progress[track.id])
                               ? state.progress[track.id]! as String
@@ -784,7 +785,7 @@ class _SystemPart extends StatelessWidget {
                   if (row.variable.kind == 'choice')
                     SizedBox(
                       width: 180,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('$snapshotId:${row.variable.id}:${row.value}'),
                         initialValue: row.variable.options.contains(row.value)
                             ? row.value! as String

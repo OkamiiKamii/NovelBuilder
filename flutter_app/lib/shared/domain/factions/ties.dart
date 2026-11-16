@@ -123,11 +123,29 @@ num _createdAt(Link l) => numOrNull(l.raw['createdAt']) ?? 0;
 
 String _lowerFirst(String s) => s.isEmpty ? s : '${s[0].toLowerCase()}${s.substring(1)}';
 
+/// Each record's links, by record (from it or to it, in the model's order, each once): made once for a model (which
+/// does not change once made) and kept with it, so a page of many factions does not read every link for each one.
+final _linksByEntry = Expando<Map<String, List<Link>>>('links by entry');
+
+List<Link> _linksOf(StoryModel model, String id) {
+  final index = _linksByEntry[model] ??= () {
+    final out = <String, List<Link>>{};
+    for (final link in model.links) {
+      final from = link.fromType == EntityType.entry ? link.fromId : null;
+      final to = link.toType == EntityType.entry ? link.toId : null;
+      if (from != null) (out[from] ??= []).add(link);
+      if (to != null && to != from) (out[to] ??= []).add(link);
+    }
+    return out;
+  }();
+  return index[id] ?? const [];
+}
+
 /// Every tie of one faction, each with its role, its words and when it holds; [at] (null for the end of the story)
 /// marks which hold at that point.
 List<Tie> factionTies(StoryModel model, String factionId, [Anchor? at]) {
   final out = <Tie>[];
-  for (final link in model.links) {
+  for (final link in _linksOf(model, factionId)) {
     if (link.type == null) continue;
     final outgoing = link.fromId == factionId && link.fromType == EntityType.entry;
     final incoming = link.toId == factionId && link.toType == EntityType.entry;
@@ -182,14 +200,26 @@ List<Tie> factionTies(StoryModel model, String factionId, [Anchor? at]) {
   return (byRole: byRole, notNow: ties.where((t) => t.holds == Truth.no).length);
 }
 
+/// How many factions the map draws at most when none is looked at: more, and it is a ball of string.
+const mapMost = 24;
+
 /// Ties between factions, and from factions to what they control or influence, holding at a point: what the faction
 /// map draws.
-({List<Entry> factions, List<Tie> edges, List<Entry> territories}) factionNetwork(StoryModel model, Anchor? at) {
-  final factions = factionsOf(model);
-  final ids = {for (final f in factions) f.id};
+///
+/// [around] a faction: that faction, the factions tied to it and what it holds in sway, by its own ties only (its web,
+/// not everyone's). Otherwise every faction; or, when there are more than [most], the [most] with the most ties
+/// holding there (the rest counted in `left`), with the ties among them and what they hold.
+({List<Entry> factions, List<Tie> edges, List<Entry> territories, int left}) factionNetwork(
+  StoryModel model,
+  Anchor? at, {
+  String? around,
+  int most = mapMost,
+}) {
+  final all = factionsOf(model);
+  final ids = {for (final f in all) f.id};
   final edges = <Tie>[];
   final seen = <String>{};
-  for (final f in factions) {
+  for (final f in around == null ? all : all.where((f) => f.id == around)) {
     for (final t in factionTies(model, f.id, at)) {
       if (t.holds == Truth.no || seen.contains(t.link.id)) continue;
       final between =
@@ -203,11 +233,45 @@ List<Tie> factionTies(StoryModel model, String factionId, [Anchor? at]) {
       }
     }
   }
+  var factions = all;
+  var drawn = edges;
+  if (around != null) {
+    final near = {around, for (final e in edges) e.link.fromId, for (final e in edges) e.link.toId};
+    factions = [
+      for (final f in all)
+        if (f.id == around) f,
+      for (final f in all)
+        if (f.id != around && near.contains(f.id)) f,
+    ];
+  } else if (all.length > most) {
+    final ties = <String, int>{};
+    for (final e in edges) {
+      for (final id in {e.link.fromId, e.link.toId}) {
+        if (ids.contains(id)) ties[id] = (ties[id] ?? 0) + 1;
+      }
+    }
+    final kept = stableSorted(all, (a, b) => (ties[b.id] ?? 0).compareTo(ties[a.id] ?? 0)).take(most).toSet();
+    factions = [
+      for (final f in all)
+        if (kept.contains(f)) f,
+    ];
+    final keptIds = {for (final f in factions) f.id};
+    // Ties among those drawn, and what those drawn hold; a tie to a faction left out is not drawn.
+    drawn = [
+      for (final e in edges)
+        if ([e.link.fromId, e.link.toId].where(ids.contains).every(keptIds.contains)) e,
+    ];
+  }
   final territories = <String>[];
-  for (final e in edges) {
+  for (final e in drawn) {
     if (e.other.type == EntityType.entry && !ids.contains(e.other.id) && !territories.contains(e.other.id)) {
       territories.add(e.other.id);
     }
   }
-  return (factions: factions, edges: edges, territories: [for (final id in territories) ?model.entries[id]]);
+  return (
+    factions: factions,
+    edges: drawn,
+    territories: [for (final id in territories) ?model.entries[id]],
+    left: all.length - factions.length,
+  );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/characters/character_records.dart';
 import '../../shared/domain/json.dart';
@@ -96,7 +97,7 @@ class LifeHistoryPage extends ConsumerWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('who:$chosen'),
             initialValue: chosen ?? '',
             isExpanded: true,

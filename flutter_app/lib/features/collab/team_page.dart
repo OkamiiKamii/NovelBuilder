@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/destinations.dart';
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -293,7 +294,7 @@ class _MemberCard extends ConsumerWidget {
                 if (!m.revoked && editable)
                   SizedBox(
                     width: 220,
-                    child: DropdownButtonFormField<Role>(
+                    child: ChoiceField<Role>(
                       key: ValueKey('role:${m.id}:${m.role.name}'),
                       initialValue: m.role,
                       isExpanded: true,

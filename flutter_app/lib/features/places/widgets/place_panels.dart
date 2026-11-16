@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/data/providers.dart';
@@ -316,7 +317,7 @@ class _MapFields extends StatelessWidget {
             ),
             SizedBox(
               width: 240,
-              child: DropdownButtonFormField<String>(
+              child: ChoiceField<String>(
                 key: ValueKey('${map.id}:of:${map.placeId}'),
                 initialValue: map.placeId ?? '',
                 isExpanded: true,
@@ -511,7 +512,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
               children: [
                 SizedBox(
                   width: 220,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('level:$id:${entry.placeLevel}'),
                     initialValue: levels.any((l) => l.id == entry.placeLevel) ? entry.placeLevel : '',
                     isExpanded: true,
@@ -525,7 +526,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                 ),
                 SizedBox(
                   width: 260,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('in:$id:${row?.parentId}'),
                     initialValue: row?.parentId ?? '',
                     isExpanded: true,
@@ -572,7 +573,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                   children: [
                     SizedBox(
                       width: 260,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('record:$id:$_record'),
                         initialValue: _record,
                         isExpanded: true,
@@ -590,7 +591,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                     ),
                     SizedBox(
                       width: 260,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('type:$id:$_type'),
                         initialValue: _type,
                         isExpanded: true,
@@ -631,7 +632,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                   children: [
                     SizedBox(
                       width: 300,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('event:$id:$_event'),
                         initialValue: _event,
                         isExpanded: true,
@@ -671,7 +672,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                   children: [
                     SizedBox(
                       width: 300,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('node:$id:$_node'),
                         initialValue: _node,
                         isExpanded: true,

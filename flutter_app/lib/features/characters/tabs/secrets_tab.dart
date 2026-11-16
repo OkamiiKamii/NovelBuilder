@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/confirm_dialog.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/characters/character_records.dart';
@@ -91,15 +92,14 @@ class _SecretCard extends StatelessWidget {
 
   String _name(String id) => cast.nameOf(id) ?? 'Someone deleted';
 
-  Widget _knowledge(String label, Knowledge value, ValueChanged<Knowledge> onChanged) =>
-      DropdownButtonFormField<Knowledge>(
-        key: ValueKey('${secret.id}:$label:${value.name}'),
-        initialValue: value,
-        isExpanded: true,
-        decoration: InputDecoration(labelText: label),
-        items: [for (final k in Knowledge.values) DropdownMenuItem(value: k, child: Text(k.label))],
-        onChanged: (k) => k == null ? null : onChanged(k),
-      );
+  Widget _knowledge(String label, Knowledge value, ValueChanged<Knowledge> onChanged) => ChoiceField<Knowledge>(
+    key: ValueKey('${secret.id}:$label:${value.name}'),
+    initialValue: value,
+    isExpanded: true,
+    decoration: InputDecoration(labelText: label),
+    items: [for (final k in Knowledge.values) DropdownMenuItem(value: k, child: Text(k.label))],
+    onChanged: (k) => k == null ? null : onChanged(k),
+  );
 
   /// A record read aloud: "Mira suspects (“…”) in The Feast: overheard, from Kai."
   String _recordWords(KnowledgeRecord r) {
@@ -155,7 +155,7 @@ class _SecretCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 SizedBox(
                   width: 170,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('${secret.id}:status:${secret.status}'),
                     initialValue: secret.status,
                     isExpanded: true,
@@ -242,7 +242,7 @@ class _SecretCard extends StatelessWidget {
               onChanged: (id) => _now({'revealNodeId': id}),
             ),
             if (events.isNotEmpty || secret.revealEventId != null)
-              DropdownButtonFormField<String>(
+              ChoiceField<String>(
                 key: ValueKey('${secret.id}:event:${secret.revealEventId}'),
                 initialValue: cast.model.events.containsKey(secret.revealEventId) || secret.revealEventId == null
                     ? (secret.revealEventId ?? '')

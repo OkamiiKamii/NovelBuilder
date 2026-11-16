@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -209,7 +210,7 @@ class _TypeDialogState extends State<_TypeDialog> {
             decoration: const InputDecoration(labelText: 'Name'),
           ),
           const SizedBox(height: 12),
-          DropdownButtonFormField<RelationCategory>(
+          ChoiceField<RelationCategory>(
             initialValue: _category,
             decoration: const InputDecoration(labelText: 'Group'),
             items: [for (final c in RelationCategory.values) DropdownMenuItem(value: c, child: Text(c.label))],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/graph/knowledge.dart';
 import '../../shared/domain/integrity/rules.dart' show ConnectionStatus;
@@ -420,7 +421,7 @@ class _GraphPageState extends ConsumerState<GraphPage> {
               if (focusKey != null) ...[
                 SizedBox(
                   width: 240,
-                  child: DropdownButtonFormField<int>(
+                  child: ChoiceField<int>(
                     key: ValueKey('depth:${s.depth}'),
                     initialValue: s.depth,
                     isExpanded: true,

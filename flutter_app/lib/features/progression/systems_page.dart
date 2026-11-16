@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
@@ -552,7 +553,7 @@ class _VariablesTab extends StatelessWidget {
                   Text('key: ${v.key}', style: theme.textTheme.bodySmall?.copyWith(fontFamily: 'monospace')),
                   SizedBox(
                     width: 160,
-                    child: DropdownButtonFormField<String>(
+                    child: ChoiceField<String>(
                       key: ValueKey('${v.id}:kind:${v.kind}'),
                       initialValue: v.kind,
                       isExpanded: true,
@@ -1161,7 +1162,7 @@ class _ItemEditor extends StatelessWidget {
         ),
         box(
           180,
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('${item.id}:rank:${item.rankId}'),
             initialValue: system.ranks.any((r) => r.id == item.rankId) ? item.rankId : '',
             isExpanded: true,
@@ -1175,7 +1176,7 @@ class _ItemEditor extends StatelessWidget {
         ),
         box(
           220,
-          DropdownButtonFormField<String>(
+          ChoiceField<String>(
             key: ValueKey('${item.id}:parent:${item.parentId}'),
             initialValue: others.any((o) => o.id == item.parentId) ? item.parentId : '',
             isExpanded: true,
@@ -1221,7 +1222,7 @@ class _ItemEditor extends StatelessWidget {
             children: [
               box(
                 160,
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('${m.id}:target:${m.target}'),
                   initialValue: variables.any((v) => v.key == m.target) ? m.target : null,
                   isExpanded: true,
@@ -1237,7 +1238,7 @@ class _ItemEditor extends StatelessWidget {
               const SizedBox(width: 6),
               box(
                 70,
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('${m.id}:op:${m.op}'),
                   initialValue: m.op,
                   isExpanded: true,
@@ -1301,7 +1302,7 @@ class _ItemEditor extends StatelessWidget {
               const SizedBox(width: 6),
               box(
                 160,
-                DropdownButtonFormField<String>(
+                ChoiceField<String>(
                   key: ValueKey('${c.id}:target:${c.target}'),
                   initialValue: variables.any((v) => v.key == c.target) ? c.target : null,
                   isExpanded: true,

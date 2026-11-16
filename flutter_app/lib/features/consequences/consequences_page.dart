@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/background.dart';
@@ -221,7 +222,7 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
     }
 
     Widget picker() => switch (_kind) {
-      _Kind.node => DropdownButtonFormField<String>(
+      _Kind.node => ChoiceField<String>(
         key: ValueKey('node:${widget.nodeId}'),
         initialValue: documents.any((n) => n.id == widget.nodeId) ? widget.nodeId : null,
         isExpanded: true,
@@ -235,7 +236,7 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
         ],
         onChanged: (id) => _go(consequencesPath(nodeId: id)),
       ),
-      _Kind.event => DropdownButtonFormField<String>(
+      _Kind.event => ChoiceField<String>(
         key: ValueKey('event:${widget.eventId}'),
         initialValue: events.any((e) => e['id'] == widget.eventId) ? widget.eventId : null,
         isExpanded: true,
@@ -249,7 +250,7 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
         ],
         onChanged: (id) => _go(consequencesPath(eventId: id)),
       ),
-      _Kind.beat => DropdownButtonFormField<String>(
+      _Kind.beat => ChoiceField<String>(
         key: ValueKey('beat:${widget.threadId}/${widget.beatId}'),
         initialValue: beats.any((b) => b.thread['id'] == widget.threadId && b.beat['id'] == widget.beatId)
             ? '${widget.threadId}/${widget.beatId}'
@@ -390,7 +391,7 @@ class _ConsequencesPageState extends ConsumerState<ConsequencesPage> {
                   ),
                 SizedBox(
                   width: 240,
-                  child: DropdownButtonFormField<String>(
+                  child: ChoiceField<String>(
                     key: ValueKey('also:${_include.length}:${_exclude.length}'),
                     isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Also involves…', isDense: true),

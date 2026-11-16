@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/domain/json.dart';
@@ -411,7 +412,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                     for (final s in Season.values)
                       SizedBox(
                         width: 200,
-                        child: DropdownButtonFormField<int>(
+                        child: ChoiceField<int>(
                           key: ValueKey('season:${s.name}:${mapOrNull(current['seasons'])?[s.name]}:${months.length}'),
                           initialValue: () {
                             final at = intOrNull(mapOrNull(current['seasons'])?[s.name]);

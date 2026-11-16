@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/choice_field.dart';
 import '../../../core/widgets/saved_text_field.dart';
 import '../../../shared/domain/ids.dart';
 import '../../../shared/domain/json.dart';
@@ -66,7 +67,7 @@ class SheetEditor extends StatelessWidget {
                           };
                         }),
                       )
-                    : DropdownButtonFormField<String>(
+                    : ChoiceField<String>(
                         key: ValueKey('${sheet.id}:${track.id}:${sheet.progress[track.id]}'),
                         initialValue: track.stages.any((s) => s.id == sheet.progress[track.id])
                             ? sheet.progress[track.id]! as String
@@ -85,7 +86,7 @@ class SheetEditor extends StatelessWidget {
               box(
                 200,
                 v.kind == 'choice'
-                    ? DropdownButtonFormField<String>(
+                    ? ChoiceField<String>(
                         key: ValueKey('${sheet.id}:${v.id}:${sheet.values[v.id]}'),
                         initialValue: v.options.contains(sheet.values[v.id])
                             ? sheet.values[v.id]! as String
@@ -125,7 +126,7 @@ class SheetEditor extends StatelessWidget {
               child: group.single
                   ? SizedBox(
                       width: 300,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         key: ValueKey('${sheet.id}:${group.id}:${sheet.itemIds.join(',')}'),
                         initialValue: options.where((o) => sheet.itemIds.contains(o.id)).lastOrNull?.id ?? '',
                         isExpanded: true,
@@ -309,7 +310,7 @@ class _LevelingState extends State<_Leveling> {
                     if (tracks.length > 1)
                       SizedBox(
                         width: 180,
-                        child: DropdownButtonFormField<String>(
+                        child: ChoiceField<String>(
                           initialValue: track.id,
                           isExpanded: true,
                           decoration: const InputDecoration(labelText: 'Counts towards', isDense: true),
@@ -343,7 +344,7 @@ class _LevelingState extends State<_Leveling> {
                     ),
                     SizedBox(
                       width: 200,
-                      child: DropdownButtonFormField<String>(
+                      child: ChoiceField<String>(
                         initialValue: _nodeId,
                         isExpanded: true,
                         decoration: const InputDecoration(labelText: 'Where in the story', isDense: true),
