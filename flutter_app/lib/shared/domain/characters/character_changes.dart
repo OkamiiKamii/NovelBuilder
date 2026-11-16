@@ -8,6 +8,7 @@ import '../model/entity_ref.dart';
 import '../records/category.dart';
 import '../records/entry.dart';
 import '../records/link.dart';
+import '../records/system.dart' show blankSheet;
 import '../snapshot/novel_snapshot.dart';
 import '../stable_sort.dart';
 import 'character_records.dart';
@@ -32,6 +33,8 @@ const characterCollections = {
   'plotThreads',
   'characterRelations',
   'systems',
+  // A character made in a novel with systems begins with a sheet on each (`create`).
+  'systemSheets',
   // The novel's own relationship types and tracked attributes.
   'relationSettings',
   // Dates in story time (a relationship stage's) are read in the novel's calendar.
@@ -204,6 +207,18 @@ class CharacterChanges extends CodexChanges {
       }),
     );
     record(entry.id, 'created', name.trim());
+    // In a novel with systems, a character begins with a sheet on each: their status is there in the vault from the
+    // start, every number read from the blueprint until the author gives them their own.
+    if (snapshot.collections.containsKey('systemSheets')) {
+      for (final system in rows('systems')) {
+        final systemId = str(system['id']);
+        if (rows('systemSheets').any((s) => s['systemId'] == systemId && s['entryId'] == entry.id)) continue;
+        put(
+          'systemSheets',
+          blankSheet(id: newId(), projectId: projectId, systemId: systemId, entryId: entry.id, now: now),
+        );
+      }
+    }
     return owned(entry.id);
   }
 

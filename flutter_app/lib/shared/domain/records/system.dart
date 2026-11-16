@@ -164,6 +164,29 @@ class SystemBlueprint extends JsonRecord {
   SystemBlueprint withFields(JsonMap changes) => SystemBlueprint(merged(changes));
 }
 
+/// A sheet as it begins: [entryId] on the system [systemId], with nothing of its own yet (every number read from the
+/// blueprint), holding nothing. Made when a character is put on a system, by hand or as they are created.
+JsonMap blankSheet({
+  required String id,
+  required String projectId,
+  required String systemId,
+  required String entryId,
+  required int now,
+}) => {
+  'id': id,
+  'projectId': projectId,
+  'systemId': systemId,
+  'entryId': entryId,
+  'values': <String, Object?>{},
+  'progress': <String, Object?>{},
+  'itemIds': <String>[],
+  'xp': <Object?>[],
+  'spent': <String, Object?>{},
+  'note': '',
+  'createdAt': now,
+  'updatedAt': now,
+};
+
 /// A codex entry's place in a system: its own values, progress, and the items it holds (by id).
 class SystemSheet extends JsonRecord {
   SystemSheet(super.raw);

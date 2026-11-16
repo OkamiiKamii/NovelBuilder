@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/data/background.dart';
-import '../../../shared/domain/characters/named_in.dart';
 import '../../../shared/domain/characters/voice.dart';
-import '../../../shared/domain/records/story_node.dart';
-import '../../../shared/domain/stable_sort.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import 'kept_reader.dart';
 import 'parts.dart';
 import 'vault.dart';
 
@@ -30,42 +28,32 @@ class InTheirWords extends ConsumerStatefulWidget {
   ConsumerState<InTheirWords> createState() => _InTheirWordsState();
 }
 
-class _InTheirWordsState extends ConsumerState<InTheirWords> {
-  List<Spoken>? _lines;
-  Object? _readFor;
+class _InTheirWordsState extends ConsumerState<InTheirWords> with KeptReader<InTheirWords, List<Spoken>> {
   bool _all = false;
 
-  void _read() {
-    final model = widget.cast.model;
-    final chapters = stableSorted(
-      model.nodes.values.where((n) => n.kind == NodeKind.chapter || n.kind == NodeKind.scene),
-      (a, b) => (model.order.position[a.id] ?? 0) - (model.order.position[b.id] ?? 0),
-    ).map((n) => n.id).toList();
-    final names = namesToFind(widget.cast.entries, widget.cast.profiles)[widget.entryId] ?? const <String>[];
-    final key = (chapters.join(','), names.join('|'), widget.cast.snapshot.rows('chapterContents').length);
-    if (key == _readFor) return;
-    _readFor = key;
-    if (chapters.isEmpty || names.isEmpty) {
-      _lines = const [];
-      return;
-    }
-    final stored = widget.actions.service.storedChapters(widget.cast.novelId);
-    ref.read(runAsideProvider)(spokenJob(stored, chapters, names)).then(
-      (lines) {
-        if (mounted && _readFor == key) setState(() => _lines = lines);
-      },
-      onError: (Object e, StackTrace s) =>
-          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
-    );
+  @override
+  String get readingNovelId => widget.cast.novelId;
+
+  @override
+  List<Spoken> get nothingRead => const [];
+
+  List<String> get _names => widget.cast.findNames[widget.entryId] ?? const <String>[];
+
+  @override
+  Object? readingInputs() {
+    final chapters = widget.cast.documentIds;
+    if (chapters.isEmpty || _names.isEmpty) return null;
+    return ('spoken', widget.cast.novelId, chapters.join(','), _names.join('|'));
   }
 
   @override
+  Future<List<Spoken>> runReading(RunAside run) =>
+      run(spokenJob(widget.actions.service.storedChapters(widget.cast.novelId), widget.cast.documentIds, _names));
+
+  @override
   Widget build(BuildContext context) {
-    // Read after the page is drawn, never while it is being built.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _read();
-    });
-    final lines = _lines;
+    keepReading();
+    final lines = reading;
     if (lines == null || lines.isEmpty) return const SizedBox.shrink();
     final scheme = Theme.of(context).colorScheme;
     final shown = _all ? lines : lines.take(linesShown).toList();

@@ -293,20 +293,7 @@ class SystemChanges extends RecordChanges {
     if (row('loreEntries', entryId) == null) throw ChangeRefused('That codex entry is not in this novel.');
     final existing = sheets().where((s) => s.systemId == systemId && s.entryId == entryId).firstOrNull;
     if (existing != null) return existing;
-    final sheet = {
-      'id': newId(),
-      'projectId': projectId,
-      'systemId': systemId,
-      'entryId': entryId,
-      'values': <String, Object?>{},
-      'progress': <String, Object?>{},
-      'itemIds': <String>[],
-      'xp': <Object?>[],
-      'spent': <String, Object?>{},
-      'note': '',
-      'createdAt': now,
-      'updatedAt': now,
-    };
+    final sheet = blankSheet(id: newId(), projectId: projectId, systemId: systemId, entryId: entryId, now: now);
     put('systemSheets', sheet);
     return SystemSheet(sheet);
   }

@@ -116,6 +116,13 @@ class CastData {
   ], (a, b) => localeCompare(a.name, b.name));
 
   /// Chapters and scenes in reading order, for choosing where something happens.
+  /// Every entry's names to find in the text (`namesToFind`), worked out once a cast: the readings of a character's
+  /// page all ask for them.
+  late final Map<String, List<String>> findNames = namesToFind(entries, profiles);
+
+  /// The chapters and scenes, by id, in reading order: once a cast.
+  late final List<String> documentIds = [for (final n in documents) n.id];
+
   List<StoryNode> get documents => stableSorted(
     model.nodes.values.where((n) => n.kind == NodeKind.chapter || n.kind == NodeKind.scene),
     (a, b) => (model.order.position[a.id] ?? 0) - (model.order.position[b.id] ?? 0),

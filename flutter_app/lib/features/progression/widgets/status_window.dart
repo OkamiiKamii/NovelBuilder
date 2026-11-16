@@ -60,6 +60,10 @@ List<String> exampleHeld(JsonMap content) {
   ];
 }
 
+/// A change made in the window: a track (a level as a whole number, or a stage by its id) or a variable (a number, or
+/// a choice's label), by its id.
+typedef SheetEdit = ({String id, bool track, Object value});
+
 /// THE STATUS WINDOW: a character's sheet as it would begin in a system, worked out by the system itself
 /// (`compute.dart`) and drawn as the story's own screen would be: the heading in brackets, who it is and where they
 /// stand (Level 1 of 100, Qi Condensation), each resource as a bar of what is left of its most (Health 100 / 230 HP),
@@ -78,7 +82,14 @@ class StatusWindow extends StatefulWidget {
     this.compact = false,
     this.profile,
     this.captureKey,
+    this.onEdit,
   });
+
+  /// Set: the window changes the sheet it shows, in place (a character's Status, in the vault). Its levels and stages,
+  /// what is left of each resource, its attributes and choices become rows to change, each change at once; what
+  /// follows from them (the most of a resource, damage…) is worked out again and stays as the system says. A level the
+  /// sheet's own experience gives is not changed here (only where it started, on the whole sheet). Null: it only shows.
+  final void Function(SheetEdit edit)? onEdit;
 
   /// The blueprint, as it would be begun.
   final JsonMap content;
@@ -179,6 +190,44 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
 
     String plain(SheetRow r) => r.value is double ? _number(r.value! as double) : r.display;
 
+    final edit = widget.onEdit;
+    // A level its experience gives: where it started is changed on the whole sheet, not here.
+    bool fromXp(String trackId) => widget.profile?.xp.any((e) => e.trackId == trackId) ?? false;
+    // Where they stand on a track: a level to step, a stage to choose, or (only shown) as the system says.
+    Widget standingRow(SheetTrack t, String name, String value) {
+      final change = edit;
+      if (change != null && t.level != null && !fromXp(t.track.id)) {
+        return _Stepper(
+          label: name,
+          value: t.level!.toDouble(),
+          whole: true,
+          min: 1,
+          max: t.track.cap > 0 ? t.track.cap.toDouble() : null,
+          onSet: (v) => change((id: t.track.id, track: true, value: v.round())),
+          style: text,
+          accent: look.accent,
+        );
+      }
+      if (change != null && t.level == null && t.track.stages.isNotEmpty) {
+        final at = widget.profile?.progress[t.track.id];
+        return _Choose(
+          label: name,
+          options: [for (final st in t.track.stages) (st.id, st.name)],
+          current: at is String ? at : t.track.stages.first.id,
+          onChoose: (id) => change((id: t.track.id, track: true, value: id)),
+          style: text,
+          accent: look.accent,
+        );
+      }
+      return _Line(label: name, value: value, style: text, accent: look.accent, strong: true);
+    }
+
+    // The sheet's own number for a variable, when it has one.
+    double? own(String variableId) => switch (widget.profile?.values[variableId]) {
+      final num n => n.toDouble(),
+      _ => null,
+    };
+
     final standing = [
       for (final t in sheet.tracks)
         (
@@ -218,8 +267,8 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
         ),
         rule(),
         _Line(label: 'Name', value: widget.holder, style: text, accent: look.accent, strong: true),
-        for (final s in standing) ...[
-          _Line(label: s.name, value: s.value, style: text, accent: look.accent, strong: true),
+        for (final (i, s) in standing.indexed) ...[
+          standingRow(sheet.tracks[i], s.name, s.value),
           if (s.next case final next? when !widget.compact)
             Padding(
               padding: const EdgeInsets.only(top: 1, bottom: 2),
@@ -235,9 +284,25 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
               final top = most?.value is double ? most!.value! as double : now;
               final part = now == null || top == null || top <= 0 ? 1.0 : (now / top).clamp(0.0, 1.0);
               final unit = r.variable.unit.trim();
+              // HP, MP, SP; or the name's first word ("Mana" for Mana Capacity).
+              final short = unit.isNotEmpty && unit.length <= 3
+                  ? unit
+                  : r.variable.name.trim().split(RegExp(r'\s+')).first;
+              // What is left of it, changed: up to its most, when it has one.
+              if (edit != null) {
+                return _Stepper(
+                  label: short,
+                  value: own(r.variable.id) ?? now ?? 0,
+                  min: 0,
+                  max: most?.value is double ? most!.value! as double : null,
+                  of: most == null ? null : '/ ${plain(most)}${unit.isEmpty ? '' : ' $unit'}',
+                  onSet: (v) => edit((id: r.variable.id, track: false, value: v)),
+                  style: text,
+                  accent: look.accent,
+                );
+              }
               return _Bar(
-                // HP, MP, SP; or the name's first word ("Mana" for Mana Capacity).
-                name: unit.isNotEmpty && unit.length <= 3 ? unit : r.variable.name.trim().split(RegExp(r'\s+')).first,
+                name: short,
                 value: most == null
                     ? r.display
                     : '${now == null ? '?' : _number(now)} / ${plain(most)}${unit.isEmpty ? '' : ' $unit'}',
@@ -248,7 +313,30 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
               );
             }(),
         ],
-        if (attributes.isNotEmpty) ...[
+        if (attributes.isNotEmpty && edit != null) ...[
+          rule(),
+          for (final r in attributes)
+            r.variable.kind == 'choice'
+                ? _Choose(
+                    label: r.variable.name,
+                    options: [for (final o in r.variable.options) (o, o)],
+                    current: r.value is String && r.variable.options.contains(r.value)
+                        ? r.value! as String
+                        : r.variable.options.firstOrNull ?? '',
+                    onChoose: (o) => edit((id: r.variable.id, track: false, value: o)),
+                    style: text,
+                    accent: look.accent,
+                  )
+                : _Stepper(
+                    label: r.variable.name,
+                    // Their own number: what a class or skill adds is the blueprint's, and stays out of it.
+                    value: own(r.variable.id) ?? r.variable.base,
+                    of: r.sources.isNotEmpty ? '→ ${r.display}' : null,
+                    onSet: (v) => edit((id: r.variable.id, track: false, value: v)),
+                    style: text,
+                    accent: look.accent,
+                  ),
+        ] else if (attributes.isNotEmpty) ...[
           rule(),
           LayoutBuilder(
             builder: (context, box) {
@@ -439,6 +527,199 @@ class _Bar extends StatelessWidget {
         ),
       ],
     ),
+  );
+}
+
+const _ink = Color(0xFFE8F0F6);
+
+/// A number to change in the window: its name (and below it, what it comes to, when more than their own counts), −
+/// and + a whole step at a time within [min] and [max], and the number itself, which pressed asks for one typed.
+class _Stepper extends StatelessWidget {
+  const _Stepper({
+    required this.label,
+    required this.value,
+    required this.onSet,
+    required this.style,
+    required this.accent,
+    this.min,
+    this.max,
+    this.whole = false,
+    this.of,
+  });
+
+  final String label;
+  final double value;
+  final ValueChanged<double> onSet;
+  final TextStyle Function(double size, {Color? color, FontWeight? weight, double spacing}) style;
+  final Color accent;
+  final double? min;
+  final double? max;
+  final bool whole;
+
+  /// Said beside it: what it is out of ("/ 200 HP"), or what it comes to ("→ 15").
+  final String? of;
+
+  double _within(double v) {
+    var n = whole ? v.roundToDouble() : v;
+    if (min case final low?) n = n < low ? low : n;
+    if (max case final high?) n = n > high ? high : n;
+    return n;
+  }
+
+  String get _shown => whole ? '${value.round()}' : _number(value);
+
+  Future<void> _type(BuildContext context) async {
+    final typed = await showDialog<String>(
+      context: context,
+      builder: (dialog) => _TypeNumber(
+        label: label,
+        initial: _shown,
+        whole: whole,
+        signed: (min ?? -1) < 0,
+        limits: [if (min != null) 'at least ${_number(min!)}', if (max != null) 'at most ${_number(max!)}'].join(', '),
+      ),
+    );
+    final n = double.tryParse(typed?.trim() ?? '');
+    if (n != null && n.isFinite && _within(n) != value) onSet(_within(n));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget button(IconData icon, String tip, double to) => IconButton(
+      tooltip: tip,
+      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+      color: accent,
+      disabledColor: _ink.withValues(alpha: 0.25),
+      onPressed: _within(to) == value ? null : () => onSet(_within(to)),
+      icon: Icon(icon, size: 20),
+    );
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: style(13, color: _ink.withValues(alpha: 0.72))),
+              if (of case final more?) Text(more, style: style(11.5, color: _ink.withValues(alpha: 0.6))),
+            ],
+          ),
+        ),
+        button(Icons.remove, 'Less $label', value - 1),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 56, minHeight: 48),
+          child: TextButton(
+            onPressed: () => _type(context),
+            style: TextButton.styleFrom(foregroundColor: _ink, padding: const EdgeInsets.symmetric(horizontal: 8)),
+            child: Text(
+              _shown,
+              semanticsLabel: '$label: $_shown. Press to type a number.',
+              style: style(14, color: _ink, weight: FontWeight.w700),
+            ),
+          ),
+        ),
+        button(Icons.add, 'More $label', value + 1),
+      ],
+    );
+  }
+}
+
+/// A number typed for [label]: the dialog keeps its field (and lets it go only when it is gone, after it has closed).
+class _TypeNumber extends StatefulWidget {
+  const _TypeNumber({
+    required this.label,
+    required this.initial,
+    required this.whole,
+    required this.signed,
+    required this.limits,
+  });
+
+  final String label;
+  final String initial;
+  final bool whole;
+  final bool signed;
+
+  /// "at least 1, at most 100".
+  final String limits;
+
+  @override
+  State<_TypeNumber> createState() => _TypeNumberState();
+}
+
+class _TypeNumberState extends State<_TypeNumber> {
+  late final _field = TextEditingController(text: widget.initial);
+
+  @override
+  void dispose() {
+    _field.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+    title: Text(widget.label),
+    content: TextField(
+      controller: _field,
+      autofocus: true,
+      keyboardType: TextInputType.numberWithOptions(decimal: !widget.whole, signed: widget.signed),
+      decoration: InputDecoration(helperText: widget.limits.isEmpty ? null : widget.limits),
+      onSubmitted: (t) => Navigator.of(context).pop(t),
+    ),
+    actions: [
+      TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+      FilledButton(onPressed: () => Navigator.of(context).pop(_field.text), child: const Text('Set')),
+    ],
+  );
+}
+
+/// A stage or a choice to change in the window: its name, and the one it is, chosen from all of them.
+class _Choose extends StatelessWidget {
+  const _Choose({
+    required this.label,
+    required this.options,
+    required this.current,
+    required this.onChoose,
+    required this.style,
+    required this.accent,
+  });
+
+  final String label;
+
+  /// Each as its id and its name.
+  final List<(String, String)> options;
+  final String current;
+  final ValueChanged<String> onChoose;
+  final TextStyle Function(double size, {Color? color, FontWeight? weight, double spacing}) style;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      Expanded(
+        child: Text(label, style: style(13, color: _ink.withValues(alpha: 0.72))),
+      ),
+      const SizedBox(width: 8),
+      Flexible(
+        flex: 2,
+        child: DropdownButton<String>(
+          value: options.any((o) => o.$1 == current) ? current : null,
+          isExpanded: true,
+          dropdownColor: const Color(0xFF0B1626),
+          iconEnabledColor: accent,
+          underline: Container(height: 1, color: accent.withValues(alpha: 0.5)),
+          style: style(14, color: _ink, weight: FontWeight.w700),
+          items: [
+            for (final (id, name) in options)
+              DropdownMenuItem(
+                value: id,
+                child: Text(name, overflow: TextOverflow.ellipsis),
+              ),
+          ],
+          onChanged: (id) {
+            if (id != null && id != current) onChoose(id);
+          },
+        ),
+      ),
+    ],
   );
 }
 

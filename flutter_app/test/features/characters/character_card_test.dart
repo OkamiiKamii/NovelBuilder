@@ -9,6 +9,7 @@ import 'package:novel_builder/shared/data/backup_files.dart';
 import 'package:novel_builder/shared/data/providers.dart';
 import 'package:novel_builder/shared/data/sample_novel.dart';
 
+import '../../helpers/page_action.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -33,8 +34,7 @@ void main() {
       c.read(routerProvider).go('/organize/character/$wren');
       await tester.pumpAndSettle();
 
-      await tester.ensureVisible(find.text('Share their card'));
-      await tester.tap(find.text('Share their card'));
+      await pressPageAction(tester, 'Share their card');
       await tester.pumpAndSettle();
       Finder card(String text) => find.descendant(of: find.byType(CharacterShareCard), matching: find.text(text));
       expect(card('Wren Hollis'), findsOneWidget);

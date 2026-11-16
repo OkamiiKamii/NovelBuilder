@@ -12,7 +12,6 @@ import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/characters/cast.dart';
 import '../../shared/domain/characters/character_records.dart';
-import '../../shared/domain/characters/from_line.dart';
 import '../../shared/domain/records/relation.dart';
 import '../../shared/domain/text/fold.dart';
 import '../workspace/open_novel.dart';
@@ -20,7 +19,6 @@ import '../workspace/organize_switch.dart';
 import 'character_actions.dart';
 import 'characters_providers.dart';
 import 'interview.dart';
-import 'new_character_dialog.dart';
 import 'widgets/cast_arcs.dart';
 import 'widgets/cast_card.dart';
 import 'widgets/cast_check.dart';
@@ -372,31 +370,8 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
     );
   }
 
-  Future<void> _create(CastData cast, {String? line}) async {
-    final actions = CharacterActions(context, cast.novelId);
-    final made = await showNewCharacterDialog(
-      context,
-      templates: cast.templates,
-      cast: [for (final e in cast.characters()) (id: e.id, name: e.name)],
-      line: line,
-    );
-    if (made == null) return;
-    // The character, what their line said as fields, and the ties it named, in one change.
-    final entry = actions.now((c) {
-      final entry = c.create(
-        name: made.name,
-        epithet: made.epithet,
-        roles: made.roles,
-        summary: made.summary,
-        templateId: made.templateId,
-        // The id the card was drawn with, so the character keeps the colour shown while they were made.
-        id: made.id,
-      );
-      recordFromLine(c, entry.id, made.fields, made.ties);
-      return entry;
-    });
-    if (entry != null) actions.openCharacter(entry.id);
-  }
+  // The new character dialog, the character made, and their page (`newCharacter`, shared with the vault's own list).
+  Future<void> _create(CastData cast, {String? line}) => newCharacter(context, cast, line: line);
 
   void _move(List<Listed> found, Listed l, int by, String novelId) {
     final ids = [for (final x in found) x.entry.id];

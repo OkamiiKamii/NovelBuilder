@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/data/background.dart';
 import '../../../shared/domain/characters/looks.dart';
-import '../../../shared/domain/characters/named_in.dart';
 import '../../../shared/domain/characters/record_look.dart';
-import '../../../shared/domain/records/story_node.dart';
-import '../../../shared/domain/stable_sort.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import 'kept_reader.dart';
 import 'parts.dart';
 import 'vault.dart';
 
@@ -27,37 +25,49 @@ class AgainstYourPages extends ConsumerStatefulWidget {
   ConsumerState<AgainstYourPages> createState() => _AgainstYourPagesState();
 }
 
-class _AgainstYourPagesState extends ConsumerState<AgainstYourPages> {
-  List<LookSighting>? _seen;
-  Object? _readFor;
+class _AgainstYourPagesState extends ConsumerState<AgainstYourPages>
+    with KeptReader<AgainstYourPages, List<LookSighting>> {
+  /// Their names, and every other character's (so a look is not given to whoever stands beside them): once a cast.
+  ({CastData cast, List<String> names, List<String> others})? _from;
 
-  void _read() {
+  ({CastData cast, List<String> names, List<String> others}) _inputs() {
     final cast = widget.cast;
-    final model = cast.model;
-    final chapters = stableSorted(
-      model.nodes.values.where((n) => n.kind == NodeKind.chapter || n.kind == NodeKind.scene),
-      (a, b) => (model.order.position[a.id] ?? 0) - (model.order.position[b.id] ?? 0),
-    ).map((n) => n.id).toList();
-    final all = namesToFind(cast.entries, cast.profiles);
-    final names = all[widget.entryId] ?? const <String>[];
-    final others = [
-      for (final e in cast.entries)
-        if (e.id != widget.entryId && e.category == 'character') ...?all[e.id],
-    ];
-    final key = (chapters.join(','), names.join('|'), others.length, cast.snapshot.rows('chapterContents').length);
-    if (key == _readFor) return;
-    _readFor = key;
-    if (chapters.isEmpty || names.isEmpty) {
-      setState(() => _seen = const []);
-      return;
-    }
-    final stored = widget.actions.service.storedChapters(cast.novelId);
-    ref.read(runAsideProvider)(looksJob(stored, chapters, names, others)).then(
-      (seen) {
-        if (mounted && _readFor == key) setState(() => _seen = seen);
-      },
-      onError: (Object e, StackTrace s) =>
-          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
+    if (_from case final from? when identical(from.cast, cast)) return from;
+    final all = cast.findNames;
+    return _from = (
+      cast: cast,
+      names: all[widget.entryId] ?? const <String>[],
+      others: [
+        for (final e in cast.entries)
+          if (e.id != widget.entryId && e.category == 'character') ...?all[e.id],
+      ],
+    );
+  }
+
+  @override
+  String get readingNovelId => widget.cast.novelId;
+
+  @override
+  List<LookSighting> get nothingRead => const [];
+
+  @override
+  Object? readingInputs() {
+    final from = _inputs();
+    final chapters = widget.cast.documentIds;
+    if (chapters.isEmpty || from.names.isEmpty) return null;
+    return ('looks', widget.cast.novelId, chapters.join(','), from.names.join('|'), from.others.join('|'));
+  }
+
+  @override
+  Future<List<LookSighting>> runReading(RunAside run) {
+    final from = _inputs();
+    return run(
+      looksJob(
+        widget.actions.service.storedChapters(widget.cast.novelId),
+        widget.cast.documentIds,
+        from.names,
+        from.others,
+      ),
     );
   }
 
@@ -73,11 +83,9 @@ class _AgainstYourPagesState extends ConsumerState<AgainstYourPages> {
 
   @override
   Widget build(BuildContext context) {
-    // Read after the page is drawn, never while it is being built.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _read();
-    });
-    final seen = _seen;
+    // A reading kept at once; else read after the page is drawn, never while it is being built.
+    keepReading();
+    final seen = reading;
     if (seen == null || seen.isEmpty) return const SizedBox.shrink();
     final checks = checkLooks(seen, _recorded());
     if (checks.isEmpty) return const SizedBox.shrink();

@@ -76,7 +76,9 @@ class _WaitingForANameState extends ConsumerState<WaitingForAName> with CountRep
               for (final w in RegExp(r'[a-z]+').allMatches('${l.entry.summary} ${l.profile.epithet}'.toLowerCase()))
                 if (roleWords.contains(w[0])) w[0]!,
           });
-    final key = (order.join(','), taken.join('|'), cast.snapshot.rows('chapterContents').length);
+    // The text as stored now: the store's count of writes to it (the cast is read without the chapters' text).
+    final text = ref.read(novelStoreProvider).versionOf(cast.novelId, const {'chapterContents'});
+    final key = (order.join(','), taken.join('|'), text);
     if (key == _readFor) return;
     _readFor = key;
     final store = ref.read(novelStoreProvider);

@@ -10,6 +10,7 @@ import 'package:novel_builder/shared/data/providers.dart';
 import 'package:novel_builder/shared/domain/characters/journal.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/page_action.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -23,8 +24,7 @@ void main() {
     c.read(openNovelProvider.notifier).open(novel);
     c.read(routerProvider).go(characterPath(mark));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Mark’s journal'));
-    await tester.tap(find.text('Mark’s journal'));
+    await pressPageAction(tester, 'Mark’s journal');
     await tester.pumpAndSettle();
     return (c: c, mark: mark);
   }

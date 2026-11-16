@@ -5,18 +5,19 @@ import 'package:go_router/go_router.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/characters/character_changes.dart';
+import '../../shared/domain/characters/from_line.dart';
 import '../../shared/domain/codex/codex_changes.dart';
 import '../write/write_providers.dart';
 import 'characters_providers.dart';
 import 'data/character_service.dart';
+import 'new_character_dialog.dart';
 
 /// Where an entry of the world is: a character's profile, or its page under World.
 String entryPath(String entryId, {required bool character}) =>
     character ? characterPath(entryId) : '/organize/world/entry/$entryId';
 
 /// Where a character's profile is.
-String characterPath(String entryId, {String? tab}) =>
-    '/organize/character/$entryId${tab == null || tab == 'overview' ? '' : '?tab=$tab'}';
+String characterPath(String entryId, {String? tab}) => '/organize/character/$entryId${tab == null ? '' : '?tab=$tab'}';
 
 /// Changes to the open novel's characters and world (a character change covers the codex too), from a screen. What an
 /// action needs after its widget may be gone (the profile of a character just deleted) is taken when it starts.
@@ -90,4 +91,33 @@ class CharacterActions {
     container.read(selectedNodeProvider.notifier).select(nodeId);
     router.go('/write');
   }
+}
+
+/// A new character for [cast]'s novel, from the new character dialog (and [line], a line of them already written, when
+/// there is one): the character, what their line said as fields and the ties it named, in one change; then their
+/// page. In a novel with systems they begin with a sheet on each. The new character's id, or null when none was made.
+Future<String?> newCharacter(BuildContext context, CastData cast, {String? line}) async {
+  final actions = CharacterActions(context, cast.novelId);
+  final made = await showNewCharacterDialog(
+    context,
+    templates: cast.templates,
+    cast: [for (final e in cast.characters()) (id: e.id, name: e.name)],
+    line: line,
+  );
+  if (made == null) return null;
+  final entry = actions.now((c) {
+    final entry = c.create(
+      name: made.name,
+      epithet: made.epithet,
+      roles: made.roles,
+      summary: made.summary,
+      templateId: made.templateId,
+      // The id the card was drawn with, so the character keeps the colour shown while they were made.
+      id: made.id,
+    );
+    recordFromLine(c, entry.id, made.fields, made.ties);
+    return entry;
+  });
+  if (entry != null) actions.openCharacter(entry.id);
+  return entry?.id;
 }

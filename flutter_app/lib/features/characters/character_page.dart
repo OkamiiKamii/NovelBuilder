@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,6 +30,7 @@ import 'tabs/notes_tab.dart';
 import 'tabs/overview_tab.dart';
 import 'tabs/relationships_tab.dart';
 import 'tabs/secrets_tab.dart';
+import 'tabs/status_tab.dart';
 import 'widgets/cameo.dart';
 import 'widgets/cast_card.dart' show castTone;
 import 'widgets/character_card_share.dart';
@@ -37,9 +39,12 @@ import 'widgets/journal_page.dart';
 import 'widgets/portrait.dart';
 import 'widgets/this_or_that.dart';
 import 'widgets/vault.dart';
+import 'widgets/vault_rail.dart';
 import 'widgets/write_them_in_page.dart';
 
 enum ProfilePage {
+  /// Their sheet on the novel's system, as its own screen: only in a novel with systems, and there first.
+  status('Status'),
   overview('Overview'),
   relationships('Relationships'),
   details('Details'),
@@ -52,6 +57,20 @@ enum ProfilePage {
   final String label;
 
   static ProfilePage of(String? name) => values.where((t) => t.name == name).firstOrNull ?? overview;
+
+  /// The tab [name] asks for, in a novel with or without [systems]: none asked, Status where there are systems and
+  /// Overview where there are none (where Status is not a tab).
+  static ProfilePage shown(String? name, {required bool systems}) {
+    final asked = values.where((t) => t.name == name).firstOrNull;
+    if (asked == null) return systems ? status : overview;
+    return asked == status && !systems ? overview : asked;
+  }
+
+  /// The tabs of a novel with or without systems.
+  static List<ProfilePage> tabs({required bool systems}) => [
+    for (final p in values)
+      if (p != status || systems) p,
+  ];
 }
 
 const _referenceWords = [
@@ -95,12 +114,42 @@ class CharacterPage extends ConsumerWidget {
         ),
       );
     }
-    final page = ProfilePage.of(tab);
+    final systems = cast.model.systems.isNotEmpty;
+    final compact = WindowSize.of(context) == WindowSize.compact;
+    final entryNow = listed.entry;
+    final profileNow = listed.profile;
+    final secondaryActions = CharacterActions(context, cast.novelId);
+    final List<(IconData, String, VoidCallback)> secondary = [
+      // Getting to know them, a question at a time, while their profile still has empty answers.
+      if (interviewFor(entryNow, profileNow, cast.templates).isNotEmpty)
+        (
+          Icons.record_voice_over_outlined,
+          'Interview ${entryNow.name}',
+          () => interviewCharacter(
+            context,
+            secondaryActions,
+            entry: entryNow,
+            profile: profileNow,
+            templates: cast.templates,
+          ),
+        ),
+      // Their temperament a quick choice at a time, into Core Traits (`widgets/this_or_that.dart`).
+      (
+        Icons.swap_horiz,
+        'This or that',
+        () => showThisOrThat(context, entry: entryNow, profile: profileNow, actions: secondaryActions),
+      ),
+      // Writing as them, to a prompt, on ruled paper; every page kept in their notes (`widgets/journal_page.dart`).
+      (Icons.history_edu, '${entryNow.name}’s journal', () => showJournal(context, entryNow.id)),
+      // Their card, as writers share their people (`widgets/character_card_share.dart`).
+      (Icons.style_outlined, 'Share their card', () => showCharacterCard(context, cast: cast, entryId: entryNow.id)),
+    ];
+    final page = ProfilePage.shown(tab, systems: systems);
     final actions = CharacterActions(context, cast.novelId);
     final entry = listed.entry;
     final profile = listed.profile;
     final theme = Theme.of(context);
-    return Theme(
+    final vault = Theme(
       data: theme.copyWith(
         textTheme: theme.textTheme.copyWith(headlineSmall: vaultHeading(context, size: 26, weight: 700)),
       ),
@@ -113,6 +162,26 @@ class CharacterPage extends ConsumerWidget {
             icon: const Icon(Icons.arrow_back),
             label: const Text('All characters'),
           ),
+          // Through the cast without going back: the one before and after, on the same tab; or anyone, by search.
+          IconButton(
+            tooltip: 'Previous character (Alt+↑)',
+            onPressed: vaultStep(cast, entry.id, -1) == null
+                ? null
+                : () => context.go(characterPath(vaultStep(cast, entry.id, -1)!, tab: tab)),
+            icon: const Icon(Icons.keyboard_arrow_up),
+          ),
+          IconButton(
+            tooltip: 'Next character (Alt+↓)',
+            onPressed: vaultStep(cast, entry.id, 1) == null
+                ? null
+                : () => context.go(characterPath(vaultStep(cast, entry.id, 1)!, tab: tab)),
+            icon: const Icon(Icons.keyboard_arrow_down),
+          ),
+          IconButton(
+            tooltip: 'Find a character',
+            onPressed: () => _find(context, cast, entry.id),
+            icon: const Icon(Icons.person_search_outlined),
+          ),
           // From them to the page: a scene with them, started from what is known of them
           // (`widgets/write_them_in_page.dart`).
           FilledButton.icon(
@@ -120,33 +189,11 @@ class CharacterPage extends ConsumerWidget {
             icon: const Icon(Icons.edit_note),
             label: Text('Write ${entry.name} in'),
           ),
-          // Getting to know them, a question at a time, while their profile still has empty answers.
-          if (interviewFor(entry, profile, cast.templates).isNotEmpty)
-            OutlinedButton.icon(
-              onPressed: () =>
-                  interviewCharacter(context, actions, entry: entry, profile: profile, templates: cast.templates),
-              icon: const Icon(Icons.record_voice_over_outlined),
-              label: Text('Interview ${entry.name}'),
-            ),
-          // Their temperament a quick choice at a time, into Core Traits (`widgets/this_or_that.dart`).
-          OutlinedButton.icon(
-            onPressed: () => showThisOrThat(context, entry: entry, profile: profile, actions: actions),
-            icon: const Icon(Icons.swap_horiz),
-            label: const Text('This or that'),
-          ),
-          // Writing as them, to a prompt, on ruled paper; every page kept in their notes (`widgets/journal_page.dart`).
-          OutlinedButton.icon(
-            onPressed: () => showJournal(context, entry.id),
-            icon: const Icon(Icons.history_edu),
-            label: Text('${entry.name}’s journal'),
-          ),
-          // Their card, as writers share their people (`widgets/character_card_share.dart`).
-          OutlinedButton.icon(
-            onPressed: () => showCharacterCard(context, cast: cast, entryId: entry.id),
-            icon: const Icon(Icons.style_outlined),
-            label: const Text('Share their card'),
-          ),
-          _MoreMenu(cast: cast, listed: listed, actions: actions),
+          // On a wide screen, each its own button; on a phone, in the menu, so the character is not pushed below a
+          // column of buttons.
+          for (final (icon, label, run) in secondary)
+            if (!compact) OutlinedButton.icon(onPressed: run, icon: Icon(icon), label: Text(label)),
+          _MoreMenu(cast: cast, listed: listed, actions: actions, extras: compact ? secondary : const []),
         ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -169,6 +216,7 @@ class CharacterPage extends ConsumerWidget {
             _Header(key: ValueKey('header:${entry.id}'), cast: cast, listed: listed, actions: actions),
             const SizedBox(height: 16),
             _Tabs(
+              tabs: ProfilePage.tabs(systems: systems),
               current: page,
               onSelect: (p) => context.go(characterPath(entry.id, tab: p.name)),
             ),
@@ -176,6 +224,11 @@ class CharacterPage extends ConsumerWidget {
             KeyedSubtree(
               key: ValueKey('${entry.id}:${page.name}'),
               child: switch (page) {
+                ProfilePage.status => StatusTab(
+                  cast: cast,
+                  listed: listed,
+                  onOpen: (tab) => context.go(characterPath(entry.id, tab: tab)),
+                ),
                 ProfilePage.overview => OverviewTab(cast: cast, listed: listed, actions: actions),
                 ProfilePage.relationships => RelationshipsTab(cast: cast, entry: entry, actions: actions),
                 ProfilePage.details => DetailsTab(cast: cast, entry: entry, profile: profile, actions: actions),
@@ -193,20 +246,87 @@ class CharacterPage extends ConsumerWidget {
         ),
       ),
     );
+    return _framed(context, cast, entry.id, vault);
   }
+
+  /// From this width the vault's list stands beside the page (the page itself is at most 1100 wide).
+  static const railFrom = 1300.0;
+
+  /// The page in the vault: the cast's list beside it where there is room, and Alt+↑ and Alt+↓ to the one before and
+  /// after, on the same tab.
+  Widget _framed(BuildContext context, CastData cast, String id, Widget vault) {
+    void step(int by) {
+      final next = vaultStep(cast, id, by);
+      if (next != null) context.go(characterPath(next, tab: tab));
+    }
+
+    // Round the list and the page both: from the list's search too.
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.arrowUp, alt: true): () => step(-1),
+        const SingleActivator(LogicalKeyboardKey.arrowDown, alt: true): () => step(1),
+      },
+      child: Focus(
+        autofocus: true,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            if (box.maxWidth < railFrom) return vault;
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 20, 8, 16),
+                    child: VaultRail(cast: cast, currentId: id, tab: tab, onAdd: () => newCharacter(context, cast)),
+                  ),
+                ),
+                const VerticalDivider(width: 1),
+                Expanded(child: vault),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  /// The cast's list in a sheet, its search ready: to go to anyone from anywhere on a phone (or a narrow window).
+  void _find(BuildContext context, CastData cast, String id) => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useRootNavigator: true,
+    builder: (sheet) => SafeArea(
+      child: SizedBox(
+        height: MediaQuery.sizeOf(sheet).height * 0.8,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.viewInsetsOf(sheet).bottom),
+          child: VaultRail(
+            cast: cast,
+            currentId: id,
+            tab: tab,
+            autofocus: true,
+            onGone: () => Navigator.of(sheet).pop(),
+            onAdd: () => newCharacter(context, cast),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _Tabs extends StatelessWidget {
-  const _Tabs({required this.current, required this.onSelect});
+  const _Tabs({required this.tabs, required this.current, required this.onSelect});
 
+  final List<ProfilePage> tabs;
   final ProfilePage current;
   final ValueChanged<ProfilePage> onSelect;
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-    key: ValueKey(current),
-    length: ProfilePage.values.length,
-    initialIndex: current.index,
+    key: ValueKey((current, tabs.length)),
+    length: tabs.length,
+    initialIndex: tabs.indexOf(current),
     child: TabBar(
       isScrollable: true,
       tabAlignment: TabAlignment.start,
@@ -217,8 +337,8 @@ class _Tabs extends StatelessWidget {
       indicatorColor: Theme.of(context).colorScheme.primary,
       indicatorWeight: 2.5,
       dividerColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35),
-      onTap: (i) => onSelect(ProfilePage.values[i]),
-      tabs: [for (final p in ProfilePage.values) Tab(text: p.label)],
+      onTap: (i) => onSelect(tabs[i]),
+      tabs: [for (final p in tabs) Tab(text: p.label)],
     ),
   );
 }
@@ -790,11 +910,14 @@ class _IdentityFormState extends State<_IdentityForm> {
 }
 
 class _MoreMenu extends StatelessWidget {
-  const _MoreMenu({required this.cast, required this.listed, required this.actions});
+  const _MoreMenu({required this.cast, required this.listed, required this.actions, this.extras = const []});
 
   final CastData cast;
   final Listed listed;
   final CharacterActions actions;
+
+  /// What a wider screen shows as buttons beside the menu (on a phone, first in it).
+  final List<(IconData, String, VoidCallback)> extras;
 
   Future<void> _applyTemplate(BuildContext context) async {
     final picked = await showDialog<String>(
@@ -913,9 +1036,16 @@ class _MoreMenu extends StatelessWidget {
         'template' => _saveTemplate(context),
         'archive' => actions.now((c) => c.setArchived(listed.entry.id, !archived)),
         'delete' => _delete(context),
+        final other when other.startsWith('extra:') => extras[int.parse(other.substring(6))].$3(),
         _ => null,
       },
       itemBuilder: (_) => [
+        for (final (i, (icon, label, _)) in extras.indexed)
+          PopupMenuItem(
+            value: 'extra:$i',
+            child: ListTile(leading: Icon(icon), title: Text(label), contentPadding: EdgeInsets.zero),
+          ),
+        if (extras.isNotEmpty) const PopupMenuDivider(),
         const PopupMenuItem(value: 'layout', child: Text('Add sections from a layout…')),
         const PopupMenuItem(value: 'template', child: Text('Save this layout as a template…')),
         PopupMenuItem(value: 'archive', child: Text(archived ? 'Restore from the archive' : 'Archive')),

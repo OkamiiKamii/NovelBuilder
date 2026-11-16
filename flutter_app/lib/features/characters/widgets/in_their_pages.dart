@@ -6,6 +6,7 @@ import '../../../shared/domain/characters/named_in.dart';
 import '../../../shared/domain/stable_sort.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import 'kept_reader.dart';
 import 'parts.dart';
 import 'vault.dart';
 
@@ -37,9 +38,7 @@ class InTheirPages extends ConsumerStatefulWidget {
 /// How many passages are shown before "Show all".
 const passagesShown = 6;
 
-class _InTheirPagesState extends ConsumerState<InTheirPages> {
-  List<Sighting>? _found;
-  Object? _readFor;
+class _InTheirPagesState extends ConsumerState<InTheirPages> with KeptReader<InTheirPages, List<Sighting>> {
   bool _all = false;
 
   /// Where the entry is in the book, in reading order: linked there, or named.
@@ -53,33 +52,42 @@ class _InTheirPagesState extends ConsumerState<InTheirPages> {
     return stableSorted(ids, (a, b) => model.order.position[a]! - model.order.position[b]!);
   }
 
-  void _read() {
-    final where = _where();
-    final names = namesToFind(widget.cast.entries, widget.cast.profiles)[widget.entryId] ?? const <String>[];
-    final key = (where.join(','), names.join('|'), widget.cast.snapshot.rows('chapterContents').length);
-    if (key == _readFor) return;
-    _readFor = key;
-    if (where.isEmpty || names.isEmpty) {
-      _found = const [];
-      return;
-    }
-    final stored = widget.actions.service.storedChapters(widget.cast.novelId);
-    ref.read(runAsideProvider)(sightingsJob(stored, where, names)).then(
-      (found) {
-        if (mounted && _readFor == key) setState(() => _found = found);
-      },
-      onError: (Object e, StackTrace s) =>
-          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
+  /// Where they are and the names they go by: worked out once a cast.
+  ({CastData cast, List<String> where, List<String> names})? _from;
+
+  ({CastData cast, List<String> where, List<String> names}) _inputs() {
+    if (_from case final from? when identical(from.cast, widget.cast)) return from;
+    return _from = (
+      cast: widget.cast,
+      where: _where(),
+      names: widget.cast.findNames[widget.entryId] ?? const <String>[],
     );
   }
 
   @override
+  String get readingNovelId => widget.cast.novelId;
+
+  @override
+  List<Sighting> get nothingRead => const [];
+
+  @override
+  Object? readingInputs() {
+    final from = _inputs();
+    if (from.where.isEmpty || from.names.isEmpty) return null;
+    return ('sightings', widget.cast.novelId, from.where.join(','), from.names.join('|'));
+  }
+
+  @override
+  Future<List<Sighting>> runReading(RunAside run) {
+    final from = _inputs();
+    return run(sightingsJob(widget.actions.service.storedChapters(widget.cast.novelId), from.where, from.names));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Read after the page is drawn, never while it is being built.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _read();
-    });
-    final found = _found;
+    // A reading kept at once; else read after the page is drawn, never while it is being built.
+    keepReading();
+    final found = reading;
     if (found == null || found.isEmpty) return const SizedBox.shrink();
     final scheme = Theme.of(context).colorScheme;
     final shown = _all ? found : found.take(passagesShown).toList();

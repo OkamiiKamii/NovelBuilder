@@ -6,6 +6,7 @@ import 'package:novel_builder/features/characters/interview.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
 
+import '../../helpers/page_action.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -26,7 +27,7 @@ void main() {
     final before = acquaintance(listed.entry, listed.profile, cast.templates);
     final asked = interviewFor(listed.entry, listed.profile, cast.templates);
 
-    await tester.tap(find.text('Interview James'));
+    await pressPageAction(tester, 'Interview James');
     await tester.pumpAndSettle();
     // On a phone, the whole screen: a conversation, not a form over the page.
     expect(find.byWidgetPredicate((w) => w is Dialog && w.child is Material), findsOneWidget);

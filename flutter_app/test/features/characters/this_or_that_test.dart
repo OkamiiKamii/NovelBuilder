@@ -7,6 +7,7 @@ import 'package:novel_builder/shared/domain/characters/cast.dart' show fieldName
 import 'package:novel_builder/shared/domain/characters/this_or_that.dart';
 import 'package:novel_builder/shared/domain/records/entry.dart';
 
+import '../../helpers/page_action.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
@@ -22,7 +23,7 @@ void main() {
     c.read(routerProvider).go('/organize/character/$mira');
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('This or that'));
+    await pressPageAction(tester, 'This or that');
     await tester.pumpAndSettle();
     expect(find.text('In a crowded room, Mira is…'), findsOneWidget);
     expect(find.text('1 of ${traitAxes.length}'), findsOneWidget);
@@ -54,7 +55,7 @@ void main() {
     // Again: what is there is chosen when the card comes up; a choice changed takes the other word's place.
     await tester.pump(const Duration(seconds: 5));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('This or that'));
+    await pressPageAction(tester, 'This or that');
     await tester.pumpAndSettle();
     expect(tester.getSemantics(find.bySemanticsLabel('Mira is: Quiet')), containsSemantics(isSelected: true));
     await tester.tap(find.bySemanticsLabel('Mira is: Loud'));

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/data/background.dart';
-import '../../../shared/domain/characters/named_in.dart';
 import '../../../shared/domain/characters/voice_print.dart';
-import '../../../shared/domain/records/story_node.dart';
-import '../../../shared/domain/stable_sort.dart';
 import '../character_actions.dart';
 import '../characters_providers.dart';
+import 'kept_reader.dart';
 import 'parts.dart';
 import 'vault.dart';
 
@@ -27,50 +25,59 @@ class TheirVoice extends ConsumerStatefulWidget {
   ConsumerState<TheirVoice> createState() => _TheirVoiceState();
 }
 
-class _TheirVoiceState extends ConsumerState<TheirVoice> {
-  List<VoicePrint>? _prints;
-  Object? _readFor;
+class _TheirVoiceState extends ConsumerState<TheirVoice> with KeptReader<TheirVoice, List<VoicePrint>> {
+  /// Everyone who speaks, by the names they go by, and the chapters: worked out once a cast.
+  ({CastData cast, Map<String, List<String>> people, String who, String chapters})? _from;
 
-  void _read() {
-    final model = widget.cast.model;
-    final chapters = stableSorted(
-      model.nodes.values.where((n) => n.kind == NodeKind.chapter || n.kind == NodeKind.scene),
-      (a, b) => (model.order.position[a.id] ?? 0) - (model.order.position[b.id] ?? 0),
-    ).map((n) => n.id).toList();
-    final names = namesToFind(widget.cast.entries, widget.cast.profiles);
+  ({CastData cast, Map<String, List<String>> people, String who, String chapters}) _inputs() {
+    final cast = widget.cast;
+    if (_from case final from? when identical(from.cast, cast)) return from;
+    final names = cast.findNames;
     final people = {
-      for (final l in widget.cast.list)
+      for (final l in cast.list)
         if (!l.profile.archived && (names[l.entry.id] ?? const []).isNotEmpty) l.entry.id: names[l.entry.id]!,
     };
-    final key = (chapters.join(','), people.length, widget.cast.snapshot.rows('chapterContents').length);
-    if (key == _readFor) return;
-    _readFor = key;
-    if (chapters.isEmpty || !people.containsKey(widget.entryId)) {
-      _prints = const [];
-      return;
-    }
-    final stored = widget.actions.service.storedChapters(widget.cast.novelId);
-    ref.read(runAsideProvider)(voicePrintsJob(stored, chapters, people)).then(
-      (prints) {
-        if (mounted && _readFor == key) setState(() => _prints = prints);
-      },
-      onError: (Object e, StackTrace s) =>
-          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'characters')),
+    return _from = (
+      cast: cast,
+      people: people,
+      who: [for (final MapEntry(:key, :value) in people.entries) '$key:${value.join('|')}'].join(','),
+      chapters: cast.documentIds.join(','),
     );
   }
 
   @override
+  String get readingNovelId => widget.cast.novelId;
+
+  @override
+  List<VoicePrint> get nothingRead => const [];
+
+  // Everyone's voices, against each other: the same reading for every character, so read once for the whole cast.
+  @override
+  Object? readingInputs() {
+    final from = _inputs();
+    if (from.chapters.isEmpty || !from.people.containsKey(widget.entryId)) return null;
+    return ('voices', widget.cast.novelId, from.chapters, from.who);
+  }
+
+  @override
+  Future<List<VoicePrint>> runReading(RunAside run) => run(
+    voicePrintsJob(
+      widget.actions.service.storedChapters(widget.cast.novelId),
+      widget.cast.documentIds,
+      _inputs().people,
+    ),
+  );
+
+  @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _read();
-    });
-    final prints = _prints;
+    keepReading();
+    final prints = reading;
     if (prints == null) return const SizedBox.shrink();
     final me = prints.where((p) => p.id == widget.entryId).firstOrNull;
     final name = widget.cast.entries.where((e) => e.id == widget.entryId).firstOrNull?.name.trim() ?? 'They';
     if (me == null) return const SizedBox.shrink();
     final names = {for (final e in widget.cast.entries) e.id: e.name.trim()};
-    final reading = readVoice(widget.entryId, prints, names)!;
+    final voice = readVoice(widget.entryId, prints, names)!;
     final others = prints.where((p) => p.id != widget.entryId).toList();
     // The rest of the cast's average; none when no one else speaks enough (no tick then: it would only mark their own).
     double? mean(double Function(VoicePrint) f) =>
@@ -126,14 +133,17 @@ class _TheirVoiceState extends ConsumerState<TheirVoice> {
                 children: [
                   Container(width: 2, height: 12, color: scheme.onSurfaceVariant),
                   const SizedBox(width: 6),
-                  Text(
-                    'the rest of the cast',
-                    style: vaultText(context, size: 13, style: FontStyle.italic, color: scheme.onSurfaceVariant),
+                  // Wraps with large text, rather than running off a phone's edge.
+                  Flexible(
+                    child: Text(
+                      'the rest of the cast',
+                      style: vaultText(context, size: 13, style: FontStyle.italic, color: scheme.onSurfaceVariant),
+                    ),
                   ),
                 ],
               ),
             ),
-          for (final t in reading.traits)
+          for (final t in voice.traits)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(t, style: vaultText(context, size: 15.5, color: scheme.onSurface)),
@@ -158,26 +168,26 @@ class _TheirVoiceState extends ConsumerState<TheirVoice> {
               ],
             ),
           ],
-          if (reading.soundsLike case final like?) ...[
+          if (voice.soundsLike case final like?) ...[
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: (reading.alike ? scheme.errorContainer : scheme.surfaceContainerHigh).withValues(alpha: 0.4),
+                color: (voice.alike ? scheme.errorContainer : scheme.surfaceContainerHigh).withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: reading.alike ? scheme.error.withValues(alpha: 0.5) : scheme.outlineVariant),
+                border: Border.all(color: voice.alike ? scheme.error.withValues(alpha: 0.5) : scheme.outlineVariant),
               ),
               child: Row(
                 children: [
                   Icon(
-                    reading.alike ? Icons.record_voice_over : Icons.hearing,
+                    voice.alike ? Icons.record_voice_over : Icons.hearing,
                     size: 18,
-                    color: reading.alike ? scheme.error : scheme.primary,
+                    color: voice.alike ? scheme.error : scheme.primary,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      reading.alike
+                      voice.alike
                           ? '$name and $like sound alike: lines as long, as many questions and cries. Could a reader '
                                 'tell them apart without the tags?'
                           : 'Sounds most like $like.',
