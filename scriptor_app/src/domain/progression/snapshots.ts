@@ -1,19 +1,22 @@
 // SNAPSHOTS (as in the original app): a character's whole state at one point in the story, complete in itself, so
-// reading the state at a chapter never replays history. The reading parts of
-// flutter_app/lib/shared/domain/progression/snapshots.dart that the genre modules' Ranks and Inventory tools use, and
-// `trackLabel`: where a snapshot stands on a system's track, as computeSheet labels it ("12 of 100", or the stage's
-// name), which depends only on the snapshot's progress, never on a formula. The rest (resolveSystem, comparisons,
-// track changes) comes with the Systems phase.
+// reading the state at a chapter never replays history and editing one snapshot never alters another. A port of
+// flutter_app/lib/shared/domain/progression/snapshots.dart: the snapshots and their reading, a snapshot worked out
+// against its systems (`resolveSystem`), two compared, and the changes (log, edit, remove). And `trackLabel`: where a
+// snapshot stands on a system's track, as computeSheet labels it ("12 of 100", or the stage's name), which depends only
+// on the snapshot's progress, never on a formula (what the genre modules' Ranks tool reads).
 
+import { ChangeRefused, RecordChanges } from '../codex/codexChanges';
 import { jsNumber } from '../codex/fieldValues';
 import { localeCompare } from '../exchange/collation';
-import { type JsonMap, idOrNull, mapOrNull, numOrNull, str } from '../json';
+import { type JsonMap, idOrNull, listOf, mapOrNull, numOrNull, str } from '../json';
 import { StoryOrder } from '../model/storyOrder';
 import { stableSorted } from '../reader/stableSort';
 import { JsonRecord, maps, strings } from '../records/jsonRecord';
-import { type StoryNode } from '../records/storyNode';
-import { type SysTrack } from '../records/system';
-import { dartTrim } from '../text/dartString';
+import { StoryNode } from '../records/storyNode';
+import { type SysItem, type SysTrack, type SysVariable, SystemBlueprint, SystemSheet } from '../records/system';
+import { type SheetItem, type SheetTrack, SheetProfile, computeSheet, settle } from '../systems/compute';
+import { formatNumber } from '../systems/formula';
+import { dartToLowerCase, dartTrim } from '../text/dartString';
 
 export const statusDimensions: readonly string[] = ['condition', 'transformations', 'reputation', 'knowledge', 'goals'];
 export const dimensionLabels: Readonly<Record<string, string>> = {
@@ -22,6 +25,15 @@ export const dimensionLabels: Readonly<Record<string, string>> = {
   reputation: 'Reputation & standing',
   knowledge: 'Knowledge & secrets known',
   goals: 'Personal goals',
+};
+
+/** What each status line could say, as the fields' hints. */
+export const dimensionHints: Readonly<Record<string, string>> = {
+  condition: 'Broken left arm\nExhausted',
+  transformations: 'Wolf form (until dawn)',
+  reputation: 'Ash Guild: trusted\nThe Crown: wanted',
+  knowledge: 'Knows the prince is alive',
+  goals: 'Find her brother',
 };
 
 /** How gear is held: only suggestions. */
@@ -170,4 +182,326 @@ export function trackLabel(track: SysTrack, progress: ReadonlyMap<string, string
   const stages = track.stages;
   const at = Math.max(0, stages.findIndex((s) => s.id === raw));
   return at < stages.length ? stages[at].name : 'No stages yet';
+}
+
+// ---------------------------------------------------------------------------------------------------- worked out
+
+export class StateRow {
+  constructor(
+    readonly variable: SysVariable,
+    readonly value: number | string | null,
+    readonly display: string,
+    /** The author set this by hand. */
+    readonly byHand: boolean,
+    /** What the system works out, when the author's value differs from it. */
+    readonly systemSays: string | null,
+    readonly sources: string[],
+    readonly error: string | null,
+  ) {}
+}
+
+export class SystemState {
+  constructor(
+    readonly system: SystemBlueprint,
+    readonly auto: boolean,
+    readonly rows: StateRow[],
+    readonly tracks: SheetTrack[],
+    readonly items: SheetItem[],
+    /** With the calculator on: things not held whose requirement is now met. */
+    readonly available: SysItem[],
+  ) {}
+}
+
+/** compute.dart's `SheetTrack.plain()`: the label and level as they are, nothing unmet, no error. */
+const plainTrack = (t: SheetTrack): SheetTrack => ({ ...t, unmet: [], error: null });
+/** compute.dart's `SheetItem.plain()`: the item as it is, nothing unmet, no effects, no error. */
+const plainItem = (i: SheetItem): SheetItem => ({ ...i, unmet: [], effects: [], error: null });
+
+function show(variable: SysVariable, value: number | string | null): string {
+  if (value === null || value === '') return '—';
+  const isNumber = typeof value === 'number';
+  return `${isNumber ? formatNumber(value) : value}${variable.unit.length > 0 && isNumber ? ` ${variable.unit}` : ''}`;
+}
+
+/** AUTHOR PRIMACY & MANUAL OVERRIDE RULE: works out what a snapshot says about one system. With the calculator on, the
+ * blueprint's formulas and class effects are applied, and any value the author set by hand replaces the worked-out
+ * one (and is what other formulas then read). With it off, nothing is worked out: every value is what the author
+ * entered. */
+export function resolveSystem(system: SystemBlueprint, snapshot?: SnapshotSystem | null): SystemState {
+  const snap = snapshot ?? new SnapshotSystem({});
+  const profile = new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds });
+  const plain = computeSheet(system, profile);
+  const overrides = snap.overrides;
+  const set = (v: SysVariable): number | string | null => {
+    const value = overrides.get(v.id);
+    if (v.kind === 'choice') return typeof value === 'string' ? value : null;
+    return typeof value === 'number' && Number.isFinite(value) ? value : null;
+  };
+
+  if (!snap.auto) {
+    const rows = system.variables.map((v) => {
+      const own = snap.values.get(v.id);
+      const value =
+        set(v) ??
+        (v.kind === 'derived'
+          ? null
+          : v.kind === 'choice'
+            ? typeof own === 'string'
+              ? own
+              : (v.options[0] ?? '')
+            : typeof own === 'number'
+              ? own
+              : v.base);
+      return new StateRow(v, value, show(v, value), true, null, [], null);
+    });
+    return new SystemState(system, false, rows, plain.tracks.map(plainTrack), plain.items.map(plainItem), []);
+  }
+  const worked = computeSheet(
+    system,
+    new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds, overrides }),
+  );
+  const rows = worked.rows.map((row, i) => {
+    const byHand = set(row.variable) !== null;
+    return new StateRow(
+      row.variable,
+      row.value,
+      row.display,
+      byHand,
+      byHand && plain.rows[i].display !== row.display ? plain.rows[i].display : null,
+      row.sources,
+      byHand ? null : row.error,
+    );
+  });
+  return new SystemState(system, true, rows, worked.tracks, worked.items, worked.available);
+}
+
+/** Lines of a status field: one thing per line, blanks ignored. */
+export function linesOf(text: string): string[] {
+  return text
+    .split('\n')
+    .filter((line) => dartTrim(line).length > 0)
+    .map((line) => dartTrim(line));
+}
+
+export class Comparison {
+  readonly stats: { system: string; name: string; from: string; to: string; delta: number | null }[] = [];
+  readonly advancement: { system: string; name: string; from: string; to: string }[] = [];
+  readonly gained: { group: string; name: string }[] = [];
+  readonly lost: { group: string; name: string }[] = [];
+  readonly gear: { change: string; name: string; detail: string }[] = [];
+  readonly status: { dimension: string; label: string; added: string[]; removed: string[] }[] = [];
+
+  /** Nothing differs between the two. */
+  get same(): boolean {
+    return (
+      this.stats.length === 0 &&
+      this.advancement.length === 0 &&
+      this.gained.length === 0 &&
+      this.lost.length === 0 &&
+      this.gear.length === 0 &&
+      this.status.length === 0
+    );
+  }
+}
+
+const gearKey = (g: GearItem): string => dartToLowerCase(dartTrim(g.name));
+const gearDetail = (g: GearItem): string => [dartTrim(g.kind), dartTrim(g.note)].filter((x) => x.length > 0).join(' · ');
+
+/** What is different between two snapshots, read from `from` to `to`: stat changes with their size, advancement,
+ * abilities and titles gained or lost, gear that changed hands, and status lines that came or went. */
+export function compareSnapshots(
+  from: ProgressSnapshot,
+  to: ProgressSnapshot,
+  systems: readonly SystemBlueprint[],
+): Comparison {
+  const result = new Comparison();
+  const fromSystems = from.systems;
+  const toSystems = to.systems;
+  for (const system of systems) {
+    if (!fromSystems.has(system.id) && !toSystems.has(system.id)) continue;
+    const a = resolveSystem(system, fromSystems.get(system.id));
+    const b = resolveSystem(system, toSystems.get(system.id));
+    a.rows.forEach((row, i) => {
+      const next = b.rows[i];
+      if (row.display === next.display) return;
+      result.stats.push({
+        system: system.name,
+        name: row.variable.name,
+        from: row.display,
+        to: next.display,
+        delta: typeof row.value === 'number' && typeof next.value === 'number' ? next.value - row.value : null,
+      });
+    });
+    a.tracks.forEach((t, i) => {
+      if (t.label !== b.tracks[i].label) {
+        result.advancement.push({ system: system.name, name: t.track.name, from: t.label, to: b.tracks[i].label });
+      }
+    });
+    const groups = system.groupList;
+    const group = (item: SysItem) => groups.find((g) => g.id === item.groupId)?.name ?? system.name;
+    const heldA = new Set(a.items.map((i) => i.item.id));
+    const heldB = new Set(b.items.map((i) => i.item.id));
+    for (const i of b.items) if (!heldA.has(i.item.id)) result.gained.push({ group: group(i.item), name: i.item.name });
+    for (const i of a.items) if (!heldB.has(i.item.id)) result.lost.push({ group: group(i.item), name: i.item.name });
+  }
+  const before = new Map(from.gear.map((g) => [gearKey(g), g]));
+  const after = new Map(to.gear.map((g) => [gearKey(g), g]));
+  for (const [key, item] of after) {
+    const old = before.get(key);
+    if (old === undefined) {
+      result.gear.push({ change: 'gained', name: item.name, detail: gearDetail(item) });
+    } else if (gearDetail(old) !== gearDetail(item)) {
+      const was = gearDetail(old).length === 0 ? 'no details' : gearDetail(old);
+      const now = gearDetail(item).length === 0 ? 'no details' : gearDetail(item);
+      result.gear.push({ change: 'changed', name: item.name, detail: `${was} → ${now}` });
+    }
+  }
+  for (const [key, item] of before) {
+    if (!after.has(key)) result.gear.push({ change: 'lost', name: item.name, detail: gearDetail(item) });
+  }
+  for (const d of statusDimensions) {
+    const old = linesOf(from.status(d));
+    const now = linesOf(to.status(d));
+    const lowerOf = (lines: string[]) => new Set(lines.map((l) => dartToLowerCase(l)));
+    const added = now.filter((l) => !lowerOf(old).has(dartToLowerCase(l)));
+    const removed = old.filter((l) => !lowerOf(now).has(dartToLowerCase(l)));
+    if (added.length > 0 || removed.length > 0) {
+      result.status.push({ dimension: d, label: dimensionLabels[d], added, removed });
+    }
+  }
+  return result;
+}
+
+// ---------------------------------------------------------------------------------------------------- changes
+
+const plainObject = (m: ReadonlyMap<string, unknown>): JsonMap => Object.fromEntries(m);
+
+/** Snapshots: logged, changed one at a time, removed. Nothing about their contents is judged. */
+export class SnapshotChanges extends RecordChanges {
+  snapshots(): ProgressSnapshot[] {
+    return this.rows('progressSnapshots').map((r) => new ProgressSnapshot(r));
+  }
+
+  private get nodes(): StoryNode[] {
+    return this.rows('chapters').map((r) => new StoryNode(r));
+  }
+
+  private mine(collection: string, id: unknown): string | null {
+    return typeof id === 'string' && id.length > 0 && this.row(collection, id) !== null ? id : null;
+  }
+
+  private record(value: unknown): JsonMap {
+    const out: JsonMap = {};
+    for (const [k, v] of Object.entries(mapOrNull(value) ?? {})) {
+      if (typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v))) out[k] = v;
+    }
+    return out;
+  }
+
+  /** Keeps a snapshot well formed without judging its contents. */
+  private clean(systems: unknown, gear: unknown, status: unknown): JsonMap {
+    const outSystems: JsonMap = {};
+    for (const [key, value] of Object.entries(mapOrNull(systems) ?? {})) {
+      if (this.mine('systems', key) === null) continue;
+      const raw = mapOrNull(value);
+      if (raw === null) continue;
+      outSystems[key] = {
+        auto: raw['auto'] !== false,
+        values: this.record(raw['values']),
+        progress: this.record(raw['progress']),
+        itemIds: [...new Set(listOf(raw['itemIds']).filter((id): id is string => typeof id === 'string'))],
+        overrides: this.record(raw['overrides']),
+      };
+    }
+    return {
+      systems: outSystems,
+      gear: maps(gear)
+        .filter((g) => dartTrim(str(g['name'])).length > 0)
+        .map((g) => ({
+          id: str(g['id']).length > 0 ? g['id'] : this.newId(),
+          name: dartTrim(str(g['name'])),
+          kind: dartTrim(str(g['kind'])),
+          entryId: this.mine('loreEntries', g['entryId']),
+          note: str(g['note']),
+        })),
+      status: Object.fromEntries(statusDimensions.map((d) => [d, str(mapOrNull(status)?.[d])])),
+    };
+  }
+
+  /** Logs a character's state at a chapter or scene (`nodeId` null: before the story). It starts as a copy of the
+   * state valid at that point, so only what changed needs entering; with nothing logged yet, it starts from the
+   * character's system sheets. */
+  createSnapshot(entryId: string, args: { nodeId?: string | null; label?: string } = {}): ProgressSnapshot {
+    if (this.mine('loreEntries', entryId) === null) throw new ChangeRefused('That codex entry is not in this novel.');
+    const at = this.mine('chapters', args.nodeId ?? null);
+    const nodes = this.nodes;
+    const previous = stateAt(this.snapshots(), nodes, entryId, at);
+    const position = StoryOrder.of(nodes).position;
+    const limit = at === null ? -1 : (position.get(at) ?? 9007199254740991);
+    const reached = (id: string | null) => id === null || (position.get(id) ?? 9007199254740991) <= limit;
+    const blueprints = new Map(this.rows('systems').map((r) => [str(r['id']), new SystemBlueprint(r)]));
+    const fromSheets: JsonMap = {};
+    for (const r of this.rows('systemSheets')) {
+      const sheet = new SystemSheet(r);
+      if (sheet.entryId !== entryId) continue;
+      const system = blueprints.get(sheet.systemId);
+      if (system === undefined) continue;
+      const settled = settle(system, SheetProfile.of(sheet), reached);
+      const before = mapOrNull(mapOrNull(previous?.raw['systems'])?.[sheet.systemId]);
+      // With an earlier snapshot, its numbers stand; only levels with experience logged move on.
+      const levels: JsonMap = {};
+      for (const t of system.tracks) {
+        if (t.kind === 'levels' && sheet.xp.some((e) => e.trackId === t.id)) levels[t.id] = settled.progress.get(t.id) ?? null;
+      }
+      fromSheets[sheet.systemId] =
+        before !== null
+          ? { ...before, progress: { ...(mapOrNull(before['progress']) ?? {}), ...levels } }
+          : {
+              auto: true,
+              values: plainObject(settled.values),
+              progress: plainObject(settled.progress),
+              itemIds: settled.itemIds,
+              overrides: {},
+            };
+    }
+    // The snapshot's id first, then its gear's, in the order the original makes them.
+    const id = this.newId();
+    const gear = previous === null ? [] : previous.gear.map((g) => ({ ...g.raw, id: this.newId() }));
+    const saved: JsonMap = {
+      id,
+      projectId: this.projectId,
+      entryId,
+      nodeId: at,
+      label: dartTrim(args.label ?? ''),
+      // Systems the character has since been put on join in with their sheet as it stands.
+      ...this.clean({ ...(mapOrNull(previous?.raw['systems']) ?? {}), ...fromSheets }, gear, previous?.raw['status'] ?? {}),
+      notes: '',
+      createdAt: this.now,
+      updatedAt: this.now,
+    };
+    this.put('progressSnapshots', saved);
+    return new ProgressSnapshot(saved);
+  }
+
+  /** Changes one snapshot, worked out from it as stored right now. Other snapshots are never touched. */
+  updateSnapshot(snapshotId: string, change: (current: ProgressSnapshot) => JsonMap): void {
+    const row = this.row('progressSnapshots', snapshotId);
+    if (row === null) throw new ChangeRefused('That snapshot is not in this novel.');
+    const current = new ProgressSnapshot(row);
+    const edit = change(current);
+    const next = { ...current.raw, ...edit };
+    this.put('progressSnapshots', {
+      ...current.raw,
+      nodeId: 'nodeId' in edit && edit['nodeId'] !== current.nodeId ? this.mine('chapters', edit['nodeId']) : current.nodeId,
+      label: dartTrim(str(next['label'])),
+      notes: str(next['notes']),
+      ...this.clean(next['systems'], next['gear'], next['status']),
+      updatedAt: this.now,
+    });
+  }
+
+  removeSnapshot(snapshotId: string): void {
+    if (this.row('progressSnapshots', snapshotId) === null) throw new ChangeRefused('That snapshot is not in this novel.');
+    this.remove('progressSnapshots', snapshotId);
+  }
 }

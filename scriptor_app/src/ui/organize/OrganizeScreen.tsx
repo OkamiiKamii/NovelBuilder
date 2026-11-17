@@ -1,6 +1,6 @@
 // ORGANIZE (DESIGN.md: the five areas): the novel's people and world, the systems characters grow by and the genre
-// modules (the Flutter app's Organize parts), and, as tabs, Plan and Visualize. Characters (phase 4), the World (5a)
-// and Modules (5b) are here; Systems, Plan and Visualize follow in their own phases and say so meanwhile.
+// modules (the Flutter app's Organize parts), and, as tabs, Plan and Visualize. Characters (phase 4), the World (5a),
+// Modules (5b) and Systems (5c) are here; Plan and Visualize follow in their own phases and say so meanwhile.
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GoldButton, Icon, type IconName, Muted, Panel } from '../kit';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { CastPane } from './CastPane';
+import { SystemsPane } from '../systems/SystemsPane';
 import { ModulesPane } from './ModulesPane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
@@ -26,14 +27,6 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     key: 'systems',
     label: 'Systems',
     icon: 'family-tree',
-    later: {
-      phase: 'phase 5c',
-      holds: [
-        'Progression blueprints: stats, resources, ranks, skills and formulas',
-        'Each character’s sheet, and how it grows chapter by chapter',
-        'The Status tab on a profile',
-      ],
-    },
   },
   { key: 'modules', label: 'Modules', icon: 'puzzle-outline' },
   {
@@ -123,6 +116,8 @@ export function OrganizeScreen() {
         </ScrollView>
       ) : tab === 'world' ? (
         <WorldPane />
+      ) : tab === 'systems' ? (
+        <SystemsPane />
       ) : tab === 'modules' ? (
         <ModulesPane />
       ) : (

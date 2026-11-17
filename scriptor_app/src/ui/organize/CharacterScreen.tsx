@@ -101,7 +101,7 @@ export function CharacterScreen() {
   const profile = listed.profile;
   const systems = hasSystems(cast);
   const shown = tab ?? shownProfilePage(params.tab, { systems });
-  const tabs = profilePageTabs({ systems }).filter((t) => t !== 'status' && t !== 'progression');
+  const tabs = profilePageTabs({ systems });
   const idv = identityView(entry, profile);
   const tools = portraitTools(entry);
   const known = acquaintance(entry, profile, cast.templates);
@@ -229,7 +229,7 @@ export function CharacterScreen() {
             </Pressable>
           ))}
         </ScrollView>
-        <ProfileTab page={shown} open={open} listed={listed} />
+        <ProfileTab page={shown} open={open} listed={listed} onTab={setTab} />
       </ScrollView>
 
       <ActionSheet

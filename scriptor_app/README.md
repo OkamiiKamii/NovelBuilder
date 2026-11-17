@@ -25,12 +25,28 @@ between the two apps without losing anything. The file format keeps its existing
 | 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Done (2026-11-17), tested on the emulator and the phone |
 | 5a: Organize — World, categories and fields, templates, connections | 201–220 | Done (2026-11-17), tested on the emulator |
 | 5b: Organize — genre modules | 221–227 | Done (2026-11-17), tested on the emulator |
-| 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | To do |
+| 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | Done (2026-11-17), tested on the emulator |
 | 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | To do |
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | To do |
 | 7: Review and collaboration by file | 306–328 | To do |
 | 8: Analytics and keepsakes | 329–347 | To do |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 5c** built Systems and character progression. Organize › Systems: the gallery (four presets, each with a live
+example status window, or blank; your book's own system when its chapters read like one; levels in your pages), and a
+system's page in two halves. **The blueprint**: name and what it is; attributes and resources; formulas checked as they
+are typed; levels and realms (numbered with a cap, points and an XP curve with its preview, or named stages with
+requirements and what each grants); ranks; groups (one at a time or many); items with rank, parent, requirements,
+changes, costs, cooldown, affinity and evolution; tables; sheets for any character or entry. **In the story**: the
+live status window (game status, cultivation record, arcane ledger or threat dossier, shareable as a picture), the
+climb, the face-off, the system speaks (messages in four bracket styles, copied), the ledger of numbers in the pages,
+levels in the pages and names the system lacks. On a character: the **Status** tab (shown when the novel has systems;
+the window, editable in place) and the **Progression** tab (their sheets with the experience log and points, the
+progress tracker with its chart, and snapshots to log, edit and compare). The logic matches the Dart on every fixture
+(207 tests, golden output from the real Dart and the original app's growth golden).
+
+Left for later: writing a system message into the chapter (copy it meanwhile: the editor has no way to take text from
+outside yet); "Read it there" opens the chapter without selecting the sentence; number boxes use the default keyboard.
 
 **Phase 5b** built the genre modules, as two new Organize tabs after World: **Systems** (which says it comes in 5c)
 and **Modules**. The Module Manager: the ten genre modules on a shelf (All, Enabled, Not enabled), turn one on (it adds

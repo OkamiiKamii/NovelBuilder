@@ -1,4 +1,4 @@
-// A character profile's tabs (FEATURES.md #176–#186): Overview (in one sentence, the sections, the relationship web,
+// A character profile's tabs (FEATURES.md #175–#186, #246–#249): Status and Progression (ProgressionTabs.tsx), Overview (in one sentence, the sections, the relationship web,
 // in the manuscript, in their pages, timeline, threads), Relationships, Details (description, sections, linked powers,
 // items and affiliations), Secrets, Notes and History. Ports of flutter_app/lib/features/characters/tabs/*; the logic
 // is src/domain/characters/screens/*.
@@ -33,6 +33,8 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { ProfilePageBoxes } from './CastFound';
+import { TheirLevelsView } from '../systems/PageReadings';
+import { ProgressionTab, StatusTab } from './ProgressionTabs';
 import { ConnectionsPanel } from './ConnectionsPanel';
 import { EntityRef } from '../../domain/model/entityRef';
 import { Face } from './CastPane';
@@ -40,8 +42,23 @@ import { ChooserField, SavedText } from './parts';
 import { SectionsView } from './SectionsView';
 import type { OpenCast } from './useCast';
 
-export function ProfileTab({ page, open, listed }: { page: ProfilePage; open: OpenCast; listed: Listed }) {
+export function ProfileTab({
+  page,
+  open,
+  listed,
+  onTab,
+}: {
+  page: ProfilePage;
+  open: OpenCast;
+  listed: Listed;
+  /** Moves to another tab (the Status tab's "Go to" and "Their whole sheet"). */
+  onTab?: (tab: ProfilePage) => void;
+}) {
   switch (page) {
+    case 'status':
+      return <StatusTab open={open} entryId={listed.entry.id} onTab={onTab} />;
+    case 'progression':
+      return <ProgressionTab open={open} entryId={listed.entry.id} />;
     case 'relationships':
       return <RelationshipsTab open={open} listed={listed} />;
     case 'details':
@@ -163,6 +180,8 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
         )}
         {web.more && <Muted>{web.more}</Muted>}
       </Panel>
+      {/* Their level and those of what they carry, as the chapters give them; nothing while the pages level nothing of theirs. */}
+      <TheirLevelsView open={open} entryId={entry.id} />
       <Panel style={styles.panel}>
         <Text style={styles.kicker}>{manuscript.title.toUpperCase()}</Text>
         {manuscript.empty && <Muted>{manuscript.empty}</Muted>}
