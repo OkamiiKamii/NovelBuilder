@@ -1,9 +1,9 @@
 // ORGANIZE (DESIGN.md: the five areas): the novel's people and world, the systems characters grow by and the genre
 // modules (the Flutter app's Organize parts), and, as tabs, Plan and Visualize. Characters (phase 4), the World (5a),
-// Modules (5b) and Systems (5c) are here; Plan and Visualize follow in their own phases and say so meanwhile.
+// Modules (5b), Systems (5c), Plan (6a) and Visualize, the atlas of views (6b), are all here.
 
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { type ComponentRef, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,6 +13,7 @@ import { CastPane } from './CastPane';
 import { SystemsPane } from '../systems/SystemsPane';
 import { ModulesPane } from './ModulesPane';
 import { PlanPane } from '../plan/PlanPane';
+import { VisualizePane } from '../visualize/VisualizePane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
 
@@ -39,7 +40,6 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     key: 'visualize',
     label: 'Visualize',
     icon: 'graph-outline',
-    later: { phase: 'phase 6b', holds: ['The workspace and its views', 'Places, journeys, factions and ownership', 'The knowledge graph'] },
   },
 ];
 
@@ -57,6 +57,7 @@ export function OrganizeScreen() {
   const insets = useSafeAreaInsets();
   const phone = sizeClassOf(useWindowDimensions().width) === 'compact';
   const [tab, setTabState] = useState<Tab>(remembered.tab);
+  const tabRow = useRef<ComponentRef<typeof ScrollView>>(null);
   const setTab = (t: Tab) => {
     remembered.tab = t;
     setTabState(t);
@@ -85,7 +86,7 @@ export function OrganizeScreen() {
           {String(novel.snapshot.project['title'] ?? '') || 'Untitled novel'}
         </Text>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScroll} contentContainerStyle={styles.tabs}>
+      <ScrollView ref={tabRow} horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScroll} contentContainerStyle={styles.tabs}>
         {tabs.map((t) => {
           const on = t.key === tab;
           return (
@@ -94,6 +95,8 @@ export function OrganizeScreen() {
               accessibilityRole="tab"
               accessibilityState={{ selected: on }}
               onPress={() => setTab(t.key)}
+              // Coming back on a tab off the right of the row (Plan, Visualize): the row is brought round to it.
+              onLayout={on ? (e) => tabRow.current?.scrollTo({ x: Math.max(0, e.nativeEvent.layout.x - space.md), animated: false }) : undefined}
               style={[styles.tab, on && styles.tabOn]}
             >
               <Icon name={t.icon} size={18} color={on ? colors.onGold : colors.gold} />
@@ -120,6 +123,8 @@ export function OrganizeScreen() {
         <SystemsPane />
       ) : tab === 'modules' ? (
         <ModulesPane />
+      ) : tab === 'visualize' ? (
+        <VisualizePane />
       ) : tab === 'plan' ? (
         <PlanPane />
       ) : (

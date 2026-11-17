@@ -28,8 +28,8 @@ export const areas: { path: string; label: string; icon: IconName }[] = [
 
 export const bottomBarHeight = 64;
 
-/** Plan's pages keep the Flutter app's /plan/… paths, but Plan is part of Organize here. */
-const insideOrganize = ['/plan'];
+/** Plan's and Visualize's pages keep the Flutter app's /plan/… and /visualize/… paths, but they are part of Organize here. */
+const insideOrganize = ['/plan', '/visualize'];
 
 function areaOf(pathname: string): string {
   if (insideOrganize.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return '/organize';

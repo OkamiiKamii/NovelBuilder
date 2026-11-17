@@ -27,10 +27,26 @@ between the two apps without losing anything. The file format keeps its existing
 | 5b: Organize — genre modules | 221–227 | Done (2026-11-17), tested on the emulator |
 | 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | Done (2026-11-17), tested on the emulator |
 | 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | Done (2026-11-17), tested on the emulator |
-| 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | To do |
+| 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | Done (2026-11-17), tested on the emulator |
 | 7: Review and collaboration by file | 306–328 | To do |
 | 8: Analytics and keepsakes | 329–347 | To do |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 6b** built Visualize, as Organize's Visualize tab: the atlas of 17 views in groups (People, Time, The story,
+The world, Numbers), any of them turned off per novel. Every view shares one frame: the view picker, filters by name
+and by character, saved views, a picture to share, and the selected record's details with Open; filters and the
+selection carry from view to view. The views: the drawn **timeline** with tracks and alternate histories, **story vs
+reading order**, a **character's history**, the **plot board** lanes, **structure and pacing** with structural
+markers, **character appearances** (cells can be recorded), **ability paths** (seen through a character at any
+chapter), **records by kind** (as a table with CSV, on a timeline, on a map, by rank or holder), the **progression**
+list, **charts** (each with a table and CSV), **places** (nested, with maps over a grid or a picture and pins),
+**journeys** with travel checks, **factions** as of any point with a faction map, **ownership** chains, and the
+**knowledge graph** (layers, folding, focus, shortest path, what it leaves out, and a list of every connection). The
+relationship map (4a) is one of the plates. The logic matches the Dart on every fixture (188 tests: golden output from
+the real Dart, and the original app's visualize, kinds, analytics, plot and timeline goldens).
+
+Left for later: canon and continuity marks on the views and "Secrets and knowledge" (with Review); exporting a view
+as data (with Import and export); pinch zoom and keyboard shortcuts (buttons zoom; drag pans).
 
 **Phase 6a** built Plan, as Organize's Plan tab with the Flutter app's five parts: **Timeline** (the chronicle in story
 order, grouped by year with "N years later" gaps and undated events apart; filters and a character's life path with

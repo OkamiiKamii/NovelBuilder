@@ -180,8 +180,13 @@ export function ThreadScreen() {
         </Panel>
 
         <View style={styles.row}>
-          {/* The plot lanes are Visualize's: shown, and said to come later. */}
-          <OutlineButton label={`${view.links.lanes} · Comes in a later phase`} icon="chart-timeline-variant" compact tone="muted" disabled onPress={() => undefined} />
+          {/* The plot lanes are Visualize's (the plot board): this thread selected there. */}
+          <OutlineButton
+            label={view.links.lanes}
+            icon="chart-timeline-variant"
+            compact
+            onPress={() => router.navigate('/visualize/plot' as never)}
+          />
           <OutlineButton label={view.links.board.label} icon="view-column-outline" compact onPress={() => router.navigate(view.links.board.path as never)} />
         </View>
 
