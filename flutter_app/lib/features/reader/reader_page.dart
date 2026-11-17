@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
 import '../../shared/data/providers.dart';
@@ -104,6 +105,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   void _showContents(BuildContext context, Book book, String novelId) {
     showModalBottomSheet<void>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       isScrollControlled: true,
       useRootNavigator: true,
       showDragHandle: true,
@@ -126,6 +128,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   void _showAppearance(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       isScrollControlled: true,
       useRootNavigator: true,
       showDragHandle: true,

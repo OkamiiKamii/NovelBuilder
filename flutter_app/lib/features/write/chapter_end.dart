@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/signature.dart';
 import '../../core/widgets/toast.dart';
+import '../../shared/data/providers.dart';
 import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../characters/widgets/vault.dart';
@@ -54,11 +56,23 @@ class ChapterEnd extends ConsumerWidget {
     }
 
     final chapters = documents.where((n) => n.kind == NodeKind.chapter).length;
+    // At the end of the manuscript, once it has words, its author signs it (`core/widgets/signature.dart`).
+    final author = next != null || documents.every((n) => n.wordCount == 0)
+        ? ''
+        : (ref.watch(libraryProvider).where((n) => n.id == novelId).firstOrNull?.author ?? '');
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 36, 24, 48),
       child: Column(
         children: [
           _EndMark(color: scheme.primary),
+          if (author.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            Signature(
+              name: author,
+              style: vaultText(context, size: 30, style: FontStyle.italic),
+              ink: text,
+            ),
+          ],
           const SizedBox(height: 28),
           Semantics(
             container: true,

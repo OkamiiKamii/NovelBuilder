@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
@@ -198,6 +199,7 @@ class VizFrame extends ConsumerWidget {
                 TextButton(
                   onPressed: () => showModalBottomSheet<void>(
                     context: context,
+                    sheetAnimationStyle: sheetMotion(context),
                     isScrollControlled: true,
                     showDragHandle: true,
                     builder: (_) => DraggableScrollableSheet(

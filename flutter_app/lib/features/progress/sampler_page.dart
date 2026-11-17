@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/providers.dart';
-import '../../shared/domain/exchange/compile.dart' hide Align;
 import '../../shared/domain/exchange/compile.dart' as doc show Align;
+import '../../shared/domain/exchange/compile.dart' hide Align;
 import '../../shared/domain/exchange/render_pdf.dart';
 import '../../shared/domain/exchange/sampler.dart';
 import '../../shared/domain/manuscript/outline.dart';
@@ -154,7 +155,7 @@ class _SamplerScreenState extends ConsumerState<SamplerScreen> {
             ),
             Expanded(
               child: sample == null
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Skeleton(label: 'Reading the book…')
                   : sample.chapterCount == 0
                   ? Center(
                       child: Padding(

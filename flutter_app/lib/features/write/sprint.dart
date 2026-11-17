@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/ticket.dart';
 import '../../shared/data/providers.dart';
 import '../characters/widgets/vault.dart';
 import 'writing_prefs.dart';
@@ -242,36 +243,41 @@ class SprintCard extends ConsumerWidget {
               runSpacing: 8,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      result.finished ? 'Sprint complete' : 'Sprint stopped',
-                      style: vaultHeading(context, size: 12),
-                    ),
-                    Text(
-                      '${words < 0 ? '−' : '+'}${formatNumber(words.abs())} ${words.abs() == 1 ? 'word' : 'words'}',
-                      style: vaultHeading(context, size: 26, weight: 700, color: scheme.onSurface),
-                    ),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      result.finished
-                          ? 'in ${plural(result.minutes, 'minute')}'
-                          : 'in ${plural(minutes, 'minute')} of ${result.minutes}',
-                      style: vaultText(context, size: 17),
-                    ),
-                    if (pace > 0)
+                // The sprint's ticket (`core/widgets/ticket.dart`): the words won, and its stub, the time and pace.
+                Ticket(
+                  paper: Color.lerp(scheme.surface, scheme.primary, 0.07)!,
+                  main: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        '${formatNumber(pace)} ${pace == 1 ? 'word' : 'words'} a minute',
-                        style: theme.textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                        result.finished ? 'Sprint complete' : 'Sprint stopped',
+                        style: vaultHeading(context, size: 12),
                       ),
-                  ],
+                      Text(
+                        '${words < 0 ? '−' : '+'}${formatNumber(words.abs())} ${words.abs() == 1 ? 'word' : 'words'}',
+                        style: vaultHeading(context, size: 26, weight: 700, color: scheme.onSurface),
+                      ),
+                    ],
+                  ),
+                  stub: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        result.finished
+                            ? 'in ${plural(result.minutes, 'minute')}'
+                            : 'in ${plural(minutes, 'minute')} of ${result.minutes}',
+                        style: vaultText(context, size: 17),
+                      ),
+                      if (pace > 0)
+                        Text(
+                          '${formatNumber(pace)} ${pace == 1 ? 'word' : 'words'} a minute',
+                          style: theme.textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                        ),
+                    ],
+                  ),
                 ),
                 if (result.best)
                   Chip(

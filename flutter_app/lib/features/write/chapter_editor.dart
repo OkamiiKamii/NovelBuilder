@@ -9,6 +9,7 @@ import 'package:super_editor/super_editor.dart';
 import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/save_status_indicator.dart';
 import '../../core/widgets/toast.dart';
@@ -209,6 +210,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   /// The weather to write in (`atmosphere.dart`), from the desk's drawer on a phone.
   Future<void> _openAtmosphere() => showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     useRootNavigator: true,
     showDragHandle: true,
     builder: (_) => const SafeArea(
@@ -505,6 +507,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   /// The margin's cards as a sheet over the page: on a phone, or where the window leaves no room beside it.
   void _openMarginSheet() => showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     useRootNavigator: true,
     isScrollControlled: true,
     showDragHandle: true,
@@ -857,6 +860,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     if (WindowSize.of(context) == WindowSize.compact) {
       return showModalBottomSheet<void>(
         context: context,
+        sheetAnimationStyle: sheetMotion(context),
         isScrollControlled: true,
         showDragHandle: true,
         builder: (_) => const SafeArea(child: body),
@@ -896,6 +900,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     final at = pages.indexWhere((n) => n.id == widget.node.id);
     final chosen = await showModalBottomSheet<String>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       showDragHandle: true,
       isScrollControlled: true,
       builder: (sheet) {
@@ -968,6 +973,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
   Future<void> _openDesk(VoidCallback toggleFocus) async {
     final chosen = await showModalBottomSheet<VoidCallback>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       showDragHandle: true,
       isScrollControlled: true,
       builder: (sheet) {
@@ -1937,11 +1943,19 @@ class _Meter extends StatelessWidget {
                             dimension: 22,
                             child: reached
                                 ? Icon(Icons.check_circle, size: 22, color: scheme.primary)
-                                : CircularProgressIndicator(
-                                    value: daily == null || daily == 0 ? 0 : (today / daily!).clamp(0.0, 1.0),
-                                    strokeWidth: 3,
-                                    backgroundColor: scheme.outlineVariant,
-                                    semanticsLabel: 'Today\'s goal',
+                                // The ring springs to its share as the words come (Motion's spring), not by jumps.
+                                : TweenAnimationBuilder<double>(
+                                    tween: Tween(
+                                      end: daily == null || daily == 0 ? 0 : (today / daily!).clamp(0.0, 1.0),
+                                    ),
+                                    duration: Motion.of(context, Motion.medium),
+                                    curve: Motion.settle,
+                                    builder: (context, share, _) => CircularProgressIndicator(
+                                      value: share.clamp(0.0, 1.0),
+                                      strokeWidth: 3,
+                                      backgroundColor: scheme.outlineVariant,
+                                      semanticsLabel: 'Today\'s goal',
+                                    ),
                                   ),
                           ),
                           const SizedBox(width: 8),

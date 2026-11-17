@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/codex/widgets/encyclopedia.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
@@ -15,6 +16,7 @@ import 'package:novel_builder/shared/domain/snapshot/novel_snapshot.dart';
 import 'package:super_editor/super_editor_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/hold.dart';
 import '../../helpers/pump_app.dart';
 import '../write/manuscript_service_test.dart' show linked;
 
@@ -180,7 +182,7 @@ void main() {
     await tester.tap(find.text('Delete entry…'));
     await tester.pumpAndSettle();
     expect(find.textContaining('1 chapter linking to it in the text (the words stay)'), findsOneWidget);
-    await tester.tap(find.widgetWithText(FilledButton, 'Delete'));
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Delete'));
     await tester.pumpAndSettle();
     expect(w.c.read(novelStoreProvider).row(w.novel, 'loreEntries', keep), isNull);
     expect(jsonEquals(w.c.read(novelStoreProvider).row(w.novel, 'chapterContents', chapter.id)!['doc'], text), isTrue);

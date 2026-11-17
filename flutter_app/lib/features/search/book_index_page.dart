@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/manuscript/outline.dart';
@@ -88,7 +89,7 @@ class _BookIndexPageState extends ConsumerState<BookIndexPage> {
         ),
       ),
       body: index == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Skeleton(label: 'Reading the book…')
           : index.entries.isEmpty
           ? Center(
               child: Padding(

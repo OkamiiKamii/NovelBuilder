@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../shared/domain/text/rhythm.dart';
 import '../characters/widgets/vault.dart';
 
@@ -14,6 +15,7 @@ Future<RhythmSentence?> showRhythm(BuildContext context, {required RhythmReport 
   if (WindowSize.of(context) == WindowSize.compact) {
     return showModalBottomSheet<RhythmSentence>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       isScrollControlled: true,
       showDragHandle: true,
       builder: (_) => SafeArea(child: body),

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/outline_panel.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
@@ -19,6 +20,7 @@ import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/hold.dart';
 import '../../helpers/pump_app.dart';
 
 /// A novel with one chapter holding [text], open in the workspace, at /write.
@@ -207,7 +209,7 @@ void main() {
     );
 
     await menu('The Long Road', 'Delete…');
-    await tester.tap(find.widgetWithText(FilledButton, 'Delete'));
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Delete'));
     await tester.pumpAndSettle();
     expect(m.nodes(w.novel).map((n) => n.title), ['The Gate']);
     await tester.tap(find.text('Undo'));

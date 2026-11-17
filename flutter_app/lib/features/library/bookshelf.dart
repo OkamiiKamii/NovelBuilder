@@ -8,6 +8,8 @@ import '../../app/theme/book_faces.dart';
 import '../../app/theme/book_tone.dart' show colourOf;
 import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
+import '../../core/motion/arrive.dart';
+import '../../core/widgets/foil.dart';
 import '../../shared/data/novel_store.dart' show NovelStats;
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
@@ -286,7 +288,9 @@ class _ContinueWritingState extends ConsumerState<ContinueWriting> {
               children: [
                 Row(
                   children: [
-                    BookJacket(key: _jacket, novel: novel, width: 86),
+                    Foil(
+                      child: BookJacket(key: _jacket, novel: novel, width: 86),
+                    ),
                     const SizedBox(width: 16),
                     Expanded(child: heading),
                   ],
@@ -299,7 +303,9 @@ class _ContinueWritingState extends ConsumerState<ContinueWriting> {
           : Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BookJacket(key: _jacket, novel: novel, width: 150),
+                Foil(
+                  child: BookJacket(key: _jacket, novel: novel, width: 150),
+                ),
                 const SizedBox(width: 28),
                 Expanded(
                   child: Column(
@@ -645,7 +651,15 @@ class Bookshelf extends StatelessWidget {
       return Wrap(
         spacing: gap,
         runSpacing: 24,
-        children: [for (final n in novels) ShelfBook(key: ValueKey(n.id), novel: n, width: width)],
+        // The books arrive one after another as the shelf is first shown (`core/motion/arrive.dart`).
+        children: [
+          for (final (i, n) in novels.indexed)
+            Arrive(
+              key: ValueKey('arrive:${n.id}'),
+              index: i,
+              child: ShelfBook(key: ValueKey(n.id), novel: n, width: width),
+            ),
+        ],
       );
     },
   );
@@ -671,7 +685,8 @@ class ShelfTotals extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        Text(formatNumber(value), style: numberStyle(context, theme.textTheme.titleMedium!)),
+        // The count rolls up to itself as the shelf is shown (`core/motion/arrive.dart`).
+        RollingNumber(value: value, format: formatNumber, style: numberStyle(context, theme.textTheme.titleMedium!)),
         const SizedBox(width: 6),
         Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
       ],

@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/novel_art.dart';
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/providers.dart';
@@ -108,7 +109,7 @@ class _FullJacketScreenState extends ConsumerState<FullJacketScreen> {
         child: Stack(
           children: [
             if (novel == null || copy == null)
-              const Center(child: CircularProgressIndicator())
+              const Skeleton(label: 'Reading the book…')
             else
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 56, 8, 120),

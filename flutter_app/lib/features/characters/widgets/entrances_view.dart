@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/novel_art.dart';
 import '../../../core/format.dart';
+import '../../../core/widgets/skeleton.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
 import '../../../shared/domain/characters/cast.dart';
@@ -78,7 +79,7 @@ class _CastEntrancesState extends ConsumerState<CastEntrances> {
     if (read == null) {
       return const Padding(
         padding: EdgeInsets.all(32),
-        child: Center(child: CircularProgressIndicator()),
+        child: Skeleton(label: 'Reading the book…'),
       );
     }
     final byId = {for (final l in widget.cast.list) l.entry.id: l};

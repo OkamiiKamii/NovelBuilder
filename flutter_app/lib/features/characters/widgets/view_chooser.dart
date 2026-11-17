@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/motion/motion.dart';
 import '../characters_providers.dart';
 import 'vault.dart';
 
@@ -132,6 +133,7 @@ class CastViewButton extends StatelessWidget {
 /// Every way to see the cast, in a sheet; the one chosen, or null.
 Future<CastView?> showCastViews(BuildContext context, CastView current) => showModalBottomSheet<CastView>(
   context: context,
+  sheetAnimationStyle: sheetMotion(context),
   // Over the whole app, the bar at the foot of the screen included, so every view is in sight.
   useRootNavigator: true,
   showDragHandle: true,

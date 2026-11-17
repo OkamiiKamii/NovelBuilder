@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/save_status_indicator.dart';
 import '../../core/widgets/toast.dart';
 import '../../features/collab/review_gate.dart';
@@ -282,6 +283,7 @@ class _BottomBar extends ConsumerWidget {
     final rest = AppShell.bookAreas.where((d) => !AppShell.compactPrimary.contains(d));
     showModalBottomSheet<void>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       showDragHandle: true,
       // As tall as its items need (up to the whole screen), so on a short phone every area shows without scrolling.
       isScrollControlled: true,

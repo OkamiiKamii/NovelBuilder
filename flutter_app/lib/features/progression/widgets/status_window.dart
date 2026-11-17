@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../core/motion/motion.dart';
+import '../../../core/widgets/scramble_text.dart';
 import '../../../shared/domain/json.dart';
 import '../../../shared/domain/records/system.dart';
 import '../../../shared/domain/systems/compute.dart';
@@ -574,8 +576,9 @@ class _Line extends StatelessWidget {
           child: Text(label, style: style(13, color: const Color(0xFFE8F0F6).withValues(alpha: 0.72))),
         ),
         const SizedBox(width: 12),
+        // A value that changes settles into its new figure (`core/widgets/scramble_text.dart`).
         Flexible(
-          child: Text(
+          child: ScrambleText(
             raised ? '$value ▲' : value,
             textAlign: TextAlign.right,
             style: style(13.5, color: raised ? accent : null, weight: strong || raised ? FontWeight.w700 : null),
@@ -851,7 +854,11 @@ class _BarPainter extends CustomPainter {
 
   /// How wide the fill is drawn, as a share of the track: for a test to see it filling.
   @visibleForTesting
-  double get drawn => math.max(0.0, part) * Curves.easeOutCubic.transform(fill.value);
+  double get drawn => math.min(1.0, math.max(0.0, part) * _spring.transform(fill.value));
+
+  /// The bar fills on a spring (Motion's), damped so it comes to rest without passing what it stands for: a bar of
+  /// health only ever fills as it opens, never draws back.
+  static const _spring = SpringCurve(stiffness: 120, damping: 23);
 
   @override
   void paint(Canvas canvas, Size size) {

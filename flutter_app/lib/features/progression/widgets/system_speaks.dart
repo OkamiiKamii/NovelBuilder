@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/destinations.dart';
+import '../../../core/motion/motion.dart';
 import '../../../shared/data/providers.dart';
 import '../../../shared/domain/manuscript/outline.dart';
 import '../../../shared/domain/model/story_model.dart';
@@ -46,6 +47,7 @@ Future<void> showSystemSpeaks(
   required SystemBlueprint system,
 }) => showModalBottomSheet<void>(
   context: context,
+  sheetAnimationStyle: sheetMotion(context),
   isScrollControlled: true,
   showDragHandle: true,
   builder: (_) => SystemSpeaks(novelId: novelId, model: model, system: system),

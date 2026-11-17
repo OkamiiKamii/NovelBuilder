@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/skeleton.dart';
 import '../../features/characters/widgets/vault.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/novel_store.dart';
@@ -181,7 +182,9 @@ class _TodayFromYourBookState extends ConsumerState<TodayFromYourBook> {
           AnimatedSize(
             duration: const Duration(milliseconds: 250),
             alignment: Alignment.topCenter,
-            child: card ?? const SizedBox(height: 120, child: Center(child: CircularProgressIndicator())),
+            child:
+                card ??
+                const SizedBox(height: 120, child: Skeleton(label: 'Reading the book…', lines: 2, heading: false)),
           ),
         ],
       ),

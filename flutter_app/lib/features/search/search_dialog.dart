@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +10,7 @@ import '../../app/router.dart';
 import '../../app/shell/trail.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/kbd.dart';
 import '../../core/widgets/toast.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
@@ -206,8 +208,22 @@ class _SearchPanelState extends State<_SearchPanel> {
   void _changed(String text) {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 150), () {
-      if (mounted) setState(() => _settled = text);
+      if (mounted) {
+        setState(() {
+          _settled = text;
+          _chosen = -1;
+        });
+      }
     });
+  }
+
+  /// The place chosen with the arrow keys under "Go to" (shadcn/ui's Command): -1, none yet.
+  var _chosen = -1;
+  List<Jump> _going = const [];
+
+  void _move(int by) {
+    if (_going.isEmpty) return;
+    setState(() => _chosen = _chosen < 0 ? (by > 0 ? 0 : _going.length - 1) : (_chosen + by) % _going.length);
   }
 
   @override
@@ -224,6 +240,9 @@ class _SearchPanelState extends State<_SearchPanel> {
         : empty
         ? widget.recent
         : jumpsFor(_settled, widget.jumps);
+    _going = going;
+    if (_chosen >= going.length) _chosen = -1;
+    final keyboard = MediaQuery.sizeOf(context).width >= 600;
     return Material(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -233,26 +252,38 @@ class _SearchPanelState extends State<_SearchPanel> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _query,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      hintText: widget.onJump == null ? 'Search ${widget.title}…' : 'A word, a name, or a page…',
-                      labelText: 'Search the whole novel',
-                    ),
-                    onChanged: _changed,
-                    onSubmitted: (text) {
-                      // Return goes to a place named by what was typed; else to the first match in the text.
-                      final place = jumpsFor(text, widget.jumps).firstOrNull;
-                      if (place != null && widget.onJump != null && jumpScore(place, text) >= 40) {
-                        widget.onJump!(place);
-                        return;
-                      }
-                      final found = widget.index.search(text, _scope);
-                      final first = found.firstOrNull?.items.firstOrNull;
-                      if (first != null) widget.onOpen(first, first.snippets.firstOrNull);
+                  // Up and Down choose a place under "Go to"; Return goes there.
+                  child: CallbackShortcuts(
+                    bindings: {
+                      const SingleActivator(LogicalKeyboardKey.arrowDown): () => _move(1),
+                      const SingleActivator(LogicalKeyboardKey.arrowUp): () => _move(-1),
                     },
+                    child: TextField(
+                      controller: _query,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: widget.onJump == null ? 'Search ${widget.title}…' : 'A word, a name, or a page…',
+                        labelText: 'Search the whole novel',
+                      ),
+                      onChanged: _changed,
+                      onSubmitted: (text) {
+                        // The place chosen with the arrow keys, when one is.
+                        if (_chosen >= 0 && _chosen < _going.length && widget.onJump != null) {
+                          widget.onJump!(_going[_chosen]);
+                          return;
+                        }
+                        // Return goes to a place named by what was typed; else to the first match in the text.
+                        final place = jumpsFor(text, widget.jumps).firstOrNull;
+                        if (place != null && widget.onJump != null && jumpScore(place, text) >= 40) {
+                          widget.onJump!(place);
+                          return;
+                        }
+                        final found = widget.index.search(text, _scope);
+                        final first = found.firstOrNull?.items.firstOrNull;
+                        if (first != null) widget.onOpen(first, first.snippets.firstOrNull);
+                      },
+                    ),
                   ),
                 ),
                 IconButton(
@@ -309,8 +340,10 @@ class _SearchPanelState extends State<_SearchPanel> {
                       child: Text(empty ? 'Where you were' : 'Go to', style: theme.textTheme.titleSmall),
                     ),
                   ),
-                  for (final j in going)
+                  for (final (i, j) in going.indexed)
                     ListTile(
+                      selected: i == _chosen,
+                      selectedTileColor: theme.colorScheme.primary.withValues(alpha: 0.12),
                       leading: CircleAvatar(
                         radius: 16,
                         backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.14),
@@ -339,6 +372,21 @@ class _SearchPanelState extends State<_SearchPanel> {
               ],
             ),
           ),
+          // Its keys, on a screen with a keyboard (shadcn/ui's Command, with its Kbd keys).
+          if (keyboard && widget.onJump != null) ...[
+            const Divider(height: 1),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 10),
+              child: KbdHints([
+                (
+                  [Kbd.icon(Icons.arrow_upward, spoken: 'Up'), Kbd.icon(Icons.arrow_downward, spoken: 'Down')],
+                  'to choose',
+                ),
+                ([Kbd.icon(Icons.keyboard_return, spoken: 'Return')], 'to open'),
+                ([Kbd('Esc', spoken: 'Escape')], 'to close'),
+              ]),
+            ),
+          ],
         ],
       ),
     );

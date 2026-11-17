@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:super_editor/super_editor.dart';
 
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/domain/characters/glance.dart';
 import '../../shared/domain/records/entry.dart';
@@ -249,6 +250,7 @@ Future<void> showGlanceCard(
   if (WindowSize.of(context) == WindowSize.compact) {
     return showModalBottomSheet<void>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       useRootNavigator: true,
       isScrollControlled: true,
       showDragHandle: true,

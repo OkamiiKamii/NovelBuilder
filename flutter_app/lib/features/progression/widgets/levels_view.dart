@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/skeleton.dart';
 import '../../../core/widgets/toast.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
@@ -237,7 +238,7 @@ class _LevelsViewState extends ConsumerState<LevelsView> with LevelsReader {
         if (all == null)
           const Padding(
             padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            child: Skeleton(label: 'Reading the book…'),
           )
         else if (all.isEmpty)
           Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/novel_art.dart';
+import '../../core/motion/arrive.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
 import '../../shared/domain/records/novel.dart';
@@ -47,6 +48,8 @@ class Bookcase extends StatelessWidget {
         const gap = 3.0;
         const inset = 14.0;
         // Books fill a shelf left to right; the next shelf takes what does not fit.
+        // The books arrive one after another, along the shelves (`core/motion/arrive.dart`).
+        final place = {for (final (i, n) in novels.indexed) n.id: i};
         final rows = <List<Novel>>[];
         var used = double.infinity;
         for (final n in novels) {
@@ -68,7 +71,15 @@ class Bookcase extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     for (final n in row) ...[
-                      Spine(key: ValueKey('spine:${n.id}'), novel: n, height: height - (spineWidth(n) % 3) * 6),
+                      Arrive(
+                        key: ValueKey('arrive:${n.id}'),
+                        index: place[n.id] ?? 0,
+                        child: Spine(
+                          key: ValueKey('spine:${n.id}'),
+                          novel: n,
+                          height: height - (spineWidth(n) % 3) * 6,
+                        ),
+                      ),
                       const SizedBox(width: gap),
                     ],
                   ],

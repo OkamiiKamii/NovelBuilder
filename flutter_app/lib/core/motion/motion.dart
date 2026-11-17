@@ -64,3 +64,13 @@ class SpringCurve extends Curve {
   @override
   double transformInternal(double t) => _simulation.x(t * _restTime);
 }
+
+/// How a sheet rises from the foot (shadcn/ui's Drawer): settling into place on a spring; at once with less motion.
+AnimationStyle sheetMotion(BuildContext context) => Motion.reduced(context)
+    ? AnimationStyle.noAnimation
+    : const AnimationStyle(
+        curve: Motion.settle,
+        duration: Motion.medium,
+        reverseCurve: Curves.easeIn,
+        reverseDuration: Motion.short,
+      );

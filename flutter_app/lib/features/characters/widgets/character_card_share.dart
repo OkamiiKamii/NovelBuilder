@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/novel_art.dart';
+import '../../../core/widgets/stamp.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/backup_files.dart';
 import '../../../shared/data/providers.dart';
@@ -82,13 +83,11 @@ class CharacterShareCard extends StatelessWidget {
                         style: vaultHeading(context, size: 9.5, color: faint, weight: 600).copyWith(letterSpacing: 2.4),
                       ),
                       const SizedBox(height: 12),
-                      Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: look.frame, width: 1.6),
-                        ),
-                        child: SizedBox.square(dimension: 132, child: data.face),
+                      // Their face in a postage stamp (`core/widgets/stamp.dart`).
+                      Stamp(
+                        paper: Color.lerp(look.ground.first, Colors.white, 0.82)!,
+                        frame: look.frame,
+                        child: data.face,
                       ),
                       const SizedBox(height: 12),
                       Text(

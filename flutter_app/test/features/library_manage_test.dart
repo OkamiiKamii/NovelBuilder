@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/library/bookcase.dart';
 import 'package:novel_builder/features/library/bookshelf.dart';
 import 'package:novel_builder/features/library/library_page.dart';
@@ -14,11 +15,11 @@ import 'package:novel_builder/shared/data/providers.dart';
 import 'package:novel_builder/shared/domain/manuscript/prose.dart';
 import 'package:novel_builder/shared/domain/records/novel.dart';
 import 'package:novel_builder/shared/domain/records/story_node.dart';
-
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../helpers/hold.dart';
 import '../helpers/pump_app.dart';
 import '../shared/domain/fixtures.dart';
 
@@ -163,7 +164,12 @@ void main() {
     expect(container.read(libraryProvider), hasLength(1));
 
     await _menu(tester, title, 'Delete…');
-    await tester.tap(find.widgetWithText(FilledButton, 'Delete'));
+    // A press by reflex deletes nothing: the button says to hold.
+    await tester.tap(find.widgetWithText(HoldToConfirm, 'Delete'));
+    await tester.pumpAndSettle();
+    expect(container.read(libraryProvider), hasLength(1));
+    expect(find.text('Hold to delete'), findsOneWidget);
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Hold to delete'));
     await tester.pumpAndSettle();
     expect(container.read(libraryProvider), isEmpty);
     await tester.tap(find.text('Undo'));

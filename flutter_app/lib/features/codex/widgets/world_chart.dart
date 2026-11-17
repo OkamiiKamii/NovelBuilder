@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/book_faces.dart';
 import '../../../core/format.dart';
+import '../../../core/motion/motion.dart';
 import '../../../shared/domain/model/story_model.dart';
 import '../../../shared/domain/places/explore.dart';
 import '../../../shared/domain/records/category.dart';
@@ -592,6 +593,7 @@ class _WorldChartState extends State<WorldChart> {
   Future<void> _list(BuildContext context, String heading, List<Entry> entries, {required bool place}) =>
       showModalBottomSheet<void>(
         context: context,
+        sheetAnimationStyle: sheetMotion(context),
         showDragHandle: true,
         isScrollControlled: true,
         builder: (sheet) => SafeArea(
@@ -637,6 +639,7 @@ class _WorldChartState extends State<WorldChart> {
     final word = belongsWord(entry.category);
     return showModalBottomSheet<void>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       showDragHandle: true,
       isScrollControlled: true,
       builder: (sheet) => SafeArea(

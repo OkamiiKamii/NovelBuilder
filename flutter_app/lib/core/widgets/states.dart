@@ -1,7 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/book_faces.dart';
+import '../motion/motion.dart';
+import 'skeleton.dart';
 
 /// Shared loading, empty, error and no-results states, so every screen says these things the same way.
 
@@ -15,17 +19,8 @@ class LoadingState extends StatelessWidget {
     return Semantics(
       liveRegion: true,
       label: message,
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            ExcludeSemantics(child: Text(message)),
-          ],
-        ),
-      ),
+      // Where its words will stand (`skeleton.dart`), with what is being done under them.
+      child: ExcludeSemantics(child: Skeleton(label: message, caption: true)),
     );
   }
 }
@@ -215,24 +210,53 @@ class _Medallion extends StatelessWidget {
   final IconData icon;
   final Color color;
 
+  // The outer ring draws itself around the sign as the page is shown (shadcn/ui's Empty, the line drawn as anime.js
+  // draws one); at once with less motion.
   @override
-  Widget build(BuildContext context) => Container(
-    width: 54,
-    height: 54,
-    padding: const EdgeInsets.all(4),
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(color: color.withValues(alpha: 0.55)),
-    ),
+  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
+    tween: Tween(begin: 0, end: 1),
+    duration: Motion.of(context, Motion.long),
+    curve: Curves.easeInOutCubic,
+    builder: (context, drawn, child) => CustomPaint(painter: _Ring(drawn, color.withValues(alpha: 0.55)), child: child),
     child: Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withValues(alpha: 0.1),
-        border: Border.all(color: color.withValues(alpha: 0.8), width: 1.4),
+      width: 54,
+      height: 54,
+      padding: const EdgeInsets.all(4),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color.withValues(alpha: 0.1),
+          border: Border.all(color: color.withValues(alpha: 0.8), width: 1.4),
+        ),
+        child: Icon(icon, size: 22, color: color),
       ),
-      child: Icon(icon, size: 22, color: color),
     ),
   );
+}
+
+/// A ring drawn as far as [drawn] (0 to 1) of the way round, from the top.
+class _Ring extends CustomPainter {
+  _Ring(this.drawn, this.color);
+  final double drawn;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (drawn <= 0) return;
+    canvas.drawArc(
+      (Offset.zero & size).deflate(0.5),
+      -math.pi / 2,
+      2 * math.pi * drawn,
+      false,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_Ring old) => old.drawn != drawn || old.color != color;
 }
 
 /// A rule, a diamond and a rule, as under a chapter heading.
@@ -240,17 +264,35 @@ class _Ornament extends StatelessWidget {
   const _Ornament({required this.color});
   final Color color;
 
+  // The rules are drawn out from the diamond as the page is shown; at once with less motion.
   @override
   Widget build(BuildContext context) => ExcludeSemantics(
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(width: 36, height: 1, color: color.withValues(alpha: 0.6)),
-        const SizedBox(width: 8),
-        Transform.rotate(angle: 0.785398, child: Container(width: 6, height: 6, color: color.withValues(alpha: 0.8))),
-        const SizedBox(width: 8),
-        Container(width: 36, height: 1, color: color.withValues(alpha: 0.6)),
-      ],
+    child: TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Motion.of(context, Motion.long),
+      curve: Curves.easeOutCubic,
+      builder: (context, drawn, _) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 36,
+            child: Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: Container(width: 36 * drawn, height: 1, color: color.withValues(alpha: 0.6)),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Transform.rotate(angle: 0.785398, child: Container(width: 6, height: 6, color: color.withValues(alpha: 0.8))),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 36,
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Container(width: 36 * drawn, height: 1, color: color.withValues(alpha: 0.6)),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

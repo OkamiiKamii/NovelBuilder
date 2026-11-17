@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/theme/book_faces.dart';
+import '../../core/motion/motion.dart';
 
 /// One part of an area, with its own page.
 class AreaPart {
@@ -81,6 +82,15 @@ class _IndexTabsState extends State<IndexTabs> {
   final _scroll = ScrollController();
   final _shown = GlobalKey();
 
+  /// Each tab's place, for the accent to glide between (`_Glide`).
+  late var _places = [for (final _ in widget.tabs) GlobalKey()];
+
+  @override
+  void didUpdateWidget(IndexTabs old) {
+    super.didUpdateWidget(old);
+    if (old.tabs.length != widget.tabs.length) _places = [for (final _ in widget.tabs) GlobalKey()];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -123,17 +133,24 @@ class _IndexTabsState extends State<IndexTabs> {
         child: Stack(
           children: [
             Positioned(left: 0, right: 0, bottom: 0, child: Container(height: 1, color: scheme.outlineVariant)),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                for (final (i, t) in widget.tabs.indexed)
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: i == widget.tabs.length - 1 ? 0 : 4),
-                      child: _Tab(tab: t, stacked: true),
+            _Glide(
+              tabs: widget.tabs,
+              keys: _places,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  for (final (i, t) in widget.tabs.indexed)
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: i == widget.tabs.length - 1 ? 0 : 4),
+                        child: KeyedSubtree(
+                          key: _places[i],
+                          child: _Tab(tab: t, stacked: true),
+                        ),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -152,15 +169,22 @@ class _IndexTabsState extends State<IndexTabs> {
             SingleChildScrollView(
               controller: _scroll,
               scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  for (final t in widget.tabs)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: _Tab(key: t.selected ? _shown : null, tab: t),
-                    ),
-                ],
+              child: _Glide(
+                tabs: widget.tabs,
+                keys: _places,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    for (final (i, t) in widget.tabs.indexed)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: KeyedSubtree(
+                          key: _places[i],
+                          child: _Tab(key: t.selected ? _shown : null, tab: t),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -301,4 +325,107 @@ class _TabPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_TabPainter old) => old.fill != fill || old.edge != edge || old.accent != accent;
+}
+
+/// Which tab of a row (by its tabs' names) was shown last: the accent glides from there to the next.
+final _lastShown = <String, int>{};
+
+/// THE ACCENT GLIDES (Motion's layout animation, a shared element between places): when another tab of the same row
+/// is shown (another page, its own row), the accent edge runs from the tab shown before to it on a spring, then
+/// rests as the tab's own edge. Nothing moves when the device asks for less motion.
+class _Glide extends StatefulWidget {
+  const _Glide({required this.tabs, required this.keys, required this.child});
+  final List<IndexTab> tabs;
+  final List<GlobalKey> keys;
+  final Widget child;
+
+  @override
+  State<_Glide> createState() => _GlideState();
+}
+
+class _GlideState extends State<_Glide> with SingleTickerProviderStateMixin {
+  late final AnimationController _move;
+  Rect? _from;
+  Rect? _to;
+
+  String get _row => widget.tabs.map((t) => t.label).join('|');
+  int get _shown => widget.tabs.indexWhere((t) => t.selected);
+
+  @override
+  void initState() {
+    super.initState();
+    // Made now, not when first used (a row that never glides would make it as it is taken away).
+    _move = AnimationController(vsync: this, duration: Motion.medium);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _glide());
+  }
+
+  @override
+  void didUpdateWidget(_Glide old) {
+    super.didUpdateWidget(old);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _glide());
+  }
+
+  Rect? _rectOf(int i) {
+    final box = widget.keys[i].currentContext?.findRenderObject();
+    final here = context.findRenderObject();
+    if (box is! RenderBox || here is! RenderBox || !box.attached) return null;
+    return box.localToGlobal(Offset.zero, ancestor: here) & box.size;
+  }
+
+  void _glide() {
+    if (!mounted) return;
+    final now = _shown;
+    final before = _lastShown[_row];
+    _lastShown[_row] = now;
+    if (before == null || before == now || now < 0 || before >= widget.keys.length || Motion.reduced(context)) return;
+    final from = _rectOf(before);
+    final to = _rectOf(now);
+    if (from == null || to == null) return;
+    setState(() {
+      _from = from;
+      _to = to;
+    });
+    _move.forward(from: 0).whenCompleteOrCancel(() {
+      if (mounted) setState(() => _from = _to = null);
+    });
+  }
+
+  @override
+  void dispose() {
+    _move.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final from = _from;
+    final to = _to;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        widget.child,
+        if (from != null && to != null)
+          AnimatedBuilder(
+            animation: _move,
+            builder: (context, _) {
+              final at = Rect.lerp(from, to, Motion.settle.transform(_move.value))!;
+              return Positioned(
+                left: at.left + 2,
+                top: at.top,
+                width: at.width - 4,
+                height: 3,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+      ],
+    );
+  }
 }

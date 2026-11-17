@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/providers.dart';
@@ -167,7 +168,7 @@ class _PostcardsScreenState extends ConsumerState<PostcardsScreen> {
             ),
             Expanded(
               child: cards == null
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Skeleton(label: 'Reading the book…')
                   : cards.isEmpty
                   ? Center(
                       child: Padding(

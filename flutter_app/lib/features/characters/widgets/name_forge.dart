@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/book_faces.dart';
 import '../../../core/layout/breakpoints.dart';
+import '../../../core/motion/motion.dart';
 import '../../../shared/domain/text/name_forge.dart';
 import 'vault.dart';
 
@@ -19,6 +20,7 @@ Future<String?> showNameForge(
   if (WindowSize.of(context) == WindowSize.compact) {
     return showModalBottomSheet<String>(
       context: context,
+      sheetAnimationStyle: sheetMotion(context),
       useRootNavigator: true,
       isScrollControlled: true,
       showDragHandle: true,

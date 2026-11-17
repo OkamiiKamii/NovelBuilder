@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'hold_to_confirm.dart';
+
 /// Asks before doing something. Resolves to true only when the author chooses [confirmLabel];
 /// Cancel, Escape and tapping outside all resolve to false.
 ///
@@ -15,7 +17,6 @@ Future<bool> showConfirmDialog(
   final result = await showDialog<bool>(
     context: context,
     builder: (context) {
-      final scheme = Theme.of(context).colorScheme;
       return AlertDialog(
         title: Text(title),
         content: Text(message),
@@ -25,14 +26,11 @@ Future<bool> showConfirmDialog(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(cancelLabel),
           ),
-          FilledButton(
-            autofocus: !destructive,
-            style: destructive
-                ? FilledButton.styleFrom(backgroundColor: scheme.error, foregroundColor: scheme.onError)
-                : null,
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(confirmLabel),
-          ),
+          // What cannot be taken back is held, not pressed (`hold_to_confirm.dart`).
+          if (destructive)
+            HoldToConfirm(label: confirmLabel, onConfirmed: () => Navigator.of(context).pop(true))
+          else
+            FilledButton(autofocus: true, onPressed: () => Navigator.of(context).pop(true), child: Text(confirmLabel)),
         ],
       );
     },

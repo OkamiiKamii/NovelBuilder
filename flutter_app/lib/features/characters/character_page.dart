@@ -7,6 +7,7 @@ import '../../app/destinations.dart';
 import '../../app/theme/novel_art.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
@@ -294,6 +295,7 @@ class CharacterPage extends ConsumerWidget {
   /// The cast's list in a sheet, its search ready: to go to anyone from anywhere on a phone (or a narrow window).
   void _find(BuildContext context, CastData cast, String id) => showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     isScrollControlled: true,
     useRootNavigator: true,
     builder: (sheet) => SafeArea(

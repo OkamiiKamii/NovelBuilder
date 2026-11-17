@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/write/write_providers.dart';
 import 'package:novel_builder/shared/domain/json.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
+import '../../helpers/hold.dart';
 import '../../helpers/pump_app.dart';
 import 'write_page_test.dart' show openWrite, storedText;
 
@@ -76,7 +78,7 @@ void main() {
     expect(m.activeDraft(w.novel, w.chapter), 'The happy one');
 
     await _press(tester, find.text('Delete'));
-    await _press(tester, find.widgetWithText(FilledButton, 'Delete draft'));
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Delete draft'));
     expect(m.alternateDrafts(w.novel, w.chapter), isEmpty);
     expect(storedText(w.c, w.novel, w.chapter), 'The gate was open.\nNobody guarded it.');
     await tester.pump(const Duration(seconds: 5));

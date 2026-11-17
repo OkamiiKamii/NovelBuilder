@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/novel_store.dart';
@@ -143,7 +144,7 @@ class _BookStoryScreenState extends ConsumerState<BookStoryScreen> {
     if (story == null) {
       return const Scaffold(
         backgroundColor: Color(0xFF15131C),
-        body: Center(child: CircularProgressIndicator()),
+        body: Skeleton(label: 'Reading the book…'),
       );
     }
     final pages = storyPages(context, story);

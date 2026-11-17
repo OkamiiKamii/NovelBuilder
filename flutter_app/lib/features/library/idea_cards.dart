@@ -1,13 +1,16 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
-import 'bookshelf.dart' show BookJacket;
+import 'bookshelf.dart' show BookJacket, accentOf;
 
 /// The ideas still without a line of their own (no summary), in shelf order.
 List<Novel> unwrittenIdeas(List<Novel> ideas) => [
@@ -141,53 +144,76 @@ class _IdeaCardsState extends ConsumerState<_IdeaCards> {
               backgroundColor: scheme.outlineVariant.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 24),
-            // The card: the jacket beside its title, as an index card in a box.
-            KeyedSubtree(
-              key: ValueKey(idea.id),
-              child: VaultFrame(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+            // The card: the jacket beside its title, as an index card in a box; the ideas still to come fanned behind
+            // it, a hand of cards (dqnamo's Kitchen), and each next one dealt onto the top.
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                for (var k = math.min(2, widget.ideas.length - _at - 1); k >= 1; k--)
+                  Positioned.fill(
+                    child: ExcludeSemantics(
+                      child: Transform.rotate(
+                        angle: k == 1 ? 0.035 : -0.05,
+                        alignment: Alignment.bottomCenter,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Color.lerp(scheme.surface, accentOf(widget.ideas[_at + k]), 0.12),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: scheme.outlineVariant),
+                            boxShadow: const [BoxShadow(color: Color(0x22000000), blurRadius: 6, offset: Offset(0, 2))],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                _Dealt(
+                  key: ValueKey(idea.id),
+                  child: VaultFrame(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BookJacket(novel: idea, width: 84),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Semantics(
-                                header: true,
-                                child: Text(
-                                  title,
-                                  style: vaultHeading(context, size: 18, weight: 700, color: scheme.onSurface),
-                                ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            BookJacket(novel: idea, width: 84),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Semantics(
+                                    header: true,
+                                    child: Text(
+                                      title,
+                                      style: vaultHeading(context, size: 18, weight: 700, color: scheme.onSurface),
+                                    ),
+                                  ),
+                                  if (idea.author.isNotEmpty) Text(idea.author, style: vaultText(context, size: 16)),
+                                ],
                               ),
-                              if (idea.author.isNotEmpty) Text(idea.author, style: vaultText(context, size: 16)),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 18),
+                        Text(
+                          'In one line, what is it about?',
+                          style: vaultHeading(context, size: 11.5, weight: 700, color: scheme.onSurfaceVariant),
+                        ),
+                        TextField(
+                          controller: _line,
+                          autofocus: true,
+                          maxLines: 3,
+                          minLines: 1,
+                          onChanged: (_) => setState(() {}),
+                          textCapitalization: TextCapitalization.sentences,
+                          style: vaultText(context, size: 18),
+                          decoration: const InputDecoration(hintText: 'Who wants what, and what stands in the way.'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
-                    Text(
-                      'In one line, what is it about?',
-                      style: vaultHeading(context, size: 11.5, weight: 700, color: scheme.onSurfaceVariant),
-                    ),
-                    TextField(
-                      controller: _line,
-                      autofocus: true,
-                      maxLines: 3,
-                      minLines: 1,
-                      onChanged: (_) => setState(() {}),
-                      textCapitalization: TextCapitalization.sentences,
-                      style: vaultText(context, size: 18),
-                      decoration: const InputDecoration(hintText: 'Who wants what, and what stands in the way.'),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
             const SizedBox(height: 18),
             FilledButton(
@@ -201,4 +227,25 @@ class _IdeaCardsState extends ConsumerState<_IdeaCards> {
       ),
     );
   }
+}
+
+/// A card dealt onto the hand: it comes in from the side, turning straight as it lands; at once with less motion.
+class _Dealt extends StatelessWidget {
+  const _Dealt({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
+    tween: Tween(begin: 0, end: 1),
+    duration: Motion.of(context, Motion.medium),
+    curve: Motion.arrive,
+    builder: (context, t, child) => Transform(
+      alignment: Alignment.bottomCenter,
+      transform: Matrix4.identity()
+        ..translateByDouble((1 - t) * 60, 0, 0, 1)
+        ..rotateZ((1 - t) * 0.12),
+      child: child,
+    ),
+    child: child,
+  );
 }

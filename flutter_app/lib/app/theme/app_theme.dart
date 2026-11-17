@@ -242,6 +242,15 @@ abstract final class AppTheme {
               : p.border,
         ),
       ),
+      // A sheet from the foot as shadcn/ui's Drawer: its paper rounded at the top, a soft handle to pull it by; it
+      // settles into place on a spring (`sheetMotion`).
+      bottomSheetTheme: BottomSheetThemeData(
+        showDragHandle: true,
+        dragHandleColor: p.muted.withValues(alpha: 0.5),
+        dragHandleSize: const Size(40, 4),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        clipBehavior: Clip.antiAlias,
+      ),
       snackBarTheme: SnackBarThemeData(
         // Fixed, so it always sits above the phone's bottom bar, even at the largest text sizes.
         behavior: SnackBarBehavior.fixed,

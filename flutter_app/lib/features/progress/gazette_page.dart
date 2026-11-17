@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/skeleton.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/providers.dart';
@@ -179,7 +180,7 @@ class _GazetteScreenState extends ConsumerState<GazetteScreen> {
             ),
             Expanded(
               child: paper == null
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Skeleton(label: 'Reading the book…')
                   : editions.isEmpty
                   ? Center(
                       child: Padding(

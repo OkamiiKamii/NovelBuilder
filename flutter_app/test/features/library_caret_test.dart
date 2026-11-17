@@ -27,13 +27,14 @@ void main() {
         .widget<Opacity>(find.descendant(of: find.byType(ContinueWriting), matching: find.byType(Opacity)).last)
         .opacity;
     expect(lit(), 1, reason: 'lit as it appears');
-    // Between switches nothing asks for a frame.
     await tester.pump(const Duration(milliseconds: 200));
-    expect(tester.binding.hasScheduledFrame, isFalse);
     final seen = <double>[];
     for (var i = 0; i < 9; i++) {
       await tester.pump(const Duration(milliseconds: 500));
       seen.add(lit());
+      // Between switches nothing asks for a frame, once the shelf's books have arrived and its counts rolled (in its
+      // first 0.85 seconds, once: `core/motion/arrive.dart`).
+      if (i >= 2) expect(tester.binding.hasScheduledFrame, isFalse, reason: 'quiet at ${0.2 + 0.5 * (i + 1)} s');
     }
     // At 0.7 s out, 1.2 s lit, … 3.7 s out, then 4.2 s and after: lit.
     expect(seen, [0, 1, 0, 1, 0, 1, 0, 1, 1]);

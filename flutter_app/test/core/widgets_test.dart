@@ -8,6 +8,7 @@ import 'package:novel_builder/app/theme/app_theme.dart';
 import 'package:novel_builder/core/layout/breakpoints.dart';
 import 'package:novel_builder/core/widgets/confirm_dialog.dart';
 import 'package:novel_builder/core/widgets/detail_panel.dart';
+import 'package:novel_builder/core/widgets/skeleton.dart';
 import 'package:novel_builder/core/widgets/states.dart';
 
 Future<void> _pump(WidgetTester tester, Widget child, {Size size = const Size(1200, 800)}) async {
@@ -56,7 +57,8 @@ void main() {
         data: (list) => Text(list.join(',')),
       );
       await _pump(tester, view(const AsyncLoading()));
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(Skeleton), findsOneWidget, reason: 'where the words will stand');
+      expect(find.bySemanticsLabel('Loading…'), findsOneWidget);
       await _pump(tester, view(AsyncError(Exception('Disk full'), StackTrace.empty)));
       expect(find.text('Disk full'), findsOneWidget);
       await _pump(tester, view(const AsyncData([])));

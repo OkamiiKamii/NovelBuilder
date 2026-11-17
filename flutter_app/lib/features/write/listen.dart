@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:super_editor/super_editor.dart';
 
+import '../../core/widgets/cassette.dart';
 import '../../shared/data/speech.dart';
 import '../../shared/domain/text/rhythm.dart';
 
@@ -278,7 +279,12 @@ class ListenBar extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
             child: Row(
               children: [
-                Icon(Icons.headphones, size: 20, color: scheme.primary),
+                // A cassette, its reels turning as it reads (`core/widgets/cassette.dart`).
+                Cassette(
+                  sentence: reader.at,
+                  wound: reader.count == 0 ? 0 : reader.at / reader.count,
+                  color: scheme.primary,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Semantics(

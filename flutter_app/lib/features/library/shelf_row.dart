@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme/novel_art.dart';
+import '../../core/motion/arrive.dart';
 import '../../shared/domain/records/novel.dart';
 import 'bookshelf.dart' show ShelfBook;
 
@@ -31,7 +32,11 @@ class ShelfRow extends StatelessWidget {
             children: [
               for (final (i, n) in novels.indexed) ...[
                 if (i > 0) const SizedBox(width: gap),
-                ShelfBook(key: ValueKey(n.id), novel: n, width: bookWidth),
+                Arrive(
+                  key: ValueKey('arrive:${n.id}'),
+                  index: i,
+                  child: ShelfBook(key: ValueKey(n.id), novel: n, width: bookWidth),
+                ),
               ],
               const SizedBox(width: 8),
             ],

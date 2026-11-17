@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/destinations.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/motion/motion.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/gradually.dart';
 import '../../core/widgets/page_scaffold.dart';
@@ -565,6 +566,7 @@ class _CharactersPageState extends ConsumerState<CharactersPage> {
   /// choice as it is made; Done, or a swipe down, closes it.
   Future<void> _arrange(BuildContext context, CastData cast, Facets facets) => showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     showDragHandle: true,
     isScrollControlled: true,
     builder: (sheet) => ValueListenableBuilder<int>(

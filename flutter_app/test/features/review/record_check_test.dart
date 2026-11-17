@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/shared/data/novel_store.dart';
@@ -11,6 +12,7 @@ import 'package:novel_builder/shared/domain/model/entity_ref.dart';
 import 'package:novel_builder/shared/domain/records/link.dart';
 
 import '../../helpers/choices.dart';
+import '../../helpers/hold.dart';
 import '../../helpers/pump_app.dart';
 
 const tall = Size(1400, 4000);
@@ -55,7 +57,7 @@ void main() {
     expect(find.text('member of this'), findsOneWidget, reason: 'Mira’s statement, seen from the guild');
     await tester.tap(find.byTooltip('Remove this connection'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(FilledButton, 'Remove'));
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Remove'));
     await tester.pumpAndSettle();
     expect(storeOf(w.c).rowsIn(w.novel, 'loreLinks'), isEmpty);
     expect(storeOf(w.c).row(w.novel, 'loreEntries', guild), isNotNull);

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/destinations.dart';
+import '../../../core/widgets/skeleton.dart';
 import '../../../core/widgets/toast.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
@@ -199,7 +200,7 @@ class _DramatisPageState extends ConsumerState<DramatisPage> {
         ],
       ),
       body: appearance == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Skeleton(label: 'Reading the book…')
           : SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
               child: Center(

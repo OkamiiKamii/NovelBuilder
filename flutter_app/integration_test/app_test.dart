@@ -202,7 +202,13 @@ void main() {
       expect(find.text('Device Novel (Copy)'), findsOneWidget);
 
       await menu('Device Novel (Copy)', 'Delete…');
-      await tester.tap(find.widgetWithText(FilledButton, 'Delete'));
+      // Held, not pressed (what cannot be taken back): on the device, for real time.
+      final hold = await tester.startGesture(tester.getCenter(find.text('Delete').last));
+      for (var i = 0; i < 14; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+        await tester.pump();
+      }
+      await hold.up();
       await tester.pumpAndSettle();
       expect(find.text('Device Novel (Copy)'), findsNothing);
       await tester.tap(find.text('Undo'));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/novel_art.dart';
+import '../../../core/motion/motion.dart';
 import '../../../core/widgets/toast.dart';
 import '../../../shared/domain/characters/character_records.dart';
 import '../../../shared/domain/characters/likeness.dart';
@@ -28,6 +29,7 @@ Future<void> showDrawTheirFace(
   Toasts.maybeOf(context)?.dismissAll();
   return showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     isScrollControlled: true,
     showDragHandle: true,
     builder: (_) => FaceSketch(entry: entry, profile: profile, actions: actions),

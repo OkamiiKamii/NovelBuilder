@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/hold_to_confirm.dart';
 import 'package:novel_builder/features/characters/characters_providers.dart';
 import 'package:novel_builder/features/progression/progression_providers.dart';
 import 'package:novel_builder/features/progression/widgets/progress_chart.dart';
@@ -11,6 +12,7 @@ import 'package:novel_builder/shared/domain/json.dart';
 import 'package:novel_builder/shared/domain/model/entity_ref.dart';
 import 'package:novel_builder/shared/domain/systems/system_presets.dart';
 
+import '../../helpers/hold.dart';
 import '../../helpers/pump_app.dart';
 
 typedef Novel = ({ProviderContainer c, String novel, String mira});
@@ -101,7 +103,7 @@ void main() {
     await tapText(tester, 'Begin blank');
     await tapText(tester, 'Delete this system…');
     expect(find.textContaining('Characters and entries are not changed'), findsOneWidget);
-    await tapText(tester, 'Delete the system');
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Delete the system'));
     expect(rows(n, 'systems'), isEmpty);
     expect(find.text('Begin a system'), findsOneWidget);
   });
@@ -201,7 +203,7 @@ void main() {
     await tapText(tester, 'Cancel');
     expect(maps(rows(n, 'systems').single['items']).length, 3, reason: 'nothing changed when cancelled');
     await tapText(tester, 'Remove Skills');
-    await tapText(tester, 'Remove');
+    await holdToConfirm(tester, find.widgetWithText(HoldToConfirm, 'Remove'));
     expect(maps(rows(n, 'systems').single['items']), isEmpty);
     expect(rows(n, 'loreLinks'), isEmpty);
   });

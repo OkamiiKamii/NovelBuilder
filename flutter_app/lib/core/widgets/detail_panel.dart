@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../layout/breakpoints.dart';
+import '../motion/motion.dart';
 
 /// A page with a details panel: beside the content on wide screens, a sheet on phones.
 ///
@@ -86,6 +87,7 @@ class DetailPanel extends StatelessWidget {
 Future<void> showDetailSheet(BuildContext context, {String? title, required Widget child}) {
   return showModalBottomSheet<void>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     isScrollControlled: true,
     showDragHandle: true,
     builder: (sheetContext) => DraggableScrollableSheet(

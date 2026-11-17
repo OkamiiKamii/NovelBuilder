@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/motion/motion.dart';
 import '../../shared/data/providers.dart';
 import '../characters/widgets/vault.dart';
 import '../workspace/open_novel.dart';
@@ -72,6 +73,7 @@ Future<bool> leaveNextNote(
   FocusManager.instance.primaryFocus?.unfocus();
   final text = await showModalBottomSheet<String>(
     context: context,
+    sheetAnimationStyle: sheetMotion(context),
     isScrollControlled: true,
     showDragHandle: true,
     useRootNavigator: true,
