@@ -24,13 +24,29 @@ between the two apps without losing anything. The file format keeps its existing
 | 4a: Organize — characters and relationships | 135–139, 149–150, 152, 154, 166–168, 171–174, 176–188, 194–200 | Done (2026-11-17), tested on the emulator |
 | 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Done (2026-11-17), tested on the emulator and the phone |
 | 5a: Organize — World, categories and fields, templates, connections | 201–220 | Done (2026-11-17), tested on the emulator |
-| 5b: Organize — genre modules | 221–227 | To do |
+| 5b: Organize — genre modules | 221–227 | Done (2026-11-17), tested on the emulator |
 | 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | To do |
 | 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | To do |
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | To do |
 | 7: Review and collaboration by file | 306–328 | To do |
 | 8: Analytics and keepsakes | 329–347 | To do |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 5b** built the genre modules, as two new Organize tabs after World: **Systems** (which says it comes in 5c)
+and **Modules**. The Module Manager: the ten genre modules on a shelf (All, Enabled, Not enabled), turn one on (it adds
+its categories and fields and makes no records) or off (it hides its tools and empty categories and deletes nothing),
+update a newer built-in, "Made for your story" (up to two modules suggested from the book), the try-on preview of what
+a module would add, and your own modules (made from this novel's categories and system, kept on this device, shared
+and imported as `.module.json`). A module's workspace: the dashboard, Configure (names, which tools show and their order,
+a log's stages) and its tools: registry, board, table, matrix, meters, log with its arc chart, calculator, ranks,
+inventory, family tree and page links. The logic matches the Dart on every fixture (41 tests, golden output from the
+real Dart, and the original app's own golden replayed step by step).
+
+Where the Flutter app's messages say "the Codex", Scriptor's say World (`src/domain/modules/scriptorWords.ts`; the
+golden test maps them back). The built-in modules' own field hints keep the Flutter app's wording.
+
+Left for later: page links to parts not built yet (Systems, Visualize, Review) are shown and say they come later; the
+ranks tool reads tracks without the Systems calculator (5c); module tools are always editable (no review copies yet).
 
 **Phase 5a** built Organize → World. The World tab: New entry, the world charter on an empty world (a paragraph whose
 blanks become the first linked entries), the category volumes, the world chart (places as islands with the places

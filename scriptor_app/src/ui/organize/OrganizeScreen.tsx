@@ -1,5 +1,6 @@
-// ORGANIZE (DESIGN.md: the five areas): the novel's people and world, and, as tabs, Plan and Visualize. Characters
-// (phase 4) and the World (phase 5a) are here; Plan and Visualize follow in their own phases and say so meanwhile.
+// ORGANIZE (DESIGN.md: the five areas): the novel's people and world, the systems characters grow by and the genre
+// modules (the Flutter app's Organize parts), and, as tabs, Plan and Visualize. Characters (phase 4), the World (5a)
+// and Modules (5b) are here; Systems, Plan and Visualize follow in their own phases and say so meanwhile.
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -9,10 +10,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GoldButton, Icon, type IconName, Muted, Panel } from '../kit';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { CastPane } from './CastPane';
+import { ModulesPane } from './ModulesPane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
 
-type Tab = 'characters' | 'world' | 'plan' | 'visualize';
+export type Tab = 'characters' | 'world' | 'systems' | 'modules' | 'plan' | 'visualize';
 const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; holds: string[] } }[] = [
   { key: 'characters', label: 'Characters', icon: 'account-group-outline' },
   {
@@ -20,6 +22,20 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     label: 'World',
     icon: 'earth',
   },
+  {
+    key: 'systems',
+    label: 'Systems',
+    icon: 'family-tree',
+    later: {
+      phase: 'phase 5c',
+      holds: [
+        'Progression blueprints: stats, resources, ranks, skills and formulas',
+        'Each character’s sheet, and how it grows chapter by chapter',
+        'The Status tab on a profile',
+      ],
+    },
+  },
+  { key: 'modules', label: 'Modules', icon: 'puzzle-outline' },
   {
     key: 'plan',
     label: 'Plan',
@@ -36,6 +52,11 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
 
 /** The tab last chosen, kept while the app runs: coming back from an entry or a character opens where you were. */
 const remembered: { tab: Tab } = { tab: 'characters' };
+
+/** Opens Organize on `tab` next time it is shown (the modules route, "All modules", lands on the Modules tab). */
+export function rememberOrganizeTab(tab: Tab): void {
+  remembered.tab = tab;
+}
 
 export function OrganizeScreen() {
   const novel = useOpenNovel();
@@ -102,6 +123,8 @@ export function OrganizeScreen() {
         </ScrollView>
       ) : tab === 'world' ? (
         <WorldPane />
+      ) : tab === 'modules' ? (
+        <ModulesPane />
       ) : (
         <CastPane novel={novel} />
       )}
