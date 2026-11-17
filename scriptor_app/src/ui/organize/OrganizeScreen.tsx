@@ -12,6 +12,7 @@ import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { CastPane } from './CastPane';
 import { SystemsPane } from '../systems/SystemsPane';
 import { ModulesPane } from './ModulesPane';
+import { PlanPane } from '../plan/PlanPane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
 
@@ -33,7 +34,6 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     key: 'plan',
     label: 'Plan',
     icon: 'timeline-text-outline',
-    later: { phase: 'phase 6a', holds: ['Plot threads', 'The scene board and chapter plans', 'The timeline and events'] },
   },
   {
     key: 'visualize',
@@ -120,6 +120,8 @@ export function OrganizeScreen() {
         <SystemsPane />
       ) : tab === 'modules' ? (
         <ModulesPane />
+      ) : tab === 'plan' ? (
+        <PlanPane />
       ) : (
         <CastPane novel={novel} />
       )}

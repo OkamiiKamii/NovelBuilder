@@ -26,11 +26,30 @@ between the two apps without losing anything. The file format keeps its existing
 | 5a: Organize — World, categories and fields, templates, connections | 201–220 | Done (2026-11-17), tested on the emulator |
 | 5b: Organize — genre modules | 221–227 | Done (2026-11-17), tested on the emulator |
 | 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | Done (2026-11-17), tested on the emulator |
-| 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | To do |
+| 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | Done (2026-11-17), tested on the emulator |
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | To do |
 | 7: Review and collaboration by file | 306–328 | To do |
 | 8: Analytics and keepsakes | 329–347 | To do |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 6a** built Plan, as Organize's Plan tab with the Flutter app's five parts: **Timeline** (the chronicle in story
+order, grouped by year with "N years later" gaps and undated events apart; filters and a character's life path with
+their age; events from chapters on an empty timeline; the event page: name, flexible dates (exact to the minute,
+approximate, relative or undated), importance, place, length and end, statuses, threads, labels, factions, items and
+lore, characters with their ages, the chapters that tell it and how, its checks, "At the same time", connections, and
+delete with Undo), **Plot threads** (the loom: each thread a strand across the chapters with its developments, the
+target and a frayed end when it goes quiet; search, filters and grouping; Worth a look; the questions your story asks;
+the thread page with developments, and delete with Undo), **Scene board** (chapters in columns, or lanes on a phone,
+with their scenes, thread chips and filters; moves and statuses with Undo of the last 20; and each chapter's plan:
+objective, summary, labels, the dynamics, beats, who appears, web-serial notes), **Alternate histories** (What if…?
+branches that keep only their differences, and comparing any two timelines) and **Calendar** (standard or the novel's
+own, with four presets). Each event, thread, chapter plan and history also has a page of its own at the Flutter app's
+`/plan/…` paths. The logic matches the Dart on every fixture (202 tests: golden output from the real Dart, and the
+original app's plot and timeline goldens).
+
+Left for later: the drawn timeline, the whole life history, plot lanes, story order beside reading order (with
+Visualize); Review's timeline checks and "What depends on…?" (with Review); dragging cards on the board (buttons move
+them meanwhile).
 
 **Phase 5c** built Systems and character progression. Organize › Systems: the gallery (four presets, each with a live
 example status window, or blank; your book's own system when its chapters read like one; levels in your pages), and a
