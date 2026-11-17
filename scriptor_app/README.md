@@ -22,7 +22,30 @@ between the two apps without losing anything. The file format keeps its existing
 | 3b-2: Write — the rest of the desk, history and drafts | 81–84, 87–88, 93–95, 100–101, 106–110, 112–118 | Done (2026-11-17), tested on the emulator |
 | 3c: Write — goals, sprints, the reader, publishing | 119–134 | Done (2026-11-17), tested on the emulator |
 | 4a: Organize — characters and relationships | 135–139, 149–150, 152, 154, 166–168, 171–174, 176–188, 194–200 | Done (2026-11-17), tested on the emulator |
-| 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Done (2026-11-17), tested on the emulator |
+| 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Done (2026-11-17), tested on the emulator and the phone |
+| 5a: Organize — World, categories and fields, templates, connections | 201–220 | Done (2026-11-17), tested on the emulator |
+| 5b: Organize — genre modules | 221–227 | To do |
+| 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | To do |
+| 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | To do |
+| 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | To do |
+| 7: Review and collaboration by file | 306–328 | To do |
+| 8: Analytics and keepsakes | 329–347 | To do |
+| 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 5a** built Organize → World. The World tab: New entry, the world charter on an empty world (a paragraph whose
+blanks become the first linked entries), the category volumes, the world chart (places as islands with the places
+inside them, what is linked on their shores, the rest adrift with "Where does X belong?"), search and tags, and the
+encyclopedia filed A–Z with a letter bar. Found in your pages for the world ("Add as…", "Not an entry"). The entry
+page: picture, name with Forge a name, category (moving keeps every value), summary, description, the category's
+fields with their checks, fields just for this entry, tags, notes, related entries with wording and canon status,
+where it figures, every connection, and delete with a restore point and Undo. Categories & fields: categories and
+their fields of 10 types with rules, archive and restore, the knowledge graph switch, what each view reads, the 8
+category presets and 4 world presets, and templates saved on this device. The connections panel (24 two-sided kinds
+or your own, five statuses) is on entries and on a character's Overview. The logic matches the Dart on every fixture
+(81 tests, golden output from the real Dart, including a 172-entry world for the chart's packing).
+
+Left for later: connections on chapters, events and threads (with their pages in Plan), date and number pickers in
+fields (they are text boxes meanwhile), hover lighting on the chart (phones have no pointer).
 
 **Phase 4b** finished the cast. Above it: the playbill for an empty cast ("Raise the curtain" makes them with their
 ties), the empty chairs round a small cast's lead, and the cast photograph. The cast list for the book (by faction,

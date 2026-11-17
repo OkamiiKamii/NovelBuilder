@@ -1,5 +1,5 @@
 // ORGANIZE (DESIGN.md: the five areas): the novel's people and world, and, as tabs, Plan and Visualize. Characters
-// come first (phase 4); World, Plan and Visualize follow in their own phases and say so meanwhile.
+// (phase 4) and the World (phase 5a) are here; Plan and Visualize follow in their own phases and say so meanwhile.
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GoldButton, Icon, type IconName, Muted, Panel } from '../kit';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { CastPane } from './CastPane';
+import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
 
 type Tab = 'characters' | 'world' | 'plan' | 'visualize';
@@ -18,28 +19,34 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     key: 'world',
     label: 'World',
     icon: 'earth',
-    later: { phase: 'phase 5', holds: ['Places, factions, items, powers and lore', 'Categories, fields and templates', 'Genre modules and systems'] },
   },
   {
     key: 'plan',
     label: 'Plan',
     icon: 'timeline-text-outline',
-    later: { phase: 'phase 6', holds: ['Plot threads', 'The scene board and chapter plans', 'The timeline and events'] },
+    later: { phase: 'phase 6a', holds: ['Plot threads', 'The scene board and chapter plans', 'The timeline and events'] },
   },
   {
     key: 'visualize',
     label: 'Visualize',
     icon: 'graph-outline',
-    later: { phase: 'phase 7', holds: ['The workspace and its views', 'Places, journeys, factions and ownership', 'The knowledge graph'] },
+    later: { phase: 'phase 6b', holds: ['The workspace and its views', 'Places, journeys, factions and ownership', 'The knowledge graph'] },
   },
 ];
+
+/** The tab last chosen, kept while the app runs: coming back from an entry or a character opens where you were. */
+const remembered: { tab: Tab } = { tab: 'characters' };
 
 export function OrganizeScreen() {
   const novel = useOpenNovel();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const phone = sizeClassOf(useWindowDimensions().width) === 'compact';
-  const [tab, setTab] = useState<Tab>('characters');
+  const [tab, setTabState] = useState<Tab>(remembered.tab);
+  const setTab = (t: Tab) => {
+    remembered.tab = t;
+    setTabState(t);
+  };
 
   if (!novel) {
     return (
@@ -93,6 +100,8 @@ export function OrganizeScreen() {
             ))}
           </Panel>
         </ScrollView>
+      ) : tab === 'world' ? (
+        <WorldPane />
       ) : (
         <CastPane novel={novel} />
       )}

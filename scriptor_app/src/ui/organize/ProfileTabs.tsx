@@ -33,6 +33,8 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { ProfilePageBoxes } from './CastFound';
+import { ConnectionsPanel } from './ConnectionsPanel';
+import { EntityRef } from '../../domain/model/entityRef';
 import { Face } from './CastPane';
 import { ChooserField, SavedText } from './parts';
 import { SectionsView } from './SectionsView';
@@ -206,6 +208,7 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
         <Text style={styles.kicker}>{threads.title.toUpperCase()}</Text>
         {threads.empty ? <Muted>{threads.empty}</Muted> : threads.threads.map((t) => <Text key={t.thread.id} style={styles.text}>{t.title} · {t.status}</Text>)}
       </Panel>
+      <ConnectionsPanel open={open} self={new EntityRef('entry', entry.id)} />
       {ask && asking && (
         <PromptSheet
           visible
