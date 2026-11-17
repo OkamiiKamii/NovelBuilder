@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/states.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/analytics/charts.dart';
 import '../../shared/domain/analytics/progress.dart' show grouped;
@@ -236,15 +237,15 @@ class _ChartCard extends ConsumerWidget {
   Future<void> _download(BuildContext context, WidgetRef ref) async {
     final box = context.findRenderObject() as RenderBox?;
     final origin = box == null ? null : box.localToGlobal(Offset.zero) & box.size;
-    final messenger = ScaffoldMessenger.of(context);
+    final say = Toasts.sayer(context);
     try {
       // A byte-order mark, so a spreadsheet reads names in any script.
       final said = await ref
           .read(backupFilesProvider)
           .saveCsv(file, '﻿${toCsv(chart.columns, chart.rows)}', origin: origin);
-      if (said != null) messenger.showSnackBar(SnackBar(content: Text('$said.')));
+      if (said != null) say(Toast('$said.'));
     } on Object catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('The data was not saved: $e')));
+      say(Toast('The data was not saved: $e', error: true));
     }
   }
 

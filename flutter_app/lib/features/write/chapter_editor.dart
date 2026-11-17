@@ -11,6 +11,7 @@ import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/save_status_indicator.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/data/speech.dart';
@@ -701,9 +702,7 @@ class _ChapterEditorState extends ConsumerState<ChapterEditor> with WidgetsBindi
     super.dispose();
   }
 
-  void _tell(String message) => ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+  void _tell(String message) => showToast(context, message);
 
   // ----------------------------------------------------------------------------------------------- actions
 

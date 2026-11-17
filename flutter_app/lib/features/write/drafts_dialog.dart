@@ -4,6 +4,7 @@ import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/manuscript/prose.dart';
 import '../../shared/domain/records/story_node.dart';
@@ -46,9 +47,7 @@ class _DraftsState extends State<_Drafts> {
 
   String get _kind => widget.node.kindKey;
 
-  void _tell(String message) => ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+  void _tell(String message) => showToast(context, message);
 
   /// Makes a change; a change that cannot be made is said, and nothing is changed.
   bool _try(void Function() change) {

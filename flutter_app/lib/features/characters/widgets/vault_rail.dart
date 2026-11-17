@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/edge_fade.dart';
 import '../../../shared/domain/characters/cast.dart';
 import '../../../shared/domain/text/fold.dart';
 import '../character_actions.dart';
@@ -131,43 +132,51 @@ class _VaultRailState extends State<VaultRail> {
                     style: vaultText(context, size: 15, style: FontStyle.italic, color: scheme.onSurfaceVariant),
                   ),
                 )
-              : ListView.builder(
-                  itemCount: found.length,
-                  itemBuilder: (context, i) {
-                    final l = found[i];
-                    final here = l.entry.id == widget.currentId;
-                    final chapters = l.seenIn.length;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Material(
-                        color: here ? scheme.primaryContainer.withValues(alpha: 0.55) : Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: here ? scheme.primary : Colors.transparent, width: 1.5),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: ListTile(
-                          key: ValueKey('vault-${l.entry.id}'),
-                          dense: true,
-                          selected: here,
-                          // Marked by its fill and border; its words as dark as the rest, to be read on the fill.
-                          selectedColor: scheme.onSurface,
-                          minVerticalPadding: 8,
-                          leading: Portrait(name: l.entry.name, image: l.entry.image, focal: l.profile.focal, size: 40),
-                          title: Text(l.entry.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-                          subtitle: Text(
-                            [
-                              if (l.profile.epithet.isNotEmpty) l.profile.epithet,
-                              chapters == 0 ? 'not in the text yet' : 'in ${plural(chapters, 'chapter')}',
-                            ].join(' · '),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+              // Faded at an edge where more of the cast lies (`edge_fade.dart`).
+              : EdgeFade(
+                  child: ListView.builder(
+                    itemCount: found.length,
+                    itemBuilder: (context, i) {
+                      final l = found[i];
+                      final here = l.entry.id == widget.currentId;
+                      final chapters = l.seenIn.length;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Material(
+                          color: here ? scheme.primaryContainer.withValues(alpha: 0.55) : Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: here ? scheme.primary : Colors.transparent, width: 1.5),
                           ),
-                          onTap: () => _go(l.entry.id),
+                          clipBehavior: Clip.antiAlias,
+                          child: ListTile(
+                            key: ValueKey('vault-${l.entry.id}'),
+                            dense: true,
+                            selected: here,
+                            // Marked by its fill and border; its words as dark as the rest, to be read on the fill.
+                            selectedColor: scheme.onSurface,
+                            minVerticalPadding: 8,
+                            leading: Portrait(
+                              name: l.entry.name,
+                              image: l.entry.image,
+                              focal: l.profile.focal,
+                              size: 40,
+                            ),
+                            title: Text(l.entry.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+                            subtitle: Text(
+                              [
+                                if (l.profile.epithet.isNotEmpty) l.profile.epithet,
+                                chapters == 0 ? 'not in the text yet' : 'in ${plural(chapters, 'chapter')}',
+                              ].join(' · '),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            onTap: () => _go(l.entry.id),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
         ),
         const SizedBox(height: 8),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/widgets/choice_field.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
@@ -93,11 +94,7 @@ List<TemplateSource> templateSources(WidgetRef ref) {
 Future<void> shareTemplateFlow(BuildContext context, WidgetRef ref) async {
   final sources = templateSources(ref);
   if (sources.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('There is nothing to share yet: save a template in Categories & fields, or open a novel.'),
-      ),
-    );
+    showToast(context, 'There is nothing to share yet: save a template in Categories & fields, or open a novel.');
     return;
   }
   final settings = ref.read(settingsStoreProvider);
@@ -131,9 +128,7 @@ Future<void> shareTemplateFlow(BuildContext context, WidgetRef ref) async {
       picked.source: {'id': made.id, 'version': made.version},
     });
   if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$result: version ${made.version} of “${made.name}”. Nothing else was included.')),
-    );
+    showToast(context, '$result: version ${made.version} of “${made.name}”. Nothing else was included.');
   }
 }
 
@@ -442,5 +437,5 @@ Future<void> importTemplateFlow(BuildContext context, WidgetRef ref) async {
   } on PermissionException catch (e) {
     message = '${e.message} Nothing was added.';
   }
-  if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  if (context.mounted) showToast(context, message);
 }

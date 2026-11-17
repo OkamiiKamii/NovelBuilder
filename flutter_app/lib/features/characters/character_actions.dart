@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/widgets/toast.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/characters/character_changes.dart';
@@ -24,26 +25,20 @@ String characterPath(String entryId, {String? tab}) => '/organize/character/$ent
 class CharacterActions {
   CharacterActions(BuildContext context, this.novelId)
     : container = ProviderScope.containerOf(context, listen: false),
-      messenger = ScaffoldMessenger.of(context),
+      say = Toasts.sayer(context),
       router = GoRouter.of(context);
 
   final String novelId;
   final ProviderContainer container;
-  final ScaffoldMessengerState messenger;
+
+  /// Says a toast, as found when the action started.
+  final void Function(Toast) say;
   final GoRouter router;
 
   CharacterService get service => container.read(characterServiceProvider);
 
-  void tell(String message, {String? actionLabel, VoidCallback? onAction}) => messenger
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: actionLabel == null ? null : SnackBarAction(label: actionLabel, onPressed: onAction!),
-        persist: false,
-        duration: const Duration(seconds: 6),
-      ),
-    );
+  void tell(String message, {String? actionLabel, VoidCallback? onAction}) =>
+      say(Toast(message, actionLabel: actionLabel, onAction: onAction, duration: const Duration(seconds: 6)));
 
   /// Makes a change now. A change that cannot be made as asked is said, and nothing is changed.
   T? now<T>(T Function(CharacterChanges c) apply) {

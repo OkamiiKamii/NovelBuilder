@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/widgets/toast.dart';
 import '../../../shared/domain/characters/logline.dart';
 import '../../../shared/domain/characters/record_look.dart';
 import '../../../shared/domain/characters/stakes.dart';
@@ -108,9 +109,7 @@ class InOneSentence extends StatelessWidget {
                   icon: const Icon(Icons.copy_outlined, size: 20),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: whole));
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(const SnackBar(content: Text('The sentence is copied.')));
+                    showToast(context, 'The sentence is copied.');
                   },
                 ),
             ],

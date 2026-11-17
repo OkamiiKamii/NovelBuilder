@@ -72,12 +72,27 @@ void main() {
       c.read(openNovelProvider.notifier).open(novel.id);
       await tester.pumpAndSettle();
     });
+    // Each screen until it is still, and the longest any one of its frames took to build: a screen's time can be a
+    // spinner turning while work is done away from the screen; its worst frame is how long the screen stood frozen.
+    // The engine reports frame timings in batches about once a second, so each screen's are waited for.
+    final screenFrames = <FrameTiming>[];
+    void takeScreenFrames(List<FrameTiming> t) => screenFrames.addAll(t);
+    SchedulerBinding.instance.addTimingsCallback(takeScreenFrames);
     for (final screen in screens) {
       await time('screen $screen', () async {
         c.read(routerProvider).go(screen);
         await tester.pumpAndSettle();
       });
+      await Future<void>.delayed(const Duration(milliseconds: 1100));
+      await tester.pump();
+      if (screenFrames.isNotEmpty) {
+        final worst = screenFrames.map((f) => f.buildDuration.inMicroseconds).reduce((a, b) => a > b ? a : b);
+        timings['screen $screen: worst frame build (µs)'] = worst;
+        debugPrint('PERF screen $screen: worst frame build ${worst ~/ 1000} ms of ${screenFrames.length} frames');
+        screenFrames.clear();
+      }
     }
+    SchedulerBinding.instance.removeTimingsCallback(takeScreenFrames);
 
     // FRAMES WHILE SCROLLING: how long each frame took to build (the app's code) and to draw (the engine), from the
     // engine's own frame timings, for a fling through some of the heaviest views of the large novel. A frame over

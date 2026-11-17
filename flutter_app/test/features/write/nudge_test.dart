@@ -26,6 +26,9 @@ MarginNotes _notes({
   before: null,
 );
 
+/// The nudge's own changing words (other things on the page change their words too, such as the save status).
+final _nudgeSwitcher = find.descendant(of: find.byType(StuckNudge), matching: find.byType(AnimatedSwitcher)).last;
+
 void main() {
   setUpAll(() => BlinkController.indeterminateAnimationsEnabled = false);
   tearDownAll(() => BlinkController.indeterminateAnimationsEnabled = true);
@@ -80,16 +83,12 @@ void main() {
       await tester.tap(find.text('Stuck? A nudge'));
       await tester.pumpAndSettle();
       expect(find.text('A MOVE'), findsOneWidget);
-      final first = tester.widget<Text>(
-        find.descendant(of: find.byType(AnimatedSwitcher).last, matching: find.byType(Text)),
-      );
+      final first = tester.widget<Text>(find.descendant(of: _nudgeSwitcher, matching: find.byType(Text)));
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(textContrastGuideline));
       await tester.tap(find.text('Another'));
       await tester.pumpAndSettle();
-      final second = tester.widget<Text>(
-        find.descendant(of: find.byType(AnimatedSwitcher).last, matching: find.byType(Text)),
-      );
+      final second = tester.widget<Text>(find.descendant(of: _nudgeSwitcher, matching: find.byType(Text)));
       expect(second.data, isNot(first.data));
 
       await tester.tap(find.text('Back to it'));

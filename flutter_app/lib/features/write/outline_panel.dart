@@ -7,8 +7,10 @@ import '../../app/theme/book_faces.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
+import '../../core/widgets/edge_fade.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/manuscript/outline.dart';
 import '../../shared/domain/model/story_order.dart';
@@ -140,28 +142,31 @@ class OutlinePanel extends ConsumerWidget {
                       label: const Text('Add chapter'),
                     ),
                   )
-                : ListView.builder(
-                    // The day book (`day_book.dart`) and the road to the draft (`draft_road.dart`) head the contents,
-                    // scrolling away with them. On a computer, beside a chapter being written, they follow the
-                    // chapters instead, so the contents stay at hand.
-                    // Then the gaps left to fill (`gaps.dart`), when there are any.
-                    itemCount: reading.length + 3,
-                    itemBuilder: (context, i) {
-                      final deskLast = selected != null && WindowSize.of(context) != WindowSize.compact;
-                      final desk = deskLast ? i - reading.length : i;
-                      if (desk == 0) return DayBookCard(novelId: novelId);
-                      if (desk == 1) return DraftRoad(novelId: novelId);
-                      if (desk == 2) return const GapsCard();
-                      final n = reading[deskLast ? i : i - 3];
-                      return _OutlineRow(
-                        node: n,
-                        depth: depth[n.id] ?? 0,
-                        selected: n.id == selected,
-                        novelId: novelId,
-                        number: number[n.id],
-                        longest: longest,
-                      );
-                    },
+                // Faded at an edge where more of the contents lie (`edge_fade.dart`).
+                : EdgeFade(
+                    child: ListView.builder(
+                      // The day book (`day_book.dart`) and the road to the draft (`draft_road.dart`) head the contents,
+                      // scrolling away with them. On a computer, beside a chapter being written, they follow the
+                      // chapters instead, so the contents stay at hand.
+                      // Then the gaps left to fill (`gaps.dart`), when there are any.
+                      itemCount: reading.length + 3,
+                      itemBuilder: (context, i) {
+                        final deskLast = selected != null && WindowSize.of(context) != WindowSize.compact;
+                        final desk = deskLast ? i - reading.length : i;
+                        if (desk == 0) return DayBookCard(novelId: novelId);
+                        if (desk == 1) return DraftRoad(novelId: novelId);
+                        if (desk == 2) return const GapsCard();
+                        final n = reading[deskLast ? i : i - 3];
+                        return _OutlineRow(
+                          node: n,
+                          depth: depth[n.id] ?? 0,
+                          selected: n.id == selected,
+                          novelId: novelId,
+                          number: number[n.id],
+                          longest: longest,
+                        );
+                      },
+                    ),
                   ),
           ),
         ],
@@ -179,11 +184,8 @@ IconData kindIcon(NodeKind? kind) => switch (kind) {
   null => Icons.help_outline,
 };
 
-void _tell(BuildContext context, String message, {SnackBarAction? action}) => ScaffoldMessenger.of(context)
-  ..hideCurrentSnackBar()
-  ..showSnackBar(
-    SnackBar(content: Text(message), action: action, persist: false, duration: const Duration(seconds: 6)),
-  );
+void _tell(BuildContext context, String message, {String? actionLabel, VoidCallback? onAction}) =>
+    showToast(context, message, actionLabel: actionLabel, onAction: onAction, duration: const Duration(seconds: 6));
 
 bool _attempt(BuildContext context, void Function() change) {
   try {
@@ -301,11 +303,7 @@ class _OutlineRow extends ConsumerWidget {
             late String kept;
             if (_attempt(context, () => kept = service.delete(novelId, node.id, title: title))) {
               if (selected) ref.read(selectedNodeProvider.notifier).select(null);
-              _tell(
-                context,
-                'Deleted “$title”.',
-                action: SnackBarAction(label: 'Undo', onPressed: () => service.undoDelete(kept)),
-              );
+              _tell(context, 'Deleted “$title”.', actionLabel: 'Undo', onAction: () => service.undoDelete(kept));
             }
           default:
             if (action.startsWith('add:')) {

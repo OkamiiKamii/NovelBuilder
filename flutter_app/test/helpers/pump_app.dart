@@ -61,6 +61,7 @@ Future<ProviderContainer> pumpApp(
   AppDatabase? db,
   FakeBackupFiles? files,
   Speaker? speaker,
+  RunAside? runAside,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -77,7 +78,8 @@ Future<ProviderContainer> pumpApp(
       // Work the app does in its own isolate runs here in place: a widget test's clock does not wait for isolates.
       // The same functions run either way (`test/shared/data/background_test.dart` runs one in a real isolate).
       // It is still checked to be sendable to an isolate, as the app would send it: a job that holds a widget or the
-      // database fails here as it would on the phone.
+      // database fails here as it would on the phone. [runAside], when given, runs it instead: a test that holds such
+      // work back, to see the screen while it is under way.
       runAsideProvider.overrideWithValue(<R>(R Function() job) async {
         final port = RawReceivePort();
         try {
@@ -85,7 +87,7 @@ Future<ProviderContainer> pumpApp(
         } finally {
           port.close();
         }
-        return job();
+        return runAside == null ? job() : runAside(job);
       }),
     ],
   );

@@ -8,6 +8,7 @@ import '../../core/format.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/in_view_rows.dart';
 import '../../core/widgets/states.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/capabilities.dart';
 import '../../shared/domain/collation.dart';
@@ -272,15 +273,15 @@ class _KindsViewPageState extends ConsumerState<KindsViewPage> {
     final box = context.findRenderObject() as RenderBox?;
     final origin = box == null ? null : box.localToGlobal(Offset.zero) & box.size;
     final files = ref.read(backupFilesProvider);
-    final messenger = ScaffoldMessenger.of(context);
+    final say = Toasts.sayer(context);
     final slug = table.category.name.trim().toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '-');
     final name =
         '${slug.replaceAll(RegExp(r'^-+|-+$'), '').isEmpty ? 'records' : slug.replaceAll(RegExp(r'^-+|-+$'), '')}.csv';
     try {
       final said = await files.saveCsv(name, tableCsv(table), origin: origin);
-      if (said != null) messenger.showSnackBar(SnackBar(content: Text('$said.')));
+      if (said != null) say(Toast('$said.'));
     } on Object catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('The table was not saved: $e')));
+      say(Toast('The table was not saved: $e', error: true));
     }
   }
 }

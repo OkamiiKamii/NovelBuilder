@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/backup_service.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/review_files.dart';
@@ -36,8 +37,7 @@ String describeCounts(Map<String, int> counts) {
   return parts.isEmpty ? 'No records yet' : parts.join(' · ');
 }
 
-void _tell(BuildContext context, String message) =>
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+void _tell(BuildContext context, String message) => showToast(context, message);
 
 /// Import a backup: choose a file, see what it holds and what importing would do, then confirm. Nothing is written
 /// before the author confirms, and a file that cannot be read changes nothing.

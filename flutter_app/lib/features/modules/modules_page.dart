@@ -9,6 +9,7 @@ import '../../app/destinations.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/background.dart';
 import '../../shared/data/backup_files.dart';
 import '../../shared/data/module_library.dart';
@@ -146,9 +147,7 @@ class _ModulesPageState extends ConsumerState<ModulesPage> {
     ];
   }
 
-  void _tell(String message) => ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message), duration: const Duration(seconds: 6)));
+  void _tell(String message) => showToast(context, message, duration: const Duration(seconds: 6));
 
   Future<void> _export(ModuleDefinition module) async {
     final box = context.findRenderObject() as RenderBox?;

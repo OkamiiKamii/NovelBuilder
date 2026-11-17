@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/shared/data/sample_novel.dart';
 import 'package:novel_builder/shared/data/sample_novel_text.dart';
+import 'package:novel_builder/shared/domain/codex/world_finder.dart';
 import 'package:novel_builder/shared/domain/json.dart';
+import 'package:novel_builder/shared/domain/manuscript/prose.dart';
 import 'package:novel_builder/shared/domain/systems/from_pages.dart';
 import 'package:novel_builder/shared/domain/systems/system_changes.dart';
 import 'package:novel_builder/shared/domain/systems/system_presets.dart';
@@ -57,5 +61,34 @@ void sheetTests() {
       },
     );
     expect(c.sheets().single.itemIds, [skill.id]);
+  });
+
+  test('read away from the screen: the chapters as stored, in reading order, the same system as read in place', () {
+    String row(String id, String text) => jsonEncode({'id': id, 'doc': textToDoc(text)});
+    final stored = [
+      row('b', 'Every skill has a cost. His class was Reincarnator, and his level climbed.'),
+      row('a', 'James gained a level. His new skill was Smart Atoms; the skill tree glowed.'),
+      row('cut', 'A spell, a spell, a spell, a spell: mana and runes, cut from the book.'),
+      'not a record',
+    ];
+    final read = ownSystemJob(stored, {'a': 1, 'b': 2}, ['Empathic Mimicry'])()!;
+    // As it was read in the frame before: the chapters in order, the powers their words name, then the system.
+    final chapters = [
+      (1, ['James gained a level. His new skill was Smart Atoms; the skill tree glowed.']),
+      (2, ['Every skill has a cost. His class was Reincarnator, and his level climbed.']),
+    ];
+    final inPlace = systemFromPages(
+      [for (final (_, blocks) in chapters) ...blocks],
+      [
+        'Empathic Mimicry',
+        for (final f in worldFinds(chapters, limit: 40))
+          if (f.kind == 'power') f.name,
+      ],
+    )!;
+    expect(read.preset.id, 'litrpg', reason: 'a chapter not in the book is not read');
+    expect(read.signs, inPlace.signs);
+    expect(read.powers, inPlace.powers);
+    expect(jsonEncode(read.content), jsonEncode(inPlace.content));
+    expect(ownSystemJob(const [], const {}, const [])(), isNull, reason: 'nothing written: nothing to offer');
   });
 }

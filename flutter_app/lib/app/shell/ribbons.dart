@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../features/characters/widgets/vault.dart';
 import '../../features/workspace/open_novel.dart';
 import '../../features/write/write_providers.dart';
@@ -230,9 +231,7 @@ class _RibbonMarkerState extends ConsumerState<RibbonMarker> {
         .read(saveControllerProvider)
         .saveNow('setting:${ribbonsKey(novel)}', () => settings.write(ribbonsKey(novel), _encode(laid)));
     setState(() {});
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('A ribbon now lies in “${name.trim()}”.')));
+    showToast(context, 'A ribbon now lies in “${name.trim()}”.');
   }
 }
 

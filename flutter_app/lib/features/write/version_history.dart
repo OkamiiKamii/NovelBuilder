@@ -5,6 +5,7 @@ import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/domain/json.dart';
 import '../../shared/domain/manuscript/diff.dart';
 import '../../shared/domain/records/story_node.dart';
@@ -77,9 +78,7 @@ class _HistoryState extends State<_History> {
       widget.service.restoreRevision(widget.novelId, widget.node.id, str(version['id']), baseRev: widget.rev);
       Navigator.of(context).pop(true);
     } on Object catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('It could not be restored, and nothing was changed: $e')));
+      showToast(context, 'It could not be restored, and nothing was changed: $e', error: true);
     }
   }
 

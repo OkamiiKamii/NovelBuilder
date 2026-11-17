@@ -11,6 +11,7 @@ import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/form_section.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/save_status_indicator.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/data/sample_novel.dart';
 import '../library/backup_actions.dart';
@@ -150,17 +151,14 @@ class _SampleNovel extends ConsumerWidget {
               now: DateTime.now().millisecondsSinceEpoch,
               title: ref.read(libraryServiceProvider).uniqueTitle(sampleNovelTitle),
             );
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('“${novel.title}” is in your library.'),
-                action: SnackBarAction(
-                  label: 'Open',
-                  onPressed: () {
-                    ref.read(openNovelProvider.notifier).open(novel.id);
-                    GoRouter.of(context).go(Destination.write.path);
-                  },
-                ),
-              ),
+            showToast(
+              context,
+              '“${novel.title}” is in your library.',
+              actionLabel: 'Open',
+              onAction: () {
+                ref.read(openNovelProvider.notifier).open(novel.id);
+                GoRouter.of(context).go(Destination.write.path);
+              },
             );
           },
           icon: const Icon(Icons.auto_stories_outlined),
@@ -215,13 +213,11 @@ class _RestorePoints extends ConsumerWidget {
                   try {
                     ref.read(backupServiceProvider).restore(p.id);
                     if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Restored “${p.title}”.')));
+                      showToast(context, 'Restored “${p.title}”.');
                     }
                   } on Object catch (e) {
                     if (context.mounted) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('It could not be restored, and nothing was changed: $e')));
+                      showToast(context, 'It could not be restored, and nothing was changed: $e', error: true);
                     }
                   }
                 },

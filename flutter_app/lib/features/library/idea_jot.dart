@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../characters/widgets/vault.dart';
 
@@ -43,9 +44,7 @@ class _IdeaJotState extends ConsumerState<IdeaJot> {
     });
     _line.clear();
     setState(() {});
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('“${jot.title}” is on the Ideas shelf.')));
+    showToast(context, '“${jot.title}” is on the Ideas shelf.');
   }
 
   @override

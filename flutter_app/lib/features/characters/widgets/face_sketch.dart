@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/novel_art.dart';
+import '../../../core/widgets/toast.dart';
 import '../../../shared/domain/characters/character_records.dart';
 import '../../../shared/domain/characters/likeness.dart';
 import '../../../shared/domain/characters/record_look.dart';
@@ -24,6 +25,7 @@ Future<void> showDrawTheirFace(
 }) {
   // A slip still showing would lie over the sheet's foot, where Keep is.
   ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar();
+  Toasts.maybeOf(context)?.dismissAll();
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,

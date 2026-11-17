@@ -8,6 +8,7 @@ import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/domain/canon/overlay.dart';
 import '../../shared/domain/codex/codex_changes.dart' show ChangeRefused;
 import '../../shared/domain/graph/knowledge.dart' show refOf;
@@ -281,9 +282,7 @@ void _turnOn(BuildContext context, WidgetRef ref, String novelId, List<String> o
   final (off: next, :alsoOn) = turnOn(off, key);
   ref.read(visualizeServiceProvider).change(novelId, (x) => x.setViewsOff(next));
   if (alsoOn.isNotEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${viewLabel(key)} is on, with ${alsoOn.map(viewLabel).join(' and ')}, which it needs.')),
-    );
+    showToast(context, '${viewLabel(key)} is on, with ${alsoOn.map(viewLabel).join(' and ')}, which it needs.');
   }
 }
 
@@ -387,8 +386,7 @@ class _SavedViewsBar extends ConsumerWidget {
     final open = saved.where((s) => s.id == state.openSaved[view]).firstOrNull;
     JsonMap current() => cleanConfig({...config(), 'filter': state.filter});
     final changed = open != null && !jsonEquals(current(), cleanConfig(open.raw));
-    void tell(String message) =>
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), persist: false));
+    void tell(String message) => showToast(context, message);
     T? run<T>(T Function(SavedViewChanges x) apply) {
       try {
         return service.change(cast.novelId, apply);

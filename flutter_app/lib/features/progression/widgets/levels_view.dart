@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/toast.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
 import '../../../shared/domain/characters/named_in.dart';
@@ -174,11 +175,7 @@ mixin LevelsReader<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     _tell(said);
   }
 
-  void _tell(String text) {
-    final messenger = ScaffoldMessenger.maybeOf(context);
-    messenger?.hideCurrentSnackBar();
-    messenger?.showSnackBar(SnackBar(content: Text(text)));
-  }
+  void _tell(String text) => showToast(context, text);
 }
 
 /// On Systems: what is no one's, each to give to a character or set aside; and who holds the rest, a press from their

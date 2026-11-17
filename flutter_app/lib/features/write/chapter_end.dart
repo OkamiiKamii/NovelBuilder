@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/domain/model/story_order.dart';
 import '../../shared/domain/records/story_node.dart';
 import '../characters/widgets/vault.dart';
@@ -48,9 +49,7 @@ class ChapterEnd extends ConsumerWidget {
       try {
         open(manuscript.create(novelId, NodeKind.chapter, parentId: chapter.parentId));
       } on Object catch (e) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('The next chapter could not be made: $e'), persist: false));
+        showToast(context, 'The next chapter could not be made: $e', error: true);
       }
     }
 

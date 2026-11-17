@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
+import '../../core/widgets/toast.dart';
 import '../../features/characters/widgets/vault.dart';
 import '../../features/progress/best_lines_page.dart';
 import '../../features/progress/book_print_page.dart';
@@ -318,18 +319,13 @@ class ContentsSheet extends ConsumerWidget {
                   onPin: () {
                     final was = pinned;
                     ref.read(pinnedAreaProvider.notifier).pin(pinned == d ? null : d);
-                    final messenger = ScaffoldMessenger.maybeOf(context);
-                    messenger?.hideCurrentSnackBar();
-                    messenger?.showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          pinned == d
-                              ? '${d.label} is off the bar; it is here under More.'
-                              : was == null
-                              ? '${d.label} is on the bar, one press away.'
-                              : '${d.label} is on the bar, in place of ${was.label}.',
-                        ),
-                      ),
+                    showToast(
+                      context,
+                      pinned == d
+                          ? '${d.label} is off the bar; it is here under More.'
+                          : was == null
+                          ? '${d.label} is on the bar, one press away.'
+                          : '${d.label} is on the bar, in place of ${was.label}.',
                     );
                   },
                 ),

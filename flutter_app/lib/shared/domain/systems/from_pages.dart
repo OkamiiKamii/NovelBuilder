@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import '../codex/world_finder.dart';
 import '../json.dart';
+import '../manuscript/prose.dart';
 import 'system_presets.dart';
 
 /// YOUR BOOK'S OWN SYSTEM: the system a novel's pages already describe, put together from them, ready to begin.
@@ -183,3 +187,32 @@ PagesSystem? systemFromPages(Iterable<String> texts, List<String> powers) {
     content: content,
   );
 }
+
+/// The system a book's own pages describe, read from its chapters as stored ([storedContents]: chapter content rows as
+/// JSON), away from the screen: the whole book is read, and on a long one that is too long for a frame. Chapters are
+/// read in [chapterNumber] order (those without a number are not part of the book); [entryPowers] are the names of
+/// the novel's Power System entries, offered before those its chapters call a skill or a spell.
+PagesSystem? Function() ownSystemJob(
+  List<String> storedContents,
+  Map<String, int> chapterNumber,
+  List<String> entryPowers,
+) => () {
+  final chapters = <(int, List<String>)>[];
+  for (final json in storedContents) {
+    try {
+      final row = jsonDecode(json);
+      if (row is! Map) continue;
+      final number = chapterNumber['${row['id']}'];
+      if (number != null) chapters.add((number, blockTexts(row['doc'])));
+    } on FormatException {
+      continue;
+    }
+  }
+  chapters.sort((a, b) => a.$1.compareTo(b.$1));
+  final powers = [
+    ...entryPowers,
+    for (final f in worldFinds(chapters, limit: 40))
+      if (f.kind == 'power') f.name,
+  ];
+  return systemFromPages([for (final (_, blocks) in chapters) ...blocks], powers);
+};

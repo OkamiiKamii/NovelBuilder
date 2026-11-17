@@ -7,6 +7,7 @@ import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/states.dart';
 import '../../core/widgets/text_prompt.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/access.dart';
 import '../../shared/domain/collab/collab_changes.dart';
@@ -64,7 +65,7 @@ class _ReviewWorkspaceState extends ConsumerState<ReviewWorkspace> {
       message = e.message;
     }
     if (message != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      showToast(context, message);
     }
   }
 

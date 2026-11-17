@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/destinations.dart';
+import '../../../core/widgets/toast.dart';
 import '../../../shared/data/background.dart';
 import '../../../shared/data/providers.dart';
 import '../../../shared/domain/characters/cast.dart';
@@ -125,18 +126,14 @@ class _DramatisPageState extends ConsumerState<DramatisPage> {
     if (!mounted) return;
     setState(() {});
     final router = GoRouter.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    messenger.showSnackBar(
-      SnackBar(
-        content: const Text('In the book, before chapter one. Book details can change it.'),
-        action: SnackBarAction(
-          label: 'Read the book',
-          onPressed: () {
-            Navigator.of(context).maybePop();
-            router.go('${Destination.write.path}/read');
-          },
-        ),
-      ),
+    showToast(
+      context,
+      'In the book, before chapter one. Book details can change it.',
+      actionLabel: 'Read the book',
+      onAction: () {
+        Navigator.of(context).maybePop();
+        router.go('${Destination.write.path}/read');
+      },
     );
   }
 
@@ -195,9 +192,7 @@ class _DramatisPageState extends ConsumerState<DramatisPage> {
                 ? null
                 : () {
                     Clipboard.setData(ClipboardData(text: '${matter.castTitle}\n\n$text'));
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(const SnackBar(content: Text('The cast list is copied.')));
+                    showToast(context, 'The cast list is copied.');
                   },
             icon: const Icon(Icons.copy_outlined),
           ),

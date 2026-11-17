@@ -9,6 +9,7 @@ import '../../app/router.dart';
 import '../../app/shell/trail.dart';
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/codex_changes.dart' show categoriesOf;
@@ -75,7 +76,7 @@ Future<void> showNovelSearch(BuildContext context, WidgetRef ref) async {
   if (ref.read(openNovelProvider) == null) problem = 'Open a novel from the Library to search it.';
   if (ref.read(reviewMarkProvider) != null) problem = 'A review copy is read and searched from its chapters in Write.';
   if (problem != null) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(problem)));
+    showToast(context, problem);
     return;
   }
   final opened = _openIndex(ref);

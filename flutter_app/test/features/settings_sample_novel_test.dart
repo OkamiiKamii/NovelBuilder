@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_builder/app/router.dart';
+import 'package:novel_builder/core/widgets/toast.dart';
 import 'package:novel_builder/features/workspace/open_novel.dart';
 import 'package:novel_builder/features/write/outline_panel.dart';
 import 'package:novel_builder/shared/data/providers.dart';
@@ -22,7 +23,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('“$title” is in your library.'), findsOneWidget);
       expect([for (final n in c.read(libraryProvider)) n.title], contains(title));
-      ScaffoldMessenger.of(tester.element(find.text('Add the sample novel'))).removeCurrentSnackBar();
+      // The message put away, as the author would, so the next one is the only one.
+      Toasts.maybeOf(tester.element(find.text('Add the sample novel')))!.dismissAll();
       await tester.pumpAndSettle();
     }
     expect(c.read(libraryProvider), hasLength(3));

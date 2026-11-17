@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/format.dart';
 import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/form_dialog.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/exchange/import_parse.dart';
 import '../../shared/domain/exchange/import_structure.dart';
@@ -37,15 +38,11 @@ Future<List<String>?> importManuscriptFlow(BuildContext context, WidgetRef ref, 
     builder: (_) => ImportManuscriptDialog(novelId: novelId, fileName: picked.name, blocks: blocks),
   );
   if (created != null && context.mounted) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('Imported “${picked.name}”: ${plural(created.length, 'item')} added to the manuscript.'),
-          persist: false,
-          duration: const Duration(seconds: 6),
-        ),
-      );
+    showToast(
+      context,
+      'Imported “${picked.name}”: ${plural(created.length, 'item')} added to the manuscript.',
+      duration: const Duration(seconds: 6),
+    );
   }
   return created;
 }

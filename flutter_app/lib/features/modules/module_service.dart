@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/widgets/toast.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/codex/codex_changes.dart';
@@ -53,10 +54,8 @@ final moduleServiceProvider = Provider<ModuleService>((ref) => ModuleService(ref
 
 /// Makes a module change from a screen. A change that cannot be made as asked is said, and nothing is changed.
 T? moduleChange<T>(BuildContext context, WidgetRef ref, String novelId, T Function(ModuleChanges m) apply) {
-  final messenger = ScaffoldMessenger.of(context);
-  void tell(String message) => messenger
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+  final say = Toasts.sayer(context);
+  void tell(String message) => say(Toast(message));
   try {
     return ref.read(moduleServiceProvider).change(novelId, apply);
   } on ChangeRefused catch (e) {

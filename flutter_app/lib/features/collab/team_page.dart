@@ -7,6 +7,7 @@ import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/states.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/collab/access.dart';
 import '../../shared/domain/collab/collab_changes.dart';
@@ -58,7 +59,7 @@ class _TeamPageState extends ConsumerState<TeamPage> {
       message = e.message;
     }
     if (message != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      showToast(context, message);
     }
   }
 

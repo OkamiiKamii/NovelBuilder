@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/layout/breakpoints.dart';
 import '../../core/widgets/save_status_indicator.dart';
+import '../../core/widgets/toast.dart';
 import '../../features/collab/review_gate.dart';
 import '../../features/search/search_dialog.dart';
 import '../../features/tutorial/tutorial.dart';
@@ -76,7 +77,7 @@ class AppShell extends ConsumerWidget {
     // Every page lies on the paper (by day) or under the lamp (by night): `paper_ground.dart`.
     final inside = insideBook(current, ref.watch(openNovelProvider));
     // Inside a book, its ribbons peek in at the right edge of every page (`ribbons.dart`).
-    final body = PaperGround(
+    final ground = PaperGround(
       child: inside && !focus
           ? Stack(
               children: [
@@ -90,6 +91,9 @@ class AppShell extends ConsumerWidget {
             )
           : page,
     );
+    // What the app says stands at the page's foot (`core/widgets/toast.dart`): above a phone's bottom bar and the
+    // keyboard, under a menu or a dialog.
+    final body = ToastHost(child: ground);
     final Widget layout = switch (size) {
       _ when focus => Scaffold(body: SafeArea(child: body)),
       WindowSize.compact => Scaffold(

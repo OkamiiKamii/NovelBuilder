@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/widgets/toast.dart';
 import '../shared/data/providers.dart';
 import 'router.dart';
 import 'shell/trail.dart';
@@ -51,6 +52,8 @@ class _NovelBuilderAppState extends ConsumerState<NovelBuilderApp> {
       themeAnimationDuration: const Duration(milliseconds: 700),
       themeAnimationCurve: Curves.easeInOut,
       routerConfig: ref.watch(routerProvider),
+      // What the app says after something is done, over its pages and dialogs (`core/widgets/toast.dart`).
+      builder: (context, child) => Toaster(child: child ?? const SizedBox.shrink()),
     );
   }
 }

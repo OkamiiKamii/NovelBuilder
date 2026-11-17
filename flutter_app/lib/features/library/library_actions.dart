@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/destinations.dart';
 import '../../core/widgets/confirm_dialog.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/data/template_store.dart';
 import '../../shared/domain/codex/world_presets.dart';
@@ -21,23 +22,17 @@ class _Scope {
   _Scope(BuildContext context)
     : container = ProviderScope.containerOf(context, listen: false),
       router = GoRouter.of(context),
-      messenger = ScaffoldMessenger.of(context);
+      say = Toasts.sayer(context);
 
   final ProviderContainer container;
   final GoRouter router;
-  final ScaffoldMessengerState messenger;
 
-  void tell(String message, {String? actionLabel, VoidCallback? onAction}) => messenger
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: actionLabel == null ? null : SnackBarAction(label: actionLabel, onPressed: onAction!),
-        // A message with Undo or Open still goes away on its own, so it never sits over the page.
-        persist: false,
-        duration: const Duration(seconds: 6),
-      ),
-    );
+  /// Says a toast, as found when the action started.
+  final void Function(Toast) say;
+
+  // A message with Undo or Open still goes away on its own, so it never sits over the page.
+  void tell(String message, {String? actionLabel, VoidCallback? onAction}) =>
+      say(Toast(message, actionLabel: actionLabel, onAction: onAction, duration: const Duration(seconds: 6)));
 
   /// Runs a library change; a failure is said plainly and nothing is reported as done.
   bool attempt(String what, void Function() change) {

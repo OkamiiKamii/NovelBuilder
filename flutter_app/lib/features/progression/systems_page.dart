@@ -5,12 +5,11 @@ import '../../core/widgets/choice_field.dart';
 import '../../core/widgets/confirm_dialog.dart';
 import '../../core/widgets/page_scaffold.dart';
 import '../../core/widgets/saved_text_field.dart';
+import '../../shared/data/background.dart';
 import '../../shared/data/providers.dart';
-import '../../shared/domain/codex/world_finder.dart';
 import '../../shared/domain/collation.dart';
 import '../../shared/domain/ids.dart';
 import '../../shared/domain/json.dart';
-import '../../shared/domain/manuscript/prose.dart';
 import '../../shared/domain/model/entity_ref.dart';
 import '../../shared/domain/model/story_model.dart';
 import '../../shared/domain/records/system.dart';
@@ -56,9 +55,17 @@ const blueprintBesideFrom = 1000.0;
 /// A system read from the book's own pages, and who would hold its powers.
 typedef _Own = ({PagesSystem system, String? holderId, String? holderName});
 
-/// The system last read from the pages, by store, with the cast and the count of writes to the text it was read
-/// from: kept while the app runs.
-final _keptOwn = Expando<({CastData cast, int text, _Own? own})>('system from the pages');
+/// The system last read from the pages, by store: what it was read from (the novel, the count of writes to its text,
+/// its chapters' order and its Power System entries), what was found once read, and, while it is read, the reading.
+/// Kept while the app runs: going back to Systems does not read the book again, and a reading begun is not begun twice.
+class _OwnReading {
+  Object? key;
+  bool done = false;
+  PagesSystem? found;
+  Future<PagesSystem?>? running;
+}
+
+final _keptOwn = Expando<_OwnReading>('system from the pages');
 
 /// How many times the pages have been read for a system of their own (for a test to see a reading kept).
 @visibleForTesting
@@ -347,32 +354,62 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
     );
   }
 
-  // Read from the saved chapters only while the gallery is shown, and kept (by store) while the cast is the same and
-  // no chapter was written since: going back to Systems does not read the whole book again (`_keptOwn`).
+  /// The reading this page waits on, to be shown when it ends (once, however often the page builds meanwhile).
+  Future<PagesSystem?>? _waiting;
+
+  // Read from the saved chapters only while the gallery is shown, away from the screen (the whole book is read: on a
+  // long one, more than a frame's time), and kept by store while nothing it was read from changed (`_keptOwn`). Until
+  // it is read the gallery is shown without it, and it comes in when it is.
   _Own? _ownSystem(CastData cast) {
     final store = ref.read(novelStoreProvider);
-    final text = store.versionOf(cast.novelId, const {'chapterContents'});
-    if (_keptOwn[store] case final kept? when identical(kept.cast, cast) && kept.text == text) return kept.own;
-    final own = _readOwn(cast);
-    _keptOwn[store] = (cast: cast, text: text, own: own);
-    return own;
-  }
-
-  _Own? _readOwn(CastData cast) {
-    ownSystemReadings++;
-    final store = ref.read(novelStoreProvider);
-    final chapters = [
-      for (final row in store.rowsIn(cast.novelId, 'chapterContents'))
-        if (cast.model.order.chapterNumber[str(row['id'])] case final number?) (number, blockTexts(row['doc'])),
-    ]..sort((a, b) => a.$1.compareTo(b.$1));
-    // The novel's powers: its Power System entries, then those its chapters call a skill or a spell.
-    final powers = [
+    final numbers = cast.model.order.chapterNumber;
+    // The novel's powers: its Power System entries (then, in the reading, those its chapters call a skill or a spell).
+    final entryPowers = [
       for (final e in cast.entries)
         if (e.category == 'power') e.name,
-      for (final f in worldFinds(chapters, limit: 40))
-        if (f.kind == 'power') f.name,
     ];
-    final system = systemFromPages([for (final (_, blocks) in chapters) ...blocks], powers);
+    final key = (
+      cast.novelId,
+      store.versionOf(cast.novelId, const {'chapterContents'}),
+      [for (final MapEntry(:key, :value) in numbers.entries) '$key:$value'].join(','),
+      entryPowers.join('|'),
+    );
+    final kept = _keptOwn[store] ??= _OwnReading();
+    if (kept.key != key) {
+      ownSystemReadings++;
+      final running = ref.read(runAsideProvider)(
+        ownSystemJob(store.rawJsonIn(cast.novelId, 'chapterContents'), {...numbers}, entryPowers),
+      );
+      kept
+        ..key = key
+        ..done = false
+        ..found = null
+        ..running = running;
+      running.then(
+        (found) {
+          if (!identical(kept.running, running)) return;
+          kept
+            ..found = found
+            ..done = true
+            ..running = null;
+        },
+        onError: (Object e, StackTrace s) {
+          if (identical(kept.running, running)) {
+            kept
+              ..done = true
+              ..running = null;
+          }
+          FlutterError.reportError(FlutterErrorDetails(exception: e, stack: s, library: 'progression'));
+        },
+      );
+    }
+    if (kept.running case final running? when !identical(running, _waiting)) {
+      _waiting = running;
+      running.then((_) {
+        if (mounted) setState(() {});
+      }, onError: (Object _, StackTrace _) {});
+    }
+    final system = kept.done ? kept.found : null;
     if (system == null) return null;
     // Who holds them: the protagonist, or the one most in the book.
     final cast_ = [...cast.list]..sort((a, b) => b.seenIn.length.compareTo(a.seenIn.length));

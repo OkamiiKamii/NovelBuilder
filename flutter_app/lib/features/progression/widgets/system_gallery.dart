@@ -73,15 +73,10 @@ class SystemGallery extends StatelessWidget {
           builder: (context, box) {
             final columns = box.maxWidth >= 720 ? 2 : 1;
             final width = (box.maxWidth - 14 * (columns - 1)) / columns;
-            return Wrap(
+            final presets = Wrap(
               spacing: 14,
               runSpacing: 14,
               children: [
-                if (fromPages case final fp?)
-                  SizedBox(
-                    width: box.maxWidth,
-                    child: _OwnSystem(system: fp, holder: holder, onBegin: onFromPages),
-                  ),
                 for (final p in systemPresets)
                   SizedBox(
                     width: width,
@@ -118,6 +113,25 @@ class SystemGallery extends StatelessWidget {
                     action: OutlinedButton(onPressed: onBlank, child: const Text('Begin blank')),
                   ),
                 ),
+              ],
+            );
+            // The system the pages describe is read away from the screen, and may come in after the gallery: it
+            // opens above the presets rather than pushing them down at once (at once, with motion reduced).
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AnimatedSize(
+                  duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 260),
+                  curve: Curves.easeOutCubic,
+                  alignment: Alignment.topCenter,
+                  child: fromPages == null
+                      ? const SizedBox(width: double.infinity)
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: _OwnSystem(system: fromPages!, holder: holder, onBegin: onFromPages),
+                        ),
+                ),
+                presets,
               ],
             );
           },

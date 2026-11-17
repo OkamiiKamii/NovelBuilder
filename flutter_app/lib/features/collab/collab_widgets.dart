@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/widgets/confirm_dialog.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/novel_store.dart';
 import '../../shared/domain/collab/access.dart';
 import '../../shared/domain/collab/collab_changes.dart';
@@ -25,7 +26,7 @@ bool runCollab(BuildContext context, void Function() change, {String? done}) {
   }
   final message = problem ?? done;
   if (message != null && context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    showToast(context, message);
   }
   return problem == null;
 }

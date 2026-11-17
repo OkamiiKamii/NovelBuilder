@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:super_editor/super_editor.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/toast.dart';
 import 'find_replace.dart';
 
 /// Find (and, when asked, replace) in the chapter. Finding only selects; text changes only on Replace or Replace all,
@@ -103,16 +104,13 @@ class _FindBarState extends State<FindBar> {
     if (n == 0) return;
     widget.editor.execute(replaceRequests(widget.document, _matches, _replace.text));
     setState(_search);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('Replaced ${plural(n, 'place')}.'),
-          action: SnackBarAction(label: 'Undo', onPressed: widget.editor.undo),
-          persist: false,
-          duration: const Duration(seconds: 6),
-        ),
-      );
+    showToast(
+      context,
+      'Replaced ${plural(n, 'place')}.',
+      actionLabel: 'Undo',
+      onAction: widget.editor.undo,
+      duration: const Duration(seconds: 6),
+    );
   }
 
   @override

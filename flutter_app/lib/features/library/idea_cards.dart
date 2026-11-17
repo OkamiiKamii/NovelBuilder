@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/format.dart';
 import '../../core/layout/breakpoints.dart';
+import '../../core/widgets/toast.dart';
 import '../../shared/data/providers.dart';
 import '../../shared/domain/records/novel.dart';
 import '../characters/widgets/vault.dart';
@@ -104,13 +105,9 @@ class _IdeaCardsState extends ConsumerState<_IdeaCards> {
   }
 
   void _finish() {
-    final messenger = ScaffoldMessenger.of(context);
+    final say = Toasts.sayer(context);
     Navigator.of(context).pop();
-    if (_saved > 0) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(_saved == 1 ? 'One idea has its line.' : '$_saved ideas have their lines.')),
-      );
-    }
+    if (_saved > 0) say(Toast(_saved == 1 ? 'One idea has its line.' : '$_saved ideas have their lines.'));
   }
 
   @override
