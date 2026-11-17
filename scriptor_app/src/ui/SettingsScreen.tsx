@@ -170,7 +170,7 @@ export function SettingsScreen() {
       <Panel style={styles.block}>
         <SectionTitle icon="shield-lock-outline" title="Your data" />
         <Text style={styles.body}>
-          No account, no cloud, no AI. Everything you write is kept in Scriptor's own folder on this phone and is never
+          No account, no cloud, no AI. Everything you write is kept in Scriptor’s own folder on this phone and is never
           sent anywhere. Backups go only where you choose to save them.
         </Text>
         <Text style={styles.label}>LIBRARY FILE</Text>

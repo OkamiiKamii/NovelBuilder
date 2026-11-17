@@ -5,6 +5,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "expo": "~58.0.25",
+    "expo-clipboard": "~58.0.4",
     "expo-constants": "~58.0.16",
     "expo-crypto": "~58.0.8",
     "expo-document-picker": "~58.0.5",
@@ -19,11 +20,14 @@
     "expo-speech": "~58.0.4",
     "expo-sqlite": "~58.0.17",
     "expo-status-bar": "~58.0.5",
+    "fflate": "^0.8.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.1",
     "react-native-safe-area-context": "~5.11.1",
     "react-native-screens": "~4.30.1",
+    "react-native-svg": "15.16.0",
+    "react-native-view-shot": "6.1.1",
     "react-native-webview": "14.0.1"
   },
   "devDependencies": {
@@ -34,6 +38,8 @@
     "@types/jest": "^30.0.0",
     "@types/react": "~19.3.0",
     "esbuild": "^0.28.2",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4",
     "jest": "^30.5.2",
     "jest-expo": "^58.0.14",
     "typescript": "~6.0.3"
@@ -43,7 +49,8 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p test",
     "lint": "expo lint",
     "test": "jest",
-    "build:editor": "node tool/build-editor.mjs"
+    "build:editor": "node tool/build-editor.mjs",
+    "build:pages": "node tool/build-editor.mjs && node tool/build-reader.mjs"
   },
   "jest": {
     "preset": "jest-expo",

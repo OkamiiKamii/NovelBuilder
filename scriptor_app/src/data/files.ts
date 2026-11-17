@@ -18,6 +18,22 @@ export async function shareTextFile(fileName: string, text: string, mimeType = '
   await Sharing.shareAsync(file.uri, { mimeType, dialogTitle: fileName });
 }
 
+/** Offers a file made in the app (an ebook, a zip) through the share sheet. Resolves once the sheet closes. */
+export async function shareBytesFile(fileName: string, bytes: Uint8Array, mimeType: string): Promise<void> {
+  const file = new File(Paths.cache, fileName);
+  if (file.exists) file.delete();
+  file.create();
+  file.write(bytes);
+  if (!(await Sharing.isAvailableAsync())) throw new Error('This phone cannot share files.');
+  await Sharing.shareAsync(file.uri, { mimeType, dialogTitle: fileName });
+}
+
+/** Offers a picture already saved on the device (a captured view) through the share sheet. */
+export async function sharePicture(uri: string, title: string): Promise<void> {
+  if (!(await Sharing.isAvailableAsync())) throw new Error('This phone cannot share files.');
+  await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: title });
+}
+
 /** Asks for a file and reads it as text. Null when the writer cancels. */
 export async function pickTextFile(): Promise<{ name: string; text: string } | null> {
   const picked = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true, multiple: false });

@@ -20,11 +20,22 @@ import {
 import { nodeStatuses } from '../../domain/records/nodeStatus';
 import { ActionSheet, ConfirmDelete, PromptSheet, type SheetAction } from '../dialogs';
 import { useKeyboardHeight } from '../frame';
+import { useDeskSetting, useFocusMode } from './deskState';
 import { GoldButton, Icon, IconButton, Muted, Panel } from '../kit';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
-import { EditorPane } from './EditorPane';
+import { EditorPane, type Jump } from './EditorPane';
+import { DayBookCard, DraftRoad, GapsCard, StoryLines } from './ContentsCards';
+import { carryOnNode, dayBookOf, writingSessionOf } from '../../domain/desk/dayBook';
+import { displayTitle, nextNotesKey, readNextNotes } from '../../domain/desk/pageAround';
+import { storyCardOf, type StoryCard } from '../../domain/manuscript/storyboard';
+import { bookGaps } from '../../domain/text/gaps';
+import { docBlocks } from '../../domain/prose';
+import { str } from '../../domain/json';
+import { usePageCompany } from './PageCompany';
+import { GoalPledgeSheet } from './GoalPledgeSheet';
+import { TodaysPageSheet } from './TodaysPageSheet';
 
 export const lastNodeSetting = (novelId: string) => `write.lastNode.${novelId}`;
 
@@ -41,6 +52,8 @@ export function WriteScreen() {
   const { width } = useWindowDimensions();
   const phone = sizeClassOf(width) === 'compact';
   const keyboard = useKeyboardHeight();
+  // In focus mode the bottom bar is gone, so the page keeps clear of Android's own bar itself.
+  const focus = useFocusMode();
 
   const novelId = useMemo(() => {
     const id = lib.settings.read(openNovelSettingKey);
@@ -61,9 +74,31 @@ export function WriteScreen() {
     null;
   const selected = nodes.find((n) => n.id === selectedId) ?? null;
   const [phoneView, setPhoneView] = useState<'contents' | 'editor'>('editor');
+  const [jump, setJump] = useState<{ nodeId: string; to: Jump } | null>(null);
+  const [storyboard, setStoryboard] = useDeskSetting('write.storyboard', false);
+
+  // The contents' cards and the storyboard: read only while the contents are on the screen.
+  const contentsShown = !phone || phoneView === 'contents' || !selectedId;
+  const company = usePageCompany(lib, novelId ?? '', revision);
+  const desk = useMemo(() => {
+    if (!novelId || !contentsShown) return null;
+    const docs = order.map((e) => e.node).filter((n) => isDocument(n.kind));
+    const pages = new Map<string, { heading: boolean; text: string }[]>();
+    for (const r of lib.novels.rowsIn(novelId, 'chapterContents')) pages.set(str(r['id']), docBlocks(r['doc']));
+    const gaps = bookGaps(new Map([...pages].map(([id, b]) => [id, b.map((x) => x.text)])), docs.map((n) => n.id));
+    const cards = new Map<string, StoryCard>();
+    if (storyboard) for (const n of docs) cards.set(n.id, storyCardOf(pages.get(n.id) ?? [], company.names));
+    const book = dayBookOf(lib.novels.rowsIn(novelId, 'writingSessions').map(writingSessionOf), Date.now());
+    const next = docs.length ? carryOnNode(nodes, lib.settings.read(lastNodeSetting(novelId))) : null;
+    const notes = readNextNotes(lib.settings.read(nextNotesKey(novelId)));
+    const longest = Math.max(1, ...docs.map((n) => n.wordCount));
+    const goal = lib.manuscript.wordGoals(novelId).daily;
+    return { gaps, cards, book, goal, next, note: next ? notes.get(next.id) : undefined, longest };
+  }, [lib, novelId, contentsShown, order, nodes, storyboard, company, revision]);
 
   const select = useCallback(
-    (id: string) => {
+    (id: string, to: Jump | null = null) => {
+      setJump(to ? { nodeId: id, to } : null);
       setChosen(id);
       if (novelId) lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), id));
       setPhoneView('editor');
@@ -74,6 +109,9 @@ export function WriteScreen() {
   // ---- the contents' actions
 
   const [menuFor, setMenuFor] = useState<StoryNode | null>(null);
+  const [bookMenu, setBookMenu] = useState(false);
+  const [goalsOpen, setGoalsOpen] = useState(false);
+  const [todayOpen, setTodayOpen] = useState(false);
   const [addInto, setAddInto] = useState<{ parent: StoryNode | null } | null>(null);
   const [renaming, setRenaming] = useState<StoryNode | null>(null);
   const [statusFor, setStatusFor] = useState<StoryNode | null>(null);
@@ -188,9 +226,38 @@ export function WriteScreen() {
             {novel.title || 'Untitled novel'} · {totalWords.toLocaleString('en-US')} words
           </Text>
         </View>
+        <IconButton
+          icon={storyboard ? 'format-list-bulleted' : 'view-agenda-outline'}
+          label={storyboard ? 'Show the list' : 'Show the storyboard'}
+          onPress={() => setStoryboard(!storyboard)}
+          color={storyboard ? colors.gold : colors.text}
+        />
+        <IconButton icon="book-open-page-variant-outline" label="The book: read, details, publish" onPress={() => setBookMenu(true)} />
         <IconButton icon="plus" label="Add a part or chapter" onPress={() => setAddInto({ parent: null })} bordered color={colors.gold} />
       </View>
       <ScrollView contentContainerStyle={{ paddingBottom: (phone ? 0 : insets.bottom) + space.xl }}>
+        {desk && (
+          <>
+            <DayBookCard
+              book={desk.book}
+              goal={desk.goal}
+              next={desk.next}
+              note={desk.note}
+              onCarryOn={() => desk.next && select(desk.next.id, 'end')}
+              onSetGoal={() => setGoalsOpen(true)}
+              onShare={() => setTodayOpen(true)}
+            />
+            <DraftRoad words={totalWords} target={novel.targetWordCount} />
+            <GapsCard
+              gaps={desk.gaps}
+              titleOf={(id) => {
+                const n = nodes.find((x) => x.id === id);
+                return n ? displayTitle(n) : '';
+              }}
+              onOpen={(g) => select(g.nodeId, { block: g.block, start: g.start, end: g.end })}
+            />
+          </>
+        )}
         {order.length === 0 ? (
           <View style={styles.emptyContents}>
             <Muted>Your book has no chapters yet.</Muted>
@@ -238,6 +305,14 @@ export function WriteScreen() {
                     <Text style={[styles.lineWords, isSel && { color: colors.text }]}>{n.wordCount.toLocaleString('en-US')}</Text>
                   </View>
                   <Text style={[styles.lineStatus, isSel && { color: colors.text }]}>{status}</Text>
+                  {storyboard && desk && (
+                    <StoryLines
+                      card={desk.cards.get(n.id)}
+                      names={(id) => str(company.entries.get(id)?.['name']).trim()}
+                      share={n.wordCount / desk.longest}
+                      selected={isSel}
+                    />
+                  )}
                 </View>
                 <IconButton icon="dots-vertical" label={`More for ${n.title}`} onPress={() => setMenuFor(n)} color={isSel ? colors.gold : colors.muted} />
               </Pressable>
@@ -249,12 +324,16 @@ export function WriteScreen() {
   );
 
   const editor = selected ? (
-    <View style={[styles.flex, { paddingTop: insets.top, paddingBottom: keyboard > 0 ? keyboard + insets.bottom : phone ? 0 : insets.bottom }]}>
+    <View style={[styles.flex, { paddingTop: insets.top, paddingBottom: keyboard > 0 ? keyboard + insets.bottom : phone && !focus ? 0 : insets.bottom }]}>
       <EditorPane
         key={selected.id}
         novelId={novelId}
         node={selected}
         kicker={kickerOf(selected)}
+        nodes={nodes}
+        author={novel.author}
+        jumpTo={jump && jump.nodeId === selected.id ? jump.to : null}
+        onJumped={() => setJump(null)}
         onBack={phone ? () => setPhoneView('contents') : undefined}
         onOpenNode={select}
       />
@@ -294,6 +373,17 @@ export function WriteScreen() {
           onPress: () => statusFor && attempt(() => lib.manuscript.setStatus(novelId, statusFor.id, s.key), 'It could not be changed'),
         }))}
         onClose={() => setStatusFor(null)}
+      />
+      <GoalPledgeSheet visible={goalsOpen} novelId={novelId} words={totalWords} target={novel.targetWordCount} onClose={() => setGoalsOpen(false)} />
+      <TodaysPageSheet visible={todayOpen} novelId={novelId} onClose={() => setTodayOpen(false)} />
+      <ActionSheet
+        visible={bookMenu}
+        title="The book"
+        onClose={() => setBookMenu(false)}
+        actions={[
+          { label: 'Read as a book and publish', icon: 'book-open-variant', onPress: () => router.navigate('/write/read') },
+          { label: 'Book details', icon: 'book-edit-outline', onPress: () => router.navigate('/write/book') },
+        ]}
       />
       <ActionSheet visible={moving !== null} title="Move to" actions={moving ? moveTargets(moving) : []} onClose={() => setMoving(null)} />
       <PromptSheet

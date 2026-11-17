@@ -206,6 +206,7 @@ export function PromptSheet({
   confirmLabel,
   onSubmit,
   onClose,
+  allowEmpty = false,
 }: {
   visible: boolean;
   title: string;
@@ -214,13 +215,15 @@ export function PromptSheet({
   confirmLabel: string;
   onSubmit: (value: string) => void;
   onClose: () => void;
+  /** The answer may be left empty (an optional name). */
+  allowEmpty?: boolean;
 }) {
   const [value, setValue] = useState(initial);
   useEffect(() => {
     if (visible) setValue(initial);
   }, [visible, initial]);
   const submit = () => {
-    if (value.trim()) onSubmit(value.trim());
+    if (value.trim() || allowEmpty) onSubmit(value.trim());
   };
   return (
     <Sheet
@@ -230,7 +233,7 @@ export function PromptSheet({
       footer={
         <>
           <OutlineButton label="Cancel" onPress={onClose} tone="muted" style={styles.flex} />
-          <GoldButton label={confirmLabel} onPress={submit} disabled={!value.trim()} style={styles.flex} />
+          <GoldButton label={confirmLabel} onPress={submit} disabled={!value.trim() && !allowEmpty} style={styles.flex} />
         </>
       }
     >

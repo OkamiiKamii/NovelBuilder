@@ -1,0 +1,1176 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "edge0000-0000-4000-8000-000000000000",
+  "title": "Straße & <Sigma> “ΟΔΟΣ”",
+  "subtitle": "A \"test\" & more",
+  "author": "  İlse Ünal  ",
+  "language": "fr",
+  "cover": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ==",
+  "createdAt": 1,
+  "updatedAt": 1
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "v1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "volume",
+    "title": "Ο Δρόμος ΣΣ ß",
+    "order": 0,
+    "summary": "",
+    "notes": "Volume notes\nsecond line",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "c1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "Chapter 1",
+    "order": 0,
+    "summary": "Sum",
+    "notes": "Private\n\nnote",
+    "status": "drafting",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "noteBefore": "  Hi! *Read* this <first>.\nSecond line  ",
+    "noteAfter": "Bye # now"
+   },
+   {
+    "id": "s1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "c1",
+    "kind": "scene",
+    "title": "Opening",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "s2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "c1",
+    "kind": "scene",
+    "title": "Second",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "s3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "c1",
+    "kind": "scene",
+    "title": "Blank",
+    "order": 1,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "c2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "",
+    "order": 1,
+    "summary": "Only a summary",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1,
+    "publication": "published"
+   },
+   {
+    "id": "a1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "v1",
+    "kind": "act",
+    "title": "   ",
+    "order": 2,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "c3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "a1",
+    "kind": "chapter",
+    "title": "ÉCOLE Ñandú — İstanbul",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "x1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "interlude",
+    "title": "Between",
+    "order": 3,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "c4",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "x1",
+    "kind": "chapter",
+    "title": "The Last; Bell!",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "o1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "  ",
+    "kind": "chapter",
+    "title": "Blank parent",
+    "order": 4,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "orph",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": "missing",
+    "kind": "chapter",
+    "title": "Orphan",
+    "order": 0,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "s9",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "scene",
+    "title": "Loose",
+    "order": 5,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "tie-B",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Tie B",
+    "order": 6,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "tie-a",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Tie a",
+    "order": 6,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "half",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Half",
+    "order": 5.5,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 0,
+    "updatedAt": 1
+   },
+   {
+    "id": "noorder",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "No order",
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "a2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "parentId": null,
+    "kind": "arc",
+    "title": "Empty arc",
+    "order": 7,
+    "summary": "",
+    "notes": "",
+    "status": "idea",
+    "wordCount": 0,
+    "charCount": 0,
+    "createdAt": 1,
+    "updatedAt": 1
+   }
+  ],
+  "chapterContents": [
+   {
+    "id": "c1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "The chapter’s own opening, before its scenes."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "s1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "  Bold ",
+         "marks": [
+          {
+           "type": "bold"
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": "it",
+         "marks": [
+          {
+           "type": "italic"
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": "al",
+         "marks": [
+          {
+           "type": "italic"
+          },
+          {
+           "type": "bold"
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": " under",
+         "marks": [
+          {
+           "type": "underline"
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": " gone ",
+         "marks": [
+          {
+           "type": "strike"
+          }
+         ]
+        },
+        {
+         "type": "hardBreak"
+        },
+        {
+         "type": "text",
+         "text": "after break & <tag> \"quoted\""
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": "center"
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Centered"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": "right"
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Right"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": "justify"
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Justified"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": "left"
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Left"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "* * *"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Specials: *star* _under_ #hash |pipe| [link] {brace} `tick` \\slash"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "1. starts like a list"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "- starts like a dash"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "+ plus"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "   "
+        }
+       ]
+      },
+      {
+       "type": "horizontalRule"
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      },
+      {
+       "type": "blockquote",
+       "content": [
+        {
+         "type": "paragraph",
+         "attrs": {
+          "textAlign": null
+         },
+         "content": [
+          {
+           "type": "text",
+           "text": "Quoted line"
+          }
+         ]
+        },
+        {
+         "type": "paragraph",
+         "attrs": {
+          "textAlign": null
+         },
+         "content": [
+          {
+           "type": "text",
+           "text": "two"
+          },
+          {
+           "type": "hardBreak"
+          },
+          {
+           "type": "text",
+           "text": "three"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "attrs": {
+        "level": 1,
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Heading one"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "attrs": {
+        "level": 2,
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Heading two"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "attrs": {
+        "level": 7.9
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Deep"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "content": [
+        {
+         "type": "text",
+         "text": "No level"
+        }
+       ]
+      },
+      {
+       "type": "bulletList",
+       "content": [
+        {
+         "type": "listItem",
+         "content": [
+          {
+           "type": "paragraph",
+           "attrs": {
+            "textAlign": null
+           },
+           "content": [
+            {
+             "type": "text",
+             "text": "alpha & <b>"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "type": "listItem",
+         "content": [
+          {
+           "type": "paragraph",
+           "attrs": {
+            "textAlign": null
+           },
+           "content": [
+            {
+             "type": "text",
+             "text": "beta"
+            }
+           ]
+          },
+          {
+           "type": "paragraph",
+           "attrs": {
+            "textAlign": null
+           },
+           "content": [
+            {
+             "type": "text",
+             "text": "more"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "orderedList",
+       "content": [
+        {
+         "type": "listItem",
+         "content": [
+          {
+           "type": "paragraph",
+           "attrs": {
+            "textAlign": null
+           },
+           "content": [
+            {
+             "type": "text",
+             "text": "first"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Last words of s1 "
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "s2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "---"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Second scene text. Don’t stop; e.g. 3.14 and 1,000 well-known."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "~~~"
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "s3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "  "
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       }
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "c3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Une école."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "#"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "⁂"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Après."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "c4",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Bell rings.",
+         "marks": [
+          {
+           "type": "bold"
+          },
+          {
+           "type": "italic"
+          },
+          {
+           "type": "underline"
+          },
+          {
+           "type": "strike"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "o1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Blank parent text."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "orph",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Orphan text."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "s9",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "A loose scene."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "tie-B",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "B text."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "tie-a",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "a text."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "half",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Half text."
+        }
+       ]
+      }
+     ]
+    },
+    "updatedAt": 1
+   },
+   {
+    "id": "noorder",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "doc": {
+     "type": "doc",
+     "content": []
+    },
+    "updatedAt": 1
+   }
+  ],
+  "bookMatter": [
+   {
+    "id": "m1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "dedication": "For A\n\n  \nand B",
+    "epigraph": "  Line one\nLine two  ",
+    "epigraphSource": " Anon & co ",
+    "copyright": "© 2026 <me>",
+    "acknowledgements": "Thanks \"all\"",
+    "aboutAuthor": "Writes.",
+    "castTitle": "  ",
+    "castList": "The House:\nMira — the heir\nTomas – a clerk\nOld Fen - the ferryman\n\n  Nobody  \nAlso: here\nA-B no spaces\n",
+    "sceneBreak": "",
+    "updatedAt": 1
+   }
+  ],
+  "chapterPlans": [
+   {
+    "id": "c1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "objective": "Get there",
+    "conflict": "  ",
+    "emotionalArc": "Up",
+    "beats": [
+     {
+      "id": "b1",
+      "text": "One"
+     },
+     {
+      "id": "b2",
+      "text": ""
+     }
+    ],
+    "entityIds": [
+     "ent1",
+     "nobody",
+     7
+    ]
+   },
+   {
+    "id": "s2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "objective": "",
+    "beats": [],
+    "entityIds": []
+   },
+   {
+    "id": "c3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "objective": "",
+    "beats": [],
+    "entityIds": [
+     "ent1"
+    ]
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "ent1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "name": "Mira",
+    "category": "character"
+   }
+  ],
+  "chapterRevisions": [
+   {
+    "id": "r1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "nodeId": "c1",
+    "savedAt": 1700000000000,
+    "label": "",
+    "wordCount": 1234567,
+    "doc": {
+     "type": "doc",
+     "content": []
+    }
+   },
+   {
+    "id": "r2",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "nodeId": "c1",
+    "savedAt": 1700000000000,
+    "label": "Tie",
+    "wordCount": 12,
+    "branchName": "Alt",
+    "doc": {
+     "type": "doc",
+     "content": []
+    }
+   },
+   {
+    "id": "r3",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "nodeId": "s1",
+    "savedAt": 1690000000000.7,
+    "label": "Older",
+    "wordCount": "x",
+    "doc": {
+     "type": "doc",
+     "content": []
+    }
+   },
+   {
+    "id": "r4",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "nodeId": "orph",
+    "savedAt": 1710000000000,
+    "label": "Orphan",
+    "wordCount": 5,
+    "doc": {
+     "type": "doc",
+     "content": []
+    }
+   }
+  ],
+  "chapterBranches": [
+   {
+    "id": "br1",
+    "projectId": "edge0000-0000-4000-8000-000000000000",
+    "nodeId": "c1",
+    "name": "Alt",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "heading",
+       "attrs": {
+        "level": 1,
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Alt heading"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "attrs": {
+        "textAlign": null
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Alt text",
+         "marks": [
+          {
+           "type": "italic"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

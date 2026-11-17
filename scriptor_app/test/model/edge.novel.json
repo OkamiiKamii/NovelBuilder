@@ -1,0 +1,164 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 1,
+ "project": {"id": "edge", "title": "Edge cases", "status": "on-hold", "targetWordCount": 90000, "language": "en", "viewsOff": ["graph"], "accent": "#3f7d4e"},
+ "collections": {
+  "chapters": [
+   {"id": "v1", "projectId": "edge", "parentId": null, "kind": "volume", "title": "Book One", "order": 0, "createdAt": 1},
+   {"id": "c2", "projectId": "edge", "parentId": "v1", "kind": "chapter", "title": "", "order": 1, "createdAt": 5, "mentions": ["mira", "mira", "ghost"]},
+   {"id": "c1", "projectId": "edge", "parentId": "v1", "kind": "chapter", "title": "  The Gate  ", "order": 1, "createdAt": 3, "wordCount": 1200.0, "charCount": 5000},
+   {"id": "C1", "projectId": "edge", "parentId": "v1", "kind": "chapter", "title": "Tied", "order": 1, "createdAt": 3},
+   {"id": "s1", "projectId": "edge", "parentId": "c1", "kind": "scene", "title": "At the wall", "order": 0, "status": "editing"},
+   {"id": "s0", "projectId": "edge", "parentId": null, "kind": "scene", "title": "Prologue scene", "order": -1, "status": "outlining", "publication": "published"},
+   {"id": "orphan", "projectId": "edge", "parentId": "gone", "kind": "chapter", "title": "Orphan", "order": 0.5},
+   {"id": "loopA", "projectId": "edge", "parentId": "loopB", "kind": "arc", "title": "Loop A", "order": 0},
+   {"id": "loopB", "projectId": "edge", "parentId": "loopA", "kind": "arc", "title": "Loop B", "order": 0},
+   {"id": "odd", "projectId": "edge", "parentId": null, "kind": "chapterette", "title": "", "order": "first"},
+   {"id": "a2", "projectId": "edge", "parentId": "v1", "kind": "arc", "title": "Arc Two", "order": 3},
+   {"id": "c3", "projectId": "edge", "parentId": "a2", "kind": "chapter", "title": "Chapter in an arc", "order": 0},
+   {"id": "10", "projectId": "edge", "parentId": null, "kind": "chapter", "title": "Numbered id", "order": 9}
+  ],
+  "chapterPlans": [
+   {"id": "c1", "projectId": "edge", "objective": "Get in", "beats": [{"id": "b1", "text": "Knock"}, "not a beat"], "entityIds": ["mira", "keep"], "appearIds": ["orrin"], "mentionIds": ["mira", "ghost"], "povIds": ["mira"], "labels": ["tense"]},
+   {"id": "c3", "projectId": "edge", "entityIds": ["sword"], "appearIds": [], "mentionIds": [], "povIds": ["orrin", ""]}
+  ],
+  "chapterContents": [
+   {"id": "c1", "projectId": "edge", "doc": {"type": "doc", "content": []}},
+   {"id": "s1", "projectId": "edge", "doc": {"type": "doc", "content": []}}
+  ],
+  "chapterBranches": [{"id": "br1", "projectId": "edge", "nodeId": "s1", "title": "Alt"}],
+  "chapterRevisions": [{"id": "rv1", "projectId": "edge", "nodeId": "c1"}],
+  "loreSchemas": [
+   {"id": "sch1", "projectId": "edge", "key": "location", "name": "Places", "singular": "Place", "color": "#3f7d4e", "builtin": true, "order": 1,
+    "fields": [
+     {"id": "builtin-location-0", "name": "Type", "type": "select", "options": ["Fort", "Town"]},
+     {"id": "f-ruler", "name": "Ruler", "type": "reference", "options": [], "target": "character", "required": true},
+     {"id": "f-old", "name": "Old name", "type": "text", "options": [], "archived": true},
+     {"id": "f-x", "name": "X", "type": "number", "options": [], "min": 0, "max": 100},
+     {"id": "f-y", "name": "Y", "type": "number", "options": []},
+     {"id": "f-founded", "name": "Founded", "type": "date", "options": []},
+     {"id": "f-tags", "name": "Tags", "type": "tags", "options": []},
+     {"id": "f-allies", "name": "Allies", "type": "references", "options": []},
+     {"id": "f-walled", "name": "Walled", "type": "toggle", "options": []},
+     {"id": "f-future", "name": "Future", "type": "hologram", "options": []}
+    ],
+    "uses": {"map": {"x": "f-x", "y": "f-y"}, "timeline": {"start": "f-founded"}, "rank": "builtin-location-0", "ownership": {"type": "owns", "field": "f-ruler"}, "graphLabel": "f-old", "graphLinks": ["f-allies", "f-gone"]}},
+   {"id": "sch2", "projectId": "edge", "key": "custom-ships", "name": "Ships", "singular": "Ship", "color": "#2b7a8c", "builtin": false, "order": 1,
+    "fields": [{"id": "f-crew", "name": "Crew", "type": "references", "options": [], "target": "character"}, {"id": "f-class", "name": "Class", "type": "multiselect", "options": ["Sloop", "Brig"]}], "archived": false},
+   {"id": "sch3", "projectId": "edge", "key": "custom-old", "name": "archived kind", "singular": "", "color": "", "builtin": false, "order": 7, "fields": [], "archived": true},
+   {"id": "sch4", "projectId": "edge", "key": "character", "name": "People", "singular": "Person", "color": "#b4532a", "builtin": true, "order": 0, "fields": [{"id": "f-age", "name": "Age", "type": "number", "options": [], "min": 0}]}
+  ],
+  "loreEntries": [
+   {"id": "mira", "projectId": "edge", "category": "character", "name": "Mira", "summary": "The heir", "description": "Émile's friend", "tags": ["heir", "  ", "heir"], "fields": [{"id": "fa", "key": "Age", "value": "19", "defId": "f-age"}, {"id": "fb", "key": "Motto", "value": "Hold"}], "createdAt": 1, "updatedAt": 2},
+   {"id": "orrin", "projectId": "edge", "category": "character", "name": "Orrin", "fields": [{"id": "fc", "key": "age", "value": "-3"}], "createdAt": 2},
+   {"id": "keep", "projectId": "edge", "category": "location", "name": "The Keep", "placeLevel": "fort", "fields": [
+     {"id": "k1", "key": "Type", "value": "Castle", "defId": "builtin-location-0"},
+     {"id": "k2", "key": "Ruler", "value": "mira", "defId": "f-ruler"},
+     {"id": "k3", "key": "Old name", "value": "Stonehold", "defId": "f-old"},
+     {"id": "k4", "key": "X", "value": "0x1F", "defId": "f-x"},
+     {"id": "k5", "key": "Y", "value": "far", "defId": "f-y"},
+     {"id": "k6", "key": "Founded", "value": "2024-02-30", "defId": "f-founded"},
+     {"id": "k7", "key": "Tags", "value": "old\n\n stone \n", "defId": "f-tags"},
+     {"id": "k8", "key": "Allies", "value": "orrin\nghost\nsword", "defId": "f-allies"},
+     {"id": "k9", "key": "Walled", "value": "Yes", "defId": "f-walled"},
+     {"id": "k10", "key": "Gone field", "value": "kept", "defId": "f-nowhere"},
+     {"id": "k11", "key": "Notable features", "value": "A moat", "type": "longtext"}
+   ]},
+   {"id": "sword", "projectId": "edge", "category": "item", "name": "Sword of Ash", "fields": [{"id": "w1", "key": "Owner", "value": "orrin", "type": "reference"}, {"id": "w2", "key": "", "value": "mira\nkeep", "type": "references"}]},
+   {"id": "kestrel", "projectId": "edge", "category": "custom-ships", "name": "Kestrel", "fields": [{"id": "sh1", "key": "Crew", "value": "mira\nkeep", "defId": "f-crew"}, {"id": "sh2", "key": "Class", "value": "Sloop\nGalleon", "defId": "f-class"}]},
+   {"id": "stray", "projectId": "edge", "category": "custom-gone", "name": "", "fields": "not a list"},
+   {"id": "émile", "projectId": "edge", "category": "character", "name": "émile", "fields": []},
+   {"id": "emile2", "projectId": "edge", "category": "character", "name": "Emile", "fields": []}
+  ],
+  "loreLinks": [
+   {"id": "l1", "projectId": "edge", "fromId": "mira", "toId": "orrin", "fromLabel": "", "toLabel": "", "type": "considers-rival"},
+   {"id": "l2", "projectId": "edge", "fromId": "orrin", "toId": "mira", "fromLabel": "Mentor", "toLabel": "Student"},
+   {"id": "l3", "projectId": "edge", "fromId": "keep", "toId": "c1", "toType": "node", "fromType": "entry", "type": "appears-in", "fromLabel": "", "toLabel": "", "notes": "", "canon": "", "validity": {"from": {"kind": "node", "nodeId": "c1"}, "until": {"kind": "node", "nodeId": "c3"}}},
+   {"id": "l4", "projectId": "edge", "fromId": "orrin", "toId": "sword", "type": "owns", "fromLabel": "", "toLabel": "", "notes": "Stolen", "canon": "provisional", "how": "stolen", "validity": {"from": {"kind": "event", "eventId": "siege"}, "until": null}},
+   {"id": "l5", "projectId": "edge", "fromId": "mira", "toId": "sword", "type": "owns", "fromLabel": "", "toLabel": "", "validity": {"from": {"kind": "date", "when": {"precision": "approximate", "year": 1, "month": null, "season": null}}, "until": {"kind": "event", "eventId": "siege"}}},
+   {"id": "l6", "projectId": "edge", "fromId": "sys1/i2", "fromType": "ability", "toId": "sys1/i1", "toType": "ability", "type": "upgrades-to", "fromLabel": "", "toLabel": ""},
+   {"id": "l7", "projectId": "edge", "fromId": "r1", "fromType": "relation", "toId": "siege", "toType": "event", "type": "  owes a debt to ", "fromLabel": "", "toLabel": ""},
+   {"id": "l8", "projectId": "edge", "fromId": "mira", "toId": "ghost", "fromLabel": "", "toLabel": ""},
+   {"id": "l9", "projectId": "edge", "fromId": "t1", "fromType": "thread", "toId": "keep", "toType": "planet", "type": "allied-with", "fromLabel": "", "toLabel": "", "validity": {"from": {"kind": "date", "when": {"precision": "relative", "anchorId": "siege", "amount": 2, "unit": "years", "direction": "after"}}, "until": {"kind": "date", "when": {"precision": "nonsense"}}}},
+   {"id": "l10", "projectId": "edge", "fromId": "émile", "toId": "mira", "fromLabel": "Friend", "toLabel": ""},
+   {"id": "l11", "projectId": "edge", "fromId": "emile2", "toId": "mira", "fromLabel": "", "toLabel": "Pupil", "type": ""}
+  ],
+  "characterRelations": [
+   {"id": "r1", "projectId": "edge", "fromId": "mira", "toId": "orrin", "stages": [
+     {"id": "st1", "startNodeId": null, "title": "Friends", "label": "friends"},
+     {"id": "st2", "startNodeId": "c3", "title": "", "label": "Rivals", "directional": true, "fromRole": "Rival", "toRole": "Mark", "attributes": {"trust": {"from": 3, "to": 7.0}, "fear": {"from": "high"}}},
+     {"id": "st3", "startUnknown": true, "title": "Unknown start"},
+     {"id": "st4", "startNodeId": "c1", "title": "Allies"}
+   ]},
+   {"id": "r2", "projectId": "edge", "fromId": "orrin", "toId": "ghost", "stages": []},
+   {"id": "r3", "projectId": "edge", "fromId": "keep", "toId": "sword", "stages": [{"id": "x", "startNodeId": "gone", "directional": true, "fromRole": "", "toRole": "", "title": "", "label": ""}]}
+  ],
+  "timelineEvents": [
+   {"id": "siege", "projectId": "edge", "name": "The Siege", "when": {"precision": "exact", "year": 10, "month": 3, "day": 31, "hour": 20, "minute": 30}, "duration": {"amount": 3, "unit": "days"}, "importance": "climax", "locationId": "keep", "characters": [{"id": "mira", "age": 19}, {"id": ""}, {"age": 4}, {"id": "orrin", "age": "old"}], "entryIds": ["sword", "ghost"], "nodeIds": ["c1", "s1", "c1"], "threadIds": ["t1"], "reveals": [{"nodeId": "s1", "role": "flashback"}, {"nodeId": "c1", "role": "wrong"}], "createdAt": 5},
+   {"id": "childhood", "projectId": "edge", "name": "Childhood", "when": {"precision": "approximate", "year": 1, "month": null, "season": "summer"}, "nodeIds": ["c3"], "afterId": "siege", "createdAt": 3, "ongoing": false},
+   {"id": "before", "projectId": "edge", "name": "Before", "when": {"precision": "relative", "anchorId": "siege", "amount": 20, "unit": "years", "direction": "before"}, "nodeIds": ["c2"], "createdAt": 4},
+   {"id": "loop1", "projectId": "edge", "name": "Loop one", "when": {"precision": "relative", "anchorId": "loop2", "amount": 1, "unit": "days", "direction": "after"}, "createdAt": 6},
+   {"id": "loop2", "projectId": "edge", "name": "Loop two", "when": {"precision": "relative", "anchorId": "loop1", "amount": 1, "unit": "days", "direction": "after"}, "createdAt": 6},
+   {"id": "lost", "projectId": "edge", "name": "Lost anchor", "when": {"precision": "relative", "anchorId": "nowhere", "amount": "x", "unit": "days", "direction": "after"}, "createdAt": 7},
+   {"id": "undated", "projectId": "edge", "name": "Undated", "when": {"precision": "unknown"}, "afterId": "siege", "createdAt": 8},
+   {"id": "undated2", "projectId": "edge", "name": "Undated two", "when": {"precision": "unknown"}, "afterId": "siege", "createdAt": 8},
+   {"id": "floating", "projectId": "edge", "name": "Floating", "when": null, "afterId": "nowhere"},
+   {"id": "war", "projectId": "edge", "name": "The War", "when": {"precision": "exact", "year": 9, "month": 12, "day": null}, "ongoing": true, "nodeIds": ["c1"], "reveals": [{"nodeId": "c1", "role": "foreshadowed"}]},
+   {"id": "peace", "projectId": "edge", "name": "Peace", "when": {"precision": "exact", "year": 12, "month": 1, "day": 1}, "end": {"precision": "exact", "year": 11, "month": 1, "day": 1}, "nodeIds": ["c2", "c3"], "reveals": [{"nodeId": "c2", "role": "flashforward"}]},
+   {"id": "feast", "projectId": "edge", "name": "Feast", "when": {"precision": "exact", "year": 12, "month": 1, "day": 1}, "end": {"precision": "unknown"}, "afterId": "peace", "nodeIds": ["c2"]},
+   {"id": "badmonth", "projectId": "edge", "name": "Bad month", "when": {"precision": "exact", "year": 3, "month": 13, "day": 2}, "nodeIds": ["s0"]},
+   {"id": "year", "projectId": "edge", "name": "A year", "when": {"precision": "approximate", "year": 2.5, "month": 2}, "duration": {"amount": 2, "unit": "months"}, "nodeIds": ["orphan"], "createdAt": 2},
+   {"id": "neg", "projectId": "edge", "name": "Ancient", "when": {"precision": "exact", "year": -500, "month": 6, "day": 15, "hour": -1}, "nodeIds": ["s1"], "reveals": [{"nodeId": "s1", "role": "revealed"}]}
+  ],
+  "plotThreads": [
+   {"id": "t1", "projectId": "edge", "title": "The heir", "status": "paused", "characterIds": ["mira", "ghost"], "locationIds": ["keep"], "targetNodeId": "c3", "beats": [{"id": "tb1", "nodeId": "c1", "title": "", "role": "introduction"}, {"id": "tb2", "nodeId": null, "title": "Unplaced"}, {"id": "tb3", "nodeId": "c2", "title": "Cross", "role": "intersection", "withThreadIds": ["t2"]}]},
+   {"id": "t2", "projectId": "edge", "title": "The war", "status": "weird", "beats": [{"id": "tb4", "nodeId": "c3", "title": "Meet", "role": "intersection", "withThreadIds": ["t1", "t1"]}, "junk"]}
+  ],
+  "systems": [
+   {"id": "sys1", "projectId": "edge", "name": "Cultivation", "groups": [{"id": "g1", "name": "Skills"}], "ranks": [{"id": "rk1", "name": "Novice"}],
+    "items": [{"id": "i1", "groupId": "g1", "name": "Fire Palm", "rankId": "rk1"}, {"id": "i2", "groupId": "g1", "name": "Ash Palm", "parentId": "i1", "rankId": "rk9"}, {"id": "i3", "groupId": "gX", "name": "Stray", "parentId": "i9"}],
+    "variables": [{"id": "v1", "name": "Max Health", "key": "max_health", "kind": "derived", "base": 10, "formula": "con * 2"}, {"id": "v2", "name": "Ŧhe ﬁre Ωmega", "key": "x"}],
+    "tracks": [{"id": "tr1", "name": "Level", "key": "level", "kind": "levels", "cap": 99.7, "points": 2.5, "curve": "level * 100"}, {"id": "tr2", "name": "Realm", "key": "realm", "kind": "stages", "stages": [{"id": "sg1", "name": "Qi", "grants": ["i1"]}]}],
+    "matrices": [{"id": "m1", "name": "Elements", "rows": [{"id": "ro1", "name": "Fire"}], "columns": [{"id": "co1", "name": "Water"}], "cells": {"ro1|co1": "weak", "x|y": 3}}]}
+  ],
+  "systemSheets": [
+   {"id": "sh1", "projectId": "edge", "systemId": "sys1", "entryId": "mira", "itemIds": ["i1", "i2", "i7"], "values": {"v1": 12, "v2": "Brave", "v3": null}, "progress": {"tr1": 4, "tr2": "sg1"}, "spent": {"v1": 2, "v2": "x"}, "xp": [{"id": "x1", "trackId": "tr1", "amount": 50, "source": "Fight", "nodeId": "c1"}, {"id": "x2", "trackId": "tr1", "amount": "lots"}]},
+   {"id": "sh2", "projectId": "edge", "systemId": "sys1", "entryId": "ghost", "itemIds": []}
+  ],
+  "progressCategories": [
+   {"id": "pcat1", "projectId": "edge", "name": "Level", "shape": "value", "order": 1},
+   {"id": "pcat2", "projectId": "edge", "name": "Title", "shape": "named", "archived": true},
+   {"id": "pcat3", "projectId": "edge", "name": "Gear", "shape": "held"}
+  ],
+  "progressChanges": [
+   {"id": "pc1", "projectId": "edge", "entryId": "mira", "categoryId": "pcat1", "action": "set", "value": "4", "at": {"kind": "node", "nodeId": "c1"}},
+   {"id": "pc2", "projectId": "edge", "entryId": "mira", "categoryId": "pcat2", "action": "set", "subject": "  Lady  ", "value": "", "at": {"kind": "event", "eventId": "siege"}},
+   {"id": "pc3", "projectId": "edge", "entryId": "orrin", "categoryId": "pcat3", "action": "gain", "refId": "sword", "at": {"kind": "date", "when": {"precision": "unknown"}}},
+   {"id": "pc4", "projectId": "edge", "entryId": "orrin", "categoryId": "nope", "action": "lose", "abilityId": "sys1/i1"},
+   {"id": "pc5", "projectId": "edge", "entryId": "mira", "categoryId": "nope", "action": "happen", "at": {"kind": "node"}}
+  ],
+  "journeys": [
+   {"id": "j1", "projectId": "edge", "travellerIds": ["mira", "orrin", 7], "fromId": "keep", "toId": "ghost", "via": ["sword", "keep"], "eventIds": ["siege"], "departure": {"kind": "node", "nodeId": "c1"}, "arrival": {"kind": "event", "eventId": "peace"}, "method": "on foot", "duration": {"amount": 2, "unit": "weeks"}, "distance": 120, "distanceUnit": "leagues", "createdAt": 4},
+   {"id": "j2", "projectId": "edge", "travellerIds": ["mira"], "departure": {"kind": "date", "when": {"precision": "exact", "year": 1}}}
+  ],
+  "storyCalendars": [
+   {"id": "cal", "projectId": "edge", "kind": "standard", "name": "Unused", "months": [{"name": "A", "days": 10}], "hoursPerDay": 24, "daysPerWeek": 7, "eras": [], "seasons": {"spring": 1, "summer": 1, "autumn": 1, "winter": 1}}
+  ],
+  "canonFacts": [
+   {"id": "cf1", "projectId": "edge", "subject": "Keep", "statement": "Built in Year 1", "kind": "rule", "status": "non-canon", "entryIds": ["keep"], "conflictsWith": ["cf2"], "history": [{"id": "h1", "kind": "created"}, 3]},
+   {"id": "cf2", "projectId": "edge", "statement": "Built in Year 2", "status": "maybe", "replacedById": ""}
+  ],
+  "continuityResolutions": [
+   {"id": "cr1", "projectId": "edge", "key": "k1", "kind": "intentional", "note": "Flashback", "nodeId": "c1"},
+   {"id": "cr2", "projectId": "edge", "key": "k2", "kind": "unknown"}
+  ],
+  "savedViews": [
+   {"id": "sv1", "projectId": "edge", "view": "timeline", "name": "Wars", "mode": "list", "layers": ["events"], "filter": {"q": "war"}, "scale": {"unit": "years"}},
+   {"id": "sv2", "projectId": "edge", "view": "places", "name": "Map", "mode": "grid"}
+  ],
+  "characterProfiles": [{"id": "cp1", "projectId": "edge", "entryId": "mira"}],
+  "mapPins": [{"id": "mp1", "projectId": "edge", "entryId": "keep"}],
+  "worldMaps": [{"id": "wm1", "projectId": "edge", "placeId": "keep"}]
+ }
+}

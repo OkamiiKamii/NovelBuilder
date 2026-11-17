@@ -73,7 +73,7 @@ export function ImportSheet({
           )}
           <Text style={styles.label}>WHAT IT HOLDS</Text>
           {counts.length === 0 ? (
-            <Muted>Only the novel's details.</Muted>
+            <Muted>Only the novel’s details.</Muted>
           ) : (
             <View style={styles.counts}>
               {counts.map(([name, n]) => (
@@ -87,7 +87,7 @@ export function ImportSheet({
             <>
               <Text style={[styles.label, styles.gap]}>THIS NOVEL IS ALREADY IN YOUR LIBRARY</Text>
               <Muted>
-                Import as a copy keeps both. Replace puts the file's version in place of yours; yours is kept as a
+                Import as a copy keeps both. Replace puts the file’s version in place of yours; yours is kept as a
                 restore point first (Settings → Restore points), so it can be brought back.
               </Muted>
               {changes.length > 0 ? (

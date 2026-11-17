@@ -9,6 +9,7 @@ import { Image, Keyboard, Pressable, StyleSheet, Text, useWindowDimensions, View
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { writerRank } from '../domain/writerRank';
+import { useFocusMode } from './write/deskState';
 import { Icon, type IconName } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
 import { SavePill } from './SavePill';
@@ -89,7 +90,10 @@ export function useKeyboardVisible(): boolean {
 function BottomBar() {
   const insets = useSafeAreaInsets();
   const { current, go } = useNavigate();
-  if (useKeyboardVisible()) return null;
+  const keyboardUp = useKeyboardVisible();
+  const focused = useFocusMode();
+  // The bar steps aside for the keyboard, and for focus mode.
+  if (keyboardUp || focused) return null;
   return (
     <View style={[styles.bar, { paddingBottom: insets.bottom, height: bottomBarHeight + insets.bottom }]} accessibilityRole="tablist">
       {areas.map((a) => {

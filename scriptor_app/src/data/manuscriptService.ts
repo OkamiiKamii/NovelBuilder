@@ -23,6 +23,8 @@ import {
   storyNode,
 } from '../domain/outline';
 import { emptyDoc, measureDoc, mentionsIn } from '../domain/prose';
+import { wordsWritten as wordsWrittenOf } from '../domain/goals/days';
+import { type WordGoalKind, type WordGoals, wordGoalsOf, wordGoalWrite } from '../domain/goals/wordGoals';
 import type { NovelSnapshot } from '../domain/snapshot/novelSnapshot';
 import type { BackupService } from './backupService';
 import type { DraftStore } from './draftStore';
@@ -30,6 +32,19 @@ import { deleteRow, type NovelStore, putRow, type RowWrite } from './novelStore'
 
 /** The name of the draft a chapter or scene starts with, as the original app names it. */
 export const mainDraft = 'Main draft';
+
+/** A change to drafts that cannot be made as asked (a name missing or already taken). Nothing is changed. */
+export class DraftRefused extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'DraftRefused';
+  }
+}
+
+/** An empty page, as the original app starts a blank draft. */
+function blankDoc(): JsonMap {
+  return { type: 'doc', content: [{ type: 'paragraph' }] };
+}
 
 /** A save based on text that has been saved differently since it was opened. Nothing is saved; the writer chooses. */
 export class SaveConflict extends Error {
@@ -349,7 +364,187 @@ export class ManuscriptService {
     ];
   }
 
+  // ---------------------------------------------------------------------------------------------- alternate drafts
+  // (FEATURES.md #117) A chapter or scene can keep several drafts. The one in the manuscript (`branchName` on the node,
+  // "Main draft" when unnamed) is the only one counted, searched, read and exported; the others are `chapterBranches`.
+
+  /** The name of the draft in the manuscript now. */
+  activeDraft(projectId: string, nodeId: string): string {
+    return str(this.document(projectId, nodeId)['branchName'], mainDraft);
+  }
+
+  /** The alternate drafts of a chapter or scene that are not in the manuscript, oldest first. */
+  alternateDrafts(projectId: string, nodeId: string): JsonMap[] {
+    this.document(projectId, nodeId);
+    return this.store
+      .rowsForNode(projectId, 'chapterBranches', nodeId)
+      .filter((r) => r['nodeId'] === nodeId)
+      .sort((a, b) => (numOrNull(a['createdAt']) ?? 0) - (numOrNull(b['createdAt']) ?? 0));
+  }
+
+  private document(projectId: string, nodeId: string): JsonMap {
+    const row = this.store.row(projectId, 'chapters', nodeId);
+    const kind = row ? storyNode(row).kind : null;
+    if (!row || (kind !== 'chapter' && kind !== 'scene')) throw new Error('That chapter or scene is not in this novel.');
+    return row;
+  }
+
+  private nameFree(node: StoryNode, name: string, taken: readonly string[]): void {
+    if (!name) throw new DraftRefused('Give the draft a name.');
+    if (taken.some((n) => n.toLowerCase() === name.toLowerCase())) {
+      throw new DraftRefused(`This ${node.kind} already has a draft called "${name}".`);
+    }
+  }
+
+  /** Sets the text in the manuscript aside as an alternate draft under its own name, and carries on with a copy of it
+   * (or, with `blank`, an empty page) as a new draft called `newName`. Nothing is lost: both drafts now exist. A copy
+   * leaves the saved text as it is, so an open editor carries on; a blank page replaces it, so an open editor's next
+   * save is refused as a conflict rather than overwriting it. */
+  createDraft(projectId: string, nodeId: string, newName: string, blank = false): void {
+    this.store.db.transaction(() => {
+      const nodeRow = this.document(projectId, nodeId);
+      const node = storyNode(nodeRow);
+      const name = newName.trim();
+      const current = str(nodeRow['branchName'], mainDraft);
+      this.nameFree(node, name, [current, ...this.alternateDrafts(projectId, nodeId).map((b) => str(b['name']))]);
+      const content = this.store.row(projectId, 'chapterContents', nodeId);
+      const now = this.clock();
+      const renamed = { ...nodeRow, branchName: name, updatedAt: now };
+      this.store.writeRows(projectId, [
+        putRow(
+          'chapterBranches',
+          {
+            id: this.createId(),
+            projectId,
+            nodeId,
+            name: current,
+            doc: content?.['doc'],
+            wordCount: node.wordCount,
+            charCount: node.charCount,
+            createdAt: now,
+            updatedAt: now,
+          },
+          null,
+        ),
+        ...(blank
+          ? this.writeText(projectId, storyNode(renamed), blankDoc(), 0, 0, content, nodeRow)
+          : [putRow('chapters', renamed, nodeRow)]),
+      ]);
+      if (blank) this.drafts.discard(projectId, this.draftKey(nodeId));
+    });
+  }
+
+  /** Makes an alternate draft the one in the manuscript. The outgoing text is kept as an alternate under its own name
+   * in the same transaction, so a swap can always be swapped back. Word counts follow; it is not logged as writing. */
+  switchDraft(projectId: string, nodeId: string, draftId: string): void {
+    this.store.db.transaction(() => {
+      const nodeRow = this.document(projectId, nodeId);
+      const node = storyNode(nodeRow);
+      const incoming = this.store.row(projectId, 'chapterBranches', draftId);
+      if (!incoming || incoming['nodeId'] !== nodeId) throw new Error('That draft is not in this novel.');
+      const content = this.store.row(projectId, 'chapterContents', nodeId);
+      this.store.writeRows(projectId, [
+        putRow(
+          'chapterBranches',
+          {
+            ...incoming,
+            name: str(nodeRow['branchName'], mainDraft),
+            doc: content?.['doc'],
+            wordCount: node.wordCount,
+            charCount: node.charCount,
+            updatedAt: this.clock(),
+          },
+          incoming,
+        ),
+        ...this.writeText(
+          projectId,
+          storyNode({ ...nodeRow, branchName: str(incoming['name']) }),
+          isMap(incoming['doc']) ? incoming['doc'] : blankDoc(),
+          numOrNull(incoming['wordCount']) ?? 0,
+          numOrNull(incoming['charCount']) ?? 0,
+          content,
+          nodeRow,
+        ),
+      ]);
+      this.drafts.discard(projectId, this.draftKey(nodeId));
+    });
+  }
+
+  /** Renames a draft: `draftId` for an alternate, or null for the one in the manuscript. */
+  renameDraft(projectId: string, nodeId: string, draftId: string | null, newName: string): void {
+    this.store.db.transaction(() => {
+      const nodeRow = this.document(projectId, nodeId);
+      const node = storyNode(nodeRow);
+      const name = newName.trim();
+      const others = this.alternateDrafts(projectId, nodeId);
+      this.nameFree(node, name, [
+        ...(draftId !== null ? [str(nodeRow['branchName'], mainDraft)] : []),
+        ...others.filter((b) => b['id'] !== draftId).map((b) => str(b['name'])),
+      ]);
+      if (draftId === null) {
+        this.store.writeRows(projectId, [putRow('chapters', { ...nodeRow, branchName: name }, nodeRow)]);
+        return;
+      }
+      const draft = others.find((b) => b['id'] === draftId);
+      if (!draft) throw new Error('That draft is not in this novel.');
+      this.store.writeRows(projectId, [putRow('chapterBranches', { ...draft, name }, draft)]);
+    });
+  }
+
+  /** Deletes an alternate draft for good. The draft in the manuscript cannot be deleted this way. */
+  deleteDraft(projectId: string, draftId: string): void {
+    const draft = this.store.row(projectId, 'chapterBranches', draftId);
+    if (!draft) throw new Error('That draft is not in this novel.');
+    this.store.writeRows(projectId, [deleteRow('chapterBranches', draftId, draft)]);
+  }
+
+  /** Puts `doc` in the manuscript as the saved text, with its counts and links: a new revision, so an editor opened on
+   * the old text cannot overwrite it. No history copy and no writing logged: the old text is kept as a draft. */
+  private writeText(
+    projectId: string,
+    node: StoryNode,
+    doc: JsonMap,
+    words: number,
+    characters: number,
+    content: JsonMap | null,
+    expectNode: JsonMap,
+  ): RowWrite[] {
+    const now = this.clock();
+    return [
+      putRow(
+        'chapterContents',
+        { ...(content ?? {}), id: node.id, projectId, doc, rev: (numOrNull(content?.['rev']) ?? 0) + 1, savedAt: now },
+        content,
+      ),
+      putRow(
+        'chapters',
+        { ...node.raw, wordCount: words, charCount: characters, mentions: mentionsIn(doc), updatedAt: now },
+        expectNode,
+      ),
+    ];
+  }
+
   // ------------------------------------------------------------------------------------------- writing and goals
+
+  /** Net words written today, and since Monday. */
+  wordsWritten(projectId: string): { today: number; week: number } {
+    return wordsWrittenOf(this.store.rowsIn(projectId, 'writingSessions'), this.clock());
+  }
+
+  /** The author's daily and weekly word targets, when set. */
+  wordGoals(projectId: string): WordGoals {
+    return wordGoalsOf(this.store.rowsIn(projectId, 'goals'));
+  }
+
+  /** Sets (or with null, removes) the daily or weekly word target. One of each per novel. */
+  setWordGoal(projectId: string, kind: WordGoalKind, words: number | null): void {
+    const w = wordGoalWrite(this.store.rowsIn(projectId, 'goals'), kind, words, {
+      projectId,
+      nowMs: this.clock(),
+      createId: this.createId,
+    });
+    if (w) this.store.writeRows(projectId, [w.value === null ? deleteRow('goals', w.id) : putRow('goals', w.value)], false);
+  }
 
   /** Logs a save against today's writing session: words added, removed and the net change. */
   private recordWriting(projectId: string, delta: number): RowWrite[] {
@@ -399,3 +594,4 @@ function byCapture(a: JsonMap, b: JsonMap): number {
 }
 
 export { nodesOf };
+

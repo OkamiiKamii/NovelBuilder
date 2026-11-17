@@ -90,6 +90,11 @@ export class NovelStore {
     for (const l of [...this.listeners]) l();
   }
 
+  /** Tells the screens something they show changed outside any novel (a setting of this device). */
+  touchSettings(): void {
+    this.changed();
+  }
+
   private wrote(projectId: string, collections: Iterable<string>): void {
     for (const c of collections) {
       const key = `${projectId}\u0000${c}`;

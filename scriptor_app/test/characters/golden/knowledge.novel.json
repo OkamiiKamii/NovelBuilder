@@ -1,0 +1,57 @@
+{
+  "format": "novel-builder/project",
+  "version": 4,
+  "exportedAt": 0,
+  "project": { "id": "know", "title": "Who Knows What" },
+  "collections": {
+    "chapters": [
+      { "id": "k1", "projectId": "know", "parentId": null, "kind": "chapter", "title": "The Feast", "order": 0, "createdAt": 1, "mentions": ["mira"] },
+      { "id": "k2", "projectId": "know", "parentId": null, "kind": "chapter", "title": "", "order": 1, "createdAt": 2, "mentions": ["kai", "mira"] },
+      { "id": "k2s", "projectId": "know", "parentId": "k2", "kind": "scene", "title": "The Cellar", "order": 0, "createdAt": 3 },
+      { "id": "k3", "projectId": "know", "parentId": null, "kind": "chapter", "title": "The Reckoning", "order": 2, "createdAt": 4, "mentions": ["tam"] }
+    ],
+    "timelineEvents": [
+      { "id": "e1", "projectId": "know", "name": "The feast", "when": { "precision": "exact", "year": 10, "month": 3, "day": 1 }, "nodeIds": ["k1"], "characters": [{ "id": "mira", "age": 19 }, { "id": "kai" }], "createdAt": 1 },
+      { "id": "e2", "projectId": "know", "name": "The theft", "when": { "precision": "exact", "year": 10, "month": 3, "day": 1 }, "nodeIds": ["k2s"], "characters": [{ "id": "kai" }], "createdAt": 2 },
+      { "id": "e3", "projectId": "know", "name": "The trial", "when": { "precision": "exact", "year": 11, "month": 1, "day": 5 }, "nodeIds": ["k3"], "characters": [{ "id": "tam", "age": 60 }], "createdAt": 3 },
+      { "id": "e4", "projectId": "know", "name": "Someday", "nodeIds": [], "createdAt": 4 }
+    ],
+    "loreEntries": [
+      { "id": "mira", "projectId": "know", "category": "character", "name": "Mira Vance", "summary": "", "tags": ["spy"], "fields": [{ "id": "f1", "key": "What they want", "value": "To find the crown of Kai." }, { "id": "f2", "key": "Gender", "value": "woman" }, { "id": "f3", "key": "Age", "value": "19" }], "createdAt": 1, "updatedAt": 1 },
+      { "id": "kai", "projectId": "know", "category": "character", "name": "Kai Doyle", "summary": "A thief.", "fields": [{ "id": "g1", "key": "Goals", "value": "The crown, whatever it takes" }, { "id": "g2", "key": "Occupation", "value": "thief" }], "createdAt": 2, "updatedAt": 2 },
+      { "id": "tam", "projectId": "know", "category": "character", "name": "Old Tam", "fields": [], "createdAt": 3, "updatedAt": 3 },
+      { "id": "keep", "projectId": "know", "category": "location", "name": "The Keep", "fields": [], "createdAt": 4, "updatedAt": 4 }
+    ],
+    "characterSecrets": [
+      {
+        "id": "s1", "projectId": "know", "entryId": "mira", "title": "The crown is false", "description": "It is paste.", "status": "Hinted",
+        "self": "knows", "knows": ["tam"], "suspects": [], "unaware": ["kai"], "reader": "suspects", "readerNodeId": "k2",
+        "firstNodeId": "k1", "revealNodeId": "k3", "revealEventId": "e3", "nodeIds": ["k1"], "threadIds": [], "notes": "",
+        "records": [
+          { "id": "r1", "characterId": "kai", "state": "unaware", "belief": "", "nodeId": "k1", "eventId": "e1", "how": "", "fromId": null },
+          { "id": "r2", "characterId": "tam", "state": "partial", "belief": " the stones ", "nodeId": "k2s", "eventId": "e2", "how": "overheard", "fromId": "kai" },
+          { "id": "r3", "characterId": "kai", "state": "false", "belief": "It is real", "nodeId": "k3", "eventId": null, "how": "", "fromId": "mira" },
+          { "id": "r4", "characterId": "ghost", "state": "knows", "belief": "", "nodeId": null, "eventId": null, "how": "", "fromId": null },
+          { "id": "r5", "characterId": "tam", "state": "secret", "belief": "", "nodeId": "gone", "eventId": "e4", "how": "", "fromId": null }
+        ],
+        "needs": [
+          { "id": "n1", "characterId": "kai", "nodeId": "k2", "eventId": "e2", "note": " acts on it " },
+          { "id": "n2", "characterId": "kai", "nodeId": "k3", "eventId": "e3", "note": "" },
+          { "id": "n3", "characterId": "nobody", "nodeId": "k1", "eventId": null, "note": "" }
+        ],
+        "createdAt": 1, "updatedAt": 1
+      },
+      {
+        "id": "s2", "projectId": "know", "entryId": "kai", "title": "Kai's debt", "self": "unaware", "knows": ["mira", "kai"], "suspects": ["tam", "mira"],
+        "unaware": [], "reader": "knows", "createdAt": 2, "updatedAt": 2
+      }
+    ],
+    "characterRelations": [
+      { "id": "rel1", "projectId": "know", "fromId": "mira", "toId": "kai", "stages": [{ "id": "st1", "startNodeId": null, "preset": "rivals", "label": "Rivals", "fromRole": "Rival", "toRole": "Rival" }, { "id": "st2", "startNodeId": "k2", "preset": "friends", "label": "Friends", "title": "Uneasy allies" }] }
+    ],
+    "chapterContents": [
+      { "id": "k1", "projectId": "know", "doc": { "type": "doc", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mira watched Kai at the feast. Old Tam slept." }] }] } },
+      { "id": "k3", "projectId": "know", "doc": { "type": "doc", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "“Tam!” cried Mira Vance. Doyle said nothing." }] }] } }
+    ]
+  }
+}

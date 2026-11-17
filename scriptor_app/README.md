@@ -18,8 +18,61 @@ between the two apps without losing anything. The file format keeps its existing
 | 1: Storage and saving | 1–14 | Done (2026-11-16), see below |
 | 2: App frame, Library and Settings, in the owner's design | 15–19, 35–70 (in part) and the new features | Done (2026-11-16); first install on the phone |
 | 3a: Write — the contents and the chapter editor | 71–80, 85–86, 89–92, 96 and the word meter | Done (2026-11-17) |
-| 3b: Write — the writing desk tools | 81–84, 87–88, 93–95, 97–118 | Next |
-| 3c: Write — history, drafts, goals, reader, publishing | 119–138 | After 3b |
+| 3b-1: Write — the desk: settings, focus, lenses, Listen | 97–99, 102–105, 111 | Done (2026-11-17) |
+| 3b-2: Write — the rest of the desk, history and drafts | 81–84, 87–88, 93–95, 100–101, 106–110, 112–118 | Done (2026-11-17), tested on the emulator |
+| 3c: Write — goals, sprints, the reader, publishing | 119–134 | Done (2026-11-17), tested on the emulator |
+| 4a: Organize — characters and relationships | 135–139, 149–150, 152, 154, 166–168, 171–174, 176–188, 194–200 | Done (2026-11-17), tested on the emulator |
+| 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Next |
+
+**Phase 4a** built Organize (Characters first; World, Plan and Visualize say which phase brings them) on a port of
+the Flutter app's whole model layer (records, the story model, connections, what a delete takes with it, codex
+changes, dates and the two orders of a story: 65 tests, 0 differences from the Dart's own output across about
+216,000 values). On it: the character library (search, sort, filters, role tabs, cards or a list, My order), New
+character with "write them in a line", the profile (portrait, identity edited in place, figures, previous and next,
+find, sections and fields with suggestions, layouts and templates, Overview, Relationships, Details, Secrets, Notes,
+History, archive, delete with a restore point and Undo), and relationships (the page with every stage and its editor,
+record a change, swap, types and tracked attributes, the map with its filters, zoom, selection, list and first tie).
+The characters and relationships logic matches the Dart on every fixture (109 and 48 tests, with change scripts of
+104 and 100 steps compared step by step).
+
+Left for 4b and later: the twelve ways to see the cast, "found in your pages", the interview and the other writing
+aids, the cameo and portrait crop, the Status and Progression tabs (with Systems), and the full story-time date
+editor (with the timeline in Plan; a stage's date is year, month and day meanwhile).
+
+**Phase 3c** finished Write: the word meter with today's goal ring and this week's goal; "How much a day?" goals
+(kept in the novel's `goals`, as the Flutter app keeps them); writing sprints (the best kept on this device); the day
+book's Set a daily goal and Share today's page (a 1080 × 1350 picture through the share sheet); Read as a book
+(standard novel, ebook or web serial, a page at a time or scrolling, with the place remembered on this device and
+"N% · about M minutes left"); the reader's look (six typefaces, size, spacing, line length, paragraphs, justification,
+white, sepia, dark or custom colours with their contrast); Book details (dedication, epigraph, copyright, cast list,
+acknowledgements, about the author, the mark between scenes); and Publish: an EPUB 3 ebook, every chapter of a web
+serial in a zip, or one chapter saved or copied, as a web page, Markdown or plain text, with what the file will hold
+shown first. The reader's pages are reader-web/, built with the editor's by `npm run build:pages`. The book, its look
+and the publishing outputs were ported from the Dart with their tests and checked against the Dart's own output (677
+outputs, the same text; the zip bytes differ only in compression). Added `fflate`, `react-native-view-shot` and
+`expo-clipboard`.
+
+Left for later: the worldbuilding appendix of the full book export (with Organize), and the device frame preview,
+which shows on tablets only.
+
+**Phase 3b-2** finished the writing desk: version history (compare any version paragraph by paragraph, restore, save
+a named one) and alternate drafts; the chapter switcher; the chapter's end (what comes next, or Begin the next chapter,
+and the author's name at the end of the book) with a note for next time; the first page of an empty chapter; Stuck?
+nudges; the margin; rhythm; time-lapse; today's ink; the chapter spine; atmosphere; title ideas; the In this chapter
+strip; name keys and the at-a-glance card in the ink tray over the keyboard; on wide screens the desk's tools as icons
+and the page as paper on a desk; and in the contents the day book, the road to the draft, gaps to fill and the
+storyboard. The pure logic was ported from the Dart with its tests (test/desk, test/manuscript) and checked against
+the Dart originals' output. Added `react-native-svg` (the day book's ink, the road, later the Analytics charts) and
+ESLint (`npx eslint src editor-web test tool`: no errors; the React Compiler rules are warnings, as Scriptor does not
+use the compiler).
+
+Left for the phases they belong to:
+- The day book's Set a daily goal and Share today's page, with goals (3c and Analytics).
+- The import and export menu in the contents (#84), with the reader and exchange phases.
+- The at-a-glance card's ties ("Kai's sister") and real faces, with relationships and portraits in Organize; until
+  then a face is the initials in the person's colour, and Plan this chapter says plans come with Organize.
+- Hardware-keyboard shortcuts (#97).
+- Opening a gap or Carry on puts the caret in place, but Android does not raise the keyboard until the page is tapped.
 
 **Phase 3a** built the editor on the original web app's own editor, TipTap, with the same set-up (editor-web/), run in
 a WebView from a page bundled into the app (`npm run build:editor`), with the app's fonts and no network. Every chapter

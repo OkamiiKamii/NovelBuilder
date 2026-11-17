@@ -209,8 +209,20 @@ export function Field({ label, hint, style, ...input }: TextInputProps & { label
   );
 }
 
-export function Muted({ children, style }: { children: ReactNode; style?: StyleProp<import('react-native').TextStyle> }) {
-  return <Text style={[styles.muted, style]}>{children}</Text>;
+export function Muted({
+  children,
+  style,
+  numberOfLines,
+}: {
+  children: ReactNode;
+  style?: StyleProp<import('react-native').TextStyle>;
+  numberOfLines?: number;
+}) {
+  return (
+    <Text style={[styles.muted, style]} numberOfLines={numberOfLines}>
+      {children}
+    </Text>
+  );
 }
 
 export const kitStyles = StyleSheet.create({

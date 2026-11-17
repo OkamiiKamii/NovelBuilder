@@ -185,6 +185,33 @@ describe('saving text', () => {
     ]);
   });
 
+  it('counts the words written today and since Monday, net of cuts', () => {
+    const { ms, p, clock } = setup();
+    const c = ms.create(p, 'chapter');
+    let rev = ms.save(p, c.id, doc('one two three four'), { baseRev: 0 });
+    expect(ms.wordsWritten(p)).toEqual({ today: 4, week: 4 });
+    // The clock starts on Tuesday 14 November 2023; Wednesday is still this week, the next Monday is not.
+    clock.advance(24 * 60 * 60 * 1000);
+    rev = ms.save(p, c.id, doc('one two'), { baseRev: rev });
+    expect(ms.wordsWritten(p)).toEqual({ today: -2, week: 2 });
+    clock.advance(5 * 24 * 60 * 60 * 1000);
+    ms.save(p, c.id, doc('one two three'), { baseRev: rev });
+    expect(ms.wordsWritten(p)).toEqual({ today: 1, week: 1 });
+  });
+
+  it('keeps one daily and one weekly goal, and removes one set to nothing', () => {
+    const { lib, ms, p } = setup();
+    expect(ms.wordGoals(p)).toEqual({ daily: null, weekly: null });
+    ms.setWordGoal(p, 'daily', 500);
+    ms.setWordGoal(p, 'weekly', 2000);
+    ms.setWordGoal(p, 'daily', 250);
+    expect(ms.wordGoals(p)).toEqual({ daily: 250, weekly: 2000 });
+    expect(lib.novels.rowsIn(p, 'goals')).toHaveLength(2);
+    ms.setWordGoal(p, 'weekly', null);
+    expect(ms.wordGoals(p)).toEqual({ daily: 250, weekly: null });
+    expect(lib.novels.rowsIn(p, 'goals')[0]).toMatchObject({ kind: 'daily', targetWords: 250, done: false, dueDate: null });
+  });
+
   it('offers back a crash copy typed on the saved text, and keeps an older one in history', () => {
     const { ms, p } = setup();
     const c = ms.create(p, 'chapter');
@@ -208,5 +235,41 @@ describe('saving text', () => {
     ms.restoreRevision(p, c.id, String(oldVersion['id']), rev);
     expect(ms.open(p, c.id).doc).toEqual(doc('old'));
     expect(ms.revisions(p, c.id)[0]).toMatchObject({ reason: 'restore', doc: doc('new') });
+  });
+});
+
+describe('alternate drafts', () => {
+  it('sets the text aside as a draft, starts a copy or a blank page, and swaps back without losing either', () => {
+    const { ms, p } = setup();
+    const c = ms.create(p, 'chapter');
+    ms.save(p, c.id, doc('First version'), { baseRev: 0 });
+    expect(ms.activeDraft(p, c.id)).toBe('Main draft');
+    ms.createDraft(p, c.id, 'Second try');
+    expect(ms.activeDraft(p, c.id)).toBe('Second try');
+    expect(ms.open(p, c.id).doc).toEqual(doc('First version'));
+    expect(ms.alternateDrafts(p, c.id).map((d) => d['name'])).toEqual(['Main draft']);
+
+    ms.createDraft(p, c.id, 'Blank', true);
+    expect(ms.open(p, c.id).doc).toEqual({ type: 'doc', content: [{ type: 'paragraph' }] });
+    const main = ms.alternateDrafts(p, c.id).find((d) => d['name'] === 'Main draft')!;
+    ms.switchDraft(p, c.id, String(main['id']));
+    expect(ms.activeDraft(p, c.id)).toBe('Main draft');
+    expect(ms.open(p, c.id).doc).toEqual(doc('First version'));
+    expect(ms.alternateDrafts(p, c.id).map((d) => d['name']).sort()).toEqual(['Blank', 'Second try']);
+  });
+
+  it('refuses a name already taken (any case) or empty, renames, and deletes an alternate for good', () => {
+    const { ms, p } = setup();
+    const c = ms.create(p, 'chapter');
+    ms.createDraft(p, c.id, 'Two');
+    expect(() => ms.createDraft(p, c.id, 'main DRAFT')).toThrow('already has a draft called');
+    expect(() => ms.createDraft(p, c.id, '  ')).toThrow('Give the draft a name.');
+    ms.renameDraft(p, c.id, null, 'Two-B');
+    expect(ms.activeDraft(p, c.id)).toBe('Two-B');
+    const alt = ms.alternateDrafts(p, c.id)[0];
+    ms.renameDraft(p, c.id, String(alt['id']), 'Original');
+    expect(ms.alternateDrafts(p, c.id)[0]['name']).toBe('Original');
+    ms.deleteDraft(p, String(alt['id']));
+    expect(ms.alternateDrafts(p, c.id)).toEqual([]);
   });
 });

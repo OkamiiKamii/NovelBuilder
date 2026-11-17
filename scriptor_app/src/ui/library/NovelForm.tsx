@@ -207,7 +207,7 @@ export function NovelForm({
             <>
               <Text style={[styles.label, styles.gap]}>START ORGANISED LIKE</Text>
               <Text style={styles.note}>
-                Copies another novel's kinds of record and fields, relationship types, calendar, progress tracking and
+                Copies another novel’s kinds of record and fields, relationship types, calendar, progress tracking and
                 systems. None of its story.
               </Text>
               <View style={styles.chips}>

@@ -15,6 +15,20 @@ import { Extension } from '@tiptap/core';
 import { Node as PMNode, Slice, Fragment } from '@tiptap/pm/model';
 
 import { manuscriptExtensions } from './extensions';
+import { type Lens, lensKey, lensPlugin, type LensSummary, selectNext } from './lenses';
+import {
+  type Atmosphere,
+  type ChapterEndAction,
+  type ChapterEndInfo,
+  inkKey,
+  inkPlugin,
+  placeChapterEnd,
+  refreshSpine,
+  selectInBlock,
+  setAtmosphere,
+  setChapterEnd,
+  setSpine,
+} from './extras';
 import { jsonEquals, type JsonMap } from '../src/domain/json';
 import { normalizeProse } from '../src/domain/prose';
 
@@ -25,7 +39,10 @@ type Outgoing =
   | { type: 'state'; state: EditorUiState }
   | { type: 'find'; count: number; index: number }
   | { type: 'split'; ok: boolean; head?: JSONContent; tail?: JSONContent; reason?: string }
-  | { type: 'error'; message: string };
+  | { type: 'sentences'; sentences: { from: number; to: number; text: string }[] }
+  | { type: 'lens'; summary: LensSummary }
+  | { type: 'error'; message: string }
+  | { type: 'chapterEndTap'; action: ChapterEndAction };
 
 export type EditorUiState = {
   bold: boolean;
@@ -42,6 +59,8 @@ export type EditorUiState = {
   /** The entry the caret's words are linked to. */
   linkedEntry: string | null;
   focused: boolean;
+  /** With the caret in a paragraph and nothing selected: that paragraph's text and where in it the caret is. */
+  caret: { text: string; offset: number; block: number } | null;
 };
 
 declare global {
@@ -188,6 +207,36 @@ function flushChange(): void {
 }
 
 let lastState = '';
+function caretContext(): EditorUiState['caret'] {
+  const { selection } = editor.state;
+  if (!selection.empty || !editor.isEditable) return null;
+  const $from = selection.$from;
+  if (!$from.parent.isTextblock) return null;
+  const offset = $from.parentOffset;
+  const text = $from.parent.textBetween(0, $from.parent.content.size, '', '\n');
+  // Which paragraph or heading it is, in reading order (as blocksOf counts them).
+  const here = $from.before();
+  let block = -1;
+  let found = false;
+  editor.state.doc.descendants((node, pos) => {
+    if (found) return false;
+    if (node.type.name === 'paragraph' || node.type.name === 'heading') {
+      block++;
+      if (pos === here) found = true;
+      return false;
+    }
+    return true;
+  });
+  return { text, offset, block: found ? block : -1 };
+}
+
+/** Puts a name in (#94): over the `replace` letters before the caret, the caret landing after it. */
+function insertAtCaret(replace: number, text: string): void {
+  const { from } = editor.state.selection;
+  const start = Math.max(from - replace, editor.state.selection.$from.start());
+  editor.chain().focus().insertContentAt({ from: start, to: from }, text).run();
+}
+
 function sendState(): void {
   const e = editor;
   const block: EditorUiState['block'] = e.isActive('heading', { level: 1 })
@@ -215,6 +264,7 @@ function sendState(): void {
     selectionEmpty: e.state.selection.empty,
     linkedEntry: typeof link === 'string' ? link : null,
     focused,
+    caret: caretContext(),
   };
   const key = JSON.stringify(state);
   if (key === lastState) return;
@@ -258,6 +308,7 @@ function load(doc: JsonMap | null, readOnlyReason: string | null): void {
     applying = false;
   }
   send({ type: 'loaded', editable: reason === null, reason });
+  setTimeout(() => refreshSpine(editor), 0);
   sendState();
 }
 
@@ -352,7 +403,19 @@ type Incoming =
   | { type: 'flush' }
   | { type: 'focus'; end?: boolean }
   | { type: 'blur' }
-  | { type: 'selectText'; paragraph: number; text: string };
+  | { type: 'selectText'; paragraph: number; text: string }
+  | { type: 'modes'; typewriter: boolean; bookSetting: boolean }
+  | { type: 'sentences' }
+  | { type: 'speaking'; range: { from: number; to: number } | null }
+  | { type: 'lens'; lens: Lens; names?: Record<string, string[]>; colours?: Record<string, string> }
+  | { type: 'lensNext'; key: string }
+  | { type: 'gap' }
+  | { type: 'select'; block: number; start: number; end: number }
+  | { type: 'atmosphere'; kind: Atmosphere }
+  | { type: 'spine'; on: boolean }
+  | { type: 'ink'; on: boolean; before?: string[] | null }
+  | { type: 'chapterEnd'; info: ChapterEndInfo | null }
+  | { type: 'insert'; replace: number; text: string };
 
 function command(name: string, value?: string): void {
   const c = editor.chain().focus();
@@ -455,6 +518,50 @@ function receive(raw: string): void {
       case 'selectText':
         runFind({ query: m.text, matchCase: true, wholeWords: false, index: 0 });
         break;
+      case 'modes':
+        typewriter = m.typewriter;
+        document.documentElement.classList.toggle('typewriter', m.typewriter);
+        document.body.classList.toggle('book-setting', m.bookSetting);
+        keepCaretSteady();
+        break;
+      case 'sentences':
+        send({ type: 'sentences', sentences: sentencesFromCaret() });
+        break;
+      case 'lens':
+        editor.view.dispatch(editor.state.tr.setMeta(lensKey, { lens: m.lens, names: m.names ?? {}, colours: m.colours ?? {} }).setMeta('addToHistory', false));
+        break;
+      case 'lensNext':
+        selectNext(editor.view, m.key);
+        break;
+      case 'gap':
+        leaveGap();
+        break;
+      case 'speaking':
+        speaking(m.range);
+        break;
+      case 'select':
+        selectInBlock(editor, m.block, m.start, m.end);
+        break;
+      case 'atmosphere':
+        setAtmosphere(m.kind);
+        break;
+      case 'spine':
+        setSpine(m.on);
+        break;
+      case 'ink':
+        editor.view.dispatch(
+          editor.state.tr.setMeta(inkKey, m.before === undefined ? { on: m.on } : { on: m.on, before: m.before }).setMeta('addToHistory', false),
+        );
+        setTimeout(() => refreshSpine(), 0);
+        break;
+      case 'insert':
+        insertAtCaret(m.replace, m.text);
+        break;
+      case 'chapterEnd':
+        setChapterEnd(m.info, (action) => send({ type: 'chapterEndTap', action }));
+        document.body.classList.toggle('has-end', m.info !== null);
+        setTimeout(() => refreshSpine(), 0);
+        break;
     }
   } catch (e) {
     send({ type: 'error', message: e instanceof Error ? e.message : String(e) });
@@ -463,8 +570,106 @@ function receive(raw: string): void {
 
 // When the page gets shorter (the keyboard coming up), the line being typed stays in sight.
 window.addEventListener('resize', () => {
-  if (editor.isFocused) setTimeout(() => editor.commands.scrollIntoView(), 50);
+  if (editor.isFocused) setTimeout(() => (typewriter ? keepCaretSteady() : editor.commands.scrollIntoView()), 50);
 });
+
+// ------------------------------------------------------------------------------------------------- the typewriter
+
+/** In focus mode's typewriter: the line being typed stays at 45% of the page's height, the text gliding to it. */
+let typewriter = false;
+function keepCaretSteady(): void {
+  if (!typewriter || !editor.isFocused) return;
+  try {
+    const top = editor.view.coordsAtPos(editor.state.selection.head).top;
+    const delta = top - window.innerHeight * 0.45;
+    if (Math.abs(delta) > 4) window.scrollBy({ top: delta, behavior: 'smooth' });
+  } catch {
+    // A position the view cannot measure yet: the next change measures again.
+  }
+}
+editor.on('selectionUpdate', keepCaretSteady);
+editor.on('update', keepCaretSteady);
+
+// ------------------------------------------------------------------------------------------------- read aloud
+
+/** The sentences from the caret's sentence to the end of the chapter, with their positions, for Listen. */
+function sentencesFromCaret(): { from: number; to: number; text: string }[] {
+  const out: { from: number; to: number; text: string }[] = [];
+  const caret = editor.state.selection.from;
+  editor.state.doc.descendants((node, pos) => {
+    if (!node.isTextblock) return true;
+    const text = node.textContent;
+    const start = pos + 1;
+    // A sentence ends at . ! ? or … (with any closing quotes) followed by a space or the paragraph's end.
+    const re = /[^.!?…]+(?:[.!?…]+["”’')\]]*|$)/gu;
+    for (const m of text.matchAll(re)) {
+      const raw = m[0];
+      const lead = raw.length - raw.trimStart().length;
+      const body = raw.trim();
+      if (!body) continue;
+      const from = start + m.index! + lead;
+      const to = from + body.length;
+      if (to <= caret && !(caret >= from && caret <= to)) continue;
+      out.push({ from, to, text: body });
+    }
+    return false;
+  });
+  return out;
+}
+
+// The lenses (red pencil, voices) and the marks always shown (gaps, scene breaks).
+editor.registerPlugin(lensPlugin((summary) => send({ type: 'lens', summary })));
+
+/** Leave a gap (#111): an empty [[ ]] at the caret, or the selected words wrapped in [[ ]], to come back to. */
+function leaveGap(): void {
+  const { from, to, empty } = editor.state.selection;
+  if (empty) {
+    const before = from > 1 ? editor.state.doc.textBetween(from - 1, from) : '';
+    const lead = before && !/\s/u.test(before) ? ' ' : '';
+    editor.chain().focus().insertContent(`${lead}[[]]`).setTextSelection(from + lead.length + 2).run();
+  } else {
+    editor.chain().focus().insertContentAt(to, ' ]]').insertContentAt(from, '[[ ').run();
+  }
+}
+
+/** The sentence being read aloud, lit. Typing clears it (and the app stops reading). */
+const listenKey = new PluginKey<{ from: number; to: number } | null>('scriptorListen');
+editor.registerPlugin(
+  new Plugin({
+    key: listenKey,
+    state: {
+      init: () => null,
+      apply: (tr, value) => {
+        const meta = tr.getMeta(listenKey);
+        if (meta !== undefined) return meta;
+        return value && tr.docChanged ? null : value;
+      },
+    },
+    props: {
+      decorations(state) {
+        const r = listenKey.getState(state);
+        return r ? DecorationSet.create(state.doc, [Decoration.inline(r.from, r.to, { class: 'listen-current' })]) : DecorationSet.empty;
+      },
+    },
+  }),
+);
+
+function speaking(range: { from: number; to: number } | null): void {
+  editor.view.dispatch(editor.state.tr.setMeta(listenKey, range).setMeta('addToHistory', false));
+  if (range) {
+    try {
+      const top = editor.view.coordsAtPos(range.from).top;
+      if (top < 60 || top > window.innerHeight * 0.7) window.scrollBy({ top: top - window.innerHeight * 0.35, behavior: 'smooth' });
+    } catch {
+      // Not measurable yet.
+    }
+  }
+}
+
+// Today's ink, the chapter's end and its spine.
+editor.registerPlugin(inkPlugin());
+placeChapterEnd(root);
+addEventListener('resize', () => refreshSpine());
 
 window.scriptor = { receive };
 send({ type: 'ready' });
