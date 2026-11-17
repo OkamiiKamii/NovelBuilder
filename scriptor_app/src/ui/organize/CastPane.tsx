@@ -4,7 +4,7 @@
 // flutter_app/lib/features/characters/characters_page.dart; what it shows is src/domain/characters/screens/library.ts.
 
 import { useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { type ComponentRef, useMemo, useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 
 import { CastFilters, type CastSort, castSortLabel, castSorts, type Listed } from '../../domain/characters/cast';
@@ -35,6 +35,16 @@ import { Sheet } from '../dialogs';
 import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton } from '../kit';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { NewCharacterSheet } from './NewCharacterSheet';
+import { CastStage } from './CastStage';
+import { DramatisSheet } from './DramatisSheet';
+import { CompassView, NameBoardView, RollCallView, StakesView, TiesView } from './CastBoards';
+import { ArcsView, EntrancesView, EyesView, OrbitView, TableReadView } from './CastViewsDrawn';
+import { CastPagePanels } from './CastFound';
+import { type CastView, castViewKey, castViewOf } from '../../domain/characters/castData';
+import { castViewButton, castViewPicked, castViewSheet } from '../../domain/characters/views/viewChooser';
+import type { IconName } from '../kit';
+import { useLibrary } from '../LibraryContext';
+import type { OpenCast } from './useCast';
 import { ChooserField } from './parts';
 import { useCast } from './useCast';
 import type { OpenNovel } from './useNovel';
@@ -43,12 +53,21 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
   void novel;
   const open = useCast();
   const router = useRouter();
+  const [dramatis, setDramatis] = useState(false);
   const { width } = useWindowDimensions();
   const phone = sizeClassOf(width) === 'compact';
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<CastFilters>(CastFilters.none);
   const [sort, setSort] = useState<CastSort>('name');
-  const [cards, setCards] = useState(true);
+  const lib = useLibrary();
+  const castView = castViewOf(lib.settings.read(castViewKey));
+  const [choosing, setChoosing] = useState(false);
+  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const chooseView = (v: CastView) =>
+    lib.saves.saveNow(`setting:${castViewKey}`, () => {
+      lib.settings.write(castViewKey, v);
+      lib.novels.touchSettings();
+    });
   const [shown, setShown] = useState(castPage);
   const [arrange, setArrange] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -71,10 +90,11 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
 
   return (
     <View style={styles.flex}>
-      <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+      <ScrollView ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         <View style={styles.actions}>
           <GoldButton label={libraryWords.newCharacter} icon="account-plus-outline" compact onPress={() => setCreating(true)} />
           <OutlineButton label="Relationship map" icon="graph-outline" compact onPress={() => router.navigate('/organize/ties')} />
+          <OutlineButton label="Cast list for the book" icon="script-text-outline" compact onPress={() => setDramatis(true)} />
         </View>
         <View style={styles.searchRow}>
           <View style={styles.search}>
@@ -102,14 +122,16 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
           />
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
-          <Chip label={cards ? 'Cards' : 'List'} icon={cards ? 'view-grid-outline' : 'view-list-outline'} selected={false} onPress={() => setCards(!cards)} />
+          <Chip label={castViewButton(castView).label} icon={viewIcon[castView]} selected={false} onPress={() => setChoosing(true)} />
           <Chip label={castSortLabel[sort]} icon="sort" selected={false} onPress={() => setArrange(true)} />
           {tabs.map((t) => (
             <Chip key={t.label} label={t.label} selected={t.selected} onPress={() => setFilters(t.filters)} />
           ))}
         </ScrollView>
+        {!query && filters.active === 0 && !filters.archived && filters.role === '' && <CastStage open={open} onNew={() => setCreating(true)} />}
         <Muted>{view.count}</Muted>
 
+        <CastPagePanels open={open} scrollTo={(y) => scroll.current?.scrollTo({ y, animated: true })}>
         {view.list.length === 0 ? (
           <View style={styles.empty}>
             <Icon name="account-group-outline" size={40} />
@@ -135,7 +157,9 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
               </View>
             );
           })()
-        ) : cards ? (
+        ) : castView !== 'cards' && castView !== 'list' ? (
+          <OtherView view={castView} open={open} found={view.found} />
+        ) : castView === 'cards' ? (
           <View style={styles.wall}>
             {found.map((l) => (
               <CastCard key={l.entry.id} l={l} width={cardWidth} short={phone} where={cardWhere(l, cast.model.order)} label={cardLabel(l, cast.model.order)} presence={presenceOf(l, cast.model.order).chapters} onPress={() => go(l)} />
@@ -166,7 +190,8 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
             })}
           </View>
         )}
-        {view.found.length > shown && <OutlineButton label={showMoreLabel(view.found.length, shown)} compact onPress={() => setShown(shown + castPage)} style={styles.more} />}
+        {(castView === 'cards' || castView === 'list') && view.found.length > shown && <OutlineButton label={showMoreLabel(view.found.length, shown)} compact onPress={() => setShown(shown + castPage)} style={styles.more} />}
+        </CastPagePanels>
         {view.list.length > 0 && <Muted style={styles.note}>{whereNote}</Muted>}
       </ScrollView>
 
@@ -199,6 +224,8 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
         {menus.clear && <OutlineButton label={menus.clear.label} compact tone="muted" onPress={() => setFilters(menus.clear!.filters)} style={styles.start} />}
       </Sheet>
       <NewCharacterSheet visible={creating} onClose={() => setCreating(false)} />
+      {choosing && <ViewChooser current={castView} onPick={(v) => { setChoosing(false); const next = castViewPicked(castView, v); if (next) chooseView(next); }} />}
+      {dramatis && <DramatisSheet open={open} onClose={() => setDramatis(false)} />}
     </View>
   );
 }
@@ -307,4 +334,88 @@ const styles = StyleSheet.create({
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold, marginTop: space.sm, marginBottom: space.xs },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginBottom: space.sm },
   start: { alignSelf: 'flex-start' },
+});
+
+/** The icons of the ways to see the cast (Material's names in the Flutter app, Material Community's here). */
+const viewIcon: Record<CastView, IconName> = {
+  cards: 'view-grid-outline',
+  list: 'view-list-outline',
+  roll: 'table-large',
+  names: 'sort-alphabetical-ascending',
+  ties: 'hubspot',
+  stakes: 'flag-outline',
+  compass: 'compass-outline',
+  orbit: 'orbit',
+  eyes: 'eye-outline',
+  entrances: 'door',
+  tableRead: 'drama-masks',
+  arcs: 'chart-line',
+};
+
+function OtherView({ view, open, found }: { view: CastView; open: OpenCast; found: Listed[] }) {
+  const props = { open, found };
+  switch (view) {
+    case 'roll':
+      return <RollCallView {...props} />;
+    case 'names':
+      return <NameBoardView {...props} />;
+    case 'ties':
+      return <TiesView {...props} />;
+    case 'stakes':
+      return <StakesView {...props} />;
+    case 'compass':
+      return <CompassView {...props} />;
+    case 'orbit':
+      return <OrbitView {...props} />;
+    case 'eyes':
+      return <EyesView {...props} />;
+    case 'entrances':
+      return <EntrancesView {...props} />;
+    case 'tableRead':
+      return <TableReadView {...props} />;
+    case 'arcs':
+      return <ArcsView {...props} />;
+    default:
+      return null;
+  }
+}
+
+/** **Ways to see your cast**: every view by name and what it shows, in its group, the one in use marked. */
+function ViewChooser({ current, onPick }: { current: CastView; onPick: (v: CastView | null) => void }) {
+  const sheet = castViewSheet(current);
+  return (
+    <Sheet visible onClose={() => onPick(null)} title={sheet.title}>
+      <Muted>{sheet.caption}</Muted>
+      {sheet.groups.map((g) => (
+        <View key={g.group} style={chooser.group}>
+          <Text style={chooser.heading}>{g.heading}</Text>
+          {g.views.map((v) => (
+            <Pressable
+              key={v.key}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: v.chosen }}
+              accessibilityLabel={`${v.name}. ${v.about}`}
+              onPress={() => onPick(v.view)}
+              style={({ pressed }) => [chooser.tile, v.chosen && chooser.chosen, pressed && { backgroundColor: colors.elevated }]}
+            >
+              <Icon name={viewIcon[v.view]} size={24} color={v.chosen ? colors.gold : colors.text} />
+              <View style={styles.flex}>
+                <Text style={[chooser.name, v.chosen && { color: colors.gold }]}>{v.name}</Text>
+                <Muted>{v.about}</Muted>
+              </View>
+              {v.chosen && <Icon name="check" size={20} />}
+            </Pressable>
+          ))}
+        </View>
+      ))}
+    </Sheet>
+  );
+}
+
+const chooser = StyleSheet.create({
+  group: { gap: 6, marginTop: space.md },
+  heading: { fontFamily: fonts.ui, fontSize: 12, fontWeight: '700', letterSpacing: 1.4, color: colors.muted },
+  tile: { flexDirection: 'row', alignItems: 'center', gap: space.md, padding: space.md, borderRadius: 12, borderWidth: 1, borderColor: colors.border },
+  chosen: { borderColor: colors.gold, backgroundColor: 'rgba(243, 182, 58, 0.08)' },
+  name: { fontFamily: fonts.ui, fontSize: 15, fontWeight: '700', color: colors.text },
 });

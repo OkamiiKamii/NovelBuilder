@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { pickCoverPicture } from '../../data/files';
 import { countMentions } from '../../domain/characters/cast';
 import { characterPath } from '../../domain/characters/screens/create';
-import { castTone, monogram } from '../../domain/characters/screens/library';
+import { castTone } from '../../domain/characters/screens/library';
 import {
   commaList,
   deleteDialog,
@@ -50,6 +50,12 @@ import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { ProfileTab } from './ProfileTabs';
 import { SavedText } from './parts';
+import { Cameo } from './Cameo';
+import { FaceSketchSheet, InterviewSheet, ThisOrThatSheet } from './AidsSheets';
+import { CharacterCardSheet, JournalSheet, WriteThemInSheet } from './AidsPages';
+import { cardLine, cardLineInput } from '../../domain/characters/aids/characterCard';
+import { spokenJob } from '../../domain/characters/voice';
+import { acquaintance } from '../../domain/characters/aids/interview';
 import { type OpenCast, useCast } from './useCast';
 
 export function CharacterScreen() {
@@ -69,6 +75,7 @@ export function CharacterScreen() {
   const [deleting, setDeleting] = useState(false);
   const [finding, setFinding] = useState(false);
   const [removePortrait, setRemovePortrait] = useState(false);
+  const [aid, setAid] = useState<'interview' | 'thisOrThat' | 'face' | 'journal' | 'writeIn' | 'card' | null>(null);
 
   const listed = open && params.id ? open.cast.listed(params.id) : null;
   useEffect(() => setTab(null), [params.id]);
@@ -97,6 +104,7 @@ export function CharacterScreen() {
   const tabs = profilePageTabs({ systems }).filter((t) => t !== 'status' && t !== 'progression');
   const idv = identityView(entry, profile);
   const tools = portraitTools(entry);
+  const known = acquaintance(entry, profile, cast.templates);
   const go = (by: number) => {
     const next = vaultStep(cast, entry.id, by);
     if (next) router.replace(characterPath(next, { tab: shown }));
@@ -154,13 +162,14 @@ export function CharacterScreen() {
               {tools.uploaded ? (
                 <Image source={{ uri: entry.image ?? undefined }} style={StyleSheet.absoluteFill} resizeMode="cover" />
               ) : (
-                <Text style={styles.monogram}>{monogram(entry.name)}</Text>
+                <Cameo entry={entry} profile={profile} width={150} height={180} bare />
               )}
             </View>
             <View style={styles.row}>
               <IconButton icon="image-plus" label={tools.upload} onPress={() => void upload()} />
               {tools.remove && <IconButton icon="image-remove" label={tools.remove} onPress={() => setRemovePortrait(true)} />}
             </View>
+            {tools.draw && <OutlineButton label={tools.draw} icon="draw" compact tone="muted" onPress={() => setAid('face')} />}
             {tools.webNote && <Muted style={styles.small}>{tools.webNote}</Muted>}
           </View>
           <View style={styles.identity}>
@@ -195,6 +204,13 @@ export function CharacterScreen() {
                 <OutlineButton label={idv.edit} icon="pencil-outline" compact onPress={() => setEditing(true)} style={styles.start} />
               </>
             )}
+            <View style={styles.aids}>
+              <OutlineButton label={vaultWords.writeIn(entry.name)} icon="feather" compact onPress={() => setAid('writeIn')} />
+              <OutlineButton label={`${known.known === known.of ? 'Known well' : `Known ${known.known} of ${known.of}`} · Interview`} icon="comment-question-outline" compact tone="muted" onPress={() => setAid('interview')} />
+              <OutlineButton label="This or that" icon="swap-horizontal-variant" compact tone="muted" onPress={() => setAid('thisOrThat')} />
+              <OutlineButton label="In their hand" icon="notebook-edit-outline" compact tone="muted" onPress={() => setAid('journal')} />
+              <OutlineButton label="Share their card" icon="card-account-details-outline" compact tone="muted" onPress={() => setAid('card')} />
+            </View>
             <View style={styles.stats}>
               {headerStats(listed, mentions).map((s) => (
                 <View key={s.label} style={styles.stat} accessible accessibilityLabel={s.said}>
@@ -284,6 +300,12 @@ export function CharacterScreen() {
           onClose={() => setRemovePortrait(false)}
         />
       )}
+      {aid === 'interview' && <InterviewSheet open={open} entry={entry} profile={profile} onClose={() => setAid(null)} />}
+      {aid === 'thisOrThat' && <ThisOrThatSheet open={open} entry={entry} onClose={() => setAid(null)} />}
+      {aid === 'face' && <FaceSketchSheet open={open} entry={entry} profile={profile} onClose={() => setAid(null)} />}
+      {aid === 'journal' && <JournalSheet open={open} entry={entry} onClose={() => setAid(null)} />}
+      {aid === 'writeIn' && <WriteThemInSheet open={open} entry={entry} onClose={() => setAid(null)} />}
+      {aid === 'card' && <CharacterCardSheet open={open} entry={entry} profile={profile} line={cardLineFor(open, entry.id)} onClose={() => setAid(null)} />}
       <FindSheet visible={finding} open={open} keep={entry.id} onPick={(id) => {
         setFinding(false);
         router.replace(characterPath(id));
@@ -417,6 +439,7 @@ const styles = StyleSheet.create({
   statusTag: { borderColor: colors.sky },
   tagText: { fontFamily: fonts.ui, fontSize: 11, letterSpacing: 1, color: colors.gold },
   summary: { fontFamily: fonts.book, fontSize: 15, lineHeight: 23, color: colors.text, marginTop: space.xs },
+  aids: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm },
   stats: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md, marginTop: space.sm },
   stat: { minWidth: 90, padding: space.sm, borderRadius: radius.field, backgroundColor: colors.elevated },
   statValue: { fontFamily: fonts.numbers, fontSize: 15, color: colors.gold },
@@ -435,3 +458,9 @@ const styles = StyleSheet.create({
   choice: { minHeight: 52, justifyContent: 'center', paddingHorizontal: space.sm, borderRadius: radius.field, borderBottomWidth: 1, borderBottomColor: colors.border },
 });
 
+/** The card's line: the first good line they say in the book, read when the card is opened. */
+function cardLineFor(open: OpenCast, entryId: string): string | null {
+  const input = cardLineInput(open.cast, entryId);
+  if (!input) return null;
+  return cardLine(spokenJob(open.service.storedChapters(open.novelId), input.chapters, input.names)());
+}

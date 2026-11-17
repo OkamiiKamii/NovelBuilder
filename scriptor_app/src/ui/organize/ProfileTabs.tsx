@@ -32,6 +32,7 @@ import { Chip, Field, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel 
 import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
+import { ProfilePageBoxes } from './CastFound';
 import { Face } from './CastPane';
 import { ChooserField, SavedText } from './parts';
 import { SectionsView } from './SectionsView';
@@ -190,6 +191,7 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
           {pages.toggle && <OutlineButton label={pages.toggle} compact tone="muted" onPress={() => setAll(!all)} style={styles.start} />}
         </Panel>
       )}
+      <ProfilePageBoxes open={open} entry={entry} profile={listed.profile} />
       <Panel style={styles.panel}>
         <Text style={styles.kicker}>{timeline.title.toUpperCase()}</Text>
         {timeline.empty ? <Muted>{timeline.empty}</Muted> : timeline.dated.map((t) => <Text key={t.event.id} style={styles.text}>{t.title}{t.age ? ` · ${t.age}` : ''}</Text>)}

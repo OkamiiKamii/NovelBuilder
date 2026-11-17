@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { type GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Circle, G, Line, Polygon, Text as SvgText } from 'react-native-svg';
+import Svg, { Circle, G, Line, Polygon, Rect, Text as SvgText } from 'react-native-svg';
 
 import { newId } from '../../domain/ids';
 import { relationNetwork } from '../../domain/relationships/network';
@@ -240,14 +240,29 @@ export function RelationshipMapScreen() {
                               {e.directed && to && (
                                 <Polygon points={arrowHead(a, b, nodePaint(net, to, sel).radius).map((p) => `${p.x},${p.y}`).join(' ')} fill={paint.style.color} />
                               )}
-                              {labels && edgeLabelShown(net, e, sel) && (
-                                <SvgText x={(a.x + b.x) / 2} y={(a.y + b.y) / 2 - 4} fontSize={11} fill={colors.muted} textAnchor="middle">
-                                  {e.label}
-                                </SvgText>
-                              )}
                             </G>
                           );
                         })}
+                        {/* The lines' labels on a backing of the map's own colour, over every line; the names go
+                            over them, last, so a name always reads (as the Flutter map paints them). */}
+                        {labels &&
+                          net.edges
+                            .filter((e) => edgeLabelShown(net, e, sel))
+                            .map((e) => {
+                              const a = drawing.at.get(e.from)!;
+                              const b = drawing.at.get(e.to)!;
+                              return (
+                                <Backed
+                                  key={`label:${e.id}`}
+                                  text={e.label}
+                                  x={(a.x + b.x) / 2}
+                                  y={(a.y + b.y) / 2}
+                                  size={11}
+                                  color={colors.muted}
+                                  opacity={edgePaint(e, sel).opacity}
+                                />
+                              );
+                            })}
                         {net.nodes.map((n) => {
                           const c = drawing.at.get(n.id)!;
                           const p = nodePaint(net, n, sel);
@@ -259,11 +274,13 @@ export function RelationshipMapScreen() {
                               <SvgText x={c.x} y={c.y + p.radius * 0.32} fontSize={p.radius * 0.9} fill={p.accent ? colors.onGold : colors.text} textAnchor="middle" opacity={p.opacity}>
                                 {p.initial}
                               </SvgText>
-                              <SvgText x={at.x} y={at.y} fontSize={12} fill={colors.text} textAnchor="middle" opacity={p.nameOpacity}>
-                                {n.name}
-                              </SvgText>
                             </G>
                           );
+                        })}
+                        {net.nodes.map((n) => {
+                          const p = nodePaint(net, n, sel);
+                          const at = nameAt(drawing.at.get(n.id)!, p.radius);
+                          return <Backed key={`name:${n.id}`} text={n.name} x={at.x} y={at.y} size={12} color={colors.text} opacity={p.nameOpacity} />;
                         })}
                       </G>
                     </Svg>
@@ -341,3 +358,20 @@ const styles = StyleSheet.create({
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   legendText: { fontFamily: fonts.ui, fontSize: 12, color: colors.muted },
 });
+
+/** A line of text centred on (x, y), on a rounded backing of the map's colour at 0.8 (Flutter's `_text`): at most
+ * about 160 wide, cut with "…". The width is estimated from the text, as the drawing has no layout of its own. */
+function Backed({ text, x, y, size, color, opacity }: { text: string; x: number; y: number; size: number; color: string; opacity: number }) {
+  const max = Math.floor(160 / (size * 0.56));
+  const shown = text.length > max ? `${text.slice(0, max - 1)}…` : text;
+  const width = shown.length * size * 0.56;
+  const height = size * 1.25;
+  return (
+    <G opacity={opacity}>
+      <Rect x={x - width / 2 - 3} y={y - height / 2 - 1} width={width + 6} height={height + 2} rx={3} fill={colors.surface} fillOpacity={0.8} />
+      <SvgText x={x} y={y + size * 0.36} fontSize={size} fontWeight="600" fill={color} textAnchor="middle">
+        {shown}
+      </SvgText>
+    </G>
+  );
+}

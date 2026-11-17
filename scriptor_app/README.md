@@ -22,7 +22,25 @@ between the two apps without losing anything. The file format keeps its existing
 | 3b-2: Write — the rest of the desk, history and drafts | 81–84, 87–88, 93–95, 100–101, 106–110, 112–118 | Done (2026-11-17), tested on the emulator |
 | 3c: Write — goals, sprints, the reader, publishing | 119–134 | Done (2026-11-17), tested on the emulator |
 | 4a: Organize — characters and relationships | 135–139, 149–150, 152, 154, 166–168, 171–174, 176–188, 194–200 | Done (2026-11-17), tested on the emulator |
-| 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Next |
+| 4b: Organize — the cast's views, found in your pages, writing aids | 140–148, 151, 153, 155–165, 169–170, 175, 189–193 | Done (2026-11-17), tested on the emulator |
+
+**Phase 4b** finished the cast. Above it: the playbill for an empty cast ("Raise the curtain" makes them with their
+ties), the empty chairs round a small cast's lead, and the cast photograph. The cast list for the book (by faction,
+part or one list; as they appear or by name), put in the book's matter or copied. Twelve ways to see the cast, chosen
+from "Ways to see your cast" and remembered on this device: cards, list, roll call (written in place), names (the
+alphabet board, look-alikes, free letters, Forge a name), ties, stakes, compass, orbit, eyes, entrances, table read
+(read aloud, a voice each) and arcs. "From your pages" under the cast: together on the page, the cast checked,
+waiting for a name, names in your manuscript. On a profile: the cameo drawn from their looks (and Draw their face),
+the interview, This or that, the name forge, their journal, Write them in, the shareable card with a line they say,
+and three boxes read from the book (their voice, in their own words, checked against your pages). The page readings
+match the Dart on every fixture novel (97 tests, golden output from the real Dart).
+
+One fix worth knowing: Hermes (the phone's JavaScript engine) hung on an endless `for (;;)` bisection in the easing
+curves that runs fine in Node, freezing the app when the orbit rose. The loop is now counted (it settles well within
+64 halvings), and the results are the same.
+
+Left for later: the Status tab (#175, with Systems), "Read it there" selecting the sentence (it opens the chapter),
+the portrait crop, and the full story-time date editor (with the timeline in Plan).
 
 **Phase 4a** built Organize (Characters first; World, Plan and Visualize say which phase brings them) on a port of
 the Flutter app's whole model layer (records, the story model, connections, what a delete takes with it, codex
@@ -34,10 +52,6 @@ History, archive, delete with a restore point and Undo), and relationships (the 
 record a change, swap, types and tracked attributes, the map with its filters, zoom, selection, list and first tie).
 The characters and relationships logic matches the Dart on every fixture (109 and 48 tests, with change scripts of
 104 and 100 steps compared step by step).
-
-Left for 4b and later: the twelve ways to see the cast, "found in your pages", the interview and the other writing
-aids, the cameo and portrait crop, the Status and Progression tabs (with Systems), and the full story-time date
-editor (with the timeline in Plan; a stage's date is year, month and day meanwhile).
 
 **Phase 3c** finished Write: the word meter with today's goal ring and this week's goal; "How much a day?" goals
 (kept in the novel's `goals`, as the Flutter app keeps them); writing sprints (the best kept on this device); the day
