@@ -17,6 +17,16 @@ between the two apps without losing anything. The file format keeps its existing
 |---|---|---|
 | 1: Storage and saving | 1–14 | Done (2026-11-16), see below |
 | 2: App frame, Library and Settings, in the owner's design | 15–19, 35–70 (in part) and the new features | Done (2026-11-16); first install on the phone |
+| 3a: Write — the contents and the chapter editor | 71–80, 85–86, 89–92, 96 and the word meter | Done (2026-11-17) |
+| 3b: Write — the writing desk tools | 81–84, 87–88, 93–95, 97–118 | Next |
+| 3c: Write — history, drafts, goals, reader, publishing | 119–138 | After 3b |
+
+**Phase 3a** built the editor on the original web app's own editor, TipTap, with the same set-up (editor-web/), run in
+a WebView from a page bundled into the app (`npm run build:editor`), with the app's fonts and no network. Every chapter
+of the Flutter app's fixtures comes back from it unchanged (test/editorSchema.test.ts); a chapter it cannot reproduce
+exactly opens read-only with the reason, so no formatting is lost. Ported `ManuscriptService` (saving with revisions
+and conflict protection, history copies, crash copies, the writing log) and the outline operations (add, rename,
+status, move, reorder, duplicate, split, merge, delete with Undo).
 
 **Phase 2** built:
 - The System Monolith frame of the mock-ups: five areas, a bottom bar on phones, a rail with the writer's rank on

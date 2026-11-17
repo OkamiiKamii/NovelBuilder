@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BackupService, type ImportPreview } from '../../data/backupService';
 import { pickTextFile, shareTextFile } from '../../data/files';
 import { openNovelSettingKey } from '../../data/settingsStore';
+import { lastNodeSetting } from '../write/WriteScreen';
 import { recentActivity } from '../../domain/activity';
 import {
   type CollectionKey,
@@ -25,7 +26,7 @@ import {
 } from '../../domain/libraryView';
 import type { Novel } from '../../domain/novel';
 import { ActionSheet, ConfirmDelete, PromptSheet, type SheetAction } from '../dialogs';
-import { Brand, bottomBarHeight } from '../frame';
+import { Brand } from '../frame';
 import { Chip, GoldButton, Icon, type IconName, IconButton, Muted, Panel, SectionTitle } from '../kit';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
@@ -115,9 +116,11 @@ export function LibraryScreen() {
     }
   };
 
-  const openNovel = (novel: Novel) => {
+  /** Opens the novel in Write: at `chapterId` when given, otherwise where the writer left it. */
+  const openNovel = (novel: Novel, chapterId?: string | null) => {
     attempt(() => {
       lib.settings.write(openNovelSettingKey, novel.id);
+      if (chapterId) lib.settings.write(lastNodeSetting(novel.id), chapterId);
       lib.library.markOpened(novel.id);
     }, 'It could not be opened');
     router.navigate('/write');
@@ -125,11 +128,11 @@ export function LibraryScreen() {
 
   const startWriting = (novel: Novel) => {
     attempt(() => {
-      const { previousStatus } = lib.library.startWriting(novel.id);
+      const { previousStatus, chapterId } = lib.library.startWriting(novel.id);
       toast(`“${novel.title}” is now Drafting`, {
         action: { label: 'Undo', run: () => attempt(() => lib.library.setStatus(novel.id, previousStatus), 'Undo failed') },
       });
-      openNovel(novel);
+      openNovel(novel, chapterId);
     }, 'It could not be started');
   };
 
@@ -143,10 +146,10 @@ export function LibraryScreen() {
       return;
     }
     attempt(() => {
-      const { novel } = lib.library.create(details, { setupFrom: setupFrom ?? undefined, firstChapter: begin });
+      const { novel, chapterId } = lib.library.create(details, { setupFrom: setupFrom ?? undefined, firstChapter: begin });
       lib.settings.write(authorSetting, novel.author);
       setForm(null);
-      if (begin) openNovel(novel);
+      if (begin) openNovel(novel, chapterId);
       else toast(`Made “${novel.title}”`);
     }, 'The novel could not be made');
   };
@@ -437,7 +440,7 @@ export function LibraryScreen() {
     </Panel>
   );
 
-  const bottomPad = insets.bottom + space.xl + (phone ? bottomBarHeight : 0);
+  const bottomPad = (phone ? 0 : insets.bottom) + space.xl;
 
   return (
     <View style={styles.page}>

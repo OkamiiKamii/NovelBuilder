@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-n
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { openNovelSettingKey } from '../data/settingsStore';
-import { bottomBarHeight } from './frame';
+
 import { Icon, type IconName, Muted, Panel } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
 import { colors, fonts, sizeClassOf, space } from './theme';
@@ -25,7 +25,7 @@ export function ComingSoon({ icon, title, phase, holds }: { icon: IconName; titl
       style={styles.page}
       contentContainerStyle={{
         paddingTop: insets.top + space.lg,
-        paddingBottom: insets.bottom + space.xl + (phone ? bottomBarHeight : 0),
+        paddingBottom: (phone ? 0 : insets.bottom) + space.xl,
         paddingHorizontal: phone ? space.md : space.xl,
       }}
     >

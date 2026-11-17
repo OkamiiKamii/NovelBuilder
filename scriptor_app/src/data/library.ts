@@ -7,6 +7,7 @@ import { CollectionsStore } from './collectionsStore';
 import { AppDatabase, type LibraryFile } from './database';
 import { DraftStore, RestorePointStore } from './draftStore';
 import { LibraryService } from './libraryService';
+import { ManuscriptService } from './manuscriptService';
 import { NovelStore } from './novelStore';
 import { SettingsStore } from './settingsStore';
 
@@ -20,6 +21,7 @@ export type Library = {
   saves: SaveController;
   library: LibraryService;
   collections: CollectionsStore;
+  manuscript: ManuscriptService;
 };
 
 /** Opens the library. Throws DatabaseOpenError (with the reason in words) when it cannot; the file is left as it was. */
@@ -33,11 +35,13 @@ export function openLibrary(
   const restorePoints = new RestorePointStore(db, clock);
   const settings = new SettingsStore(db);
   const backups = new BackupService(novels, restorePoints, clock);
+  const drafts = new DraftStore(db, clock);
   return {
     db,
     novels,
     settings,
-    drafts: new DraftStore(db, clock),
+    drafts,
+    manuscript: new ManuscriptService(novels, drafts, backups, clock, createId),
     restorePoints,
     backups,
     saves: new SaveController(),

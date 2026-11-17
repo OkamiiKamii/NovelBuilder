@@ -4,8 +4,8 @@
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { usePathname, useRouter } from 'expo-router';
-import { type ReactNode, useMemo } from 'react';
-import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { Image, Keyboard, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { writerRank } from '../domain/writerRank';
@@ -13,6 +13,9 @@ import { Icon, type IconName } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
 import { SavePill } from './SavePill';
 import { colors, fonts, radius, sizeClassOf, space } from './theme';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const logo = require('../../assets/logo.png');
 
 export const areas: { path: string; label: string; icon: IconName }[] = [
   { path: '/', label: 'Library', icon: 'book-open-page-variant-outline' },
@@ -63,9 +66,30 @@ function useNavigate() {
   return { current, go: (path: string) => path !== current && router.navigate(path as never) };
 }
 
+/** How tall the on-screen keyboard is (0 when it is down). Android draws apps edge to edge, so the window does not
+ * shrink for the keyboard: screens that type leave this much room themselves. */
+export function useKeyboardHeight(): number {
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardDidShow', (e) => setHeight(e.endCoordinates.height));
+    const hide = Keyboard.addListener('keyboardDidHide', () => setHeight(0));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+  return height;
+}
+
+/** Whether the on-screen keyboard is up: the bottom bar steps aside for it, so it never sits on top of the writing. */
+export function useKeyboardVisible(): boolean {
+  return useKeyboardHeight() > 0;
+}
+
 function BottomBar() {
   const insets = useSafeAreaInsets();
   const { current, go } = useNavigate();
+  if (useKeyboardVisible()) return null;
   return (
     <View style={[styles.bar, { paddingBottom: insets.bottom, height: bottomBarHeight + insets.bottom }]} accessibilityRole="tablist">
       {areas.map((a) => {
@@ -154,9 +178,9 @@ function Rail({ expanded }: { expanded: boolean }) {
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <View style={[styles.brand, compact && styles.brandCompact]} accessibilityRole="header" accessibilityLabel="Scriptor">
-      <View style={styles.brandMark}>
-        <Icon name="book-open-variant" size={compact ? 26 : 30} color={colors.gold} />
-      </View>
+      {/* The Scriptor emblem: a phoenix rising from an open book (the owner's logo, assets/logo.png). */}
+      <Image source={logo} style={styles.brandMark} accessibilityIgnoresInvertColors />
+
       {!compact && (
         <View>
           <Text style={styles.brandName}>SCRIPTOR</Text>
@@ -256,16 +280,7 @@ const styles = StyleSheet.create({
   railLabelNarrow: { fontFamily: fonts.ui, fontSize: 12 },
   brand: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   brandCompact: { justifyContent: 'center' },
-  brandMark: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: colors.gold,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#1A1408',
-  },
+  brandMark: { width: 56, height: 56, borderRadius: 12, borderWidth: 1, borderColor: colors.gold },
   brandName: { fontFamily: fonts.display, fontSize: 20, letterSpacing: 2.5, color: colors.text },
   brandTag: { fontFamily: fonts.ui, fontSize: 9, letterSpacing: 1.2, color: colors.muted },
   rank: {

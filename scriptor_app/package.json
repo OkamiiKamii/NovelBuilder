@@ -20,13 +20,20 @@
     "expo-sqlite": "~58.0.17",
     "expo-status-bar": "~58.0.5",
     "react": "19.3.0",
+    "react-dom": "19.3.0",
     "react-native": "0.88.1",
     "react-native-safe-area-context": "~5.11.1",
-    "react-native-screens": "~4.30.1"
+    "react-native-screens": "~4.30.1",
+    "react-native-webview": "14.0.1"
   },
   "devDependencies": {
+    "@tiptap/core": "^3.34.0",
+    "@tiptap/extension-text-align": "^3.34.0",
+    "@tiptap/pm": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.3.0",
+    "esbuild": "^0.28.2",
     "jest": "^30.5.2",
     "jest-expo": "^58.0.14",
     "typescript": "~6.0.3"
@@ -35,7 +42,8 @@
     "start": "expo start",
     "typecheck": "tsc --noEmit && tsc --noEmit -p test",
     "lint": "expo lint",
-    "test": "jest"
+    "test": "jest",
+    "build:editor": "node tool/build-editor.mjs"
   },
   "jest": {
     "preset": "jest-expo",

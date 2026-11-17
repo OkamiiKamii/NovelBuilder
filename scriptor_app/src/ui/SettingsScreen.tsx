@@ -11,7 +11,7 @@ import { shareTextFile } from '../data/files';
 import { addSampleNovel, sampleNovelTitle } from '../data/sampleNovel';
 import { openNovelSettingKey } from '../data/settingsStore';
 import { xpPerChapterFinished, xpPerDayWritten } from '../domain/writerRank';
-import { bottomBarHeight, RankPanel, useWriterRank } from './frame';
+import { RankPanel, useWriterRank } from './frame';
 import { Icon, type IconName, Muted, OutlineButton, Panel, SectionTitle } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
 import { formatDate } from './library/NovelCard';
@@ -45,7 +45,7 @@ export function SettingsScreen() {
       style={styles.page}
       contentContainerStyle={{
         paddingTop: insets.top + space.lg,
-        paddingBottom: insets.bottom + space.xl + (phone ? bottomBarHeight : 0),
+        paddingBottom: (phone ? 0 : insets.bottom) + space.xl,
         paddingHorizontal: phone ? space.md : space.xl,
       }}
     >
