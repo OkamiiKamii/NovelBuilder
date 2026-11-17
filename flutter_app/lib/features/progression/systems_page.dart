@@ -50,6 +50,9 @@ const _tabs = {
 const _kindLabels = {'number': 'Attribute', 'resource': 'Resource pool', 'derived': 'Formula', 'choice': 'Choice'};
 const _ops = {'add': '+', 'multiply': '×', 'set': '='};
 
+/// From this width (of the page's content) the blueprint's window stands beside it; below, it is folded above it.
+const blueprintBesideFrom = 1000.0;
+
 /// A system read from the book's own pages, and who would hold its powers.
 typedef _Own = ({PagesSystem system, String? holderId, String? holderName});
 
@@ -231,32 +234,83 @@ class _SystemsPageState extends ConsumerState<SystemsPage> {
               const SizedBox(height: 16),
               _BlueprintHead(system: system, actions: actions, onDeleted: () => setState(() => _systemId = null)),
               const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final MapEntry(:key, :value) in _tabs.entries)
-                    ChoiceChip(
-                      label: Text('$value (${_count(system, model, key)})'),
-                      selected: _tab == key,
-                      onSelected: (_) => setState(() => _tab = key),
-                    ),
-                ],
+              // The blueprint with its window, live: what is changed in the tabs is in the window at once (a stat
+              // renamed, a starting value, a level's cap, a class). Beside it on a wide screen; folded above it on a
+              // phone, a press away.
+              LayoutBuilder(
+                builder: (context, box) {
+                  final blueprint = Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (final MapEntry(:key, :value) in _tabs.entries)
+                            ChoiceChip(
+                              label: Text('$value (${_count(system, model, key)})'),
+                              selected: _tab == key,
+                              onSelected: (_) => setState(() => _tab = key),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      switch (_tab) {
+                        'variables' => _VariablesTab(system: system, actions: actions),
+                        'tracks' => _TracksTab(system: system, actions: actions),
+                        'kits' => _KitsTab(system: system, actions: actions),
+                        'tables' => _TablesTab(system: system, actions: actions),
+                        _ => _SheetsTab(
+                          model: model,
+                          system: system,
+                          actions: actions,
+                          sheetId: _sheetId,
+                          onSelect: (id) => setState(() => _sheetId = id),
+                        ),
+                      },
+                    ],
+                  );
+                  if (box.maxWidth >= blueprintBesideFrom) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: blueprint),
+                        const SizedBox(width: 24),
+                        SizedBox(
+                          width: 400,
+                          child: LiveWindow(
+                            key: ValueKey('blueprint-window-${system.id}'),
+                            model: model,
+                            system: system,
+                            where: 'beside',
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Card(
+                        margin: EdgeInsets.zero,
+                        clipBehavior: Clip.antiAlias,
+                        child: ExpansionTile(
+                          key: PageStorageKey('blueprint-window-${system.id}'),
+                          leading: const Icon(Icons.web_asset),
+                          title: const Text('The window, as it reads now'),
+                          subtitle: const Text('Every change in the tabs below shows in it'),
+                          childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          children: [
+                            LiveWindow(key: ValueKey('blueprint-window-${system.id}'), model: model, system: system),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      blueprint,
+                    ],
+                  );
+                },
               ),
-              const SizedBox(height: 12),
-              switch (_tab) {
-                'variables' => _VariablesTab(system: system, actions: actions),
-                'tracks' => _TracksTab(system: system, actions: actions),
-                'kits' => _KitsTab(system: system, actions: actions),
-                'tables' => _TablesTab(system: system, actions: actions),
-                _ => _SheetsTab(
-                  model: model,
-                  system: system,
-                  actions: actions,
-                  sheetId: _sheetId,
-                  onSelect: (id) => setState(() => _sheetId = id),
-                ),
-              },
             ] else ...[
               // Its status window, live: a sheet as the story shows it, changing as the system is (`widgets/live_window.dart`).
               LiveWindow(key: ValueKey('window-${system.id}'), model: model, system: system),
@@ -421,6 +475,76 @@ class _RowTools extends StatelessWidget {
       IconButton(tooltip: 'Remove $name', onPressed: onRemove, icon: const Icon(Icons.close)),
     ],
   );
+}
+
+/// What reaching a stage gives: "every new tier, a new power". The system's items, chosen from a menu by group; a
+/// character at this stage or one after it holds them without being given them one by one.
+class _StageGrants extends StatelessWidget {
+  const _StageGrants({required this.system, required this.stage, required this.onChanged});
+  final SystemBlueprint system;
+  final SysStage stage;
+  final ValueChanged<List<String>> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final byId = {for (final i in system.items) i.id: i};
+    final given = [for (final id in stage.grants) ?byId[id]];
+    final givenIds = {for (final i in given) i.id};
+    final groups = system.groups;
+    final offered = [
+      for (final g in groups)
+        (
+          group: g.name,
+          items: [
+            for (final i in system.items)
+              if (i.groupId == g.id && !givenIds.contains(i.id)) i,
+          ],
+        ),
+    ].where((g) => g.items.isNotEmpty).toList();
+    return Wrap(
+      spacing: 6,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text('Reaching ${stage.name} gives', style: theme.textTheme.labelMedium),
+        if (given.isEmpty) Text('nothing yet', style: theme.textTheme.bodySmall),
+        for (final item in given)
+          InputChip(
+            label: Text(item.name),
+            onDeleted: () => onChanged([
+              for (final i in given)
+                if (i.id != item.id) i.id,
+            ]),
+            deleteButtonTooltipMessage: 'No longer given by ${stage.name}: ${item.name}',
+          ),
+        if (offered.isNotEmpty)
+          PopupMenuButton<String>(
+            tooltip: 'Give something on reaching ${stage.name}',
+            onSelected: (id) => onChanged([...givenIds, id]),
+            itemBuilder: (_) => [
+              for (final g in offered) ...[
+                PopupMenuItem<String>(enabled: false, height: 32, child: Text(g.group)),
+                for (final i in g.items) PopupMenuItem<String>(value: i.id, child: Text(i.name)),
+              ],
+            ],
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add, size: 18, color: theme.colorScheme.primary),
+                  const SizedBox(width: 4),
+                  Text('Give', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary)),
+                ],
+              ),
+            ),
+          )
+        else if (system.items.isEmpty)
+          Text('(make powers under Classes, skills & more first)', style: theme.textTheme.bodySmall),
+      ],
+    );
+  }
 }
 
 /// Taking items out of a blueprint takes the paths recorded to or from them, and the sheets that hold them stop
@@ -869,6 +993,19 @@ class _TracksTab extends StatelessWidget {
                                     'stages': _patch(maps(tr['stages']).toList(), stage.id, {'note': t}),
                                   },
                                 ),
+                              ),
+                            ),
+                            _StageGrants(
+                              system: system,
+                              stage: stage,
+                              onChanged: (grants) => _edit(
+                                (all) => _patch(all, track.id, {
+                                  'stages': _patch(
+                                    maps(all.firstWhere((t) => t['id'] == track.id)['stages']).toList(),
+                                    stage.id,
+                                    {'grants': grants},
+                                  ),
+                                }),
                               ),
                             ),
                             _RowTools(

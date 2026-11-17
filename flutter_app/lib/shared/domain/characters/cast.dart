@@ -130,37 +130,56 @@ List<Listed> listCharacters(
     nodes.where((n) => n.mentions.isNotEmpty),
     (a, b) => (position[a.id] ?? 0) - (position[b.id] ?? 0),
   );
+  // Read once for the whole cast, not once a character (a long book: 400 characters, 900 chapters, 4,000 links,
+  // made again after every change): the chapters linking to each entry, in reading order; and the other end of each
+  // entry's links, in the links' order.
+  final linkedBy = <String, List<String>>{};
+  for (final node in ordered) {
+    for (final id in node.mentions.toSet()) {
+      (linkedBy[id] ??= []).add(node.id);
+    }
+  }
+  final ends = <String, List<String>>{};
+  for (final link in links) {
+    (ends[link.fromId] ??= []).add(link.toId);
+    if (link.toId != link.fromId) (ends[link.toId] ??= []).add(link.fromId);
+  }
   return [
     for (final entry in entries)
-      if (entry.category == 'character') _listed(entry, byId, ordered, links, position, profiles, fallback, named),
+      if (entry.category == 'character')
+        _listed(
+          entry,
+          byId,
+          linkedBy[entry.id] ?? const [],
+          ends[entry.id] ?? const [],
+          position,
+          profiles,
+          fallback,
+          named,
+        ),
   ];
 }
 
 Listed _listed(
   Entry entry,
   Map<String, Entry> byId,
-  List<StoryNode> ordered,
-  List<Link> links,
+  List<String> linkedIn,
+  List<String> others,
   Map<String, int> position,
   Map<String, CharacterProfile> profiles,
   CharacterProfile Function(Entry entry) fallback,
   Map<String, List<String>> nameFinds,
 ) {
-  final linkedIn = [
-    for (final node in ordered)
-      if (node.mentions.contains(entry.id)) node.id,
-  ];
+  final linked = linkedIn.toSet();
   // Named but not linked, in reading order; only chapters and scenes still in the book.
   final namedIn = stableSorted([
     for (final id in nameFinds[entry.id] ?? const <String>[])
-      if (position.containsKey(id) && !linkedIn.contains(id)) id,
+      if (position.containsKey(id) && !linked.contains(id)) id,
   ], (a, b) => position[a]! - position[b]!);
   final seen = stableSorted([...linkedIn, ...namedIn], (a, b) => (position[a] ?? 0) - (position[b] ?? 0));
   final factions = <String>[
-    for (final link in links)
-      if (byId[link.fromId == entry.id ? link.toId : (link.toId == entry.id ? link.fromId : '')] case final other?
-          when other.category == 'faction')
-        other.name,
+    for (final id in others)
+      if (byId[id] case final other? when other.category == 'faction') other.name,
   ];
   final value = fieldNamed(entry, 'Faction');
   final named = byId[value]?.name ?? value;

@@ -83,6 +83,8 @@ class StatusWindow extends StatefulWidget {
     this.profile,
     this.captureKey,
     this.onEdit,
+    this.onHold,
+    this.onNew,
   });
 
   /// Set: the window changes the sheet it shows, in place (a character's Status, in the vault). Its levels and stages,
@@ -90,6 +92,15 @@ class StatusWindow extends StatefulWidget {
   /// follows from them (the most of a resource, damage…) is worked out again and stays as the system says. A level the
   /// sheet's own experience gives is not changed here (only where it started, on the whole sheet). Null: it only shows.
   final void Function(SheetEdit edit)? onEdit;
+
+  /// Set (with [onEdit]): what the sheet holds is changed in the window too: each group of the system (classes,
+  /// skills, titles, powers…) with what is held in it, each to be taken away, and what else the system has to add.
+  /// A group that allows one at a time keeps the one chosen last.
+  final void Function(String itemId, bool hold)? onHold;
+
+  /// Set (with [onHold]): each group's Add ends with one new to the system: named, made in the group and held, in one
+  /// change (a power the story has just given them). Asked of the group by its id and name.
+  final void Function(String groupId, String groupName)? onNew;
 
   /// The blueprint, as it would be begun.
   final JsonMap content;
@@ -366,25 +377,125 @@ class _StatusWindowState extends State<StatusWindow> with SingleTickerProviderSt
           rule(),
           for (final r in follows) _Line(label: r.variable.name, value: r.display, style: text, accent: look.accent),
         ],
-        for (final MapEntry(key: group, value: items) in byGroup.entries) ...[
-          rule(),
-          label(group),
-          const SizedBox(height: 6),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final i in items)
-                _Held(
-                  name: i.item.name,
-                  rank: ranks[i.item.rankId],
-                  effects: [...i.effects, for (final c in i.costs) 'costs ${c.label}'],
-                  accent: look.accent,
-                  style: text,
+        if (widget.onHold case final hold?)
+          for (final g in [
+            for (final g in system.groupList) (id: g.id, name: g.name, single: g.single),
+            if (system.items.any((i) => !system.groupList.any((g) => g.id == i.groupId)))
+              (id: '', name: 'Held', single: false),
+          ])
+            ...() {
+              bool inGroup(SysItem i) =>
+                  g.id.isEmpty ? !system.groupList.any((x) => x.id == i.groupId) : i.groupId == g.id;
+              final options = [
+                for (final i in system.items)
+                  if (inGroup(i)) i,
+              ];
+              final canMake = widget.onNew != null && g.id.isNotEmpty;
+              if (options.isEmpty && !canMake) return const <Widget>[];
+              final held = [
+                for (final i in sheet.items)
+                  if (inGroup(i.item)) i,
+              ];
+              final heldIds = {for (final i in held) i.item.id};
+              final more = [
+                for (final o in options)
+                  if (!heldIds.contains(o.id)) o,
+              ];
+              return <Widget>[
+                rule(),
+                Row(
+                  children: [
+                    Expanded(child: label(g.single ? '${g.name} · one at a time' : g.name)),
+                    if (more.isNotEmpty || canMake)
+                      PopupMenuButton<String>(
+                        tooltip: 'Add to ${g.name}',
+                        onSelected: (id) => id == _newOne ? widget.onNew!(g.id, g.name) : hold(id, true),
+                        itemBuilder: (_) => [
+                          for (final o in more)
+                            PopupMenuItem(
+                              value: o.id,
+                              child: Text(ranks[o.rankId] == null ? o.name : '${o.name} · ${ranks[o.rankId]}'),
+                            ),
+                          // One the system does not have yet: named, made in this group and held.
+                          if (canMake) ...[
+                            if (more.isNotEmpty) const PopupMenuDivider(),
+                            PopupMenuItem(value: _newOne, child: Text('New in ${g.name}…')),
+                          ],
+                        ],
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add, size: 18, color: look.accent),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Add',
+                                style: text(13, color: look.accent, weight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-            ],
-          ),
-        ],
+                if (held.isEmpty)
+                  Text('None held', style: text(12, color: faint))
+                else
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final i in held)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: _Held(
+                                name: i.item.name,
+                                rank: ranks[i.item.rankId],
+                                effects: [...i.effects, for (final c in i.costs) 'costs ${c.label}'],
+                                accent: look.accent,
+                                style: text,
+                                from: i.from,
+                              ),
+                            ),
+                            // What a stage gives goes with the stage, not from here.
+                            if (i.from == null)
+                              IconButton(
+                                tooltip: 'Take away ${i.item.name}',
+                                constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                                color: _ink.withValues(alpha: 0.7),
+                                onPressed: () => hold(i.item.id, false),
+                                icon: const Icon(Icons.close, size: 18),
+                              ),
+                          ],
+                        ),
+                    ],
+                  ),
+              ];
+            }()
+        else
+          for (final MapEntry(key: group, value: items) in byGroup.entries) ...[
+            rule(),
+            label(group),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final i in items)
+                  _Held(
+                    name: i.item.name,
+                    rank: ranks[i.item.rankId],
+                    effects: [...i.effects, for (final c in i.costs) 'costs ${c.label}'],
+                    accent: look.accent,
+                    style: text,
+                    from: i.from,
+                  ),
+              ],
+            ),
+          ],
       ],
     );
 
@@ -531,6 +642,9 @@ class _Bar extends StatelessWidget {
 }
 
 const _ink = Color(0xFFE8F0F6);
+
+/// The Add menu's choice for one new to the system (no item's id is this).
+const _newOne = '\u0000new';
 
 /// A number to change in the window: its name (and below it, what it comes to, when more than their own counts), −
 /// and + a whole step at a time within [min] and [max], and the number itself, which pressed asks for one typed.
@@ -779,10 +893,14 @@ class _Held extends StatelessWidget {
     required this.effects,
     required this.accent,
     required this.style,
+    this.from,
   });
 
   final String name;
   final String? rank;
+
+  /// The stage that gives it, when it is held for reaching it: "from C Tier".
+  final String? from;
   final List<String> effects;
   final Color accent;
   final TextStyle Function(double size, {Color? color, FontWeight? weight, double spacing}) style;
@@ -824,6 +942,11 @@ class _Held extends StatelessWidget {
         ),
         if (effects.isNotEmpty)
           Text(effects.join(' · '), style: style(11, color: const Color(0xFFE8F0F6).withValues(alpha: 0.65))),
+        if (from case final f?)
+          Text(
+            'from $f',
+            style: style(10.5, color: accent.withValues(alpha: 0.85), weight: FontWeight.w600),
+          ),
       ],
     ),
   );

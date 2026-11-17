@@ -83,7 +83,7 @@ class SheetTrack {
 typedef SheetPoints = ({String name, double earned, double spent, double unspent});
 
 class SheetItem {
-  SheetItem(this.item, this.group, this.requires, this.unmet, this.costs, this.effects, this.error);
+  SheetItem(this.item, this.group, this.requires, this.unmet, this.costs, this.effects, this.error, {this.from});
   final SysItem item;
   final SysGroup? group;
   final String requires;
@@ -92,7 +92,11 @@ class SheetItem {
   final List<String> effects;
   final String? error;
 
-  SheetItem plain() => SheetItem(item, group, requires, const [], costs, const [], null);
+  /// The stage that gives it ("C Tier"), when it is held because the sheet reached that stage (and not chosen as
+  /// well); null for what the sheet holds of its own.
+  final String? from;
+
+  SheetItem plain() => SheetItem(item, group, requires, const [], costs, const [], null, from: from);
 }
 
 class ComputedSheet {
@@ -143,9 +147,22 @@ ComputedSheet computeSheet(SystemBlueprint system, [SheetProfile profile = const
   for (final v in variables) {
     byKey[_lower(v.key)] = v;
   }
+  // What the stages reached give ("every new tier, a new power"): held as given by the stage, the first stage that
+  // gives each. A sheet with no stage chosen is at a track's first.
+  final grantedBy = <String, String>{};
+  for (final track in tracks) {
+    if (track.kind != 'stages' || track.stages.isEmpty) continue;
+    final at = math.max(0, track.stages.indexWhere((s) => s.id == profile.progress[track.id]));
+    for (final s in track.stages.take(at + 1)) {
+      for (final id in s.grants) {
+        grantedBy.putIfAbsent(id, () => s.name);
+      }
+    }
+  }
+  bool holds(String itemId) => profile.itemIds.contains(itemId) || grantedBy.containsKey(itemId);
   final held = [
     for (final item in allItems)
-      if (profile.itemIds.contains(item.id)) item,
+      if (holds(item.id)) item,
   ];
   SysGroup? groupOf(SysItem item) => groups.where((g) => g.id == item.groupId).firstOrNull;
 
@@ -470,13 +487,14 @@ ComputedSheet computeSheet(SystemBlueprint system, [SheetProfile profile = const
           costs,
           effects,
           gate.error ?? itemErrors[item.id],
+          from: profile.itemIds.contains(item.id) ? null : grantedBy[item.id],
         );
       }(),
   ];
 
   final available = [
     for (final item in allItems)
-      if (!profile.itemIds.contains(item.id) && item.requires.trim().isNotEmpty)
+      if (!holds(item.id) && item.requires.trim().isNotEmpty)
         if (check(item.requires) case final gate when gate.error == null && gate.unmet.isEmpty) item,
   ];
 

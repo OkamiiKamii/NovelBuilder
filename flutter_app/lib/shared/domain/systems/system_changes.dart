@@ -77,6 +77,10 @@ JsonMap tidyBlueprint(JsonMap given, [String Function() createId = newId]) {
                   'name': or(_text(s['name']).trim(), 'Unnamed stage'),
                   'requires': _text(s['requires']),
                   'note': _text(s['note']),
+                  'grants': {
+                    for (final g in _list(s['grants']))
+                      if (_text(g).isNotEmpty) _text(g),
+                  }.toList(),
                 },
           ],
         },
@@ -148,7 +152,27 @@ JsonMap tidyBlueprint(JsonMap given, [String Function() createId = newId]) {
     'name': or(_text(input['name']).trim(), 'Untitled system'),
     'description': _text(input['description']),
     'variables': variables,
-    'tracks': tracks,
+    // A stage gives only what is still in the blueprint.
+    'tracks': [
+      for (final t in tracks)
+        {
+          ...t,
+          'stages': [
+            for (final s in maps(t['stages']))
+              if ([
+                    for (final g in strings(s['grants']))
+                      if (itemIds.contains(g)) g,
+                  ]
+                  case final given)
+                // Written only when a stage gives something: a blueprint without reads as it always has.
+                {
+                  for (final e in s.entries)
+                    if (e.key != 'grants') e.key: e.value,
+                  if (given.isNotEmpty) 'grants': given,
+                },
+          ],
+        },
+    ],
     'ranks': ranks,
     'groups': groups,
     'items': items,
@@ -183,7 +207,13 @@ JsonMap instantiateBlueprint(JsonMap given, [String Function() createId = newId]
           ...t,
           'id': createId(),
           'stages': [
-            for (final s in maps(t['stages'])) {...s, 'id': createId()},
+            for (final s in maps(t['stages']))
+              {
+                ...s,
+                'id': createId(),
+                // What it gives, in the copy's own items.
+                if (s.containsKey('grants')) 'grants': [for (final g in strings(s['grants'])) fresh(g)],
+              },
           ],
         },
     ],

@@ -20,10 +20,14 @@ import 'system_speaks.dart' show windowKindOf;
 /// a stat renamed, a starting value or a formula changed in the tabs below is in the window at once. **Share the
 /// window** makes a picture of it, the way these books' authors show their systems. It only reads.
 class LiveWindow extends ConsumerStatefulWidget {
-  const LiveWindow({super.key, required this.model, required this.system});
+  const LiveWindow({super.key, required this.model, required this.system, this.where = 'below'});
 
   final StoryModel model;
   final SystemBlueprint system;
+
+  /// Where the system is changed, as the window says it: "below" (in the story: the tabs under it), "beside" (the
+  /// blueprint on a wide screen) or "here" (the blueprint on a phone, the window folded above it).
+  final String where;
 
   @override
   ConsumerState<LiveWindow> createState() => _LiveWindowState();
@@ -88,8 +92,9 @@ class _LiveWindowState extends ConsumerState<LiveWindow> {
         const SizedBox(height: 4),
         Text(
           sheet == null
-              ? 'How a sheet in it will look as it begins. Change the system below, and it changes here.'
-              : 'Their sheet as it stands, as the story shows it. Change the system below, and it changes here.',
+              ? 'How a sheet in it will look as it begins. Change the system ${widget.where}, and it changes here.'
+              : 'Their sheet as it stands, as the story shows it. Change the system ${widget.where}, and it changes '
+                    'here.',
           style: vaultText(context, size: 14.5, style: FontStyle.italic, color: scheme.onSurfaceVariant),
         ),
         if (sheets.length > 1) ...[

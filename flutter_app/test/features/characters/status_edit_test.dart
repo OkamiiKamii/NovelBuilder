@@ -118,6 +118,73 @@ void main() {
     expect(find.text('→ 16'), findsOneWidget);
   });
 
+  testWidgets('what they hold changed in the window: a class given, its numbers with it; one at a time; taken away', (
+    tester,
+  ) async {
+    final s = await sheeted(tester);
+    final classes = s.system.groupList.firstWhere((g) => g.name == 'Classes');
+    final skills = s.system.groupList.firstWhere((g) => g.name == 'Skills');
+    final classItems = s.system.items.where((i) => i.groupId == classes.id).toList();
+    final skill = s.system.items.firstWhere((i) => i.groupId == skills.id);
+    expect(classItems.length, greaterThan(1), reason: 'a choice of class');
+    expect(find.byTooltip('Add to Classes'), findsNothing, reason: 'only while their sheet is being changed');
+    await press(tester, find.text('Change their numbers'));
+    expect(find.text('CLASSES · ONE AT A TIME'), findsOneWidget);
+    expect(find.text('None held'), findsWidgets);
+
+    // Warrior given: held, and Strength comes to 15 with it.
+    await press(tester, find.byTooltip('Add to Classes'));
+    await press(tester, find.text(classItems.first.name).last);
+    expect(sheetOf(s).itemIds, [classItems.first.id]);
+    expect(find.text('→ 15'), findsOneWidget, reason: 'their own 10, and what the class adds');
+
+    // Another class: one at a time, the one chosen last kept. And a skill beside it.
+    await press(tester, find.byTooltip('Add to Classes'));
+    await press(tester, find.text(classItems[1].name).last);
+    expect(sheetOf(s).itemIds, [classItems[1].id]);
+    await press(tester, find.byTooltip('Add to Skills'));
+    await press(tester, find.textContaining(skill.name).last);
+    expect(sheetOf(s).itemIds.toSet(), {classItems[1].id, skill.id});
+
+    // Taken away.
+    await press(tester, find.byTooltip('Take away ${skill.name}'));
+    expect(sheetOf(s).itemIds, [classItems[1].id]);
+    expect(find.byTooltip('Take away ${skill.name}'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a power the system does not have yet: named in the window, made in its group and held, never twice', (
+    tester,
+  ) async {
+    final s = await sheeted(tester);
+    final skills = s.system.groupList.firstWhere((g) => g.name == 'Skills');
+    await press(tester, find.text('Change their numbers'));
+
+    Future<void> newSkill(String name) async {
+      await press(tester, find.byTooltip('Add to Skills'));
+      await press(tester, find.text('New in Skills…'));
+      await tester.enterText(find.byType(TextField).last, name);
+      await press(tester, find.text('Give it to Protagonist'));
+    }
+
+    await newSkill('Sandman');
+    SystemBlueprint stored() => SystemBlueprint(
+      s.c.read(novelStoreProvider).rowsIn(s.novel, 'systems').firstWhere((r) => r['id'] == s.system.id),
+    );
+    final sandman = stored().items.where((i) => i.name == 'Sandman').toList();
+    expect(sandman, hasLength(1), reason: 'in the system now');
+    expect(sandman.single.groupId, skills.id, reason: 'among its skills');
+    expect(sheetOf(s).itemIds, [sandman.single.id], reason: 'and held');
+    expect(find.text('Sandman'), findsWidgets, reason: 'in the window, as held');
+    expect(find.byTooltip('Take away Sandman'), findsOneWidget);
+
+    // The same name again (letter case aside): the one there is, not a second.
+    await newSkill('  sandman ');
+    expect(stored().items.where((i) => i.name.toLowerCase() == 'sandman'), hasLength(1));
+    expect(sheetOf(s).itemIds, [sandman.single.id]);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('a level their experience gives is not stepped here; a stage is chosen', (tester) async {
     final s = await sheeted(
       tester,
@@ -142,10 +209,71 @@ void main() {
     expect(sheetOf(t).progress[realms.id], realms.stages[1].id);
   });
 
+  testWidgets('every new tier, a new power: a tier chosen in the window gives what the blueprint says it gives', (
+    tester,
+  ) async {
+    final s = await sheeted(tester, preset: 'superhero');
+    final tiers = s.system.tracks.firstWhere((x) => x.kind == 'stages');
+    final power = s.system.items.firstWhere((i) => i.name == 'Kinetic Release');
+    final second = tiers.stages[1];
+    s.c
+        .read(progressionServiceProvider)
+        .systems(
+          s.novel,
+          (x) => x.updateSystem(
+            s.system.id,
+            (c) => {
+              'tracks': [
+                for (final t in maps(c.raw['tracks']))
+                  t['id'] != tiers.id
+                      ? t
+                      : {
+                          ...t,
+                          'stages': [
+                            for (final st in maps(t['stages']))
+                              st['id'] == second.id
+                                  ? {
+                                      ...st,
+                                      'grants': [power.id],
+                                    }
+                                  : st,
+                          ],
+                        },
+              ],
+            },
+          ),
+        );
+    await tester.pumpAndSettle();
+    expect(find.text(power.name), findsNothing, reason: 'at ${tiers.stages.first.name}: not yet');
+
+    await press(tester, find.text('Change their numbers'));
+    final choose = find.ancestor(of: find.text(tiers.stages.first.name), matching: find.byType(DropdownButton<String>));
+    await press(tester, choose.first);
+    await press(tester, find.text(second.name).last);
+    expect(sheetOf(s).progress[tiers.id], second.id);
+    expect(find.text(power.name), findsOneWidget, reason: 'reaching ${second.name} gives it');
+    expect(find.text('from ${second.name}'), findsOneWidget);
+    expect(find.byTooltip('Take away ${power.name}'), findsNothing, reason: 'it goes with the tier, not from here');
+    expect(sheetOf(s).itemIds, isNot(contains(power.id)), reason: 'given by the tier, not written on the sheet');
+
+    // Back down a tier: it goes with it.
+    await press(tester, find.ancestor(of: find.text(second.name), matching: find.byType(DropdownButton<String>)).first);
+    await press(tester, find.text(tiers.stages.first.name).last);
+    expect(find.text(power.name), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   for (final size in [phone, const Size(1900, 1200)]) {
     testWidgets('changing their numbers is pressable, named and readable (${size.width.toInt()} wide)', (tester) async {
       final semantics = tester.ensureSemantics();
-      await sheeted(tester, size: size);
+      // Holding a class: its card and its button to take it away are checked too, beside each group's Add.
+      await sheeted(
+        tester,
+        size: size,
+        setUp: (system, sheet) => {
+          'itemIds': [system.items.firstWhere((i) => i.name == 'Warrior').id],
+        },
+      );
       await press(tester, find.text('Change their numbers'));
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));

@@ -85,6 +85,10 @@ class SysStage {
   /// A condition for reaching it: `qi >= 1000 AND Item: Foundation Pill`.
   String get requires => str(raw['requires']);
   String get note => str(raw['note']);
+
+  /// What reaching it gives (items of the system, by id): "every new tier, a new power". A sheet at this stage or one
+  /// after it holds them, as given by the stage.
+  List<String> get grants => strings(raw['grants']);
 }
 
 /// A way of advancing: numbered levels with a curve, or named stages in order.

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/text_prompt.dart';
 import '../../../shared/domain/characters/cast.dart';
 import '../../../shared/domain/collation.dart';
 import '../../../shared/domain/json.dart';
@@ -50,6 +51,61 @@ class _StatusTabState extends State<StatusTab> {
     ),
   );
 
+  void _hold(String sheetId, String itemId, bool hold) => ProgressionActions(context, widget.cast.novelId).systems(
+    (x) => x.updateSheet(
+      sheetId,
+      (c) => {
+        'itemIds': [
+          for (final id in c.itemIds)
+            if (id != itemId) id,
+          if (hold) itemId,
+        ],
+      },
+    ),
+  );
+
+  /// One new to the system, named here: made in [groupId] and held by them, in one change. A name the group has already
+  /// (letter case aside) is that one, held: never two of the same.
+  Future<void> _new(String systemId, String sheetId, String groupId, String group, String name) async {
+    final typed = await showTextPrompt(
+      context,
+      title: 'New in $group',
+      label: 'Name',
+      hint: 'Held by $name, and in the system for anyone after.',
+      confirmLabel: 'Give it to $name',
+    );
+    final named = typed?.trim() ?? '';
+    if (named.isEmpty || !mounted) return;
+    ProgressionActions(context, widget.cast.novelId).systems((x) {
+      final system = x.systems().firstWhere((s) => s.id == systemId);
+      final same = system.items
+          .where((i) => i.groupId == groupId && i.name.trim().toLowerCase() == named.toLowerCase())
+          .firstOrNull;
+      final id = same?.id ?? x.newId();
+      if (same == null) {
+        x.updateSystem(
+          systemId,
+          (c) => {
+            'items': [
+              ...maps(c.raw['items']),
+              {'id': id, 'groupId': groupId, 'name': named},
+            ],
+          },
+        );
+      }
+      x.updateSheet(
+        sheetId,
+        (c) => {
+          'itemIds': [
+            for (final i in c.itemIds)
+              if (i != id) i,
+            id,
+          ],
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final model = widget.cast.model;
@@ -91,11 +147,15 @@ class _StatusTabState extends State<StatusTab> {
           profile: sheet == null ? null : SheetProfile.of(sheet),
           // Changed right here: a level, what is left, their own numbers, a stage; saved as each is changed.
           onEdit: sheet != null && _editing ? (e) => _apply(sheet.id, e) : null,
+          // And what they hold: a power, a class, a title given or taken away.
+          onHold: sheet != null && _editing ? (id, hold) => _hold(sheet.id, id, hold) : null,
+          // And one the system does not have yet: a power the story has just given them.
+          onNew: sheet != null && _editing ? (groupId, group) => _new(system.id, sheet.id, groupId, group, name) : null,
           caption: sheet == null
               ? 'As $name would begin in ${system.name}: not on a sheet yet.'
               : _editing
-              ? 'Each change is kept at once. What follows from them (the most of each, damage…) the system works out.'
-              : '$name in ${system.name}. Change their numbers here; what they hold, on their whole sheet.',
+              ? 'Each change is kept at once: a number, a stage, a power given or taken away. What follows (the most of each, damage…) the system works out.'
+              : '$name in ${system.name}. Their numbers and what they hold are changed here; experience and points, on their whole sheet.',
         ),
         const SizedBox(height: 8),
         Wrap(
