@@ -1,0 +1,1882 @@
+{
+  "format": "novel-builder/project",
+  "version": 4,
+  "exportedAt": 1768478400000,
+  "project": {
+    "title": "QA Sample: The Glass Meridian (test data)",
+    "subtitle": "",
+    "author": "",
+    "primaryGenre": "Fantasy",
+    "secondaryGenres": [],
+    "cover": null,
+    "tags": [
+      "qa-sample",
+      "test data"
+    ],
+    "synopsis": "Test data for checking the app’s views, made by qa/sample-novel.ts. Not a real novel: safe to delete (Settings → Delete).",
+    "status": "drafting",
+    "targetWordCount": null,
+    "deadline": null,
+    "language": "en",
+    "accent": "#b4532a",
+    "id": "00000000-0000-4000-8000-000000000001",
+    "pinned": false,
+    "archived": false,
+    "createdAt": 1768478400000,
+    "updatedAt": 1768478400000,
+    "lastOpenedAt": null
+  },
+  "collections": {
+    "chapters": [
+      {
+        "id": "00000000-0000-4000-8000-000000000017",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": null,
+        "kind": "act",
+        "title": "Act I: The Archive",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 0,
+        "charCount": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000018",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": null,
+        "kind": "act",
+        "title": "Act II: The Hill Country",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 0,
+        "charCount": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000019",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000017",
+        "kind": "chapter",
+        "title": "Salt and Glass",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 62,
+        "charCount": 309,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "mentions": [
+          "00000000-0000-4000-8000-00000000000a",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000006"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000017",
+        "kind": "chapter",
+        "title": "The Guild Mark",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 64,
+        "charCount": 316,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000003",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000007"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001b",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000017",
+        "kind": "chapter",
+        "title": "The Night of Two Doors",
+        "order": 2,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 0,
+        "charCount": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001c",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-00000000001b",
+        "kind": "scene",
+        "title": "At the Archive",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 41,
+        "charCount": 221,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000004",
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000008"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001d",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-00000000001b",
+        "kind": "scene",
+        "title": "At the Council",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 26,
+        "charCount": 144,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "mentions": [
+          "00000000-0000-4000-8000-000000000005",
+          "00000000-0000-4000-8000-00000000000c"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001e",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000018",
+        "kind": "chapter",
+        "title": "Roads Inland",
+        "order": 0,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 35,
+        "charCount": 198,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "mentions": [
+          "00000000-0000-4000-8000-00000000000a",
+          "00000000-0000-4000-8000-000000000004",
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001f",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000018",
+        "kind": "chapter",
+        "title": "Ashe House",
+        "order": 1,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 0,
+        "charCount": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "parentId": "00000000-0000-4000-8000-000000000018",
+        "kind": "chapter",
+        "title": "What the Fire Kept",
+        "order": 2,
+        "summary": "",
+        "notes": "",
+        "status": "idea",
+        "wordCount": 0,
+        "charCount": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "characters": [],
+    "loreEntries": [
+      {
+        "id": "00000000-0000-4000-8000-000000000002",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "character",
+        "name": "Ilse Varn",
+        "summary": "A glass-reader from Port Calder; the point of view of most chapters.",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000003",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "character",
+        "name": "Corin Ashe",
+        "summary": "Master glasswright, Ilse’s teacher.",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000004",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "character",
+        "name": "Tamsin Roe",
+        "summary": "A thief, first Ilse’s rival, then her friend.",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000005",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "character",
+        "name": "Odo Hale",
+        "summary": "The magistrate who holds the ledger.",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000006",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "character",
+        "name": "Wren Varn",
+        "summary": "Ilse’s younger brother.",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000007",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "faction",
+        "name": "The Glasswrights’ Guild",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000008",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "item",
+        "name": "The Ledger of Tides",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000009",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "The Meridian Coast",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-00000000000f"
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000000a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "Port Calder",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-000000000010"
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000000b",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "The Glass Archive",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-000000000011"
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000000c",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "Council Hall",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-000000000011"
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000000d",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "The Hill Country",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-00000000000f"
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000000e",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "category": "location",
+        "name": "Ashe House",
+        "summary": "",
+        "description": "",
+        "image": null,
+        "notes": "",
+        "tags": [],
+        "fields": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "placeLevel": "00000000-0000-4000-8000-000000000011"
+      }
+    ],
+    "outlines": [],
+    "writingSessions": [],
+    "goals": [],
+    "chapterPlans": [
+      {
+        "id": "00000000-0000-4000-8000-000000000019",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "Ilse sees the ledger in the glass.",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000006"
+        ],
+        "mentionIds": [
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "Ilse joins the Guild.",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "mentionIds": [],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001c",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "labels": [
+          "Action"
+        ],
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000004"
+        ],
+        "mentionIds": [],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001d",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "labels": [
+          "politics"
+        ],
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000005"
+        ],
+        "mentionIds": [],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000005"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001e",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "labels": [
+          "journey"
+        ],
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000004"
+        ],
+        "mentionIds": [
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001f",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "Back at Ashe House; Corin and Ilse face the past.",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000003",
+          "00000000-0000-4000-8000-000000000004"
+        ],
+        "mentionIds": [],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "objective": "The fire, remembered; the ledger read.",
+        "beats": [],
+        "entityIds": [],
+        "conflict": "",
+        "emotionalArc": "",
+        "dialogue": "",
+        "foreshadowing": "",
+        "reveals": "",
+        "openQuestions": "",
+        "ending": "",
+        "updatedAt": 1768478400000,
+        "appearIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "mentionIds": [],
+        "povIds": [
+          "00000000-0000-4000-8000-000000000003"
+        ]
+      }
+    ],
+    "chapterBranches": [],
+    "chapterContents": [
+      {
+        "id": "00000000-0000-4000-8000-000000000019",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The tide came in grey over "
+                },
+                {
+                  "type": "text",
+                  "text": "Port Calder",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-00000000000a"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "Ilse",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000002"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " read it in the window glass before it reached the harbour wall."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Wren",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000006"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " asked her what she saw. She said rain, and a ledger, and a man who would want it back."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Somewhere above the town, in the guild house, her old teacher was waiting for an answer she had not given."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Corin",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000003"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " pressed the guild mark into the warm glass and handed it to her without a word."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The burn on his wrist was older than she was. She had asked about it once, as a child, and he had looked at the hills and said nothing at all."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Ilse",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000002"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " took the mark. From that night she was one of the "
+                },
+                {
+                  "type": "text",
+                  "text": "Glasswrights",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000007"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", whatever came after."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001c",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Archive smelled of dust and lamp oil. "
+                },
+                {
+                  "type": "text",
+                  "text": "Tamsin",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000004"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " had the door open before "
+                },
+                {
+                  "type": "text",
+                  "text": "Ilse",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000002"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " finished reading the lock."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The "
+                },
+                {
+                  "type": "text",
+                  "text": "Ledger of Tides",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000008"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " was lighter than either of them had thought. They argued about who would carry it, and then ran."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001d",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Across the square, "
+                },
+                {
+                  "type": "text",
+                  "text": "Magistrate Hale",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000005"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " counted the raised hands in "
+                },
+                {
+                  "type": "text",
+                  "text": "Council Hall",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-00000000000c"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and smiled at the number."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "He did not yet know the Archive stood open."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-00000000001e",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "doc": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "They left "
+                },
+                {
+                  "type": "text",
+                  "text": "Port Calder",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-00000000000a"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " by the salt road before dawn. "
+                },
+                {
+                  "type": "text",
+                  "text": "Tamsin",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000004"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " walked ahead; "
+                },
+                {
+                  "type": "text",
+                  "text": "Ilse",
+                  "marks": [
+                    {
+                      "type": "entityLink",
+                      "attrs": {
+                        "entryId": "00000000-0000-4000-8000-000000000002"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " carried the ledger."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "By the third night they had stopped arguing. By the fourth they were friends, though neither said it."
+                }
+              ]
+            }
+          ]
+        },
+        "rev": 1,
+        "savedAt": 1768478400000
+      }
+    ],
+    "chapterRevisions": [],
+    "loreSchemas": [],
+    "loreLinks": [
+      {
+        "id": "00000000-0000-4000-8000-000000000013",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000000a",
+        "toId": "00000000-0000-4000-8000-000000000009",
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "located-in",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000014",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000000b",
+        "toId": "00000000-0000-4000-8000-00000000000a",
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "located-in",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000015",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000000c",
+        "toId": "00000000-0000-4000-8000-00000000000a",
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "located-in",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000016",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000000e",
+        "toId": "00000000-0000-4000-8000-00000000000d",
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "located-in",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000048",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000003",
+        "toId": "00000000-0000-4000-8000-000000000007",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000,
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "member-of",
+        "notes": "",
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000049",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000002",
+        "toId": "00000000-0000-4000-8000-000000000007",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000,
+        "fromType": "entry",
+        "toType": "entry",
+        "type": "member-of",
+        "notes": "",
+        "validity": {
+          "from": {
+            "kind": "node",
+            "nodeId": "00000000-0000-4000-8000-00000000001a"
+          },
+          "until": null
+        },
+        "how": "Given the guild mark.",
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000050",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004c",
+        "toId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004d",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000,
+        "fromType": "ability",
+        "toType": "ability",
+        "type": "evolves-into",
+        "notes": "",
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000051",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004e",
+        "toId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004d",
+        "fromLabel": "",
+        "toLabel": "",
+        "createdAt": 1768478400000,
+        "fromType": "ability",
+        "toType": "ability",
+        "type": "excludes",
+        "notes": "",
+        "updatedAt": 1768478400000
+      }
+    ],
+    "characterRelations": [
+      {
+        "id": "00000000-0000-4000-8000-00000000002e",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000003",
+        "toId": "00000000-0000-4000-8000-000000000002",
+        "stages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000030",
+            "startNodeId": null,
+            "preset": "mentor-student",
+            "category": "mentorship",
+            "label": "Mentor / Student",
+            "fromRole": "Mentor",
+            "toRole": "Student",
+            "directional": true,
+            "title": "Teacher and pupil",
+            "affinity": "trusting",
+            "event": "",
+            "notes": ""
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000033",
+            "startNodeId": "00000000-0000-4000-8000-00000000001f",
+            "preset": "mentor-student",
+            "category": "mentorship",
+            "label": "Mentor / Student",
+            "fromRole": "Mentor",
+            "toRole": "Student",
+            "directional": true,
+            "title": "Old wounds",
+            "affinity": "reluctant",
+            "event": "At Ashe House, Ilse learns what Corin never told her.",
+            "notes": ""
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000036",
+            "startNodeId": "00000000-0000-4000-8000-000000000020",
+            "preset": "mentor-student",
+            "category": "mentorship",
+            "label": "Mentor / Student",
+            "fromRole": "Mentor",
+            "toRole": "Student",
+            "directional": true,
+            "title": "Reconciled",
+            "affinity": "trusting",
+            "event": "The fire, told at last.",
+            "notes": ""
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000038",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000002",
+        "toId": "00000000-0000-4000-8000-000000000004",
+        "stages": [
+          {
+            "id": "00000000-0000-4000-8000-00000000003a",
+            "startNodeId": null,
+            "preset": "rivals",
+            "category": "social",
+            "label": "Rivals",
+            "fromRole": "Rival",
+            "toRole": "Rival",
+            "directional": false,
+            "title": "Two thieves, one lock",
+            "affinity": "reluctant",
+            "event": "",
+            "notes": ""
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000003d",
+            "startNodeId": "00000000-0000-4000-8000-00000000001e",
+            "preset": "friends",
+            "category": "social",
+            "label": "Friends",
+            "fromRole": "Friend",
+            "toRole": "Friend",
+            "directional": false,
+            "title": "Friends on the salt road",
+            "affinity": "trusting",
+            "event": "Four nights on the road.",
+            "notes": ""
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000040",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000002",
+        "toId": "00000000-0000-4000-8000-000000000006",
+        "stages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000042",
+            "startNodeId": null,
+            "preset": "siblings",
+            "category": "family",
+            "label": "Siblings",
+            "fromRole": "Sibling",
+            "toRole": "Sibling",
+            "directional": false,
+            "title": "",
+            "affinity": "trusting",
+            "event": "",
+            "notes": ""
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000044",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "fromId": "00000000-0000-4000-8000-000000000003",
+        "toId": "00000000-0000-4000-8000-000000000005",
+        "stages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000046",
+            "startNodeId": null,
+            "preset": "enemies",
+            "category": "social",
+            "label": "Enemies",
+            "fromRole": "Enemy",
+            "toRole": "Enemy",
+            "directional": false,
+            "title": "",
+            "affinity": "hostile",
+            "event": "",
+            "notes": ""
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "relationSettings": [],
+    "savedViews": [],
+    "storyCalendars": [],
+    "timelineEvents": [
+      {
+        "id": "00000000-0000-4000-8000-000000000022",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "The fire at Ashe House",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 800,
+          "month": 6,
+          "day": 12,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "major",
+        "locationId": "00000000-0000-4000-8000-00000000000e",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000003",
+            "age": 31
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 6
+          }
+        ],
+        "entryIds": [],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001a",
+          "00000000-0000-4000-8000-000000000020"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": [
+          {
+            "nodeId": "00000000-0000-4000-8000-00000000001a",
+            "role": "foreshadowed"
+          },
+          {
+            "nodeId": "00000000-0000-4000-8000-000000000020",
+            "role": "flashback"
+          }
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000023",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "Ilse joins the Guild",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 3,
+          "day": 3,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "minor",
+        "locationId": "00000000-0000-4000-8000-00000000000a",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 18
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000003",
+            "age": 43
+          }
+        ],
+        "entryIds": [
+          "00000000-0000-4000-8000-000000000007"
+        ],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001a"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": []
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000024",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "The heist at the Glass Archive",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 4,
+          "day": 9,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "major",
+        "locationId": "00000000-0000-4000-8000-00000000000b",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 18
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000004",
+            "age": 19
+          }
+        ],
+        "entryIds": [
+          "00000000-0000-4000-8000-000000000008"
+        ],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001c"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": [],
+        "threadIds": [
+          "00000000-0000-4000-8000-000000000029"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000025",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "The council vote",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 4,
+          "day": 9,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "minor",
+        "locationId": "00000000-0000-4000-8000-00000000000c",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000005",
+            "age": 52
+          }
+        ],
+        "entryIds": [],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001d"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": []
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000026",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "Flight inland",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 4,
+          "day": 12,
+          "hour": null,
+          "minute": null
+        },
+        "duration": {
+          "amount": 4,
+          "unit": "days"
+        },
+        "importance": "minor",
+        "locationId": "00000000-0000-4000-8000-00000000000d",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 18
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000004",
+            "age": 19
+          }
+        ],
+        "entryIds": [
+          "00000000-0000-4000-8000-000000000008"
+        ],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001e"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "end": null,
+        "ongoing": false,
+        "reveals": [],
+        "threadIds": [
+          "00000000-0000-4000-8000-000000000029"
+        ]
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000027",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "Return to Ashe House",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 4,
+          "day": 20,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "minor",
+        "locationId": "00000000-0000-4000-8000-00000000000e",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 18
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000003",
+            "age": 43
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000004",
+            "age": 19
+          }
+        ],
+        "entryIds": [],
+        "nodeIds": [
+          "00000000-0000-4000-8000-00000000001f"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": []
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000028",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "The ledger is read",
+        "description": "",
+        "when": {
+          "precision": "exact",
+          "year": 812,
+          "month": 4,
+          "day": 22,
+          "hour": null,
+          "minute": null
+        },
+        "duration": null,
+        "importance": "climax",
+        "locationId": "00000000-0000-4000-8000-00000000000e",
+        "characters": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "age": 18
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000003",
+            "age": 43
+          }
+        ],
+        "entryIds": [
+          "00000000-0000-4000-8000-000000000008"
+        ],
+        "nodeIds": [
+          "00000000-0000-4000-8000-000000000020"
+        ],
+        "afterId": null,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000,
+        "reveals": [],
+        "threadIds": [
+          "00000000-0000-4000-8000-000000000029"
+        ]
+      }
+    ],
+    "alternateHistories": [
+      {
+        "id": "00000000-0000-4000-8000-00000000005a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "If the vote had failed",
+        "baseId": null,
+        "kind": "hypothetical",
+        "status": "experimental",
+        "originEventId": "00000000-0000-4000-8000-000000000025",
+        "causeEventId": null,
+        "note": "What if the council had voted against Hale?",
+        "changed": {
+          "00000000-0000-4000-8000-000000000025": {
+            "name": "The council vote fails",
+            "description": "The raised hands fall short."
+          }
+        },
+        "removed": [],
+        "added": [
+          {
+            "id": "00000000-0000-4000-8000-00000000005b",
+            "projectId": "00000000-0000-4000-8000-000000000001",
+            "name": "Hale is removed from office",
+            "description": "",
+            "when": {
+              "precision": "exact",
+              "year": 812,
+              "month": 4,
+              "day": 10,
+              "hour": null,
+              "minute": null
+            },
+            "duration": null,
+            "importance": "minor",
+            "locationId": "00000000-0000-4000-8000-00000000000c",
+            "characters": [
+              {
+                "id": "00000000-0000-4000-8000-000000000005",
+                "age": 52
+              }
+            ],
+            "entryIds": [],
+            "nodeIds": [],
+            "afterId": null,
+            "createdAt": 1768478400000,
+            "updatedAt": 1768478400000
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "plotThreads": [
+      {
+        "id": "00000000-0000-4000-8000-000000000029",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "title": "The stolen ledger",
+        "premise": "Who wrote the Ledger of Tides, and why does Hale want it hidden?",
+        "category": "main",
+        "customCategory": "",
+        "status": "active",
+        "characterIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000004",
+          "00000000-0000-4000-8000-000000000005"
+        ],
+        "locationIds": [
+          "00000000-0000-4000-8000-00000000000b"
+        ],
+        "targetNodeId": "00000000-0000-4000-8000-000000000020",
+        "targetNote": "",
+        "beats": [
+          {
+            "id": "00000000-0000-4000-8000-00000000002a",
+            "nodeId": "00000000-0000-4000-8000-000000000019",
+            "title": "The ledger seen in the glass",
+            "note": "",
+            "createdAt": 1768478400000,
+            "role": "introduction"
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000002b",
+            "nodeId": "00000000-0000-4000-8000-00000000001c",
+            "title": "The heist",
+            "note": "",
+            "createdAt": 1768478400000,
+            "role": "development"
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000002c",
+            "nodeId": "00000000-0000-4000-8000-00000000001e",
+            "title": "Carried inland",
+            "note": "",
+            "createdAt": 1768478400000,
+            "role": "development"
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000002d",
+            "nodeId": "00000000-0000-4000-8000-000000000020",
+            "title": "The ledger is read",
+            "note": "",
+            "createdAt": 1768478400000,
+            "role": "resolution"
+          }
+        ],
+        "notes": "",
+        "muted": false,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "structureMarkers": [],
+    "canonFacts": [],
+    "continuityRules": [],
+    "continuityResolutions": [],
+    "systems": [
+      {
+        "id": "00000000-0000-4000-8000-00000000004a",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "Glasswork",
+        "description": "Reading and walking through glass.",
+        "variables": [],
+        "tracks": [],
+        "ranks": [
+          {
+            "id": "novice",
+            "name": "Novice"
+          },
+          {
+            "id": "adept",
+            "name": "Adept"
+          },
+          {
+            "id": "master",
+            "name": "Master"
+          }
+        ],
+        "groups": [
+          {
+            "id": "00000000-0000-4000-8000-00000000004f",
+            "name": "Arts",
+            "single": false
+          }
+        ],
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-00000000004b",
+            "groupId": "00000000-0000-4000-8000-00000000004f",
+            "name": "Read the Glass",
+            "description": "See what a pane of glass has seen.",
+            "parentId": null,
+            "rankId": "novice",
+            "requires": "",
+            "modifiers": [],
+            "costs": [],
+            "cooldown": "",
+            "affinity": "glass",
+            "evolution": ""
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000004c",
+            "groupId": "00000000-0000-4000-8000-00000000004f",
+            "name": "Glass Step",
+            "description": "Step from one window to another nearby.",
+            "parentId": "00000000-0000-4000-8000-00000000004b",
+            "rankId": "adept",
+            "requires": "",
+            "modifiers": [],
+            "costs": [],
+            "cooldown": "",
+            "affinity": "glass",
+            "evolution": "Becomes Mirror Walk with mastery."
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000004d",
+            "groupId": "00000000-0000-4000-8000-00000000004f",
+            "name": "Mirror Walk",
+            "description": "Walk through any mirror to any other.",
+            "parentId": "00000000-0000-4000-8000-00000000004c",
+            "rankId": "master",
+            "requires": "",
+            "modifiers": [],
+            "costs": [],
+            "cooldown": "",
+            "affinity": "glass",
+            "evolution": ""
+          },
+          {
+            "id": "00000000-0000-4000-8000-00000000004e",
+            "groupId": "00000000-0000-4000-8000-00000000004f",
+            "name": "Shatter",
+            "description": "Break glass from a distance.",
+            "parentId": "00000000-0000-4000-8000-00000000004b",
+            "rankId": "adept",
+            "requires": "",
+            "modifiers": [],
+            "costs": [],
+            "cooldown": "",
+            "affinity": "glass",
+            "evolution": ""
+          }
+        ],
+        "matrices": [],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "systemSheets": [
+      {
+        "id": "00000000-0000-4000-8000-000000000052",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "systemId": "00000000-0000-4000-8000-00000000004a",
+        "entryId": "00000000-0000-4000-8000-000000000002",
+        "values": {},
+        "progress": {},
+        "itemIds": [
+          "00000000-0000-4000-8000-00000000004b",
+          "00000000-0000-4000-8000-00000000004c",
+          "00000000-0000-4000-8000-00000000004d"
+        ],
+        "xp": [],
+        "spent": {},
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000053",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "systemId": "00000000-0000-4000-8000-00000000004a",
+        "entryId": "00000000-0000-4000-8000-000000000003",
+        "values": {},
+        "progress": {},
+        "itemIds": [
+          "00000000-0000-4000-8000-00000000004b",
+          "00000000-0000-4000-8000-00000000004e"
+        ],
+        "xp": [],
+        "spent": {},
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "progressSnapshots": [],
+    "progressCategories": [
+      {
+        "id": "00000000-0000-4000-8000-000000000054",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "name": "Glasswork arts",
+        "shape": "held",
+        "ladder": [],
+        "characterIds": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "order": 0,
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "progressChanges": [
+      {
+        "id": "00000000-0000-4000-8000-000000000055",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "entryId": "00000000-0000-4000-8000-000000000002",
+        "categoryId": "00000000-0000-4000-8000-000000000054",
+        "action": "gain",
+        "subject": "Read the Glass",
+        "value": "",
+        "refId": null,
+        "abilityId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004b",
+        "at": null,
+        "cost": "",
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000056",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "entryId": "00000000-0000-4000-8000-000000000002",
+        "categoryId": "00000000-0000-4000-8000-000000000054",
+        "action": "gain",
+        "subject": "Glass Step",
+        "value": "",
+        "refId": null,
+        "abilityId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004c",
+        "at": {
+          "kind": "node",
+          "nodeId": "00000000-0000-4000-8000-00000000001a"
+        },
+        "cost": "",
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000057",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "entryId": "00000000-0000-4000-8000-000000000002",
+        "categoryId": "00000000-0000-4000-8000-000000000054",
+        "action": "gain",
+        "subject": "Mirror Walk",
+        "value": "",
+        "refId": null,
+        "abilityId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004d",
+        "at": {
+          "kind": "node",
+          "nodeId": "00000000-0000-4000-8000-000000000020"
+        },
+        "cost": "",
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000058",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "entryId": "00000000-0000-4000-8000-000000000003",
+        "categoryId": "00000000-0000-4000-8000-000000000054",
+        "action": "gain",
+        "subject": "Read the Glass",
+        "value": "",
+        "refId": null,
+        "abilityId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004b",
+        "at": null,
+        "cost": "",
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000059",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "entryId": "00000000-0000-4000-8000-000000000003",
+        "categoryId": "00000000-0000-4000-8000-000000000054",
+        "action": "gain",
+        "subject": "Shatter",
+        "value": "",
+        "refId": null,
+        "abilityId": "00000000-0000-4000-8000-00000000004a/00000000-0000-4000-8000-00000000004e",
+        "at": null,
+        "cost": "",
+        "note": "",
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "placeSettings": [
+      {
+        "id": "00000000-0000-4000-8000-000000000012",
+        "projectId": "00000000-0000-4000-8000-000000000001",
+        "levels": [
+          {
+            "id": "00000000-0000-4000-8000-00000000000f",
+            "name": "Region"
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000010",
+            "name": "City"
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000000011",
+            "name": "Building"
+          }
+        ],
+        "createdAt": 1768478400000,
+        "updatedAt": 1768478400000
+      }
+    ],
+    "worldMaps": [],
+    "mapPins": [],
+    "travelSettings": [],
+    "journeys": [],
+    "projectModules": [],
+    "moduleRecords": [],
+    "brainstorms": [],
+    "ideas": [],
+    "characterProfiles": [],
+    "characterSecrets": [],
+    "characterNotes": [],
+    "characterHistory": [],
+    "characterTemplates": [],
+    "bookMatter": [],
+    "members": [],
+    "comments": [],
+    "suggestions": [],
+    "activity": []
+  }
+}

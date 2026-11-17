@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Scriptor",
+    "slug": "scriptor",
+    "version": "0.1.0",
+    "platforms": [
+      "android"
+    ],
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "scriptor",
+    "android": {
+      "package": "com.scriptor.app",
+      "versionCode": 1,
+      "blockedPermissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "backgroundColor": "#0A0B0E",
+    "plugins": [
+      "expo-sqlite",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Outfit.ttf",
+            "./assets/fonts/Merriweather.ttf",
+            "./assets/fonts/Merriweather-Italic.ttf",
+            "./assets/fonts/JetBrainsMono.ttf",
+            "./assets/fonts/Cinzel.ttf"
+          ]
+        }
+      ],
+      "expo-router",
+      "expo-sharing",
+      ["expo-image-picker", { "microphonePermission": false, "cameraPermission": false }],
+      "./plugins/withReleaseSigning"
+    ]
+  }
+}
