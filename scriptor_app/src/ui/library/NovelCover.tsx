@@ -72,7 +72,19 @@ function Jacket({ novel, width, height }: { novel: Novel; width: number; height:
   );
 }
 
-export function NovelCover({ novel, height, showTitle = true }: { novel: Novel; height: number; showTitle?: boolean }) {
+/** `backdrop`: the jacket's colour and pattern only, with no medallion or title, to lay words over (the Library's
+ * pick-up banner). */
+export function NovelCover({
+  novel,
+  height,
+  showTitle = true,
+  backdrop = false,
+}: {
+  novel: Novel;
+  height: number;
+  showTitle?: boolean;
+  backdrop?: boolean;
+}) {
   const [width, setWidth] = useState(0);
   const cover = novel.cover;
   if (cover && cover.startsWith('data:image/')) {
@@ -107,14 +119,14 @@ export function NovelCover({ novel, height, showTitle = true }: { novel: Novel; 
       accessibilityLabel={`Cover of ${title}`}
     >
       {width > 0 && <Jacket novel={novel} width={width} height={height} />}
-      <View style={[styles.medalOuter, ring && styles.medalRing, { width: medal + (ring ? 8 : 0), height: medal + (ring ? 8 : 0), borderRadius: medal }]}>
+      {!backdrop && <View style={[styles.medalOuter, ring && styles.medalRing, { width: medal + (ring ? 8 : 0), height: medal + (ring ? 8 : 0), borderRadius: medal }]}>
         <View style={[styles.medal, { width: medal, height: medal, borderRadius: medal / 2, borderWidth: medal >= 28 ? 1.5 : 1 }]}>
           <Text style={[styles.initial, { fontSize: Math.round(medal * 0.52), lineHeight: Math.round(medal * 0.66) }]} allowFontScaling={false}>
             {coverInitial(novel.title)}
           </Text>
         </View>
-      </View>
-      {showTitle && (
+      </View>}
+      {showTitle && !backdrop && (
         <Text style={[styles.title, { fontSize: Math.max(13, Math.round(height / 12)), lineHeight: Math.max(17, Math.round(height / 9)) }]} numberOfLines={3}>
           {title}
         </Text>

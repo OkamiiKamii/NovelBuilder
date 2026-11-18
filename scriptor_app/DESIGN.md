@@ -74,11 +74,13 @@ is in the app once.
   Merriweather italic; it holds about 2.6 s and lifts away. It never takes a touch or the keyboard, comes only on
   crossing in this sitting (never on opening a chapter after the goal was met), is announced to a screen reader, and
   only fades, without moving, for less motion.
-- **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, the chapter it was left in (in
-  gold), the last lines written there in Merriweather italic (whole, at most four lines: the end of the last paragraph,
-  starting at a sentence), the editor's gold ornament line, today's words against the daily goal, and one filled gold
-  **Continue writing** that opens that chapter with the caret after its last word. Hidden while searching; absent until
-  a book has been opened.
+- **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, as a banner of its own jacket (its
+  colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
+  gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic
+  (whole, at most four lines: the end of the last paragraph, starting at a sentence), the writer's own **note for next
+  time** on that chapter when they left one, the editor's gold ornament line, today's words against the daily goal,
+  and one filled gold **Continue writing** that opens that chapter with the caret after its last word. Hidden while
+  searching; absent until a book has been opened.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
 - **Designed covers** (a novel with no picture of its own, `NovelCover.tsx`, choices in `domain/coverArt.ts`): the
