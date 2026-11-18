@@ -118,8 +118,9 @@ is in the app once.
   (Material Design Icons' feather and plus). They can be dragged onto the home screen as icons of their own.
 
 - **The writing widget** (`plugins/withWritingWidget.js`, a native Android home-screen widget, 4 × 2, resizable): the book
-  last worked in on a dark-gold panel ("SCRIPTOR" in gold capitals, the title, "Today: 238 of 250 words" with a gold
-  bar, or just the day's words with no goal), and a filled gold **Continue writing** that opens Write at the last word, beside a gold-outlined **15 min** that
+  last worked in on a dark-gold panel ("SCRIPTOR" in gold capitals, the title, the last words written in the chapter last
+  worked in, in the system serif italic (at most three lines, from a sentence when one starts in reach), "Today: 238
+  of 250 words" with a gold bar, or just the day's words with no goal; 4 × 3 by default), and a filled gold **Continue writing** that opens Write at the last word, beside a gold-outlined **15 min** that
   does the same with a 15-minute sprint started (`scriptor:///write?at=end&sprint=15`).
   It reads the library file only (never writes it), refreshes every 30 minutes and whenever Scriptor goes to the
   background, and says "Open Scriptor" when there is nothing to show. The launcher draws its text in the system face.

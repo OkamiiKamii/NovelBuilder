@@ -22,6 +22,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
@@ -35,7 +36,7 @@ class ScriptorWidget : AppWidgetProvider() {
     for (id in ids) manager.updateAppWidget(id, views)
   }
 
-  private data class Book(val title: String, val today: Int, val goal: Int?)
+  private data class Book(val title: String, val today: Int, val goal: Int?, val lines: String?)
 
   companion object {
     /** Redraws every Scriptor widget (when the app goes to the background). Never throws. */
@@ -64,6 +65,7 @@ class ScriptorWidget : AppWidgetProvider() {
       if (book == null) {
         views.setTextViewText(R.id.widget_title, "Your next page")
         views.setTextViewText(R.id.widget_today, "Open Scriptor to begin")
+        views.setViewVisibility(R.id.widget_lines, View.GONE)
         views.setViewVisibility(R.id.widget_bar, View.GONE)
         views.setTextViewText(R.id.widget_button, "Open Scriptor")
         views.setOnClickPendingIntent(R.id.widget_button, link(context, "scriptor:///", 2))
@@ -71,6 +73,13 @@ class ScriptorWidget : AppWidgetProvider() {
         return views
       }
       views.setTextViewText(R.id.widget_title, book.title)
+      // The last words written, to step back into: the story itself on the home screen.
+      if (book.lines != null) {
+        views.setTextViewText(R.id.widget_lines, book.lines)
+        views.setViewVisibility(R.id.widget_lines, View.VISIBLE)
+      } else {
+        views.setViewVisibility(R.id.widget_lines, View.GONE)
+      }
       val words = String.format(Locale.US, "%,d", book.today)
       if (book.goal != null && book.goal > 0) {
         val met = book.today >= book.goal
@@ -88,6 +97,48 @@ class ScriptorWidget : AppWidgetProvider() {
       views.setViewVisibility(R.id.widget_sprint, View.VISIBLE)
       views.setOnClickPendingIntent(R.id.widget_sprint, link(context, "scriptor:///write?at=end&sprint=15", 4))
       return views
+    }
+
+    /** The text of a paragraph or heading node: its text runs, a hard break as a space. */
+    private fun textOf(node: JSONObject): String {
+      if (node.optString("type") == "text") return node.optString("text")
+      if (node.optString("type") == "hardBreak") return " "
+      val kids = node.optJSONArray("content") ?: return ""
+      val out = StringBuilder()
+      for (i in 0 until kids.length()) kids.optJSONObject(i)?.let { out.append(textOf(it)) }
+      return out.toString()
+    }
+
+    /** Every paragraph and heading of a document, in reading order. */
+    private fun blocks(node: JSONObject, into: MutableList<String>) {
+      val type = node.optString("type")
+      if (type == "paragraph" || type == "heading") { into.add(textOf(node)); return }
+      val kids = node.optJSONArray("content") ?: return
+      for (i in 0 until kids.length()) kids.optJSONObject(i)?.let { blocks(it, into) }
+    }
+
+    /** The end of the last paragraph with words in the chapter last worked in (about 100 characters, from a sentence when
+     * one starts in reach, else from a word after "…"), as the Library's banner shows it (prose.ts lastLines). */
+    private fun lastLines(db: SQLiteDatabase, novelId: String): String? {
+      var chapter: String? = null
+      db.rawQuery("SELECT json FROM settings WHERE key = ?", arrayOf("write.lastNode." + novelId)).use { c ->
+        if (c.moveToFirst()) chapter = JSONArray("[" + c.getString(0) + "]").optString(0, "")
+      }
+      val id = chapter?.takeIf { it.isNotBlank() } ?: return null
+      var doc: JSONObject? = null
+      db.rawQuery("SELECT json FROM records WHERE project_id = ? AND collection = 'chapterContents' AND id = ?", arrayOf(novelId, id)).use { c ->
+        if (c.moveToFirst()) doc = JSONObject(c.getString(0)).optJSONObject("doc")
+      }
+      val all = mutableListOf<String>()
+      doc?.let { blocks(it, all) }
+      val last = all.lastOrNull { it.isNotBlank() }?.trim() ?: return null
+      val max = 100
+      if (last.length <= max) return last
+      val tail = last.substring(last.length - max)
+      val m = Regex("""[.!?][”"’']? +(?=[^ ])""").find(tail)
+      if (m != null && tail.length - (m.range.last + 1) >= 30) return tail.substring(m.range.last + 1)
+      val space = tail.indexOf(' ')
+      return "…" + (if (space >= 0) tail.substring(space + 1) else tail)
     }
 
     /** The book last opened (not archived), today's net words in it, and its daily goal. Null with none. */
@@ -125,7 +176,7 @@ class ScriptorWidget : AppWidgetProvider() {
             if (j.optString("kind") == "daily" && j.has("targetWords") && !j.isNull("targetWords")) goal = j.optInt("targetWords")
           }
         }
-        return Book(if (bestTitle.isBlank()) "Untitled novel" else bestTitle, words, goal)
+        return Book(if (bestTitle.isBlank()) "Untitled novel" else bestTitle, words, goal, lastLines(db, id))
       } finally {
         db.close()
       }
@@ -144,6 +195,10 @@ const layout = `<?xml version="1.0" encoding="utf-8"?>
   <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="wrap_content"
       android:layout_marginTop="4dp" android:maxLines="2" android:ellipsize="end" android:textSize="20sp"
       android:textColor="${c.text}" android:fontFamily="@font/xml_cinzel" android:textStyle="bold" android:text="Your next page"/>
+  <TextView android:id="@+id/widget_lines" android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:layout_marginTop="4dp" android:maxLines="3" android:ellipsize="end" android:textSize="14sp"
+      android:lineSpacingMultiplier="1.15" android:textColor="#E2E8F0" android:fontFamily="serif" android:textStyle="italic"
+      android:visibility="gone" android:text=""/>
   <TextView android:id="@+id/widget_today" android:layout_width="match_parent" android:layout_height="wrap_content"
       android:layout_marginTop="6dp" android:textSize="13sp" android:textColor="${c.muted}" android:fontFamily="@font/xml_outfit"
       android:text=""/>
@@ -193,7 +248,7 @@ const bar = `<?xml version="1.0" encoding="utf-8"?>
 `;
 const info = `<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="250dp" android:minHeight="110dp" android:targetCellWidth="4" android:targetCellHeight="2"
+    android:minWidth="250dp" android:minHeight="180dp" android:targetCellWidth="4" android:targetCellHeight="3"
     android:resizeMode="horizontal|vertical" android:updatePeriodMillis="1800000" android:widgetCategory="home_screen"
     android:initialLayout="@layout/scriptor_widget" android:previewLayout="@layout/scriptor_widget"
     android:description="@string/scriptor_widget_description"/>
