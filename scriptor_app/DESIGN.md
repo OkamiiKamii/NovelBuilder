@@ -85,7 +85,9 @@ is in the app once.
   colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
   gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic
   (whole, at most four lines: the end of the last paragraph, starting at a sentence), the writer's own **note for next
-  time** on that chapter when they left one, the editor's gold ornament line, today's words against the daily goal (or,
+  time** on that chapter when they left one, **this week** as seven marks Monday first (filled gold for a day
+  written, a gold ring for today still to write, faint for the rest; the initials under them, today's in gold) beside
+  the run of days ("3 days in a row · write today to keep it"), the editor's gold ornament line, today's words against the daily goal (or,
   with no daily goal yet, **How much a day?**: four pace cards, 100 / 250 / 500 / 1,000 words in Cinzel gold with what
   that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word, with a gold-outlined
   **15-minute sprint** under it (the same, with a sprint started and the desk cleared into focus). Hidden while
@@ -119,7 +121,8 @@ is in the app once.
 
 - **The writing widget** (`plugins/withWritingWidget.js`, a native Android home-screen widget, 4 × 2, resizable): the book
   last worked in on a dark-gold panel ("SCRIPTOR" in gold capitals, the title, the last words written in the chapter last
-  worked in, in the system serif italic (at most three lines, from a sentence when one starts in reach), "Today: 238
+  worked in, in the system serif italic (one to three lines as the widget's height allows, from a sentence when one starts in
+  reach), this week's seven marks and the run of days, "Today: 238
   of 250 words" with a gold bar, or just the day's words with no goal; 4 × 3 by default), and a filled gold **Continue writing** that opens Write at the last word, beside a gold-outlined **15 min** that
   does the same with a 15-minute sprint started (`scriptor:///write?at=end&sprint=15`).
   It reads the library file only (never writes it), refreshes every 30 minutes and whenever Scriptor goes to the

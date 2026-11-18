@@ -20,23 +20,29 @@ import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 /** Scriptor's home-screen widget (plugins/withWritingWidget.js). Reads the library file; never writes it. */
 class ScriptorWidget : AppWidgetProvider() {
   override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
-    val views = render(context)
-    for (id in ids) manager.updateAppWidget(id, views)
+    for (id in ids) manager.updateAppWidget(id, render(context, manager.getAppWidgetOptions(id)))
   }
 
-  private data class Book(val title: String, val today: Int, val goal: Int?, val lines: String?)
+  /** Resized on the home screen: drawn again to fit. */
+  override fun onAppWidgetOptionsChanged(context: Context, manager: AppWidgetManager, id: Int, options: Bundle) {
+    manager.updateAppWidget(id, render(context, options))
+  }
+
+  private data class Book(val title: String, val today: Int, val goal: Int?, val lines: String?, val week: List<Int>, val run: String)
 
   companion object {
     /** Redraws every Scriptor widget (when the app goes to the background). Never throws. */
@@ -44,12 +50,18 @@ class ScriptorWidget : AppWidgetProvider() {
       try {
         val manager = AppWidgetManager.getInstance(context)
         val ids = manager.getAppWidgetIds(ComponentName(context, ScriptorWidget::class.java))
-        if (ids.isNotEmpty()) {
-          val views = render(context)
-          for (id in ids) manager.updateAppWidget(id, views)
-        }
+        for (id in ids) manager.updateAppWidget(id, render(context, manager.getAppWidgetOptions(id)))
       } catch (e: Exception) {
       }
+    }
+
+    private val dots = intArrayOf(R.id.widget_d0, R.id.widget_d1, R.id.widget_d2, R.id.widget_d3, R.id.widget_d4, R.id.widget_d5, R.id.widget_d6)
+
+    /** The day book's headline (dayBook.ts dayBookHeadline): the days written in a row. */
+    private fun headline(n: Int, kept: Boolean): String = when {
+      n == 0 -> "Every day you write leaves a mark"
+      kept -> if (n == 1) "Written today" else "$n days in a row"
+      else -> "$n " + (if (n == 1) "day" else "days in a row") + " · write today to keep it"
     }
 
     private fun link(context: Context, uri: String, code: Int): PendingIntent {
@@ -58,7 +70,10 @@ class ScriptorWidget : AppWidgetProvider() {
       return PendingIntent.getActivity(context, code, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
-    private fun render(context: Context): RemoteViews {
+    private fun render(context: Context, options: Bundle?): RemoteViews {
+      // As tall as the home screen gives it (portrait uses the larger height): fewer lines of the story when short.
+      val height = options?.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0) ?: 0
+      val storyLines = when { height == 0 || height >= 260 -> 3; height >= 230 -> 2; height >= 205 -> 1; else -> 0 }
       val views = RemoteViews(context.packageName, R.layout.scriptor_widget)
       val book = try { read(context) } catch (e: Exception) { null }
       views.setOnClickPendingIntent(R.id.widget_root, link(context, "scriptor:///", 1))
@@ -66,6 +81,7 @@ class ScriptorWidget : AppWidgetProvider() {
         views.setTextViewText(R.id.widget_title, "Your next page")
         views.setTextViewText(R.id.widget_today, "Open Scriptor to begin")
         views.setViewVisibility(R.id.widget_lines, View.GONE)
+        views.setViewVisibility(R.id.widget_week, View.GONE)
         views.setViewVisibility(R.id.widget_bar, View.GONE)
         views.setTextViewText(R.id.widget_button, "Open Scriptor")
         views.setOnClickPendingIntent(R.id.widget_button, link(context, "scriptor:///", 2))
@@ -73,9 +89,13 @@ class ScriptorWidget : AppWidgetProvider() {
         return views
       }
       views.setTextViewText(R.id.widget_title, book.title)
+      views.setViewVisibility(R.id.widget_week, View.VISIBLE)
+      for (i in 0 until 7) views.setImageViewResource(dots[i], book.week[i])
+      views.setTextViewText(R.id.widget_run, book.run)
       // The last words written, to step back into: the story itself on the home screen.
-      if (book.lines != null) {
+      if (book.lines != null && storyLines > 0) {
         views.setTextViewText(R.id.widget_lines, book.lines)
+        views.setInt(R.id.widget_lines, "setMaxLines", storyLines)
         views.setViewVisibility(R.id.widget_lines, View.VISIBLE)
       } else {
         views.setViewVisibility(R.id.widget_lines, View.GONE)
@@ -163,10 +183,33 @@ class ScriptorWidget : AppWidgetProvider() {
         val id = bestId ?: return null
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
         var words = 0
+        val written = HashSet<String>()
         db.rawQuery("SELECT json FROM records WHERE project_id = ? AND collection = 'writingSessions'", arrayOf(id)).use { c ->
           while (c.moveToNext()) {
             val j = JSONObject(c.getString(0))
-            if (j.optString("day") == today) words += j.optInt("netWords", 0)
+            val day = j.optString("day")
+            if (day == today) words += j.optInt("netWords", 0)
+            // A day is written when a session added words or ended with more (dayBook.ts).
+            if (j.optInt("netWords", 0) > 0 || j.optInt("added", 0) > 0) written.add(day)
+          }
+        }
+        val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val cal = Calendar.getInstance()
+        val kept = written.contains(today)
+        if (!kept) cal.add(Calendar.DAY_OF_MONTH, -1)
+        var run = 0
+        while (written.contains(fmt.format(cal.time))) { run++; cal.add(Calendar.DAY_OF_MONTH, -1) }
+        // This week, Monday first: written, today still to write, a day missed, or a day to come.
+        val monday = Calendar.getInstance()
+        monday.add(Calendar.DAY_OF_MONTH, -((monday.get(Calendar.DAY_OF_WEEK) + 5) % 7))
+        val week = (0 until 7).map {
+          val key = fmt.format(monday.time)
+          monday.add(Calendar.DAY_OF_MONTH, 1)
+          when {
+            written.contains(key) -> R.drawable.scriptor_dot_written
+            key == today -> R.drawable.scriptor_dot_today
+            key > today -> R.drawable.scriptor_dot_ahead
+            else -> R.drawable.scriptor_dot_missed
           }
         }
         var goal: Int? = null
@@ -176,7 +219,7 @@ class ScriptorWidget : AppWidgetProvider() {
             if (j.optString("kind") == "daily" && j.has("targetWords") && !j.isNull("targetWords")) goal = j.optInt("targetWords")
           }
         }
-        return Book(if (bestTitle.isBlank()) "Untitled novel" else bestTitle, words, goal, lastLines(db, id))
+        return Book(if (bestTitle.isBlank()) "Untitled novel" else bestTitle, words, goal, lastLines(db, id), week, headline(run, kept))
       } finally {
         db.close()
       }
@@ -199,6 +242,26 @@ const layout = `<?xml version="1.0" encoding="utf-8"?>
       android:layout_marginTop="4dp" android:maxLines="3" android:ellipsize="end" android:textSize="14sp"
       android:lineSpacingMultiplier="1.15" android:textColor="#E2E8F0" android:fontFamily="serif" android:textStyle="italic"
       android:visibility="gone" android:text=""/>
+  <LinearLayout android:id="@+id/widget_week" android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:layout_marginTop="8dp" android:orientation="horizontal" android:gravity="center_vertical">
+      <ImageView android:id="@+id/widget_d0" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d1" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d2" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d3" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d4" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d5" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+      <ImageView android:id="@+id/widget_d6" android:layout_width="12dp" android:layout_height="12dp"
+          android:layout_marginEnd="5dp" android:src="@drawable/scriptor_dot_ahead"/>
+    <TextView android:id="@+id/widget_run" android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_weight="1" android:layout_marginStart="6dp" android:maxLines="1" android:ellipsize="end"
+        android:textSize="12sp" android:textColor="${c.text}" android:fontFamily="@font/xml_outfit" android:text=""/>
+  </LinearLayout>
   <TextView android:id="@+id/widget_today" android:layout_width="match_parent" android:layout_height="wrap_content"
       android:layout_marginTop="6dp" android:textSize="13sp" android:textColor="${c.muted}" android:fontFamily="@font/xml_outfit"
       android:text=""/>
@@ -240,6 +303,19 @@ const outline = `<?xml version="1.0" encoding="utf-8"?>
   <stroke android:width="1dp" android:color="${c.gold}"/>
 </shape>
 `;
+const oval = (fill, stroke) => `<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+  <solid android:color="${fill}"/>
+  <stroke android:width="${stroke ? '1.5dp' : '0dp'}" android:color="${stroke ?? fill}"/>
+  <size android:width="12dp" android:height="12dp"/>
+</shape>
+`;
+const dots = {
+  scriptor_dot_written: oval(c.gold, null),
+  scriptor_dot_today: oval('#00000000', c.gold),
+  scriptor_dot_missed: oval(c.raised, c.track),
+  scriptor_dot_ahead: oval('#00000000', c.track),
+};
 const bar = `<?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@android:id/background"><shape><corners android:radius="3dp"/><solid android:color="${c.track}"/></shape></item>
@@ -298,6 +374,7 @@ module.exports = function withWritingWidget(config) {
       write('app/src/main/res/drawable/scriptor_widget_button.xml', button);
       write('app/src/main/res/drawable/scriptor_widget_bar.xml', bar);
       write('app/src/main/res/drawable/scriptor_widget_outline.xml', outline);
+      for (const [name, xml] of Object.entries(dots)) write(`app/src/main/res/drawable/${name}.xml`, xml);
       write('app/src/main/res/xml/scriptor_widget_info.xml', info);
       write('app/src/main/res/values/scriptor_widget_strings.xml', strings);
       return mod;

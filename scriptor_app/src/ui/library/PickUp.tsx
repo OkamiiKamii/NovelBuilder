@@ -6,7 +6,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { carryOnNode } from '../../domain/desk/dayBook';
+import { type BookDay, carryOnNode, dayBookHeadline, dayBookOf, dayLabel, weekInitials, writingSessionOf } from '../../domain/desk/dayBook';
 import { formatNumber } from '../../domain/desk/format';
 import { displayTitle, nextNotesKey, readNextNotes } from '../../domain/desk/pageAround';
 import { dailyChoices, pagesOf } from '../../domain/goals/goalPledge';
@@ -27,6 +27,9 @@ export type PickUpPlace = {
   note: string | null;
   today: number;
   goal: number | null;
+  /** This week, Monday to Sunday, and the run of days ("3 days in a row · write today to keep it"). */
+  week: BookDay[];
+  run: string;
 };
 
 /** Where the writer left off: the most recently opened book that is not archived, and its chapter. Null when no book
@@ -46,6 +49,10 @@ export function pickUpPlace(lib: Library, novels: readonly Novel[]): PickUpPlace
     lines: lastLines(blockTexts(saved?.['doc']), 130),
     note: readNextNotes(lib.settings.read(nextNotesKey(novel.id))).get(chapter.id)?.text ?? null,
     today: lib.manuscript.wordsWritten(novel.id).today,
+    ...(() => {
+      const book = dayBookOf(lib.novels.rowsIn(novel.id, 'writingSessions').map(writingSessionOf), Date.now(), 1);
+      return { week: book.days, run: dayBookHeadline(book) };
+    })(),
     goal: lib.manuscript.wordGoals(novel.id).daily,
   };
 }
@@ -109,6 +116,7 @@ export function PickUp({
             </View>
           </View>
         )}
+        <WeekStrip days={place.week} run={place.run} />
         <View style={styles.ornament} importantForAccessibility="no-hide-descendants">
           <View style={styles.rule} />
           <View style={styles.diamond} />
@@ -143,6 +151,31 @@ export function PickUp({
           />
         </View>
       </View>
+    </View>
+  );
+}
+
+/** This week as seven marks, Monday first: gold for a day written, a gold ring for today still to write, faint for the
+ * rest; and the run of days beside them. */
+function WeekStrip({ days, run }: { days: BookDay[]; run: string }) {
+  return (
+    <View style={styles.week} accessible accessibilityLabel={`This week. ${run}. ${days.map(dayLabel).filter(Boolean).join('. ')}`}>
+      <View style={styles.weekDays} importantForAccessibility="no-hide-descendants">
+        {days.map((d, i) => (
+          <View key={d.key} style={styles.weekDay}>
+            <View
+              style={[
+                styles.dot,
+                d.written ? styles.dotWritten : d.today ? styles.dotToday : d.ahead ? styles.dotAhead : styles.dotMissed,
+              ]}
+            />
+            <Text style={[styles.weekInitial, d.today && styles.weekInitialToday]}>{weekInitials[i]}</Text>
+          </View>
+        ))}
+      </View>
+      <Text style={styles.run} numberOfLines={2}>
+        {run}
+      </Text>
     </View>
   );
 }
@@ -225,6 +258,17 @@ const styles = StyleSheet.create({
   today: { flex: 1, gap: 6 },
   fullWidth: { alignSelf: 'stretch' },
   pledge: { gap: space.sm },
+  week: { flexDirection: 'row', alignItems: 'center', gap: space.md },
+  weekDays: { flexDirection: 'row', gap: 6 },
+  weekDay: { alignItems: 'center', gap: 3, width: 20 },
+  dot: { width: 14, height: 14, borderRadius: 7 },
+  dotWritten: { backgroundColor: colors.gold },
+  dotToday: { borderWidth: 2, borderColor: colors.gold },
+  dotMissed: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.elevated },
+  dotAhead: { borderWidth: 1, borderColor: colors.border, opacity: 0.5 },
+  weekInitial: { fontFamily: fonts.ui, fontSize: 10, color: colors.muted },
+  weekInitialToday: { color: colors.gold, fontWeight: '700' },
+  run: { flex: 1, fontFamily: fonts.ui, fontSize: 13, lineHeight: 18, color: colors.text },
   pledgeTitle: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 12, letterSpacing: 1.6, color: colors.gold },
   paces: { flexDirection: 'row', gap: space.sm },
   pace: {
