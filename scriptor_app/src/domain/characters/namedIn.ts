@@ -18,6 +18,7 @@ import { dartSort } from '../manuscript/dartSort';
 import { blockTexts } from '../prose';
 import { dartToLowerCase, dartTrim, dartTrimLeft, dartTrimRight } from '../text/dartString';
 import { WordIndex } from './wordIndex';
+import { isLetterOrNumber, runsOf } from '../text/letters';
 
 export type NamedEntry = { id: string; name: string; category: string };
 export type NamedProfile = { aliases: readonly string[]; epithet: string };
@@ -74,17 +75,26 @@ export function namesToFind(
   return result;
 }
 
-const wordRun = /[\p{L}\p{N}]+/gu;
+/** The words of a page: read a character at a time instead, as runsOf(text, isLetterOrNumber), the same runs. */
+export const wordRun = /[\p{L}\p{N}]+/gu;
 
 /** For each entry in `names`, the chapters and scenes (by id) whose text has one of its names, in `texts`' order. */
 export function namedIn(
   texts: ReadonlyMap<string, string>,
   names: Readonly<Record<string, readonly string[]>>,
 ): Map<string, string[]> {
+  const prepared = prepare(names);
   const out = new Map<string, string[]>();
-  // Each name read once: a single word is looked up among the page's words; a name of several words is looked for in
-  // the text only where every one of its words is on the page.
-  const prepared = new Map<string, { name: string; parts: string[]; single: boolean }[]>();
+  for (const [nodeId, text] of texts) gather(out, nodeId, namedOnPage(text, prepared));
+  return out;
+}
+
+type Prepared = Map<string, { name: string; parts: string[]; single: boolean }[]>;
+
+// Each name read once: a single word is looked up among the page's words; a name of several words is looked for in
+// the text only where every one of its words is on the page.
+function prepare(names: Readonly<Record<string, readonly string[]>>): Prepared {
+  const prepared: Prepared = new Map();
   for (const [id, wanted] of Object.entries(names)) {
     const list: { name: string; parts: string[]; single: boolean }[] = [];
     for (const n of wanted) {
@@ -93,23 +103,65 @@ export function namedIn(
     }
     prepared.set(id, list);
   }
-  for (const [nodeId, text] of texts) {
-    if (text.length === 0) continue;
-    const onPage = new Set([...text.matchAll(wordRun)].map((m) => m[0]));
-    let index: WordIndex | null = null;
-    for (const [entryId, wanted] of prepared) {
-      if (
-        wanted.some(
-          (n) => n.parts.every((p) => onPage.has(p)) && (n.single || (index ??= new WordIndex(text)).has(n.name)),
-        )
-      ) {
-        let list = out.get(entryId);
-        if (list === undefined) out.set(entryId, (list = []));
-        list.push(nodeId);
-      }
+  return prepared;
+}
+
+/** The entries (by id, in the names' order) one page's text names. */
+function namedOnPage(text: string, prepared: Prepared): string[] {
+  if (text.length === 0) return [];
+  // The runs of `wordRun`, read a character at a time (text/letters.ts): the same runs.
+  const onPage = new Set(runsOf(text, isLetterOrNumber).map((m) => m[0]));
+  let index: WordIndex | null = null;
+  const found: string[] = [];
+  for (const [entryId, wanted] of prepared) {
+    if (wanted.some((n) => n.parts.every((p) => onPage.has(p)) && (n.single || (index ??= new WordIndex(text)).has(n.name)))) {
+      found.push(entryId);
     }
   }
-  return out;
+  return found;
+}
+
+function gather(out: Map<string, string[]>, nodeId: string, found: readonly string[]): void {
+  for (const entryId of found) {
+    let list = out.get(entryId);
+    if (list === undefined) out.set(entryId, (list = []));
+    list.push(nodeId);
+  }
+}
+
+/** namedInJob, read again only where the book changed: a page's names are kept with its stored text, and a page whose
+ * text is the same as last time is not read again (typing in one chapter re-reads that chapter, not the book). The
+ * same result as namedInJob for the same chapters and names; a change of names reads every page afresh. */
+export class NamedInReader {
+  private namesKey: string | null = null;
+  private prepared: Prepared = new Map();
+  private pages = new Map<string, { id: string; found: string[] } | null>();
+
+  read(storedContents: readonly string[], names: Readonly<Record<string, readonly string[]>>): Map<string, string[]> {
+    const key = JSON.stringify(names);
+    if (key !== this.namesKey) {
+      this.namesKey = key;
+      this.prepared = prepare(names);
+      this.pages = new Map();
+    }
+    const kept = new Map<string, { id: string; found: string[] } | null>();
+    // As namedInJob's map of texts: in the stored order, a later record of the same id replacing the earlier's names
+    // where the earlier stood.
+    const perPage = new Map<string, string[]>();
+    for (const json of storedContents) {
+      let page = kept.get(json) ?? this.pages.get(json);
+      if (page === undefined) {
+        const row = rowOf(json);
+        page = row === null ? null : { id: str(row['id']), found: namedOnPage(blockTexts(row['doc']).join('\n'), this.prepared) };
+      }
+      kept.set(json, page);
+      if (page !== null) perPage.set(page.id, page.found);
+    }
+    this.pages = kept;
+    const out = new Map<string, string[]>();
+    for (const [nodeId, found] of perPage) gather(out, nodeId, found);
+    return out;
+  }
 }
 
 /** A stored chapter row read from its JSON text, or null when it cannot be read. */

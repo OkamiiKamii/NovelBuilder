@@ -5,11 +5,12 @@
 import { useCallback, useMemo } from 'react';
 
 import { openNovelSettingKey } from '../../data/settingsStore';
-import type { SystemChanges } from '../../domain/systems/systemChanges';
+import { type SystemChanges, systemCollections } from '../../domain/systems/systemChanges';
 import { SystemsService, systemsSaveKey } from '../../domain/systems/systemsService';
 import type { NovelSnapshot } from '../../domain/snapshot/novelSnapshot';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { useToast } from '../toast';
+import { keptRead } from '../keptRead';
 
 export type OpenSystems = {
   novelId: string;
@@ -30,7 +31,7 @@ export function useSystems(): OpenSystems | null {
     const id = lib.settings.read(openNovelSettingKey);
     return typeof id === 'string' && lib.novels.exists(id) ? id : null;
   }, [lib, revision]); // eslint-disable-line react-hooks/exhaustive-deps
-  const snapshot = useMemo(() => (novelId ? service.read(novelId) : null), [service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
+  const snapshot = useMemo(() => (novelId ? keptRead(lib.novels, 'systems', novelId, systemCollections, () => service.read(novelId)) : null), [lib, service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const now = useCallback(
     <T,>(make: (c: SystemChanges) => T): T | undefined => {

@@ -30,6 +30,7 @@ import {
 import type { Novel } from '../../domain/novel';
 import { ActionSheet, ConfirmDelete, PromptSheet, type SheetAction } from '../dialogs';
 import { Brand } from '../frame';
+import { AreaTools } from '../search/AreaTools';
 import { Chip, GoldButton, Icon, type IconName, IconButton, Muted, Panel, SectionTitle } from '../kit';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
@@ -248,8 +249,11 @@ export function LibraryScreen() {
   const header = (
     <View style={{ paddingTop: insets.top + (phone ? space.md : space.lg) }}>
       {phone && (
-        <View style={styles.phoneTop}>
-          <Brand />
+        <View style={[styles.phoneTop, styles.phoneTopRow]}>
+          <View style={styles.flex}>
+            <Brand />
+          </View>
+          <AreaTools />
         </View>
       )}
       <View style={[styles.searchRow, phone && styles.searchRowPhone]}>
@@ -695,6 +699,7 @@ const styles = StyleSheet.create({
   center: { textAlign: 'center' },
   side: { width: 320, flexGrow: 0, paddingRight: space.lg, paddingLeft: space.xs },
   phoneTop: { marginBottom: space.md },
+  phoneTopRow: { flexDirection: 'row', alignItems: 'center' },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   searchRowPhone: { gap: space.xs },
   search: {

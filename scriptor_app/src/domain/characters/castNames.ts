@@ -13,7 +13,8 @@
 
 import { dartSort } from '../manuscript/dartSort';
 import { dartTrim } from '../text/dartString';
-import { allMatches, matchAt } from './pageText';
+import { matchAt } from './pageText';
+import { isLetter, runsOf } from '../text/letters';
 
 /** A character for the readings of the pages: their id and the names they are found by (Dart's `EyesPerson`, in
  * pov.dart). */
@@ -22,7 +23,9 @@ export type EyesPerson = { id: string; names: readonly string[] };
 /** A name found: where it starts and ends in the text, whose it is, and which of their names (its place in their list). */
 export type NameHit = { start: number; end: number; id: string; name: number };
 
-const letters = /\p{L}+/gu;
+/** The runs of letters a name is looked up by: read a character at a time instead, as runsOf(text, isLetter), the same
+ * runs (test/perf/letters.test.ts checks them). */
+export const letters = /\p{L}+/gu;
 const lettersAtStart = /\p{L}+/uy;
 const letter = /\p{L}/uy;
 const letterLast = /\p{L}$/u;
@@ -85,10 +88,11 @@ export class CastNames {
   all(text: string): NameHit[] {
     const out: NameHit[] = [];
     if (this.byFirst.size > 0) {
-      for (const word of allMatches(letters, text)) {
-        const candidates = this.byFirst.get(word.text);
+      // The runs of letters (the pattern `letters`), read a character at a time (text/letters.ts): the same runs.
+      for (const word of runsOf(text, isLetter)) {
+        const candidates = this.byFirst.get(word[0]);
         if (candidates === undefined) continue;
-        const at = word.start;
+        const at = word.index!;
         for (const c of candidates) {
           const end = at + c.name.length;
           if (!text.startsWith(c.name, at)) continue;

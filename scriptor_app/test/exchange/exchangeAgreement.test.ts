@@ -1,20 +1,20 @@
 // A port of the manuscript-export part of flutter_app/test/shared/domain/exchange_agreement_test.dart, against the
 // same golden file (made by the original app): the compiled document, plain text, Markdown and the web page. Not
-// ported here: the Word file (render_docx), import (import_parse, import_structure) and a view's records
-// (records_export), and the `bible` variant, whose worldbuilding appendix compile.ts leaves out.
+// ported here: the Word file, import and a view's records (in importExport.test.ts).
 
 import { join } from 'node:path';
 
 import { type JsonMap, isMap } from '../../src/domain/json';
 import {
   type ExportOptions,
-  CompileNotPortedError,
   bibleExport,
   compiledToJson,
   compileNovel,
   readerExport,
 } from '../../src/domain/exchange/compile';
 import { renderHtml, renderMarkdown, renderText } from '../../src/domain/exchange/renderText';
+import { renderDocx } from '../../src/domain/exchange/renderDocx';
+import { strFromU8, unzipSync } from 'fflate';
 import { NovelSnapshot } from '../../src/domain/snapshot/novelSnapshot';
 import { flutterFixturesDir, readJson } from '../fixtures';
 
@@ -28,6 +28,7 @@ describe('manuscript export agrees with the original app', () => {
     const expected = golden[name] as JsonMap;
     const variants: Record<string, ExportOptions> = {
       reader: readerExport,
+      bible: bibleExport,
       planningOnly: { manuscript: false, titles: false, notes: true, lore: false, planning: true, history: false },
       textOnly: { manuscript: true, titles: false, notes: false, lore: false, planning: false, history: false },
       scoped: { ...bibleExport, scopeId: expected['scopeId'] as string },
@@ -40,18 +41,19 @@ describe('manuscript export agrees with the original app', () => {
         expect(renderText(compiled)).toBe(want['txt']);
         expect(renderMarkdown(compiled)).toBe(want['md']);
         expect(renderHtml(compiled)).toBe(want['html']);
+        if (isMap(want['docx'])) {
+          const parts: Record<string, string> = {};
+          for (const [k, v] of Object.entries(unzipSync(renderDocx(compiled)))) parts[k] = strFromU8(v);
+          expect(parts).toEqual(want['docx']);
+        }
       });
     }
-    test(`${name}, bible: the worldbuilding appendix is not ported, and says so`, () => {
-      expect(() => compileNovel(snapshot, bibleExport)).toThrow(CompileNotPortedError);
-    });
   }
 });
 
-test('every fixture novel compiles in every switch combination, or says the codex is not ported', () => {
+test('every fixture novel compiles in every switch combination without failing', () => {
   for (const name of ['qa-sample', 'made-in-the-app']) {
     const snapshot = load(name);
-    const hasEntries = snapshot.rows('loreEntries').length > 0;
     for (let mask = 0; mask < 64; mask++) {
       const options: ExportOptions = {
         manuscript: (mask & 1) !== 0,
@@ -61,11 +63,7 @@ test('every fixture novel compiles in every switch combination, or says the code
         planning: (mask & 16) !== 0,
         history: (mask & 32) !== 0,
       };
-      if (options.lore && hasEntries) {
-        expect(() => compileNovel(snapshot, options)).toThrow(CompileNotPortedError);
-      } else {
-        expect(() => compileNovel(snapshot, options)).not.toThrow();
-      }
+      expect(() => compileNovel(snapshot, options)).not.toThrow();
     }
   }
 });

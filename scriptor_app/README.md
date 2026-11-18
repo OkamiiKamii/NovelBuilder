@@ -30,7 +30,25 @@ between the two apps without losing anything. The file format keeps its existing
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | Done (2026-11-17), tested on the emulator |
 | 7: Review and collaboration by file | 306–328 | Done (2026-11-17), tested on the emulator |
 | 8: Analytics and keepsakes | 329–347 | Done (2026-11-17), tested on the emulator |
-| 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+| 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | Done (2026-11-17), tested on the emulator |
+
+**Phase 9** finished the app. **Import & export** (Settings › Your data): export the manuscript as Word, PDF,
+Markdown, plain text or a web page (Clean reader or Complete bible, what to include, the whole book or one part), import
+a manuscript from .docx, .rtf, .txt or .md (split into chapters and scenes, previewed, all or nothing), export records
+as CSV or JSON, export any Visualize view (PNG, PDF, JSON, CSV), and share and import templates. Word files are written
+and read with no new library. **Search** (the magnifier in the Library, Write, Organize and Analytics): the whole novel
+in four scopes, and "go anywhere"; a passage opens the chapter with the words selected, as do the "Read it there"
+buttons. **The index of names** (Write › names) and the **tutorial** (the question mark): 91 lessons in 7 groups, worded
+for Scriptor's places, opened on the lesson for the page in view, with your path and "show me on this page". The shared
+behaviours were audited across the app: loading skeletons and standard states, a find box in long choosers, larger tap
+targets, a missing confirmation and a typing bug fixed, and every button that waited for a later page now opens it.
+**Long novels**: the whole-book readings are 2–5 times faster on a 300,000-word novel, the cast is no longer re-read on
+every save, and the relationship map and the knowledge graph lay out in slices between frames; a performance test keeps
+it so. The logic matches the Dart on every fixture (search, the index, the tutorial and import/export checked against
+golden output from the real Dart and the original app's goldens).
+
+What a second thread would still add: React Native runs plain JavaScript on one thread without a native add-on, which
+Scriptor doesn't use. On a very long book the quiz, the Gazette and the trailer pause for a second or two while they read.
 
 **Phase 8** built the Analytics area, in three tabs. **Progress**: the journal (days in a row, words against the
 target as a page filling with ink, the projected finish), the length shelf, a year of writing, milestone seals, today,
@@ -237,10 +255,8 @@ replaced by the owner's mock-up layout. Write, Organize and Analytics show what 
 Checked by 77 tests, including every `.novel.json` fixture of the Flutter app: Scriptor writes exactly what the Flutter
 app writes (`test/golden/flutter-roundtrip`, made by the Flutter app itself).
 
-Still to come in later phases:
-- The screens that use some of this: the editor's recovery banner, Settings' restore points, Listen.
-- The import preview's list of missing references (section 32).
-- Running whole-book work off the screen thread (#11), first needed by the book-reading features.
+Everything listed for later phases here is now built: the recovery banner, Settings' restore points and Listen (3b), the
+review-copy guard (7), the import preview's missing references (9), and whole-book work kept off the screen (9).
 
 ## Stack
 

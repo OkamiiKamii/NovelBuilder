@@ -4,11 +4,12 @@
 import { useCallback, useMemo } from 'react';
 
 import { openNovelSettingKey } from '../../data/settingsStore';
-import type { PlotChanges } from '../../domain/plot/plotChanges';
+import { type PlotChanges, plotCollections } from '../../domain/plot/plotChanges';
 import { PlotService, plotSaveKey } from '../../domain/plot/plotService';
 import type { NovelSnapshot } from '../../domain/snapshot/novelSnapshot';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { useToast } from '../toast';
+import { keptRead } from '../keptRead';
 
 export type OpenPlot = {
   novelId: string;
@@ -29,7 +30,7 @@ export function usePlot(): OpenPlot | null {
     const id = lib.settings.read(openNovelSettingKey);
     return typeof id === 'string' && lib.novels.exists(id) ? id : null;
   }, [lib, revision]); // eslint-disable-line react-hooks/exhaustive-deps
-  const snapshot = useMemo(() => (novelId ? service.read(novelId) : null), [service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
+  const snapshot = useMemo(() => (novelId ? keptRead(lib.novels, 'plot', novelId, plotCollections, () => service.read(novelId)) : null), [lib, service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const now = useCallback(
     <T,>(make: (c: PlotChanges) => T): T | undefined => {

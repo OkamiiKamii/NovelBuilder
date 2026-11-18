@@ -31,7 +31,8 @@ import {
   layerToggled,
   mapBody,
   mapCount,
-  mapDrawing,
+  mapDrawingFrom,
+  mapLayoutRun,
   mapFiltered,
   mapFiltersView,
   mapLegend,
@@ -55,6 +56,7 @@ import { useToast } from '../toast';
 import { ChooserField } from './parts';
 import { useRelate } from './RelationshipScreen';
 import { useOpenNovel } from './useNovel';
+import { useInSlices } from '../inSlices';
 import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 export function RelationshipMapScreen() {
@@ -74,8 +76,18 @@ export function RelationshipMapScreen() {
 
   const settings = novel ? relationSettingsOf(novel.snapshot.rows('relationSettings')) : null;
   const net = useMemo(() => (novel ? relationNetwork(novel.model, networkFilterOf(state)) : null), [novel, state]);
-  const drawing = useMemo(() => (net ? mapDrawing(net) : null), [net]);
+  // Laid out between frames when the cast is large (ui/inSlices.ts): the same map, without holding the screen.
+  const layoutKey = net ? `${net.nodes.map((n) => `${n.id}:${n.degree}`).join(',')}|${net.edges.map((e) => `${e.from}>${e.to}`).join(',')}` : null;
+  const placed = useInSlices(layoutKey, () => mapLayoutRun(net!), (net?.nodes.length ?? 0) <= 80);
+  const drawing = useMemo(() => (placed ? mapDrawingFrom(placed) : null), [placed]);
   const canonMarks = useCanonMarks();
+  if (novel && settings && net && !drawing) {
+    return (
+      <View style={[styles.page, styles.center, { paddingTop: insets.top }]}>
+        <Muted>Drawing the map…</Muted>
+      </View>
+    );
+  }
   if (!novel || !settings || !net || !drawing) {
     return (
       <View style={[styles.page, styles.center, { paddingTop: insets.top }]}>

@@ -43,9 +43,11 @@ import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { requestFind } from '../write/pendingFind';
 import type { OpenCast } from '../organize/useCast';
 import { useCast } from '../organize/useCast';
 import type { OpenSystems } from './useSystems';
+import { Skeleton } from '../states';
 
 // ------------------------------------------------------------------------------------------------------ shared parts
 
@@ -75,10 +77,11 @@ function useReading<T>(key: string, read: () => T): T | undefined {
 }
 
 /** Opens a chapter in Write (the place is remembered as Write's own), as a profile's chapter chips do. */
-function useOpenChapter(novelId: string): (nodeId: string) => void {
+function useOpenChapter(novelId: string): (nodeId: string, find?: { term: string; block: number }) => void {
   const lib = useLibrary();
   const router = useRouter();
-  return (nodeId) => {
+  return (nodeId, find) => {
+    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
     lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
     router.navigate('/write');
   };
@@ -146,7 +149,7 @@ export function NumberLedgerView({ sys, systemId }: { sys: OpenSystems; systemId
                   <Text style={styles.said} numberOfLines={2}>
                     {card.said}
                   </Text>
-                  <OutlineButton label={card.read} icon="book-open-outline" compact tone="muted" onPress={() => openChapter(there.nodeId)} style={styles.end} />
+                  <OutlineButton label={card.read} icon="book-open-outline" compact tone="muted" onPress={() => openChapter(there.nodeId, there)} style={styles.end} />
                 </View>
               );
             })
@@ -264,7 +267,7 @@ export function LevelsView({ sys }: { sys: OpenSystems }) {
       <Head icon="stairs" heading={levelsWords.heading} />
       <Text style={styles.line}>{levelsWords.systemsLine}</Text>
       {levels === undefined || on === null ? (
-        <Muted>{levelsWords.reading}</Muted>
+        <Skeleton label={levelsWords.reading} lines={3} heading={false} caption />
       ) : levels.length === 0 ? (
         <Text style={styles.emptyLine}>{levelsWords.empty}</Text>
       ) : (
@@ -398,7 +401,7 @@ function LevelledRow({
                 <Text style={styles.said}>{s.sentence}</Text>
                 {s.up && <Muted>{s.up}</Muted>}
                 {s.backwards && <Text style={styles.slipLine}>{s.backwards}</Text>}
-                <OutlineButton label={levelsWords.readThere} icon="book-open-outline" compact tone="muted" onPress={() => openChapter(stepReadThere(s.step).nodeId)} style={styles.start} />
+                <OutlineButton label={levelsWords.readThere} icon="book-open-outline" compact tone="muted" onPress={() => openChapter(stepReadThere(s.step).nodeId, stepReadThere(s.step))} style={styles.start} />
               </View>
             </View>
           ))}

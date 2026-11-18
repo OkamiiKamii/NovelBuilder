@@ -12,6 +12,7 @@ import { ContinuityRule } from '../../domain/continuity/rules';
 import { rulesInOrder } from '../../domain/continuity/screens/continuityPage';
 import { str } from '../../domain/json';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { requestFind } from '../write/pendingFind';
 import { ReviewItem } from '../../domain/records/review';
 import { useLibrary } from '../LibraryContext';
 import { useToast } from '../toast';
@@ -30,7 +31,8 @@ export type OpenContinuity = {
   /** Typing: saved a moment after it stops, under `rules:<novel>:<key>`; a failure shows on the save pill. */
   later: (key: string, make: (c: ContinuityChanges) => void) => void;
   /** Opens a chapter or scene in Write (the place is remembered as Write's own). */
-  openChapter: (nodeId: string) => void;
+  /** Opens a chapter in Write, at `find`'s words when given (pendingFind.ts). */
+  openChapter: (nodeId: string, find?: { term: string; block: number }) => void;
 };
 
 export function useContinuity(): OpenContinuity | null {
@@ -82,8 +84,9 @@ export function useContinuity(): OpenContinuity | null {
     [lib, service, novelId],
   );
   const openChapter = useCallback(
-    (nodeId: string) => {
+    (nodeId: string, find?: { term: string; block: number }) => {
       if (novelId === null) return;
+      requestFind(find !== undefined && find.term.length > 0 ? { nodeId, ...find } : null);
       lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
       router.navigate('/write');
     },

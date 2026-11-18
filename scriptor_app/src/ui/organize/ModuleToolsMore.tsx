@@ -37,22 +37,18 @@ import type { OpenModules } from './useModules';
 
 type ToolProps = { mods: OpenModules; at: ToolAt };
 
-/** The pages a module may point at that Scriptor has; the rest come in later phases. Relationships is the map here. */
+/** The pages a module may point at, as Scriptor has them (corePagePath gives the Flutter app's paths): every one now
+ * exists; Relationships is the map, and Plan, Visualize and Review live under Organize. Null for anything unknown. */
 function scriptorPath(path: string): string | null {
   switch (path) {
-    case '/organize':
-    case '/organize/kinds':
-    case '/organize/ties':
-    case '/write':
-      return path;
     case '/visualize':
       return '/organize/ties';
     default:
-      return null;
+      return /^\/(organize|write|plan|visualize|review)(\/|$)/.test(path) ? path : null;
   }
 }
 
-const laterWords = 'Comes in a later phase';
+const laterWords = 'Not in this app';
 
 function useEntryLink() {
   const router = useRouter();
@@ -100,6 +96,7 @@ function Empty({ empty }: { empty: ToolEmpty }) {
 
 export function LogTool({ mods, at }: ToolProps) {
   const toast = useToast();
+  const router = useRouter();
   const openEntry = useEntryLink();
   const openChapter = useOpenChapter(mods.novelId);
   const view = useMemo(() => logTool(at), [at]);
@@ -213,7 +210,7 @@ export function LogTool({ mods, at }: ToolProps) {
                 {l.links.map((k) => (
                   <Chip
                     key={`${k.kind}:${k.id}`}
-                    label={k.kind === 'event' ? `${k.label} · ${laterWords}` : k.label}
+                    label={k.label}
                     icon={k.kind === 'chapter' ? 'book-open-page-variant-outline' : k.kind === 'event' ? 'timeline-outline' : 'link-variant'}
                     selected={false}
                     onPress={() => {
@@ -221,7 +218,7 @@ export function LogTool({ mods, at }: ToolProps) {
                       else if (k.kind === 'entry') {
                         const e = at.data.model.entries.get(k.id);
                         if (e) openEntry(e);
-                      } else toast(`The timeline: ${laterWords.toLowerCase()}.`);
+                      } else router.navigate(`/plan/event/${encodeURIComponent(k.id)}` as never);
                     }}
                   />
                 ))}
@@ -414,7 +411,7 @@ export function PageTool({ at }: ToolProps) {
         onPress={() => path && router.navigate(path as never)}
         style={styles.start}
       />
-      {path === null && <Muted>{`${laterWords}: ${str(at.tool['title'])} is not in Scriptor yet.`}</Muted>}
+      {path === null && <Muted>{`${str(at.tool['title'])} is not in Scriptor.`}</Muted>}
     </View>
   );
 }

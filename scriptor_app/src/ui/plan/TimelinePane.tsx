@@ -34,7 +34,6 @@ import { type OpenTimeline, useTimeline } from './useTimeline';
 
 /** How many events are drawn at first; more a press at a time (the Flutter chronicle builds a screenful at a time). */
 const page = 80;
-const later = 'Comes in a later phase';
 
 export function TimelinePane() {
   const tl = useTimeline();
@@ -127,7 +126,13 @@ export function TimelinePane() {
           {view.lifeBox.notes.map((n) => (
             <Muted key={n}>{n}</Muted>
           ))}
-          <OutlineButton label={view.lifeBox.whole} icon="account-clock-outline" compact tone="muted" disabled onPress={() => undefined} accessibilityLabel={`${view.lifeBox.whole}. ${later}`} style={styles.start} />
+          <OutlineButton
+            label={view.lifeBox.whole}
+            icon="account-clock-outline"
+            compact
+            onPress={() => router.navigate((filters.character ? `/visualize/history?who=${encodeURIComponent(filters.character)}` : '/visualize/history') as never)}
+            style={styles.start}
+          />
         </Panel>
       )}
 

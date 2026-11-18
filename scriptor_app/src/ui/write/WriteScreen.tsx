@@ -3,7 +3,7 @@
 // remembered for each novel.
 
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -36,6 +36,8 @@ import { str } from '../../domain/json';
 import { usePageCompany } from './PageCompany';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { TodaysPageSheet } from './TodaysPageSheet';
+import { onFind } from './pendingFind';
+import { AreaTools } from '../search/AreaTools';
 
 export const lastNodeSetting = (novelId: string) => `write.lastNode.${novelId}`;
 
@@ -105,6 +107,9 @@ export function WriteScreen() {
     },
     [lib, novelId],
   );
+
+  // A passage asked for from elsewhere while Write is open (search, the index): its chapter, opened (pendingFind.ts).
+  useEffect(() => onFind((f) => select(f.nodeId)), [select]);
 
   // ---- the contents' actions
 
@@ -234,6 +239,7 @@ export function WriteScreen() {
         />
         <IconButton icon="book-open-page-variant-outline" label="The book: read, details, publish" onPress={() => setBookMenu(true)} />
         <IconButton icon="plus" label="Add a part or chapter" onPress={() => setAddInto({ parent: null })} bordered color={colors.gold} />
+        <AreaTools />
       </View>
       <ScrollView contentContainerStyle={{ paddingBottom: (phone ? 0 : insets.bottom) + space.xl }}>
         {desk && (

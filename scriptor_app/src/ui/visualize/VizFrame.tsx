@@ -12,11 +12,10 @@ import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, useWindowDi
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
-import { sharePicture } from '../../data/files';
 import { characterPath } from '../../domain/characters/screens/create';
 import { worldEntryPath } from '../../domain/codex/screens/entryPage';
 import { type JsonMap, jsonEquals, str } from '../../domain/json';
-import { type EntityRef, type EntityType } from '../../domain/model/entityRef';
+import { type EntityRef, type EntityType, entityTypes } from '../../domain/model/entityRef';
 import { detailsOf } from '../../domain/model/navigate';
 import { strings } from '../../domain/records/jsonRecord';
 import { SavedView } from '../../domain/records/savedView';
@@ -39,6 +38,7 @@ import {
 } from '../../domain/visualize/screens/frame';
 import { isBuilt, viewLabel, viewOf, visualViews } from '../../domain/visualize/views';
 import { VisualizeService } from '../../domain/visualize/visualizeService';
+import { DataExportSheet, type ExportedView } from '../exchange/DataExportSheet';
 import { ActionSheet, ConfirmDelete, PromptSheet, Sheet } from '../dialogs';
 import { GoldButton, Icon, IconButton, type IconName, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
@@ -140,7 +140,8 @@ export function VizFrame({
   const service = useMemo(() => new VisualizeService(lib.novels), [lib]);
   const [filter, setFilterState] = useState<JsonMap>(kept.filter);
   const [selected, setSelected] = useState<EntityRef | null>(kept.selected);
-  const [sheet, setSheet] = useState<'atlas' | 'saved' | 'manage' | 'details' | null>(null);
+  const [sheet, setSheet] = useState<'atlas' | 'saved' | 'manage' | 'details' | 'export' | null>(null);
+  const [heading, setHeading] = useState<readonly string[] | null>(null);
   const picture = useRef<ComponentRef<typeof View>>(null);
   const context = useMemo<VizContext>(
     () => ({
@@ -189,13 +190,22 @@ export function VizFrame({
     setOff(r.off);
     if (r.alsoOn.length > 0) toast(manageWords.turnedOn(viewLabel(view), r.alsoOn.map(viewLabel)));
   };
-  const share = async () => {
+  // A picture of the view with what it is above it (the title, the novel, the filters and the date): the heading is
+  // drawn into the view, two frames are let pass so it is on screen, and the view is captured with it.
+  const capture = async (lines: readonly string[], format: 'png' | 'jpg'): Promise<string> => {
+    if (picture.current === null) throw new Error('The view is not on screen to make a picture of.');
+    setHeading(lines);
     try {
-      const uri = await captureRef(picture.current!, { format: 'png', quality: 1, result: 'tmpfile' });
-      await sharePicture(uri, title);
-    } catch (e) {
-      toast(`The picture was not made: ${e instanceof Error ? e.message : String(e)}`, { error: true });
+      await new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())));
+      return await captureRef(picture.current, { format, quality: format === 'jpg' ? 0.92 : 1, result: 'tmpfile' });
+    } finally {
+      setHeading(null);
     }
+  };
+  const exported = (): ExportedView => {
+    const keys = offersFilters ? matchingKeys(model, filter, entityTypes) : null;
+    const ids = keys === null ? null : new Set([...keys].map((k) => k.slice(k.indexOf(':') + 1)));
+    return { key: view, filter: offersFilters ? filter : {}, config: config?.() ?? {}, keep: (id) => ids === null || ids.has(id), capture };
   };
   const characters = open.cast.list.filter((l) => !l.profile.archived);
   const { query, involving } = filtersOf(filter);
@@ -213,7 +223,7 @@ export function VizFrame({
             </Text>
             {subtitle ? <Muted numberOfLines={1}>{subtitle}</Muted> : null}
           </View>
-          <IconButton icon="share-variant-outline" label={frameWords.export} onPress={() => void share()} />
+          <IconButton icon="share-variant-outline" label={frameWords.export} onPress={() => setSheet('export')} />
           <IconButton icon="tune-variant" label={frameWords.manage} onPress={() => setSheet('manage')} />
         </View>
         {!isViewOn(off, view) ? (
@@ -271,6 +281,14 @@ export function VizFrame({
               </View>
             )}
             <View ref={picture} collapsable={false} style={styles.picture}>
+              {heading !== null && (
+                <View style={styles.pictureHead}>
+                  <Text style={styles.title}>{heading[0]}</Text>
+                  {heading.slice(1).map((l, i) => (
+                    <Muted key={i}>{l}</Muted>
+                  ))}
+                </View>
+              )}
               {children}
             </View>
             {wide && selected !== null && <DetailsPanel open={open} selected={selected} select={context.select} />}
@@ -278,6 +296,7 @@ export function VizFrame({
           </ScrollView>
         )}
         {sheet === 'atlas' && <Atlas current={view} off={off} onClose={() => setSheet(null)} />}
+        {sheet === 'export' && <DataExportSheet snapshot={open.cast.snapshot} model={model} view={exported()} onClose={() => setSheet(null)} />}
         {sheet === 'manage' && <ManageViews off={off} setOff={setOff} onClose={() => setSheet(null)} />}
         {sheet === 'details' && selected !== null && (
           <Sheet visible onClose={() => setSheet(null)} title={selectedLabel ?? frameWords.notFound.title} wide>
@@ -724,6 +743,7 @@ const styles = StyleSheet.create({
   selectedRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm },
   selectedText: { fontFamily: fonts.ui, fontSize: 14, color: colors.text, flexShrink: 1 },
   picture: { backgroundColor: colors.background, gap: space.md },
+  pictureHead: { padding: space.md, gap: 4 },
   atlasIntro: { fontFamily: fonts.bookItalic, fontSize: 15, lineHeight: 22, color: colors.muted },
   subject: { gap: space.sm, marginTop: space.md },
   subjectTitle: { fontFamily: fonts.ui, fontSize: 12, fontWeight: '700', letterSpacing: 1.6, color: colors.gold },

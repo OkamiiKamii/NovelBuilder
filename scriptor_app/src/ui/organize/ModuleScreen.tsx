@@ -381,6 +381,8 @@ function FieldCell({
 }) {
   const c = cell(data, entry, category, def);
   const [text, setText] = useState(c.value);
+  // What is typed, as typed: a tags cell shows "a, b" for the stored "a\nb", and the comma being typed must stay.
+  const [draft, setDraft] = useState<string | null>(null);
   const [focused, setFocused] = useState(false);
   const [choosing, setChoosing] = useState(false);
   useEffect(() => {
@@ -462,14 +464,18 @@ function FieldCell({
     <View style={styles.gapXs}>
       {label}
       <TextInput
-        value={type === 'tags' ? text.split('\n').join(', ') : text}
+        value={draft ?? (type === 'tags' ? text.split('\n').join(', ') : text)}
         onChangeText={(v) => {
           const stored = type === 'tags' ? v.split(',').map((x) => x.trim()).filter((x) => x.length > 0).join('\n') : v;
+          setDraft(v);
           setText(stored);
           mods.later(`module:${mods.novelId}:cell:${c.key}`, c.write(stored));
         }}
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onBlur={() => {
+          setFocused(false);
+          setDraft(null);
+        }}
         placeholder="—"
         placeholderTextColor={colors.muted}
         selectionColor={colors.gold}

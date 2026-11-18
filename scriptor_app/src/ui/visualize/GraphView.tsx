@@ -15,7 +15,8 @@ import Svg, { G, Line, Path, Polygon, Text as SvgText } from 'react-native-svg';
 
 import { type GraphNode, type KnowledgeGraph, type Pair, edgeTypeLabel, edgeWords, knowledgeGraph, shapeOf } from '../../domain/graph/knowledge';
 import type { StoryModel } from '../../domain/model/storyModel';
-import { layoutGraph, radiusOf } from '../../domain/relationships/network';
+import { LayoutRun, radiusOf } from '../../domain/relationships/network';
+import { useInSlices } from '../inSlices';
 import {
   GraphSettings,
   type GraphUndo,
@@ -335,14 +336,17 @@ function GraphCanvas({
   const boxH = 420;
   // Laid out again only when the records or lines drawn change; the same graph is always drawn the same way.
   const layoutKey = `${drawn.nodes.map((n) => n.key).join(',')}|${pairs.map((p) => p.key).join(',')}`;
-  const placed = useMemo(
+  // Laid out between frames when there are many (ui/inSlices.ts): the same layout, without holding the screen.
+  const laidOut = useInSlices(
+    layoutKey,
     () =>
-      layoutGraph(
+      new LayoutRun(
         drawn.nodes.map((n) => ({ id: n.key, degree: n.degree })),
         pairs.map((p) => ({ from: p.a, to: p.b })),
       ),
-    [layoutKey], // eslint-disable-line react-hooks/exhaustive-deps
+    drawn.nodes.length <= 80,
   );
+  const placed = useMemo(() => laidOut ?? new Map<string, { x: number; y: number }>(), [laidOut]);
   const fit = useMemo(() => {
     const xs = [...placed.values()].map((p) => p.x);
     const ys = [...placed.values()].map((p) => p.y);
@@ -391,7 +395,12 @@ function GraphCanvas({
   return (
     <View style={styles.gapSm}>
       <View style={[styles.canvas, { width: boxW, height: boxH }]} {...pan.panHandlers} accessibilityLabel={`Knowledge graph: ${drawn.nodes.length} records, ${pairs.length} lines. The list form gives every connection in words.`}>
-        <Svg width={boxW} height={boxH}>
+        {laidOut === null && (
+          <View style={[StyleSheet.absoluteFill, { alignItems: 'center', justifyContent: 'center' }]}>
+            <Muted>Drawing the graph…</Muted>
+          </View>
+        )}
+        <Svg width={boxW} height={boxH} style={laidOut === null ? { opacity: 0 } : undefined}>
           {pairs.map((p) => {
             const a = at(p.a);
             const b = at(p.b);

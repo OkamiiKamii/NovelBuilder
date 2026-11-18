@@ -27,6 +27,12 @@ export const speechWords: readonly string[] = [
 /** A quotation, curly or straight: its words in the first group or the second. */
 export const quotePattern = /“([^”]+)”|"([^"]+)"/g;
 
+/** The lines quoted in `text` (quotePattern's matches). A paragraph with no quotation mark has none, and is not run
+ * through the pattern: most of a book's paragraphs have no line in them (test/perf). */
+export function quotesIn(text: string): Found[] {
+  return text.includes('“') || text.includes('"') ? allMatches(quotePattern, text) : [];
+}
+
 /** The words of speaking, as one pattern's alternatives. */
 const verb = `(?:${speechWords.join('|')})`;
 
@@ -40,7 +46,7 @@ export function spokenBy(
   names: readonly string[],
   options: { limit?: number } = {},
 ): Spoken[] {
-  return spoken(pages, nodeIds, names, options.limit ?? 60, (_id, _block, text) => allMatches(quotePattern, text));
+  return spoken(pages, nodeIds, names, options.limit ?? 60, (_id, _block, text) => quotesIn(text));
 }
 
 /** spokenBy for each of `people` (their names, by whatever key), the book read for its lines once for all of them:
@@ -54,7 +60,7 @@ export function spokenByEach<K>(
   const quotes = new Map<string, Found[][]>();
   for (const id of nodeIds) {
     const blocks = pages.get(id);
-    if (blocks !== undefined) quotes.set(id, blocks.map((text) => allMatches(quotePattern, text)));
+    if (blocks !== undefined) quotes.set(id, blocks.map((text) => quotesIn(text)));
   }
   const out = new Map<K, Spoken[]>();
   for (const [who, names] of people) {

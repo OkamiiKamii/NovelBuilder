@@ -2,7 +2,7 @@
 // chips over the part shown (flutter_app/lib/features/workspace/area_switch.dart's reviewParts, with Proofreading,
 // which the Flutter app opens from its home screen). Each part also has its own page at /review/… for links.
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { TeamPane } from '../collab/TeamPane';
@@ -31,14 +31,28 @@ const parts: { key: ReviewPart; label: string; icon: IconName }[] = [
 
 /** The part last shown, kept while the app runs (coming back from a record opens where you were). */
 const remembered: { part: ReviewPart } = { part: 'warnings' };
+/** Who shows it now, told when it is chosen from outside (search, the tutorial's "Take me there"). */
+const heard = new Set<(v: ReviewPart) => void>();
+
+/** What is shown, or last shown. */
+export function currentReviewPart(): ReviewPart {
+  return remembered.part;
+}
 
 /** Opens Review on `part` next time it is shown. */
 export function rememberReviewPart(part: ReviewPart): void {
   remembered.part = part;
+  for (const h of [...heard]) h(part);
 }
 
 export function ReviewPane() {
   const [part, setPartState] = useState<ReviewPart>(remembered.part);
+  useEffect(() => {
+    heard.add(setPartState);
+    return () => {
+      heard.delete(setPartState);
+    };
+  }, []);
   const setPart = (p: ReviewPart) => {
     remembered.part = p;
     setPartState(p);

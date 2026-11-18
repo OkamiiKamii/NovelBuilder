@@ -11,6 +11,13 @@ import { colors, fonts, radius, space } from '../theme';
 
 export type Choice<T> = { value: T; label: string };
 
+/** The most choices a list is a plain sheet for (choice_field.dart's longFrom): a longer one (the chapters, the cast,
+ * the places of a book) gets a line to type in that narrows it, and builds only the rows that fit. */
+export const longFrom = 12;
+
+/** How many matching rows a long list builds at once; typing narrows to the rest. */
+const longShown = 60;
+
 export function ChooserField<T>({
   label,
   value,
@@ -25,7 +32,16 @@ export function ChooserField<T>({
   helper?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [find, setFind] = useState('');
   const current = choices.find((c) => c.value === value);
+  const long = choices.length > longFrom;
+  const wanted = find.trim().toLowerCase().split(/s+/).filter((w) => w.length > 0);
+  const matching = long && wanted.length > 0 ? choices.filter((c) => wanted.every((w) => c.label.toLowerCase().includes(w))) : choices;
+  const shown = long ? matching.slice(0, longShown) : matching;
+  const close = () => {
+    setOpen(false);
+    setFind('');
+  };
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label.toUpperCase()}</Text>
@@ -41,8 +57,20 @@ export function ChooserField<T>({
         <Icon name="chevron-down" size={20} color={colors.muted} />
       </Pressable>
       {helper ? <Text style={styles.helper}>{helper}</Text> : null}
-      <Sheet visible={open} onClose={() => setOpen(false)} title={label}>
-        {choices.map((c, i) => {
+      <Sheet visible={open} onClose={close} title={label}>
+        {long && (
+          <TextInput
+            value={find}
+            onChangeText={setFind}
+            placeholder={`Type to find one of ${choices.length}`}
+            placeholderTextColor={colors.muted}
+            selectionColor={colors.gold}
+            accessibilityLabel={`Find in ${label}`}
+            style={[styles.input, styles.find]}
+          />
+        )}
+        {long && matching.length === 0 && <Text style={styles.helper}>{`Nothing here holds “${find.trim()}”.`}</Text>}
+        {shown.map((c, i) => {
           const on = c.value === value;
           const indent = c.label.length - c.label.trimStart().length;
           return (
@@ -51,7 +79,7 @@ export function ChooserField<T>({
               accessibilityRole="radio"
               accessibilityState={{ checked: on }}
               onPress={() => {
-                setOpen(false);
+                close();
                 if (!on) onChoose(c.value);
               }}
               style={({ pressed }) => [styles.choice, { paddingLeft: space.sm + indent * 4 }, pressed && { backgroundColor: colors.elevated }]}
@@ -61,6 +89,9 @@ export function ChooserField<T>({
             </Pressable>
           );
         })}
+        {matching.length > shown.length && (
+          <Text style={styles.helper}>{`${matching.length - shown.length} more: type to narrow the list.`}</Text>
+        )}
       </Sheet>
     </View>
   );
@@ -150,6 +181,7 @@ const styles = StyleSheet.create({
   helper: { fontFamily: fonts.ui, fontSize: 12, lineHeight: 17, color: colors.muted },
   choice: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 48, paddingRight: space.sm, borderRadius: radius.field },
   choiceText: { flex: 1, fontFamily: fonts.ui, fontSize: 15, color: colors.text },
+  find: { marginBottom: space.sm },
   input: {
     minHeight: 48,
     paddingHorizontal: space.md,

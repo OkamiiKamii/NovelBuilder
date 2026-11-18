@@ -10,6 +10,7 @@ import { compareNum, dartSort } from '../manuscript/dartSort';
 import { dartToLowerCase } from '../text/dartString';
 import { CastNames, type EyesPerson } from './castNames';
 import { allMatches, matchAt, paragraphsOf, sentenceAt, storedPages } from './pageText';
+import { apostropheOrHyphen, letterRuns } from '../text/letters';
 
 export type { EyesPerson } from './castNames';
 
@@ -53,7 +54,11 @@ const firstPersonWord = /\b(I|me|my|myself|I’m|I'm|I’d|I'd)\b/g;
 const following = /\s+([\p{L}’']+)(?:\s+([\p{L}’']+))?/uy;
 const possessive = /[’']/y;
 
-const wordsIn = (text: string) => allMatches(word, text).length;
+/** How many words `text` holds (the pattern `word`'s matches), read a character at a time (text/letters.ts). */
+const wordsIn = (text: string) => letterRuns(text, apostropheOrHyphen).length;
+
+/** The pattern `wordsIn` counts by, kept for checking it (test/perf/letters.test.ts). */
+export const povWordPattern = word;
 
 /** The point of view of each of `chapters` (each its id, title and paragraphs, in reading order), among `people`. A
  * chapter without a word is left out. */

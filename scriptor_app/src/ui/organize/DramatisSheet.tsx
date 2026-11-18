@@ -33,6 +33,7 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import type { OpenCast } from './useCast';
+import { Skeleton } from '../states';
 
 export function DramatisSheet({ open, onClose }: { open: OpenCast; onClose: () => void }) {
   const lib = useLibrary();
@@ -126,7 +127,7 @@ export function DramatisSheet({ open, onClose }: { open: OpenCast; onClose: () =
         </>
       )}
       {appearance === null ? (
-        <Muted>{dramatisWords.reading}</Muted>
+        <Skeleton label={dramatisWords.reading} lines={5} caption />
       ) : (
         <>
           {appearance.size === 0 && people.length > 0 && <Muted>{dramatisWords.nobodyOnPage}</Muted>}

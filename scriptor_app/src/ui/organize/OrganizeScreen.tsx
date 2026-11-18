@@ -3,7 +3,7 @@
 // Modules (5b), Systems (5c), Plan (6a) and Visualize, the atlas of views (6b), are all here.
 
 import { useRouter } from 'expo-router';
-import { type ComponentRef, useRef, useState } from 'react';
+import { type ComponentRef, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -14,6 +14,7 @@ import { SystemsPane } from '../systems/SystemsPane';
 import { ModulesPane } from './ModulesPane';
 import { PlanPane } from '../plan/PlanPane';
 import { ReviewPane } from '../review/ReviewPane';
+import { AreaTools } from '../search/AreaTools';
 import { VisualizePane } from '../visualize/VisualizePane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
@@ -47,10 +48,18 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
 
 /** The tab last chosen, kept while the app runs: coming back from an entry or a character opens where you were. */
 const remembered: { tab: Tab } = { tab: 'characters' };
+/** Who shows it now, told when it is chosen from outside (search, the tutorial's "Take me there"). */
+const heard = new Set<(v: Tab) => void>();
+
+/** What is shown, or last shown. */
+export function currentOrganizeTab(): Tab {
+  return remembered.tab;
+}
 
 /** Opens Organize on `tab` next time it is shown (the modules route, "All modules", lands on the Modules tab). */
 export function rememberOrganizeTab(tab: Tab): void {
   remembered.tab = tab;
+  for (const h of [...heard]) h(tab);
 }
 
 export function OrganizeScreen() {
@@ -59,6 +68,12 @@ export function OrganizeScreen() {
   const insets = useSafeAreaInsets();
   const phone = sizeClassOf(useWindowDimensions().width) === 'compact';
   const [tab, setTabState] = useState<Tab>(remembered.tab);
+  useEffect(() => {
+    heard.add(setTabState);
+    return () => {
+      heard.delete(setTabState);
+    };
+  }, []);
   const tabRow = useRef<ComponentRef<typeof ScrollView>>(null);
   const setTab = (t: Tab) => {
     remembered.tab = t;
@@ -80,13 +95,16 @@ export function OrganizeScreen() {
   const current = tabs.find((t) => t.key === tab)!;
   return (
     <View style={[styles.page, { paddingTop: insets.top }]}>
-      <View style={[styles.head, phone && styles.headPhone]}>
-        <Text style={styles.title} accessibilityRole="header">
-          Organize
-        </Text>
-        <Text style={styles.novel} numberOfLines={1}>
-          {String(novel.snapshot.project['title'] ?? '') || 'Untitled novel'}
-        </Text>
+      <View style={[styles.head, phone && styles.headPhone, styles.headRow]}>
+        <View style={styles.headWords}>
+          <Text style={styles.title} accessibilityRole="header">
+            Organize
+          </Text>
+          <Text style={styles.novel} numberOfLines={1}>
+            {String(novel.snapshot.project['title'] ?? '') || 'Untitled novel'}
+          </Text>
+        </View>
+        <AreaTools />
       </View>
       <ScrollView ref={tabRow} horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScroll} contentContainerStyle={styles.tabs}>
         {tabs.map((t) => {
@@ -145,6 +163,8 @@ const styles = StyleSheet.create({
   empty: { alignItems: 'center', gap: space.md, margin: space.lg, maxWidth: 420 },
   emptyTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.text },
   head: { paddingHorizontal: space.xl, paddingTop: space.md },
+  headRow: { flexDirection: 'row', alignItems: 'center' },
+  headWords: { flex: 1 },
   headPhone: { paddingHorizontal: space.md },
   title: { fontFamily: fonts.display, fontSize: 26, color: colors.gold },
   novel: { fontFamily: fonts.ui, fontSize: 13, color: colors.muted },

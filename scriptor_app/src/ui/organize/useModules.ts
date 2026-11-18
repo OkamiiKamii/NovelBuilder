@@ -7,10 +7,11 @@ import { useCallback, useMemo } from 'react';
 import { openNovelSettingKey } from '../../data/settingsStore';
 import type { ModuleChanges } from '../../domain/modules/moduleChanges';
 import { ModuleLibrary } from '../../domain/modules/moduleLibrary';
-import { ModuleService } from '../../domain/modules/moduleService';
+import { ModuleService, moduleCollections } from '../../domain/modules/moduleService';
 import type { NovelSnapshot } from '../../domain/snapshot/novelSnapshot';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { useToast } from '../toast';
+import { keptRead } from '../keptRead';
 
 export type OpenModules = {
   novelId: string;
@@ -45,7 +46,7 @@ export function useModules(): OpenModules | null {
     const id = lib.settings.read(openNovelSettingKey);
     return typeof id === 'string' && lib.novels.exists(id) ? id : null;
   }, [lib, revision]); // eslint-disable-line react-hooks/exhaustive-deps
-  const snapshot = useMemo(() => (novelId ? service.read(novelId) : null), [service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
+  const snapshot = useMemo(() => (novelId ? keptRead(lib.novels, 'modules', novelId, moduleCollections, () => service.read(novelId)) : null), [lib, service, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const now = useCallback(
     <T,>(make: (m: ModuleChanges) => T): T | undefined => {

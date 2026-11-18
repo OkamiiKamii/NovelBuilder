@@ -48,6 +48,7 @@ import { colors, fonts, radius, space } from '../theme';
 import { ChooserField } from '../organize/parts';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { type OpenReview, useReview } from './useReview';
+import { Skeleton } from '../states';
 
 // ------------------------------------------------------------------------------------------------ shared pieces
 
@@ -204,7 +205,7 @@ export function WarningsPane() {
   const [checkedOpen, setCheckedOpen] = useState(false);
   if (r === null) return <Muted>{fw.noNovel}</Muted>;
   const data = r.data;
-  if (data === null) return <Muted>Reading the book…</Muted>;
+  if (data === null) return <Skeleton label="Reading the book…" caption />;
   const items = data.status.items;
   const v = warningsView(items, show, byCategory, filters);
   const focusing = oneAtATime && v.queue.length > 0;

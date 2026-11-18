@@ -20,7 +20,7 @@ import { docBlocks } from '../prose';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { type EyesPerson } from './castNames';
 import { allMatches, clamp, dartEscape, firstMatch } from './pageText';
-import { quotePattern, speechWords } from './voice';
+import { quotePattern, quotesIn, speechWords } from './voice';
 
 /** A part of the script: the paragraph it is in (as the editor counts blocks), what is said, and who says it: null for
  * the narration; `line` for a line of dialogue (its `speaker` null when no one can be told saying it, `likely` when it
@@ -123,7 +123,7 @@ export function tableRead(
       return;
     }
     const text = block.text;
-    const quotes = allMatches(quotePattern, text);
+    const quotes = quotesIn(text);
     if (quotes.length === 0) {
       narrate(b, text);
       return;

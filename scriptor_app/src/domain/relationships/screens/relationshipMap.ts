@@ -27,6 +27,7 @@ import {
   type When,
   layerOf,
   layers,
+  LayoutRun,
   layoutNetwork,
   radiusOf,
 } from '../network';
@@ -447,14 +448,28 @@ const pad = 90.0;
 
 /** Where everything is drawn: each character's centre (from `layoutNetwork`, moved so the drawing starts at 0, 0) and
  * the drawing's size (at least 300 × 300). */
-export function mapDrawing(net: Network): {
+export function mapDrawing(net: Network): MapDrawing {
+  return mapDrawingFrom(layoutNetwork(net.nodes, net.edges));
+}
+
+export type MapDrawing = {
   at: Map<string, Point>;
   width: number;
   height: number;
   /** Ids in layout order, then the box size: when it changes, the map is fitted again. */
   placed: string[];
-} {
-  const placed = layoutNetwork(net.nodes, net.edges);
+};
+
+/** The map's layout laid out a few steps at a time (the screen runs it between frames): layoutNetwork's, step by step. */
+export function mapLayoutRun(net: Network): LayoutRun {
+  return new LayoutRun(
+    net.nodes.map((n) => ({ id: n.id, degree: n.degree })),
+    net.edges.map((e) => ({ from: e.from, to: e.to })),
+  );
+}
+
+/** mapDrawing from a layout already made (mapLayoutRun's result, or layoutNetwork's). */
+export function mapDrawingFrom(placed: ReadonlyMap<string, Point>): MapDrawing {
   const xs = [...placed.values()].map((p) => p.x);
   const ys = [...placed.values()].map((p) => p.y);
   const minX = (xs.length === 0 ? 0.0 : Math.min(...xs)) - pad;

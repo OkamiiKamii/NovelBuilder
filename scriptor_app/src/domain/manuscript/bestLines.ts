@@ -11,6 +11,7 @@
 import { paragraphsOf, storedPages } from '../characters/pageText';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { dartSort } from './dartSort';
+import { letterRuns } from '../text/letters';
 
 /** A line: its words, its chapter (the place from 1, the id), its paragraph, and its score. */
 export type BestLine = { text: string; chapter: number; nodeId: string; block: number; score: number };
@@ -39,10 +40,17 @@ export function countOf(text: string, of: string): number {
   return n;
 }
 
-/** The words of `text` (letters, then letters, apostrophes and hyphens), as matched. */
+/** The words of `text` (letters, then letters, apostrophes and hyphens), as matched. Read a character at a time
+ * (text/letters.ts): exactly `text.matchAll(word)`, at a fraction of the cost over a whole book. */
 export function wordsOf(text: string): RegExpMatchArray[] {
-  return Array.from(text.matchAll(word));
+  return letterRuns(text, inWord);
 }
+
+/** What a word may hold after its first letter besides letters: ’ ' - (the pattern `word`). */
+const inWord = (cp: number) => cp === 0x2019 || cp === 0x27 || cp === 0x2d;
+
+/** The pattern `wordsOf` reads by, kept for checking it (test/perf/letters.test.ts). */
+export const wordPattern = word;
 
 /** Whether the first code unit of `text` is already lower case (Dart's `s[0] == s[0].toLowerCase()`). */
 export function startsLower(text: string): boolean {

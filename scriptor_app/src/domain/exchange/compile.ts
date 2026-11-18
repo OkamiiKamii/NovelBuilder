@@ -1,15 +1,23 @@
 // The format-neutral document every exporter renders from, and the manuscript compiled into it. Pure TypeScript. A port
-// of flutter_app/lib/shared/domain/exchange/compile.dart, without the worldbuilding appendix (codex entries, their
-// fields, links and relationships), which needs the story model, continuity and relationship rules Scriptor does not
-// have yet: asking for it with codex entries present throws CompileNotPortedError rather than leave it out unsaid.
+// of flutter_app/lib/shared/domain/exchange/compile.dart, the worldbuilding appendix (World's entries, their fields,
+// links and relationships) included since phase 9. CompileNotPortedError is kept for callers that still name it; it is
+// no longer thrown.
 
 import { type JsonMap, isMap, listOf, mapOrNull, numOrNull, str } from '../json';
 import { dartSort, compareNum } from '../manuscript/dartSort';
 import { type NodeKind, type StoryNode, isDocument, isGroup, kindLabel, storyNode } from '../outline';
 import { nodeStatuses, upgradeNodeStatus } from '../records/nodeStatus';
 import type { NovelSnapshot } from '../snapshot/novelSnapshot';
-import { dartTrim } from '../text/dartString';
+import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { localeCompare } from './collation';
+import { relatedTo } from '../codex/codexChanges';
+import { filledFields } from '../continuity/rules';
+import { StoryModel } from '../model/storyModel';
+import { stageAt } from '../model/storyOrder';
+import { stableSorted } from '../reader/stableSort';
+import type { Entry } from '../records/entry';
+import { roleOf } from '../relationships/history';
+import { affinityLabels, affinityOf } from '../relationships/relationTypes';
 
 /** What goes into an exported document. Each switch is independent. */
 export type ExportOptions = {
@@ -19,7 +27,7 @@ export type ExportOptions = {
   readonly titles: boolean;
   /** The author's private notes (on chapters, scenes and codex entries). */
   readonly notes: boolean;
-  /** Codex entries. Not ported yet: see CompileNotPortedError. */
+  /** Codex entries: the worldbuilding appendix (World's entries, their fields, links and relationships). */
   readonly lore: boolean;
   /** Planning sheets for chapters and scenes. */
   readonly planning: boolean;
@@ -402,10 +410,7 @@ const statusLabel = (raw: JsonMap) =>
 /** Builds the export document from a whole novel. Every optional kind of content is added in exactly one place below,
  * behind its own switch, so an unticked box can be verified by reading this function: private notes, planning, lore
  * and history cannot reach the output any other way. A port of the original app's `compile`.
- *
- * Not ported: the worldbuilding appendix (`lore`). When it is asked for, the novel has codex entries and the whole
- * novel is exported (no `scopeId`), this throws CompileNotPortedError; in every other case the Flutter app adds nothing
- * for it either, and the result is the same as the Flutter app's. */
+ */
 export function compileNovel(snapshot: NovelSnapshot, options: ExportOptions): Compiled {
   const project = snapshot.project;
   const title = str(project['title']);
@@ -444,12 +449,6 @@ export function compileNovel(snapshot: NovelSnapshot, options: ExportOptions): C
   const scope = options.scopeId === undefined || options.scopeId === null ? null : find(fullTree, options.scopeId);
   const roots = scope !== null ? [scope] : fullTree;
   const baseDepth = scope?.depth ?? 0;
-
-  if (options.lore && entries.length > 0 && scope === null) {
-    throw new CompileNotPortedError(
-      'The worldbuilding appendix (codex entries) is not in Scriptor yet: export without the codex.',
-    );
-  }
 
   const heading = (role: HeadingRole, level: number, value: string, pageBreak = false) =>
     blocks.push(new HeadingBlock(role, min6(level), value, pageBreak));
@@ -549,6 +548,53 @@ export function compileNovel(snapshot: NovelSnapshot, options: ExportOptions): C
   for (const root of roots) {
     visit(root, last);
     last = root.node;
+  }
+
+  // ----- Worldbuilding appendix -----
+  if (options.lore && entries.length > 0 && scope === null) {
+    const model = StoryModel.fromSnapshot(snapshot);
+    const loreEntries = byId('loreEntries').map((r) => model.entries.get(str(r['id']))!);
+    const entryObjects = new Map<string, Entry>();
+    for (const e of loreEntries) entryObjects.set(e.id, e);
+    const links = byId('loreLinks').flatMap((r) => model.links.filter((l) => l.id === str(r['id'])));
+    const relations = byId('characterRelations').map((r) => model.relations.get(str(r['id']))!);
+    heading('section', 2, 'Worldbuilding', true);
+    for (const category of model.categories.values()) {
+      const inCategory = stableSorted(
+        loreEntries.filter((e) => e.category === category.key),
+        (a, b) => localeCompare(a.name, b.name),
+      );
+      if (inCategory.length === 0) continue;
+      heading('section', 3, category.name);
+      for (const entry of inCategory) {
+        heading('entry', 4, entry.name);
+        if (dartTrim(entry.summary).length > 0) blocks.push(...textBlocks(entry.summary));
+        for (const f of filledFields(entry, category, (id) => entryObjects.get(id)?.name ?? null)) field(f.label, f.text);
+        if (dartTrim(entry.description).length > 0) blocks.push(...textBlocks(entry.description));
+        field('Tags', entry.tags.join(', '));
+        field(
+          'Related entries',
+          relatedTo(entry.id, loreEntries, links)
+            .map((r) => (r.label.length > 0 ? `${r.entry.name} (${r.label})` : r.entry.name))
+            .join(', '),
+        );
+        // How this character stands with others at the end of the story.
+        const standing: string[] = [];
+        for (const relation of relations) {
+          const otherId = relation.fromId === entry.id ? relation.toId : relation.toId === entry.id ? relation.fromId : '';
+          const other = entryObjects.get(otherId);
+          if (other === undefined) continue;
+          const stage = stageAt(relation, null, model.order);
+          if (stage === null) continue;
+          const feeling = affinityOf(stage.affinity);
+          standing.push(
+            `${other.name} (${roleOf(stage, relation, other.id)}, ${dartToLowerCase(feeling !== null ? affinityLabels[feeling] : str(stage.affinity))})`,
+          );
+        }
+        field('Relationships', standing.join('; '));
+        if (options.notes) field('Author notes', entry.notes);
+      }
+    }
   }
 
   // ----- Revision history appendix -----

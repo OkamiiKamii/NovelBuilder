@@ -46,7 +46,6 @@ import { DateEditor, NumberField } from './DateEditor';
 import { PlanPage } from './PlanPage';
 import { useTimeline } from './useTimeline';
 
-const later = 'Comes in a later phase';
 
 export function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -209,7 +208,7 @@ export function EventScreen() {
         ))}
         <View style={styles.row}>
           {view.linkChapter.length > 0 && <OutlineButton label={eventWords.linkChapter} icon="link-variant" compact onPress={() => setAdding('chapter')} />}
-          <OutlineButton label={eventWords.compareOrders} icon="compare-horizontal" compact tone="muted" disabled onPress={() => undefined} accessibilityLabel={`${eventWords.compareOrders}. ${later}`} />
+          <OutlineButton label={eventWords.compareOrders} icon="compare-horizontal" compact onPress={() => router.navigate('/visualize/order' as never)} />
         </View>
       </Panel>
 

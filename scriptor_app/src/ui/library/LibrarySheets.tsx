@@ -74,6 +74,11 @@ export function ImportSheet({
           {preview.fromVersion < 4 && (
             <Note icon="update">Made by an older version of the app: it is brought up to date as it is read.</Note>
           )}
+          {preview.problems.length > 0 && (
+            <Note icon="link-variant-off">
+              {missingWords(preview.problems)}
+            </Note>
+          )}
           {preview.unknownCollections.length > 0 && (
             <Note icon="package-variant">
               {`It holds kinds of record this version does not use (${preview.unknownCollections.join(', ')}). They are kept unchanged.`}
@@ -117,7 +122,7 @@ export function ImportSheet({
   );
 }
 
-function Note({ icon, children }: { icon: 'update' | 'package-variant'; children: string }) {
+function Note({ icon, children }: { icon: 'update' | 'package-variant' | 'link-variant-off'; children: string }) {
   return (
     <View style={styles.note}>
       <Icon name={icon} size={18} color={colors.sky} />
@@ -296,3 +301,13 @@ const styles = StyleSheet.create({
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginBottom: space.lg },
   start: { alignSelf: 'flex-start' },
 });
+
+/** The references a file holds to records it does not, in words (the Flutter app's import preview). */
+function missingWords(problems: readonly string[]): string {
+  const lines = [
+    `${problems.length === 1 ? '1 reference' : `${problems.length} references`} in it name a record the file does not hold. They are imported as they are, nothing is dropped, and Organize › Review › Record check can deal with them afterwards:`,
+    ...problems.slice(0, 5).map((p) => `• ${p}`),
+    ...(problems.length > 5 ? [`…and ${problems.length - 5} more.`] : []),
+  ];
+  return lines.join('\n');
+}

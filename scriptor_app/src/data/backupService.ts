@@ -1,10 +1,11 @@
 // Backup and restore of whole novels as `.novel.json` files, the same format the Flutter app writes, so its backups
 // import directly. A port of flutter_app/lib/shared/data/backup_service.dart.
-//
-// Not ported yet: the import preview's list of references to missing records (it needs Review → Record check,
-// FEATURES.md section 32). The screens that pick and save files come with the Library (section 4).
+// The import preview lists the references in a file that name a record it does not hold, by Review → Record check's
+// rule (ported in phase 9).
 
 import { newId } from '../domain/ids';
+import { brokenReferences } from '../domain/integrity/rules';
+import { StoryModel } from '../domain/model/storyModel';
 import { jsonEquals, str } from '../domain/json';
 import { currentSnapshotVersion, NovelSnapshot, SnapshotError } from '../domain/snapshot/novelSnapshot';
 import type { RestorePointStore } from './draftStore';
@@ -63,6 +64,19 @@ export class ImportPreview {
 
   get unknownCollections(): string[] {
     return this.snapshot.unknownCollections;
+  }
+
+  private found: string[] | null = null;
+
+  /** References in the file that name a record it does not hold, in words: worked out by the same rule as Review →
+   * Record check. They are imported as they are (nothing is dropped), and can be dealt with there afterwards. */
+  get problems(): string[] {
+    if (this.found === null) {
+      this.found = brokenReferences(StoryModel.fromSnapshot(this.snapshot), this.snapshot.rows('structureMarkers')).map(
+        (b) => `${b.where}: ${b.says}`,
+      );
+    }
+    return this.found;
   }
 }
 

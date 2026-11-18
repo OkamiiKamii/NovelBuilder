@@ -48,6 +48,7 @@ import { spokenJob } from '../../domain/characters/voice';
 import { voicePrintsJob } from '../../domain/characters/voicePrint';
 import type { Entry } from '../../domain/records/entry';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { requestFind } from '../write/pendingFind';
 import { PromptSheet, Sheet } from '../dialogs';
 import { Icon, type IconName, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
@@ -122,7 +123,8 @@ function useStoreSetting() {
 function useOpenChapter(open: OpenCast) {
   const lib = useLibrary();
   const router = useRouter();
-  return (nodeId: string) => {
+  return (nodeId: string, find?: { term: string; block: number }) => {
+    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
     lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
     router.navigate('/write');
   };
@@ -557,7 +559,7 @@ export function ProfilePageBoxes({ open, entry, profile }: { open: OpenCast; ent
               key={i}
               accessibilityRole="button"
               accessibilityLabel={`${line.semanticsLabel}. ${line.chapter}`}
-              onPress={() => openChapter(line.read.nodeId)}
+              onPress={() => openChapter(line.read.nodeId, line.read)}
               style={({ pressed }) => [styles.line, pressed && { backgroundColor: colors.elevated }]}
             >
               <Text style={styles.bigQuote}>“</Text>
@@ -585,7 +587,7 @@ export function ProfilePageBoxes({ open, entry, profile }: { open: OpenCast; ent
               </View>
               {r.presses && (
                 <View style={[styles.row, styles.lookPresses]}>
-                  <OutlineButton label={r.presses.read.label} icon="book-open-variant" compact tone="muted" onPress={() => openChapter(r.presses!.read.there.nodeId)} />
+                  <OutlineButton label={r.presses.read.label} icon="book-open-variant" compact tone="muted" onPress={() => openChapter(r.presses!.read.there.nodeId, r.presses!.read.there)} />
                   <OutlineButton label={r.presses.record.label} compact onPress={() => open.now((c) => recordPageLook(c, entry.id, r.check))} />
                 </View>
               )}

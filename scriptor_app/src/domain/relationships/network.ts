@@ -346,24 +346,69 @@ export function layoutGraph(
   edges: readonly { from: string; to: string }[],
   trig: Trig = Math,
 ): Map<string, Point> {
-  const n = nodes.length;
-  const index = new Map(nodes.map((node, i) => [node.id, i]));
-  const r = nodes.map((node) => radiusOf(node.degree));
-  const ring = 40.0 + n * 9;
-  const x = nodes.map((_, i) => trig.cos((2 * Math.PI * i) / Math.max(n, 1)) * ring);
-  const y = nodes.map((_, i) => trig.sin((2 * Math.PI * i) / Math.max(n, 1)) * ring);
-  const links: [number, number][] = [];
-  for (const e of edges) {
-    if (index.has(e.from) && index.has(e.to) && e.from !== e.to) links.push([index.get(e.from)!, index.get(e.to)!]);
+  const run = new LayoutRun(nodes, edges, trig);
+  run.advance(Number.POSITIVE_INFINITY);
+  return run.result();
+}
+
+/** layoutGraph a few steps at a time: `advance(k)` runs up to k of its steps, so a large map can be laid out between
+ * frames instead of holding the screen (the 400-character test novel's map takes over a second at once). The same
+ * steps, the same sums in the same order: run to the end, its result is layoutGraph's. */
+export class LayoutRun {
+  private readonly nodes: readonly { id: string; degree: number }[];
+  private readonly n: number;
+  private readonly r: number[];
+  private readonly x: number[];
+  private readonly y: number[];
+  private readonly linkA: number[];
+  private readonly linkB: number[];
+  private readonly ties: number[];
+  private readonly steps: number;
+  private step = 0;
+
+  constructor(nodes: readonly { id: string; degree: number }[], edges: readonly { from: string; to: string }[], trig: Trig = Math) {
+    const n = nodes.length;
+    const index = new Map(nodes.map((node, i) => [node.id, i]));
+    const r = nodes.map((node) => radiusOf(node.degree));
+    const ring = 40.0 + n * 9;
+    const x = nodes.map((_, i) => trig.cos((2 * Math.PI * i) / Math.max(n, 1)) * ring);
+    const y = nodes.map((_, i) => trig.sin((2 * Math.PI * i) / Math.max(n, 1)) * ring);
+    // Each tie's two ends, in two lists (not pairs): read in the innermost loop, where a pair taken apart costs more than
+    // the sum it feeds on the phone (the build turns `[a, b]` into a helper call). The same sums, in the same order.
+    const linkA: number[] = [];
+    const linkB: number[] = [];
+    for (const e of edges) {
+      if (index.has(e.from) && index.has(e.to) && e.from !== e.to) {
+        linkA.push(index.get(e.from)!);
+        linkB.push(index.get(e.to)!);
+      }
+    }
+    const ties = new Array<number>(n).fill(0);
+    for (let k = 0; k < linkA.length; k++) {
+      ties[linkA[k]]++;
+      ties[linkB[k]]++;
+    }
+    this.nodes = nodes;
+    this.n = n;
+    this.r = r;
+    this.x = x;
+    this.y = y;
+    this.linkA = linkA;
+    this.linkB = linkB;
+    this.ties = ties;
+    this.steps = n > 1 ? Math.max(60, Math.min(300, dartRound(40000 / n))) : 0;
   }
-  const ties = new Array<number>(n).fill(0);
-  for (const [a, b] of links) {
-    ties[a]++;
-    ties[b]++;
+
+  /** Whether every step has run. */
+  get done(): boolean {
+    return this.step >= this.steps;
   }
-  if (n > 1) {
-    const steps = Math.max(60, Math.min(300, dartRound(40000 / n)));
-    for (let step = 0; step < steps; step++) {
+
+  /** Runs up to `most` more steps. */
+  advance(most: number): void {
+    const { n, r, x, y, linkA, linkB, ties, steps } = this;
+    for (let ran = 0; ran < most && this.step < steps; ran++) {
+      const step = this.step++;
       const alpha = 1.0 - step / steps;
       const dx = new Array<number>(n).fill(0);
       const dy = new Array<number>(n).fill(0);
@@ -389,7 +434,9 @@ export function layoutGraph(
       }
       // Ties pull towards their length. As d3 does, each tie moves the end with fewer ties more, so a record tied to
       // many is not pulled every way at once (and set swinging further each step).
-      for (const [a, b] of links) {
+      for (let k = 0; k < linkA.length; k++) {
+        const a = linkA[k];
+        const b = linkB[k];
         const vx = x[b] - x[a];
         const vy = y[b] - y[a];
         const d = Math.max(Math.sqrt(vx * vx + vy * vy), 1e-6);
@@ -428,5 +475,10 @@ export function layoutGraph(
       }
     }
   }
-  return new Map(nodes.map((node, i) => [node.id, { x: dartRound(x[i]), y: dartRound(y[i]) }]));
+
+  /** Where each goes, once done (whole numbers, as layoutGraph gives them). */
+  result(): Map<string, Point> {
+    const { nodes, x, y } = this;
+    return new Map(nodes.map((node, i) => [node.id, { x: dartRound(x[i]), y: dartRound(y[i]) }]));
+  }
 }

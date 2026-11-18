@@ -3,7 +3,7 @@
 // app's Progress area: features/progress/{progress_page,analytics_page}.dart and the keepsakes' shelf.
 
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,8 +13,9 @@ import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { AnalyticsPane } from './AnalyticsPane';
 import { KeepsakesPane } from './KeepsakesPane';
 import { ProgressPane } from './ProgressPane';
+import { AreaTools } from '../search/AreaTools';
 
-type Tab = 'progress' | 'analytics' | 'keepsakes';
+export type Tab = 'progress' | 'analytics' | 'keepsakes';
 const tabs: { key: Tab; label: string; icon: IconName }[] = [
   { key: 'progress', label: 'Progress', icon: 'trending-up' },
   { key: 'analytics', label: 'Analytics', icon: 'chart-bar' },
@@ -23,6 +24,19 @@ const tabs: { key: Tab; label: string; icon: IconName }[] = [
 
 /** The tab last chosen, kept while the app runs: coming back from a keepsake opens where you were. */
 const remembered: { tab: Tab } = { tab: 'progress' };
+/** Who shows it now, told when it is chosen from outside (search, the tutorial's "Take me there"). */
+const heard = new Set<(v: Tab) => void>();
+
+/** What is shown, or last shown. */
+export function currentAnalyticsTab(): Tab {
+  return remembered.tab;
+}
+
+/** Opens Analytics on `tab` next time it is shown, or now when it is showing. */
+export function rememberAnalyticsTab(tab: Tab): void {
+  remembered.tab = tab;
+  for (const h of [...heard]) h(tab);
+}
 
 export function AnalyticsScreen() {
   const novel = useOpenNovel();
@@ -30,6 +44,12 @@ export function AnalyticsScreen() {
   const insets = useSafeAreaInsets();
   const phone = sizeClassOf(useWindowDimensions().width) === 'compact';
   const [tab, setTabState] = useState<Tab>(remembered.tab);
+  useEffect(() => {
+    heard.add(setTabState);
+    return () => {
+      heard.delete(setTabState);
+    };
+  }, []);
   const setTab = (t: Tab) => {
     remembered.tab = t;
     setTabState(t);
@@ -49,13 +69,16 @@ export function AnalyticsScreen() {
   }
   return (
     <View style={[styles.page, { paddingTop: insets.top }]}>
-      <View style={[styles.head, phone && styles.headPhone]}>
-        <Text style={styles.title} accessibilityRole="header">
-          Analytics
-        </Text>
-        <Text style={styles.novel} numberOfLines={1}>
-          {String(novel.snapshot.project['title'] ?? '') || 'Untitled novel'}
-        </Text>
+      <View style={[styles.head, phone && styles.headPhone, styles.headRow]}>
+        <View style={styles.headWords}>
+          <Text style={styles.title} accessibilityRole="header">
+            Analytics
+          </Text>
+          <Text style={styles.novel} numberOfLines={1}>
+            {String(novel.snapshot.project['title'] ?? '') || 'Untitled novel'}
+          </Text>
+        </View>
+        <AreaTools />
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScroll} contentContainerStyle={styles.tabs}>
         {tabs.map((t) => {
@@ -84,6 +107,8 @@ const styles = StyleSheet.create({
   empty: { alignItems: 'center', gap: space.md, margin: space.lg, maxWidth: 420 },
   emptyTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.text },
   head: { paddingHorizontal: space.xl, paddingTop: space.md },
+  headRow: { flexDirection: 'row', alignItems: 'center' },
+  headWords: { flex: 1 },
   headPhone: { paddingHorizontal: space.md },
   title: { fontFamily: fonts.display, fontSize: 26, color: colors.gold },
   novel: { fontFamily: fonts.ui, fontSize: 13, color: colors.muted },

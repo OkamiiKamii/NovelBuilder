@@ -13,6 +13,8 @@ import { useFocusMode } from './write/deskState';
 import { Icon, type IconName } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
 import { SavePill } from './SavePill';
+import { SearchHost } from './search/SearchSheet';
+import { TutorialHost } from './tutorial/TutorialSheet';
 import { colors, fonts, radius, sizeClassOf, space } from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -47,6 +49,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
         <View style={styles.flex}>{children}</View>
         <BottomBar />
         <StatusScrim />
+        <Overlays />
       </View>
     );
   }
@@ -55,7 +58,18 @@ export function AppFrame({ children }: { children: ReactNode }) {
       <Rail expanded={size === 'expanded'} />
       <View style={styles.flex}>{children}</View>
       <StatusScrim />
+      <Overlays />
     </View>
+  );
+}
+
+/** Search and the tutorial (with its tour), over every page: opened from the buttons at the top of the areas. */
+function Overlays() {
+  return (
+    <>
+      <SearchHost />
+      <TutorialHost />
+    </>
   );
 }
 

@@ -19,6 +19,7 @@ import { useLibrary } from '../LibraryContext';
 import { type OpenNovel, useOpenNovel } from '../organize/useNovel';
 import { fonts, space } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { requestFind } from '../write/pendingFind';
 
 /** A keepsake's page: its ground, a back arrow to Analytics, its name, and what it shows, scrolling. */
 export function KeepsakePage({
@@ -151,8 +152,9 @@ export function usePicture(
 export function useOpenChapter(open: OpenNovel | null) {
   const lib = useLibrary();
   const router = useRouter();
-  return (nodeId: string) => {
+  return (nodeId: string, find?: { term: string; block: number }) => {
     if (open === null) return;
+    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
     lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
     router.navigate('/write');
   };

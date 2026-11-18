@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import { colors, fonts, radius, space } from './theme';
+import { useSpot } from './tutorial/spots';
 
 export type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 
@@ -64,9 +65,13 @@ type ButtonProps = {
 
 /** The main action: filled with a gold gradient, dark lettering. */
 export function GoldButton({ label, onPress, icon, disabled, style, accessibilityLabel, compact }: ButtonProps) {
+  // The tutorial's tour finds it by its label (tutorial/spots.ts).
+  const spot = useSpot(label);
   return (
     <Pressable
+      ref={spot}
       accessibilityRole="button"
+      hitSlop={4}
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled }}
       disabled={disabled}
@@ -98,9 +103,12 @@ export function OutlineButton({
   tone = 'gold',
 }: ButtonProps & { tone?: 'gold' | 'sky' | 'danger' | 'muted' }) {
   const color = { gold: colors.gold, sky: colors.sky, danger: colors.danger, muted: colors.muted }[tone];
+  const spot = useSpot(label);
   return (
     <Pressable
+      ref={spot}
       accessibilityRole="button"
+      hitSlop={4}
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled }}
       disabled={disabled}
@@ -134,8 +142,10 @@ export function IconButton({
   bordered?: boolean;
   size?: number;
 }) {
+  const spot = useSpot(label);
   return (
     <Pressable
+      ref={spot}
       accessibilityRole="button"
       accessibilityLabel={label}
       hitSlop={6}
@@ -159,9 +169,12 @@ export function Chip({
   onPress: () => void;
   icon?: IconName;
 }) {
+  const spot = useSpot(label);
   return (
     <Pressable
+      ref={spot}
       accessibilityRole="button"
+      hitSlop={4}
       accessibilityState={{ selected }}
       onPress={onPress}
       style={[styles.chip, selected && styles.chipSelected]}

@@ -22,7 +22,7 @@ import { relateIn } from '../../domain/characters/views/common';
 import { stableSorted } from '../../domain/reader/stableSort';
 import { frameFilter, matchingKeys, selectionWords } from '../../domain/visualize/screens/frame';
 import { mapDrawing, n, pinWords, placeLine, placesScope, tapToMap, tieKindsForPlace } from '../../domain/visualize/world/worldViews';
-import { Sheet } from '../dialogs';
+import { ConfirmDelete, Sheet } from '../dialogs';
 import { Chip, GoldButton, Icon, Muted, OutlineButton, Panel } from '../kit';
 import { ChooserField } from '../organize/parts';
 import { useTimeline } from '../plan/useTimeline';
@@ -230,6 +230,8 @@ function PlaceMap({
       >
         <Pressable
           disabled={puttingName === null}
+          accessibilityRole="button"
+          accessibilityLabel={puttingName === null ? undefined : `Tap the map where ${puttingName} goes`}
           onPress={(e) => {
             const at = tapToMap(e.nativeEvent.locationX / scale, e.nativeEvent.locationY / scale, map);
             onPut(at.x, at.y);
@@ -519,6 +521,8 @@ function MapsSheet({ p, onClose }: { p: OpenPlaces; onClose: () => void }) {
     (a, b) => localeCompare(a.name, b.name),
   );
   const count = (id: string) => p.data.pins.filter((x) => x.mapId === id).length;
+  // Deleting a map asks first, held to confirm (place_panels.dart's showConfirmDialog, destructive).
+  const [deleting, setDeleting] = useState<{ id: string; name: string } | null>(null);
   return (
     <Sheet visible onClose={onClose} title="Maps" footer={<GoldButton label="Done" onPress={onClose} />}>
       <Muted>
@@ -611,13 +615,7 @@ function MapsSheet({ p, onClose }: { p: OpenPlaces; onClose: () => void }) {
               label={`Delete ${map.name}`}
               compact
               tone="danger"
-              onPress={() => {
-                const done = p.places((c) => {
-                  c.removeMap(map.id);
-                  return true;
-                });
-                if (done === true) toast(`Deleted the map “${map.name}” and its ${plural(count(map.id), 'pin')}. The places are kept.`);
-              }}
+              onPress={() => setDeleting({ id: map.id, name: map.name })}
             />
           </View>
         </View>
@@ -637,6 +635,24 @@ function MapsSheet({ p, onClose }: { p: OpenPlaces; onClose: () => void }) {
           }}
         />
       </View>
+      {deleting && (
+        <ConfirmDelete
+          visible
+          title="Delete this map?"
+          message={`Delete the map “${deleting.name}” and its ${plural(count(deleting.id), 'pin')}? The places themselves are kept, in the tree and on any other map.`}
+          confirmLabel="Delete the map"
+          onClose={() => setDeleting(null)}
+          onConfirm={() => {
+            const d = deleting;
+            setDeleting(null);
+            const done = p.places((c) => {
+              c.removeMap(d.id);
+              return true;
+            });
+            if (done === true) toast(`Deleted the map “${d.name}”. The places are kept.`);
+          }}
+        />
+      )}
     </Sheet>
   );
 }

@@ -3,7 +3,7 @@
 // (flutter_app/lib/features/workspace/area_switch.dart's planParts). Each part's own pages (an event, a thread, a
 // chapter's plan) open as pages of their own under /plan/…, at the Flutter app's paths.
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Chip, type IconName } from '../kit';
@@ -26,14 +26,28 @@ const parts: { key: PlanPart; label: string; icon: IconName }[] = [
 
 /** The part last shown, kept while the app runs (coming back from an event or a thread opens where you were). */
 const remembered: { part: PlanPart } = { part: 'timeline' };
+/** Who shows it now, told when it is chosen from outside (search, the tutorial's "Take me there"). */
+const heard = new Set<(v: PlanPart) => void>();
+
+/** What is shown, or last shown. */
+export function currentPlanPart(): PlanPart {
+  return remembered.part;
+}
 
 /** Opens Plan on `part` next time it is shown (the /plan and /plan/threads routes). */
 export function rememberPlanPart(part: PlanPart): void {
   remembered.part = part;
+  for (const h of [...heard]) h(part);
 }
 
 export function PlanPane() {
   const [part, setPartState] = useState<PlanPart>(remembered.part);
+  useEffect(() => {
+    heard.add(setPartState);
+    return () => {
+      heard.delete(setPartState);
+    };
+  }, []);
   // The history open in the Alternate histories part: kept in the tab rather than in the route.
   const [history, setHistory] = useState<string | null>(null);
   const setPart = (p: PlanPart) => {

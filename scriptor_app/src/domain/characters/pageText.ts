@@ -13,10 +13,28 @@ export type Found = { start: number; end: number; text: string; groups: (string 
 /** Every match of `re` in `text`, in order (Dart's `allMatches`). `re` needs the `g` flag. */
 export function allMatches(re: RegExp, text: string): Found[] {
   const out: Found[] = [];
-  for (const m of text.matchAll(re)) {
+  // As `text.matchAll(re)` does (a copy of the pattern from the start; past an empty match, on by one character, a
+  // whole code point with the u flag), without the iterator the phone's build makes of it. Counted: each turn moves on.
+  if (!re.global) throw new TypeError('allMatches needs a pattern with the g flag, as matchAll does.');
+  const copy = new RegExp(re);
+  copy.lastIndex = 0;
+  const unicode = copy.unicode || copy.flags.includes('v');
+  for (let turn = 0; turn <= text.length + 1; turn++) {
+    const m = copy.exec(text);
+    if (m === null) break;
     out.push({ start: m.index, end: m.index + m[0].length, text: m[0], groups: m.slice(1) });
+    if (m[0].length === 0) copy.lastIndex = stepOn(text, copy.lastIndex, unicode);
   }
   return out;
+}
+
+/** The place after `at`: one code unit on, or a whole code point with the u flag (the spec's AdvanceStringIndex). */
+function stepOn(text: string, at: number, unicode: boolean): number {
+  if (!unicode || at + 1 >= text.length) return at + 1;
+  const c = text.charCodeAt(at);
+  if (c < 0xd800 || c > 0xdbff) return at + 1;
+  const d = text.charCodeAt(at + 1);
+  return d >= 0xdc00 && d <= 0xdfff ? at + 2 : at + 1;
 }
 
 /** The first match of `re` in `text`, or null (Dart's `firstMatch`). */

@@ -67,7 +67,7 @@ export function LinesPage() {
       </View>
       <View style={styles.row}>
         <GoldButton label="Share this line" icon="share-variant" disabled={picture.working} onPress={() => void picture.share('A line from your book')} />
-        <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(line.nodeId)} />
+        <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(line.nodeId, { term: line.text, block: line.block })} />
       </View>
       {picture.message ? <Note ink={ink} text={picture.message} /> : null}
     </KeepsakePage>

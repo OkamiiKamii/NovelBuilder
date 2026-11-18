@@ -11,6 +11,12 @@ import { docBlocks } from '../prose';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { sentencePattern, startsLower } from './bestLines';
 import { dartSort } from './dartSort';
+import { countStanding, lettersOnly } from '../text/letters';
+
+/** The pattern `leads` counts each name by, as words of its own (countStanding finds the same: test/perf). */
+export function standingPattern(name: string): RegExp {
+  return new RegExp(`(?<![\\p{L}\\p{N}])${dartEscape(name)}(?![\\p{L}\\p{N}])`, 'gu');
+}
 
 /** What a shot of the trailer shows: who it is from ("From RGA"), a line from the book, a name large, the title. */
 export type ShotKind = 'from' | 'line' | 'name' | 'title';
@@ -101,8 +107,9 @@ function leads(text: readonly string[], cast: readonly TrailerPerson[]): string[
     let n = 0;
     for (const name of new Set([...p.names, p.name])) {
       if (dartTrim(name).length === 0) continue;
-      const re = new RegExp(`(?<![\\p{L}\\p{N}])${dartEscape(dartTrim(name))}(?![\\p{L}\\p{N}])`, 'gu');
-      n += Array.from(all.matchAll(re)).length;
+      // The name as words of its own (standingPattern's matches), found without running a pattern per name over the
+      // whole book (text/letters.ts; test/perf/letters.test.ts checks that the two agree).
+      n += countStanding(all, dartTrim(name));
     }
     if (n >= 2) counted.push([p.name, n]);
   }
@@ -140,7 +147,7 @@ function score(line: string, names: readonly string[], spoken: boolean): number 
   if (line.endsWith('!') || line.endsWith('!”')) s += 2;
   if (spoken) s += 2;
   if (words.length >= 4 && words.length <= 11) s += 2;
-  const lower = new Set(words.map((w) => dartToLowerCase(w).replace(/[^\p{L}]/gu, '')));
+  const lower = new Set(words.map((w) => lettersOnly(dartToLowerCase(w))));
   if ([...lower].some((w) => charged.has(w))) s += 2;
   if (names.some((n) => n.length > 0 && line.includes(n))) s += 1;
   if (/^(And|But|Then|So|Or)\b/.test(first)) s -= 1;

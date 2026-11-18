@@ -4,6 +4,7 @@
 // somewhere else meanwhile. A port of flutter_app/lib/features/write/chapter_editor.dart (its core; the writing desk
 // tools come in Phase 3b).
 
+import { useRouter } from 'expo-router';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AppState,
@@ -67,6 +68,7 @@ import { placeholderTitle, titleIdeas, titleIdeasMinWords } from '../../domain/m
 import { completionsFor, type NameKey, pageKeys, wordAt } from '../../domain/text/nameKeys';
 import { cardOf, GlanceSheet, GlanceStrip, InChapterStrip, linksIn, NameKeysRow, TitleIdeas, usePageCompany } from './PageCompany';
 import { WordMeter } from './WordMeter';
+import { findIn, onFind, takeFind } from './pendingFind';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { reportSprintWords, SprintBar, SprintButton, SprintCard, sprintRunning, useSprint } from './Sprint';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
@@ -216,6 +218,7 @@ export function EditorPane({
     }
   }, [lib, novelId, node.id]);
 
+  const router = useRouter();
   const saveNow = useCallback(async () => {
     await editor.current?.flush();
     if (live.current.dirty) lib.saves.saveNow(saveKey, write);
@@ -290,6 +293,22 @@ export function EditorPane({
     else editor.current?.select(jumpTo.block, jumpTo.start, jumpTo.end);
     onJumped?.();
   }, [ready, jumpTo]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // A passage asked for (search, the index, "Read it there"): its words selected once the chapter is in, and again
+  // whenever one is asked for while this chapter is open (pendingFind.ts).
+  useEffect(() => {
+    if (ready === 0) return;
+    const land = () => {
+      const f = takeFind(node.id);
+      if (f === null) return;
+      const at = findIn(blockTexts(live.current.doc), f.term, f.block);
+      if (at !== null) editor.current?.select(at.block, at.start, at.end);
+    };
+    land();
+    return onFind((f) => {
+      if (f.nodeId === node.id) land();
+    });
+  }, [ready, node.id]);
 
   useEffect(() => setTitle(node.title), [node.title]);
 
@@ -432,7 +451,10 @@ export function EditorPane({
   const [marginOpen, setMarginOpen] = useState(false);
   const roomForMargin = width >= 1100;
   const marginShown = roomForMargin && marginBeside && !focus;
-  const planLater = () => toast('Chapter plans come with Organize, in a later phase.');
+  // The chapter's plan (Plan › Scene board): the page is kept first, then its plan opens.
+  const openPlan = () => {
+    void saveNow().then(() => router.navigate(`/plan/chapter/${encodeURIComponent(node.id)}` as never));
+  };
 
   const [nudgesOn, setNudgesOn] = useDeskSetting(nudgesKey, true);
   const [stuck, setStuck] = useState(false);
@@ -895,7 +917,7 @@ export function EditorPane({
       )}
 
       {editable && !focus && !tray && pageText.read && documentIsEmpty(pageText.all) && (
-        <FirstPage view={firstPageView(planNotes, marginShown)} onPlan={planLater} />
+        <FirstPage view={firstPageView(planNotes, marginShown)} onPlan={openPlan} />
       )}
       <View style={styles.deskRow}>
         <View style={[styles.page, !phone && !focus && styles.paper, { backgroundColor: page.background }, focus && styles.pageFocus]}>
@@ -926,7 +948,7 @@ export function EditorPane({
         </View>
         {marginShown && (
           <ScrollView style={styles.margin} contentContainerStyle={styles.marginBody}>
-            <MarginCards cards={cards} onPlan={planLater} />
+            <MarginCards cards={cards} onPlan={openPlan} />
           </ScrollView>
         )}
       </View>
@@ -1025,7 +1047,7 @@ export function EditorPane({
         onFreshInk={setFreshInk}
       />
       <Sheet visible={marginOpen} onClose={() => setMarginOpen(false)} title="The margin">
-        <MarginCards cards={cards} onPlan={planLater} />
+        <MarginCards cards={cards} onPlan={openPlan} />
       </Sheet>
       <RhythmSheet
         visible={rhythmOpen}

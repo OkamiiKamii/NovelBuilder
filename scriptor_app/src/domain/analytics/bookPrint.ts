@@ -9,6 +9,7 @@ import { dartEscape } from '../characters/pageText';
 import { storedParagraphs } from '../manuscript/bestLines';
 import { dartSort } from '../manuscript/dartSort';
 import { dartTrim } from '../text/dartString';
+import { isLetterOrNumber, runsOf } from '../text/letters';
 
 /** One paragraph: its words, whose it is (a character's id, or null), and whether anyone speaks in it. */
 export type PrintLine = { words: number; who: string | null; spoken: boolean };
@@ -27,6 +28,12 @@ const runs = /[\p{L}\p{N}]+/gu;
 
 const count = (re: RegExp, text: string): number => Array.from(text.matchAll(re)).length;
 
+/** In a run of `wordRun` (letters, digits, ’ and '). */
+const inWordRun = (cp: number) => isLetterOrNumber(cp) || cp === 0x2019 || cp === 0x27;
+
+/** The patterns read a character at a time instead (text/letters.ts), kept for checking it (test/perf/letters.test.ts). */
+export const printPatterns = { wordRun, runs };
+
 /** The paragraphs of one chapter as threads: each given to the character named most in it, else to the one the scene
  * was with (the last named before it in the chapter), else to no one. `names` are each character's name patterns;
  * with `words` (`nameWords`), a character none of whose names has all its words in a paragraph is passed over without
@@ -43,8 +50,11 @@ export function printLines(
     if (dartTrim(p).length === 0) continue;
     let who: string | null = null;
     let most = 0;
-    const held = words === null ? null : new Set(Array.from(p.matchAll(runs), (m) => m[0]));
-    for (const [id, pattern] of names) {
+    const held = words === null ? null : new Set(runsOf(p, isLetterOrNumber).map((m) => m[0]));
+    // Not `const [id, pattern]`: the phone's build makes each pair taken apart a helper call, 400 characters a paragraph.
+    for (const entry of names) {
+      const id = entry[0];
+      const pattern = entry[1];
       if (held !== null && !(words!.get(id) ?? []).some((w) => w.every((x) => held.has(x)))) continue;
       const n = count(pattern, p);
       if (n > most) {
@@ -53,7 +63,7 @@ export function printLines(
       }
     }
     if (who !== null) scene = who;
-    out.push({ words: count(wordRun, p), who: who ?? scene, spoken: speech.test(p) });
+    out.push({ words: runsOf(p, inWordRun).length, who: who ?? scene, spoken: speech.test(p) });
   }
   return out;
 }

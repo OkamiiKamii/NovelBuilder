@@ -15,6 +15,7 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { useCast } from '../organize/useCast';
 import { useContinuity } from './useContinuity';
+import { Skeleton } from '../states';
 
 /** `heading` false when the page around it already says "Before a reader sees it" (its route). */
 export function ProofPane({ heading = true }: { heading?: boolean } = {}) {
@@ -55,7 +56,7 @@ export function ProofPane({ heading = true }: { heading?: boolean } = {}) {
             Before a reader sees it
           </Text>
         )}
-        <Muted>Reading…</Muted>
+        <Skeleton label="Reading…" caption />
       </View>
     );
   }
@@ -92,7 +93,7 @@ export function ProofPane({ heading = true }: { heading?: boolean } = {}) {
               <Muted numberOfLines={1} style={styles.flex}>
                 {card.where}
               </Muted>
-              <OutlineButton label={card.read} icon="book-open-variant" compact tone="muted" onPress={() => c.openChapter(p.nodeId)} />
+              <OutlineButton label={card.read} icon="book-open-variant" compact tone="muted" onPress={() => c.openChapter(p.nodeId, { term: p.find, block: p.block })} />
             </View>
           </Panel>
         );

@@ -88,7 +88,7 @@ export function SettingsScreen() {
         <Row icon="monitor-dashboard" label="Theme" value="System Monolith" note="A futuristic interface with a golden edge." />
         <Row icon="format-font" label="Font style" value="Outfit (UI) · Merriweather (Text)" />
         <Row icon="circle" iconColor={colors.gold} label="Accent colour" value="Gold (System)" valueColor={colors.gold} />
-        <Muted style={styles.later}>More looks and writing preferences come with Write.</Muted>
+        <Muted style={styles.later}>The page’s look while writing (paper, type, width, focus) is set on the desk in Write.</Muted>
       </Panel>
 
       <Panel style={styles.block}>
@@ -179,6 +179,9 @@ export function SettingsScreen() {
         </Text>
         <Text style={styles.label}>SAVING</Text>
         <SavePill />
+        <Text style={styles.label}>IMPORT & EXPORT</Text>
+        <Muted>Export the manuscript as Word, PDF, Markdown, text or a web page; import a manuscript; export records; share templates; backups.</Muted>
+        <OutlineButton label="Open Import & export" icon="swap-vertical" onPress={() => router.navigate('/settings/import-export')} />
       </Panel>
 
       <Panel style={styles.block}>

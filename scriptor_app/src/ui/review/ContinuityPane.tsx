@@ -47,6 +47,7 @@ import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import { ChooserField } from '../organize/parts';
 import { type OpenContinuity, useContinuity } from './useContinuity';
+import { Skeleton } from '../states';
 
 /** `heading` false when the page around it already says "Continuity" (its route). */
 export function ContinuityPane({ tab: initialTab = 'issues', heading = true }: { tab?: ContinuityTab; heading?: boolean }) {
@@ -67,7 +68,7 @@ export function ContinuityPane({ tab: initialTab = 'issues', heading = true }: {
             {continuityWords.title}
           </Text>
         )}
-        <Muted>Reading…</Muted>
+        <Skeleton label="Reading…" caption />
       </View>
     );
   }
@@ -293,7 +294,7 @@ function IssueCard({ c, issue, onTracked }: { c: OpenContinuity; issue: Issue; o
         </View>
       )}
       <View style={styles.wrap}>
-        <OutlineButton label={continuityWords.fixManuscript} icon="pencil-outline" compact onPress={() => c.openChapter(issue.nodeId)} />
+        <OutlineButton label={continuityWords.fixManuscript} icon="pencil-outline" compact onPress={() => c.openChapter(issue.nodeId, { term: issue.match, block: issue.block })} />
         {card.canUpdate && <OutlineButton label={continuityWords.updateCanon} compact onPress={() => setConfirming(true)} />}
         <OutlineButton
           label={continuityWords.intentional}

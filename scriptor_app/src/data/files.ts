@@ -42,6 +42,14 @@ export async function pickTextFile(): Promise<{ name: string; text: string } | n
   return { name: asset.name, text: await new File(asset.uri).text() };
 }
 
+/** Asks for a file and reads its bytes (a manuscript: .docx is a zip). Null when the writer cancels. */
+export async function pickBytesFile(): Promise<{ name: string; bytes: Uint8Array } | null> {
+  const picked = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true, multiple: false });
+  if (picked.canceled || !picked.assets?.[0]) return null;
+  const asset = picked.assets[0];
+  return { name: asset.name, bytes: await new File(asset.uri).bytes() };
+}
+
 /** The longest side a cover is kept at, as in the Flutter app. */
 const coverMax = 800;
 

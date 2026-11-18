@@ -26,6 +26,7 @@ import { mix, withAlpha } from '../../domain/characters/views/common';
 import { castEntrances, doorPicked, entrancesReading } from '../../domain/characters/views/entrancesView';
 import { firstReading, KeptReadings, readingKey } from '../../domain/characters/views/keptReadings';
 import { type ReadThere, readingTheBook } from '../../domain/characters/views/readings';
+import { requestFind } from '../write/pendingFind';
 import {
   castTableRead,
   nudgedAfter,
@@ -44,6 +45,7 @@ import { lastNodeSetting } from '../write/WriteScreen';
 import { InterviewSheet } from './AidsSheets';
 import { Cameo } from './Cameo';
 import type { OpenCast } from './useCast';
+import { Skeleton } from '../states';
 
 type ViewProps = { open: OpenCast; found: Listed[] };
 
@@ -123,6 +125,7 @@ function useReadThere(open: OpenCast) {
   const lib = useLibrary();
   const router = useRouter();
   return (r: ReadThere) => {
+    requestFind(r.term.length > 0 ? { nodeId: r.nodeId, term: r.term, block: r.block } : null);
     lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), r.nodeId));
     router.navigate(r.path as '/write');
   };
@@ -157,7 +160,7 @@ function PressFace({ l, width = 40, height = 48 }: { l: Listed; width?: number; 
 function Reading() {
   return (
     <View style={styles.reading}>
-      <Muted>{readingTheBook}</Muted>
+      <Skeleton label={readingTheBook} lines={3} heading={false} caption />
     </View>
   );
 }
