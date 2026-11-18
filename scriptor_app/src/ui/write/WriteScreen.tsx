@@ -37,6 +37,8 @@ import { usePageCompany } from './PageCompany';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { TodaysPageSheet } from './TodaysPageSheet';
 import { onFind, takeEnd } from './pendingFind';
+import { sprintRunning, startWritingSprint } from './Sprint';
+import { sprintLengths } from '../../domain/goals/sprint';
 import { onInsert } from './pendingInsert';
 import { AreaTools } from '../search/AreaTools';
 
@@ -117,12 +119,15 @@ export function WriteScreen() {
   // opened; its editor writes them (pendingInsert.ts).
   useEffect(() => onInsert((i) => select(i.nodeId)), [select]);
   // The home-screen shortcut "Continue writing" (scriptor:///write?at=end): the chapter, at its last word.
-  const { at } = useLocalSearchParams<{ at?: string }>();
+  // And "15 min" on the widget (…&sprint=15): a sprint of that many minutes starts with the chapter.
+  const { at, sprint: sprintAsked } = useLocalSearchParams<{ at?: string; sprint?: string }>();
   useEffect(() => {
-    if (at !== 'end') return;
+    if (at !== 'end' && sprintAsked === undefined) return;
     if (selectedId) select(selectedId, 'end');
-    router.setParams({ at: undefined });
-  }, [at]); // eslint-disable-line react-hooks/exhaustive-deps
+    const minutes = Number(sprintAsked);
+    if (sprintLengths.includes(minutes) && !sprintRunning()) startWritingSprint(lib, minutes);
+    router.setParams({ at: undefined, sprint: undefined });
+  }, [at, sprintAsked]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ---- the contents' actions
 

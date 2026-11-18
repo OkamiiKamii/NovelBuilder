@@ -13,7 +13,7 @@ import { dailyChoices, pagesOf } from '../../domain/goals/goalPledge';
 import type { Novel } from '../../domain/novel';
 import { blockTexts, lastLines } from '../../domain/prose';
 import type { StoryNode } from '../../domain/outline';
-import { GoldButton, Icon, Muted, ProgressBar } from '../kit';
+import { GoldButton, Icon, Muted, OutlineButton, ProgressBar } from '../kit';
 import type { Library } from '../../data/library';
 import { colors, fonts, radius, space, tints } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
@@ -56,11 +56,14 @@ export function PickUp({
   place,
   wide,
   onContinue,
+  onSprint,
   onPledge,
 }: {
   place: PickUpPlace;
   wide: boolean;
   onContinue: () => void;
+  /** "15-minute sprint": the same chapter, with a sprint started. */
+  onSprint: () => void;
   /** With no daily goal yet: the writer chose one of the paces here. */
   onPledge: (words: number) => void;
 }) {
@@ -129,6 +132,13 @@ export function PickUp({
             icon="feather"
             onPress={onContinue}
             accessibilityLabel={`Continue writing ${title}, ${displayTitle(chapter)}, at your last line`}
+            style={wide ? undefined : styles.fullWidth}
+          />
+          <OutlineButton
+            label="15-minute sprint"
+            icon="timer-outline"
+            onPress={onSprint}
+            accessibilityLabel={`Write in ${title} for 15 minutes: a sprint, from your last line`}
             style={wide ? undefined : styles.fullWidth}
           />
         </View>

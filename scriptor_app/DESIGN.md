@@ -87,7 +87,8 @@ is in the app once.
   (whole, at most four lines: the end of the last paragraph, starting at a sentence), the writer's own **note for next
   time** on that chapter when they left one, the editor's gold ornament line, today's words against the daily goal (or,
   with no daily goal yet, **How much a day?**: four pace cards, 100 / 250 / 500 / 1,000 words in Cinzel gold with what
-  that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word. Hidden while
+  that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word, with a gold-outlined
+  **15-minute sprint** under it (the same, with a sprint started and the desk cleared into focus). Hidden while
   searching; absent until a book has been opened.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
@@ -118,7 +119,8 @@ is in the app once.
 
 - **The writing widget** (`plugins/withWritingWidget.js`, a native Android home-screen widget, 4 × 2, resizable): the book
   last worked in on a dark-gold panel ("SCRIPTOR" in gold capitals, the title, "Today: 238 of 250 words" with a gold
-  bar, or just the day's words with no goal), and a filled gold **Continue writing** that opens Write at the last word.
+  bar, or just the day's words with no goal), and a filled gold **Continue writing** that opens Write at the last word, beside a gold-outlined **15 min** that
+  does the same with a 15-minute sprint started (`scriptor:///write?at=end&sprint=15`).
   It reads the library file only (never writes it), refreshes every 30 minutes and whenever Scriptor goes to the
   background, and says "Open Scriptor" when there is nothing to show. The launcher draws its text in the system face.
 

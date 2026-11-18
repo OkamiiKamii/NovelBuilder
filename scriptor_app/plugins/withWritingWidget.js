@@ -67,6 +67,7 @@ class ScriptorWidget : AppWidgetProvider() {
         views.setViewVisibility(R.id.widget_bar, View.GONE)
         views.setTextViewText(R.id.widget_button, "Open Scriptor")
         views.setOnClickPendingIntent(R.id.widget_button, link(context, "scriptor:///", 2))
+        views.setViewVisibility(R.id.widget_sprint, View.GONE)
         return views
       }
       views.setTextViewText(R.id.widget_title, book.title)
@@ -83,6 +84,9 @@ class ScriptorWidget : AppWidgetProvider() {
       }
       views.setTextViewText(R.id.widget_button, "Continue writing")
       views.setOnClickPendingIntent(R.id.widget_button, link(context, "scriptor:///write?at=end", 3))
+      // "15 min": the same chapter, with a 15-minute sprint started.
+      views.setViewVisibility(R.id.widget_sprint, View.VISIBLE)
+      views.setOnClickPendingIntent(R.id.widget_sprint, link(context, "scriptor:///write?at=end&sprint=15", 4))
       return views
     }
 
@@ -147,10 +151,17 @@ const layout = `<?xml version="1.0" encoding="utf-8"?>
       android:layout_width="match_parent" android:layout_height="6dp" android:layout_marginTop="6dp"
       android:progressDrawable="@drawable/scriptor_widget_bar" android:max="100" android:progress="0"/>
   <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
-  <TextView android:id="@+id/widget_button" android:layout_width="match_parent" android:layout_height="44dp"
-      android:layout_marginTop="10dp" android:gravity="center" android:background="@drawable/scriptor_widget_button"
-      android:textSize="15sp" android:textColor="${c.onGold}" android:fontFamily="@font/xml_outfit" android:textStyle="bold"
-      android:text="Continue writing"/>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+    <TextView android:id="@+id/widget_button" android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="2" android:gravity="center" android:background="@drawable/scriptor_widget_button"
+        android:textSize="15sp" android:textColor="${c.onGold}" android:fontFamily="@font/xml_outfit" android:textStyle="bold"
+        android:text="Continue writing"/>
+    <TextView android:id="@+id/widget_sprint" android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1" android:layout_marginStart="8dp" android:gravity="center"
+        android:background="@drawable/scriptor_widget_outline" android:textSize="14sp" android:textColor="${c.gold}"
+        android:fontFamily="@font/xml_outfit" android:textStyle="bold" android:text="15 min"/>
+  </LinearLayout>
 </LinearLayout>
 `;
 
@@ -165,6 +176,13 @@ const button = `<?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
   <gradient android:angle="0" android:startColor="#FFD36B" android:centerColor="${c.gold}" android:endColor="${c.goldDeep}"/>
   <corners android:radius="10dp"/>
+</shape>
+`;
+const outline = `<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+  <solid android:color="#00000000"/>
+  <corners android:radius="10dp"/>
+  <stroke android:width="1dp" android:color="${c.gold}"/>
 </shape>
 `;
 const bar = `<?xml version="1.0" encoding="utf-8"?>
@@ -224,6 +242,7 @@ module.exports = function withWritingWidget(config) {
       write('app/src/main/res/drawable/scriptor_widget_bg.xml', bg);
       write('app/src/main/res/drawable/scriptor_widget_button.xml', button);
       write('app/src/main/res/drawable/scriptor_widget_bar.xml', bar);
+      write('app/src/main/res/drawable/scriptor_widget_outline.xml', outline);
       write('app/src/main/res/xml/scriptor_widget_info.xml', info);
       write('app/src/main/res/values/scriptor_widget_strings.xml', strings);
       return mod;

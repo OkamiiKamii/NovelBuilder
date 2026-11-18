@@ -14,6 +14,7 @@ import { openReviewCopy } from '../collab/useCollab';
 import { pickTextFile, shareTextFile } from '../../data/files';
 import { openNovelSettingKey } from '../../data/settingsStore';
 import { requestEnd } from '../write/pendingFind';
+import { startWritingSprint } from '../write/Sprint';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { recentActivity } from '../../domain/activity';
 import {
@@ -336,6 +337,12 @@ export function LibraryScreen() {
             const { novel, chapter } = data.pickUp!;
             requestEnd(chapter.id);
             openNovel(novel, chapter.id);
+          }}
+          onSprint={() => {
+            const { novel, chapter } = data.pickUp!;
+            requestEnd(chapter.id);
+            openNovel(novel, chapter.id);
+            startWritingSprint(lib, 15);
           }}
           onPledge={(words) => {
             const { novel } = data.pickUp!;

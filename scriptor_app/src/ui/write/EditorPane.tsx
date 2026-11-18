@@ -175,7 +175,9 @@ export function EditorPane({
     [node.id],
   );
   useEffect(() => {
-    if (sprintOn) reportSprintWords(node.id, measureDoc(live.current.doc).words);
+    // Not before the chapter is in: a sprint started from the Library would otherwise start counting from 0 words
+    // (opening the chapter reports its words then).
+    if (sprintOn && live.current.doc !== null) reportSprintWords(node.id, measureDoc(live.current.doc).words);
   }, [sprintOn, node.id]);
   // The page's text, read again a moment after typing stops: for who is on it and for title ideas.
   const [pageText, setPageText] = useState<{ read: boolean; all: string[]; prose: string[]; links: Record<string, number> }>({ read: false, all: [], prose: [], links: {} });
