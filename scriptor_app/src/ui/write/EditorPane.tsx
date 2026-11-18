@@ -68,6 +68,7 @@ import { placeholderTitle, titleIdeas, titleIdeasMinWords } from '../../domain/m
 import { completionsFor, type NameKey, pageKeys, wordAt } from '../../domain/text/nameKeys';
 import { cardOf, GlanceSheet, GlanceStrip, InChapterStrip, linksIn, NameKeysRow, TitleIdeas, usePageCompany } from './PageCompany';
 import { WordMeter } from './WordMeter';
+import { DaySeal } from './DaySeal';
 import { findIn, onFind, takeFind } from './pendingFind';
 import { onInsert, takeInsert } from './pendingInsert';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
@@ -949,6 +950,7 @@ export function EditorPane({
           onLens={setLensSummary}
           onChapterEnd={(a) => void onChapterEnd(a)}
         />
+        {editable && <DaySeal today={written.today} goal={goals.daily} />}
         {stuck && editable && (
           <View style={styles.nudgeSpot} pointerEvents="box-none">
             <NudgeChip

@@ -69,6 +69,11 @@ is in the app once.
   Write area's feather sits in a thin ring that fills gold, clockwise from the top, as today's words reach the goal;
   once it is met, the feather stands dark on a solid gold disc. Visible from every area, so the day's writing is never
   more than a glance away. No goal, no ring. A screen reader hears "Write: 127 of 250 words today".
+- **The day's seal** (`write/DaySeal.tsx`): the moment today's words cross the daily goal while writing, a gold seal
+  is pressed onto the page (the goal in Cinzel, the feather, "WORDS") with "The day's words are written." beneath it in
+  Merriweather italic; it holds about 2.6 s and lifts away. It never takes a touch or the keyboard, comes only on
+  crossing in this sitting (never on opening a chapter after the goal was met), is announced to a screen reader, and
+  only fades, without moving, for less motion.
 - **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, the chapter it was left in (in
   gold), the last lines written there in Merriweather italic (whole, at most four lines: the end of the last paragraph,
   starting at a sentence), the editor's gold ornament line, today's words against the daily goal, and one filled gold
