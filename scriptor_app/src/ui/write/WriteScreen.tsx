@@ -36,7 +36,7 @@ import { str } from '../../domain/json';
 import { usePageCompany } from './PageCompany';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { TodaysPageSheet } from './TodaysPageSheet';
-import { onFind } from './pendingFind';
+import { onFind, takeEnd } from './pendingFind';
 import { onInsert } from './pendingInsert';
 import { AreaTools } from '../search/AreaTools';
 
@@ -67,7 +67,9 @@ export function WriteScreen() {
   const nodes = useMemo(() => (novelId ? lib.manuscript.nodes(novelId) : []), [lib, novelId, revision]);
   const order = useMemo(() => readingOrder(nodes), [nodes]);
 
-  const [chosen, setChosen] = useState<string | null>(null);
+  // Opened from the Library's "pick up the thread": that chapter, at its last word.
+  const [endAsked] = useState(takeEnd);
+  const [chosen, setChosen] = useState<string | null>(endAsked);
   const remembered = novelId ? lib.settings.read(lastNodeSetting(novelId)) : null;
   const selectedId =
     [chosen, typeof remembered === 'string' ? remembered : null].find(
@@ -77,7 +79,7 @@ export function WriteScreen() {
     null;
   const selected = nodes.find((n) => n.id === selectedId) ?? null;
   const [phoneView, setPhoneView] = useState<'contents' | 'editor'>('editor');
-  const [jump, setJump] = useState<{ nodeId: string; to: Jump } | null>(null);
+  const [jump, setJump] = useState<{ nodeId: string; to: Jump } | null>(endAsked ? { nodeId: endAsked, to: 'end' } : null);
   const [storyboard, setStoryboard] = useDeskSetting('write.storyboard', false);
 
   // The contents' cards and the storyboard: read only while the contents are on the screen.

@@ -13,6 +13,7 @@ import { SnapshotError } from '../../domain/snapshot/novelSnapshot';
 import { openReviewCopy } from '../collab/useCollab';
 import { pickTextFile, shareTextFile } from '../../data/files';
 import { openNovelSettingKey } from '../../data/settingsStore';
+import { requestEnd } from '../write/pendingFind';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { recentActivity } from '../../domain/activity';
 import {
@@ -37,6 +38,7 @@ import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { BackupSheet, CollectionPicker, ImportSheet, TemplatesSheet } from './LibrarySheets';
+import { PickUp, pickUpPlace } from './PickUp';
 import { formatDate, NovelCard, NovelRow } from './NovelCard';
 import { NovelForm, type NovelFormResult } from './NovelForm';
 
@@ -85,6 +87,7 @@ export function LibraryScreen() {
       custom: lib.collections.list(),
       activity: recentActivity(lib.novels.recentRows(80), 6).map((a) => ({ ...a, title: titles.get(a.projectId) ?? '' })),
       restorePoints: lib.restorePoints.list(),
+      pickUp: pickUpPlace(lib, novels),
     };
     // revision: read again after every write.
   }, [lib, revision]);
@@ -302,6 +305,18 @@ export function LibraryScreen() {
         )}
       </View>
 
+      {data.pickUp && query === '' && (
+        <PickUp
+          place={data.pickUp}
+          wide={!phone}
+          onContinue={() => {
+            const { novel, chapter } = data.pickUp!;
+            requestEnd(chapter.id);
+            openNovel(novel, chapter.id);
+          }}
+        />
+      )}
+
       <View style={[styles.tiles, twoByTwo && styles.tilesPhone]}>
         <ActionTile icon="file-document-edit-outline" title="New Novel" subtitle="Start a new story" strong onPress={() => setForm({ editing: null, setupFrom: null })} half={twoByTwo} />
         <ActionTile icon="download-outline" title="Import" subtitle="Import from file" onPress={importFile} half={twoByTwo} />
@@ -386,7 +401,7 @@ export function LibraryScreen() {
             style={[styles.collection, phone && styles.collectionPhone, sameKey(collection, t.key) && styles.collectionOn]}
           >
             <Icon name={t.icon} size={26} color={t.color} />
-            <View>
+            <View style={styles.collectionText}>
               <Text style={styles.collectionName} numberOfLines={1}>
                 {t.label}
               </Text>
@@ -402,7 +417,7 @@ export function LibraryScreen() {
           style={[styles.collection, phone && styles.collectionPhone, styles.collectionNew]}
         >
           <Icon name="folder-plus-outline" size={26} color={colors.sky} />
-          <View>
+          <View style={styles.collectionText}>
             <Text style={styles.collectionName}>Custom Collection</Text>
             <Muted>Make your own</Muted>
           </View>
@@ -788,7 +803,9 @@ const styles = StyleSheet.create({
   },
   collectionOn: { borderColor: colors.gold },
   collectionNew: { borderStyle: 'dashed', borderColor: colors.sky },
-  collectionName: { fontFamily: fonts.ui, fontSize: 15, color: colors.text, maxWidth: 160 },
+  // The words beside the icon shrink to the tile, so a long name or bold text never runs past its edge.
+  collectionText: { flexShrink: 1 },
+  collectionName: { fontFamily: fonts.ui, fontSize: 15, color: colors.text },
   overviewLine: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm },
   overviewText: { fontFamily: fonts.ui, fontSize: 17, color: colors.text },
   quick: {

@@ -31,6 +31,21 @@ export function takeFind(nodeId: string): Find | null {
   return f;
 }
 
+// The Library's "pick up the thread": Write opens that chapter with the caret at its last word.
+let pendingEnd: string | null = null;
+
+/** Asks Write, as it next opens, to land at the end of chapter `nodeId`. */
+export function requestEnd(nodeId: string): void {
+  pendingEnd = nodeId;
+}
+
+/** The chapter whose end was asked for, taken: it is used once. */
+export function takeEnd(): string | null {
+  const id = pendingEnd;
+  pendingEnd = null;
+  return id;
+}
+
 /** Hears every request (Write, to open its chapter; the editor, to land on it when the chapter is already open). */
 export function onFind(listener: (f: Find) => void): () => void {
   listeners.add(listener);

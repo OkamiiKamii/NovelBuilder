@@ -37,6 +37,22 @@ export function blockTexts(doc: unknown): string[] {
   return docBlocks(doc).map((b) => b.text);
 }
 
+/** The last words written in a chapter, to pick up from (the Library's "pick up the thread"): the end of its last
+ * paragraph with words, at most about `max` characters, starting at a sentence when one starts within reach, else at a
+ * word with "…" before it. Null for a chapter with no words. */
+export function lastLines(paragraphs: readonly string[], max = 180): string | null {
+  const last = [...paragraphs].reverse().find((p) => p.trim().length > 0)?.trim();
+  if (last === undefined) return null;
+  if (last.length <= max) return last;
+  const tail = last.slice(last.length - max);
+  // A sentence starting inside the tail: after ". ", "! ", "? " (or a closing quote after them).
+  const m = /[.!?][”"’']?\s+(?=\S)/.exec(tail);
+  const start = m ? m.index + m[0].length : -1;
+  if (start > 0 && tail.length - start >= 40) return tail.slice(start);
+  const space = tail.indexOf(' ');
+  return `…${space >= 0 ? tail.slice(space + 1) : tail}`;
+}
+
 /** Codex entries linked inside the text, in the order first linked. */
 export function mentionsIn(doc: unknown): string[] {
   const ids = new Set<string>();

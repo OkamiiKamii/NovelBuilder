@@ -65,6 +65,11 @@ is in the app once.
 - **Main buttons:** gold outline with gold text and icon ("New Novel", "Continue"); the most important action is filled
   gold.
 - **Progress bars:** thin, gold on a dark track, with the percentage beside them in gold.
+- **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, the chapter it was left in (in
+  gold), the last lines written there in Merriweather italic (whole, at most four lines: the end of the last paragraph,
+  starting at a sentence), the editor's gold ornament line, today's words against the daily goal, and one filled gold
+  **Continue writing** that opens that chapter with the caret after its last word. Hidden while searching; absent until
+  a book has been opened.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
 - **Designed covers** (a novel with no picture of its own, `NovelCover.tsx`, choices in `domain/coverArt.ts`): the
