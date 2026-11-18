@@ -116,6 +116,12 @@ is in the app once.
   (the Library with the New novel form open: `scriptor:///?new=1`), each on a round gold icon with a dark glyph
   (Material Design Icons' feather and plus). They can be dragged onto the home screen as icons of their own.
 
+- **The writing widget** (`plugins/withWritingWidget.js`, a native Android home-screen widget, 4 × 2, resizable): the book
+  last worked in on a dark-gold panel ("SCRIPTOR" in gold capitals, the title, "Today: 238 of 250 words" with a gold
+  bar, or just the day's words with no goal), and a filled gold **Continue writing** that opens Write at the last word.
+  It reads the library file only (never writes it), refreshes every 30 minutes and whenever Scriptor goes to the
+  background, and says "Open Scriptor" when there is nothing to show. The launcher draws its text in the system face.
+
 ## Motion
 
 Scriptor moves only for three reasons (`src/ui/motion.ts`), all on the native driver:
