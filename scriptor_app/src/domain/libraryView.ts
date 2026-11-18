@@ -125,3 +125,9 @@ export function readingTime(words: number): string {
   if (minutes < 60) return `${minutes}m`;
   return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 }
+
+/** Whether the Library should offer the first book: no novel of the writer's own that is not archived. The sample is
+ * marked by sampleNovel.ts (`scriptorSample`). */
+export function wantsFirstBook(novels: readonly Novel[]): boolean {
+  return !novels.some((n) => !n.archived && n.raw['scriptorSample'] !== true);
+}

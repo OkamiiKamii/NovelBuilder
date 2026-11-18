@@ -27,6 +27,7 @@ import {
   passesFilter,
   readingTime,
   sortNovels,
+  wantsFirstBook,
 } from '../../domain/libraryView';
 import type { Novel } from '../../domain/novel';
 import { ActionSheet, ConfirmDelete, PromptSheet, type SheetAction } from '../dialogs';
@@ -38,6 +39,7 @@ import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { BackupSheet, CollectionPicker, ImportSheet, TemplatesSheet } from './LibrarySheets';
+import { FirstBook } from './FirstBook';
 import { PickUp, pickUpPlace } from './PickUp';
 import { formatDate, NovelCard, NovelRow } from './NovelCard';
 import { NovelForm, type NovelFormResult } from './NovelForm';
@@ -305,7 +307,21 @@ export function LibraryScreen() {
         )}
       </View>
 
-      {data.pickUp && query === '' && (
+      {query === '' && wantsFirstBook(data.novels) ? (
+        <FirstBook
+          wide={!phone}
+          onBegin={(title) =>
+            attempt(() => {
+              const author = lib.settings.read(authorSetting);
+              const { novel, chapterId } = lib.library.create(
+                { title, author: typeof author === 'string' ? author : '' },
+                { firstChapter: true },
+              );
+              openNovel(novel, chapterId);
+            }, 'The novel could not be made')
+          }
+        />
+      ) : data.pickUp && query === '' && (
         <PickUp
           place={data.pickUp}
           wide={!phone}

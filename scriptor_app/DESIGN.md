@@ -74,6 +74,10 @@ is in the app once.
   Merriweather italic; it holds about 2.6 s and lifts away. It never takes a touch or the keyboard, comes only on
   crossing in this sitting (never on opening a chapter after the goal was met), is announced to a screen reader, and
   only fades, without moving, for less motion.
+- **Your first book** (`FirstBook.tsx`): while the writer has no novel of their own (only the sample, or nothing; archived
+  ones don't count), the top of the Library is a blank jacket in the same banner style, with "YOUR FIRST BOOK" in gold
+  and the title typed straight onto it in Cinzel over a gold rule; "Begin chapter one" makes the book (the last author
+  name used) and opens Chapter 1. It gives way to Pick up the thread once a book of their own exists.
 - **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, as a banner of its own jacket (its
   colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
   gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic
