@@ -8,7 +8,7 @@
 import * as Clipboard from 'expo-clipboard';
 import { LinearGradient } from 'expo-linear-gradient';
 import { type ComponentRef, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 import { captureRef } from 'react-native-view-shot';
 
@@ -38,7 +38,7 @@ import {
 } from '../../domain/systems/screens/sheetEditor';
 import { reachLabel, type SheetPart, sheetView } from '../../domain/systems/screens/sheetView';
 import { windowInk } from '../../domain/systems/screens/statusWindow';
-import { SpeaksState, bracketKey, speaksIntro, speaksWords } from '../../domain/systems/screens/systemSpeaks';
+import { SpeaksState, bracketKey, speaksChapter, speaksIntro, speaksWords } from '../../domain/systems/screens/systemSpeaks';
 import { dartTrim } from '../../domain/text/dartString';
 import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
@@ -47,6 +47,11 @@ import { ChooserField, SavedText } from '../organize/parts';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import type { OpenSystems } from './useSystems';
+import { FocalImage, type FocalPoint } from '../organize/FocalImage';
+import { useCast } from '../organize/useCast';
+import { writeAtChapterEnd } from '../write/pendingInsert';
+import { lastNodeSetting } from '../write/WriteScreen';
+import { useRouter } from 'expo-router';
 
 const ink = windowInk;
 
@@ -274,7 +279,7 @@ function Field({ label, value, onChange, placeholder, numeric = false }: { label
         placeholder={placeholder}
         placeholderTextColor={colors.muted}
         selectionColor={colors.gold}
-        keyboardType={numeric ? 'numbers-and-punctuation' : 'default'}
+        keyboardType={numeric ? 'numeric' : 'default'}
         accessibilityLabel={label}
         style={styles.input}
       />
@@ -352,9 +357,10 @@ export function ClimbView({ sys, systemId, sheetId }: { sys: OpenSystems; system
 
 // --------------------------------------------------------------------------------------------------- the face-off
 
-function Portrait({ entry }: { entry: Entry | undefined }) {
+function Portrait({ entry, focal }: { entry: Entry | undefined; focal?: FocalPoint | null }) {
   if (!entry) return <View style={styles.portrait} />;
-  if (isUploadedImage(entry.image)) return <Image source={{ uri: entry.image ?? undefined }} style={styles.portrait} resizeMode="cover" />;
+  // The point the author chose in the portrait stays in view (FocalImage), as on the character's own page.
+  if (isUploadedImage(entry.image)) return <FocalImage uri={entry.image ?? ''} focal={focal} style={styles.portrait} />;
   return (
     <View style={styles.portrait}>
       <Cameo entry={entry} profile={null} width={64} height={78} bare />
@@ -366,6 +372,8 @@ function Portrait({ entry }: { entry: Entry | undefined }) {
  * it says beneath; in the system's own window dress. Shareable as a picture. Nothing with fewer than two sheets. */
 export function FaceOffView({ sys, systemId }: { sys: OpenSystems; systemId: string }) {
   const model = useModel(sys);
+  // The cast, for each one's portrait focal point (the systems' own records don't carry profiles).
+  const cast = useCast();
   const [sides, setSides] = useState<{ a: string | null; b: string | null }>({ a: null, b: null });
   const [said, setSaid] = useState<string | null>(null);
   const card = useRef<ComponentRef<typeof View>>(null);
@@ -411,14 +419,14 @@ export function FaceOffView({ sys, systemId }: { sys: OpenSystems; systemId: str
         <View style={styles.cardBody}>
           <View style={styles.faces}>
             <View style={styles.face}>
-              <Portrait entry={model.entries.get(v.a.entryId)} />
+              <Portrait entry={model.entries.get(v.a.entryId)} focal={cast?.cast.profiles.get(v.a.entryId)?.focal} />
               <Text numberOfLines={2} style={[t(14, ink, true), styles.centerText]}>
                 {v.aName}
               </Text>
             </View>
             <Text style={[t(26, look.accent, true), styles.vs, { textShadowColor: withAlpha(look.accent, 0.6) }]}>{faceOffWords.vs}</Text>
             <View style={styles.face}>
-              <Portrait entry={model.entries.get(v.b.entryId)} />
+              <Portrait entry={model.entries.get(v.b.entryId)} focal={cast?.cast.profiles.get(v.b.entryId)?.focal} />
               <Text numberOfLines={2} style={[t(14, ink, true), styles.centerText]}>
                 {v.bName}
               </Text>
@@ -460,10 +468,22 @@ export function FaceOffView({ sys, systemId }: { sys: OpenSystems; systemId: str
 // ---------------------------------------------------------------------------------------------- the system speaks
 
 /** THE SYSTEM SPEAKS: a message from the system to a character (or "You"), filled in from their sheet, in the book's
- * brackets (remembered on this device), shown as the system's window shows it; Copy. (The Flutter app can also write
- * it at the end of the chapter; Scriptor's editor has no way yet to take text from outside, so Copy it is.) */
-export function SystemSpeaks({ sys, systemId, sheetId }: { sys: OpenSystems; systemId: string; sheetId: string | null }) {
+ * brackets (remembered on this device), shown as the system's window shows it; Copy, or Write it in the chapter: the
+ * lines at the end of the chapter open in Write (else the first), each a paragraph, the caret after, through the
+ * chapter's editor (pendingInsert.ts). `onWrite` closes what holds this before Write opens. */
+export function SystemSpeaks({
+  sys,
+  systemId,
+  sheetId,
+  onWrite,
+}: {
+  sys: OpenSystems;
+  systemId: string;
+  sheetId: string | null;
+  onWrite?: () => void;
+}) {
   const lib = useLibrary();
+  const router = useRouter();
   const toast = useToast();
   const model = useModel(sys);
   const system = model.systems.get(systemId) ?? null;
@@ -478,6 +498,8 @@ export function SystemSpeaks({ sys, systemId, sheetId }: { sys: OpenSystems; sys
   if (!system || !state) return null;
   const v = state.view();
   const { look } = v;
+  // The chapter the lines go to: the one open in Write (the one last opened there), else the first.
+  const chapter = speaksChapter(model, null, lib.settings.read(lastNodeSetting(sys.novelId)), (id) => model.nodes.has(id));
   const face = look.mono ? fonts.numbers : fonts.book;
   const keepBracket = (value: string) =>
     lib.saves.saveNow(`setting:${bracketKey(sys.novelId)}`, () => {
@@ -527,7 +549,7 @@ export function SystemSpeaks({ sys, systemId, sheetId }: { sys: OpenSystems; sys
             placeholderTextColor={colors.muted}
             selectionColor={colors.gold}
             multiline={f.lines > 1}
-            keyboardType={f.number ? 'numbers-and-punctuation' : 'default'}
+            keyboardType={f.number ? 'numeric' : 'default'}
             accessibilityLabel={f.label}
             style={[styles.input, f.lines > 1 && styles.multi]}
           />
@@ -566,17 +588,30 @@ export function SystemSpeaks({ sys, systemId, sheetId }: { sys: OpenSystems; sys
           ))}
         </View>
       </View>
-      <GoldButton
-        label={speaksWords.copy}
-        icon="content-copy"
-        compact
-        onPress={() => {
-          void Clipboard.setStringAsync(state.copied());
-          toast(speaksWords.copied);
-          changed();
-        }}
-        style={styles.end}
-      />
+      <View style={styles.actions}>
+        <OutlineButton
+          label={speaksWords.copy}
+          icon="content-copy"
+          compact
+          onPress={() => {
+            void Clipboard.setStringAsync(state.copied());
+            toast(speaksWords.copied);
+            changed();
+          }}
+        />
+        <GoldButton
+          label={speaksWords.write}
+          icon="note-edit-outline"
+          compact
+          disabled={chapter === null}
+          onPress={() => {
+            if (chapter === null) return;
+            onWrite?.();
+            writeAtChapterEnd(lib, router, sys.novelId, chapter.id, state.lines);
+          }}
+        />
+      </View>
+      {chapter !== null && <Text style={styles.atEnd}>{chapter.said}</Text>}
     </View>
   );
 }
@@ -587,6 +622,8 @@ const styles = StyleSheet.create({
   gapXs: { gap: space.xs },
   start: { alignSelf: 'flex-start' },
   end: { alignSelf: 'flex-end' },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, justifyContent: 'flex-end' },
+  atEnd: { fontFamily: fonts.ui, fontSize: 13.5, color: colors.muted, textAlign: 'right' },
   centerText: { textAlign: 'center' },
   right: { textAlign: 'right' },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },

@@ -14,6 +14,7 @@ import { gazetteCast } from '../../domain/keepsakes/inputs';
 import {
   editionAt,
   firstWords,
+  leadFirstSentence,
   frontPageWidth,
   pressLine,
   saidWords,
@@ -165,7 +166,7 @@ export function GazettePage() {
             <FrontPage name={paper.name} book={title.trim().length === 0 ? 'Untitled' : title.trim()} e={e} />
           </View>
           <View style={styles.row}>
-            <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(e.nodeId)} />
+            <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(e.nodeId, { term: leadFirstSentence(e), block: 0 })} />
             <GoldButton label="Print it" icon="printer-outline" disabled={picture.working} onPress={() => void picture.share(paper.name)} />
           </View>
         </>
@@ -209,3 +210,4 @@ const styles = StyleSheet.create({
   tomorrowHead: { fontFamily: fonts.display, fontSize: 16, letterSpacing: 2, color: light },
   tomorrowLine: { fontFamily: fonts.book, fontSize: 15, lineHeight: 23, color: light, textAlign: 'center' },
 });
+

@@ -35,6 +35,7 @@ import { ChooserField } from '../organize/parts';
 import { colors, fonts, radius, space } from '../theme';
 import { type OpenPlaces, usePlaces } from './usePlaces';
 import { VizFrame } from './VizFrame';
+import { PinchBox } from './PinchBox';
 import { WhenField } from './WhenField';
 
 export function JourneysView() {
@@ -211,8 +212,10 @@ function RouteMap({ p, journeys, map, words }: { p: OpenPlaces; journeys: Journe
   const model = p.open.cast.model;
   return (
     <View style={styles.gap}>
-      <View
-        style={[styles.mapBox, { width: d.width * scale, height: d.height * scale }]}
+      <PinchBox
+        width={d.width * scale}
+        height={d.height * scale}
+        style={styles.mapBox}
         accessibilityLabel={`${map.name}: ${drawable.length} ${drawable.length === 1 ? 'journey' : 'journeys'} drawn. The list below gives every journey in words.`}
       >
         {map.image !== null && (
@@ -250,7 +253,7 @@ function RouteMap({ p, journeys, map, words }: { p: OpenPlaces; journeys: Journe
             );
           })}
         </Svg>
-      </View>
+      </PinchBox>
       <View style={styles.row}>
         {travellers.map((t, i) => (
           <View key={t} style={styles.key}>
@@ -378,7 +381,7 @@ function JourneyForm({ p, initial, traveller, onClose }: { p: OpenPlaces; initia
           onChangeText={(t) => set({ duration: t })}
           placeholder="Duration (optional)"
           placeholderTextColor={colors.muted}
-          keyboardType="numbers-and-punctuation"
+          keyboardType="numeric"
           style={[styles.input, styles.flex]}
         />
         <View style={styles.flex}>
@@ -391,7 +394,7 @@ function JourneyForm({ p, initial, traveller, onClose }: { p: OpenPlaces; initia
           onChangeText={(t) => set({ distance: t })}
           placeholder="Distance (optional)"
           placeholderTextColor={colors.muted}
-          keyboardType="numbers-and-punctuation"
+          keyboardType="numeric"
           style={[styles.input, styles.flex]}
         />
         <TextInput
@@ -466,7 +469,7 @@ function MethodsSheet({ p, onClose }: { p: OpenPlaces; onClose: () => void }) {
               }}
               placeholder="Speed"
               placeholderTextColor={colors.muted}
-              keyboardType="numbers-and-punctuation"
+              keyboardType="numeric"
               accessibilityLabel={`Speed of ${m.name}`}
               style={[styles.input, styles.flex]}
             />

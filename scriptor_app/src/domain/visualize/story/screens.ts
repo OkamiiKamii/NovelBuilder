@@ -511,7 +511,7 @@ export const abilityWords = {
   nameOwn: 'Name your own kind of path.',
   tree: 'Tree',
   list: 'List',
-  hint: 'Drag to move; zoom with the buttons.',
+  hint: 'Drag to move; pinch or use the buttons to zoom.',
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
   fit: 'Fit to view',

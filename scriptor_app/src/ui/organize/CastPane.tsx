@@ -5,7 +5,7 @@
 
 import { useRouter } from 'expo-router';
 import { type ComponentRef, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 
 import { CastFilters, type CastSort, castSortLabel, castSorts, type Listed } from '../../domain/characters/cast';
 import { isUploadedImage } from '../../domain/characters/screens/profile';
@@ -48,6 +48,7 @@ import type { OpenCast } from './useCast';
 import { ChooserField } from './parts';
 import { useCast } from './useCast';
 import type { OpenNovel } from './useNovel';
+import { FocalImage } from './FocalImage';
 
 export function CastPane({ novel }: { novel: OpenNovel }) {
   void novel;
@@ -231,12 +232,12 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
 }
 
 /** A character's face: their portrait, or their monogram on their own colour. */
-export function Face({ l, size, image, name, id }: { l?: Listed; size: number; image?: string; name?: string; id?: string }) {
+export function Face({ l, size, image, name, id, focal }: { l?: Listed; size: number; image?: string; name?: string; id?: string; focal?: { x: number; y: number } | null }) {
   const img = image ?? l?.entry.image ?? '';
   const who = name ?? l?.entry.name ?? '';
   const key = id ?? l?.entry.id ?? '';
   if (isUploadedImage(img)) {
-    return <Image source={{ uri: img }} style={{ width: size, height: size, borderRadius: size / 2 }} accessibilityIgnoresInvertColors />;
+    return <FocalImage uri={img} focal={focal ?? l?.profile.focal} style={{ width: size, height: size, borderRadius: size / 2 }} />;
   }
   return (
     <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: castTone(key), alignItems: 'center', justifyContent: 'center' }}>
@@ -254,7 +255,7 @@ function CastCard({ l, width, short, where, label, presence, onPress }: { l: Lis
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => [styles.card, { width }, pressed && { borderColor: colors.gold }]}>
       <View style={[styles.portrait, short && styles.portraitShort, { backgroundColor: tone }]}>
         {isUploadedImage(img) ? (
-          <Image source={{ uri: img ?? undefined }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+          <FocalImage uri={img ?? ''} focal={l.profile.focal} style={StyleSheet.absoluteFill} />
         ) : (
           <Text style={styles.monogram}>{monogram(l.entry.name)}</Text>
         )}

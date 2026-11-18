@@ -6,7 +6,7 @@
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import Svg, { Defs, Ellipse, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { castPhotoCaption, castPhotoRows, castPhotoStage, figureLabel } from '../../domain/characters/aids/castPhoto';
@@ -22,6 +22,7 @@ import { useToast } from '../toast';
 import { Cameo } from './Cameo';
 import { NewCharacterSheet } from './NewCharacterSheet';
 import type { OpenCast } from './useCast';
+import { FocalImage } from './FocalImage';
 
 export function CastStage({ open, onNew }: { open: OpenCast; onNew: () => void }) {
   const active = open.cast.list.filter((l) => !l.profile.archived);
@@ -36,7 +37,7 @@ export function CastStage({ open, onNew }: { open: OpenCast; onNew: () => void }
 
 function Face({ l, width, height }: { l: Listed; width: number; height: number }) {
   if (isUploadedImage(l.entry.image)) {
-    return <Image source={{ uri: l.entry.image ?? undefined }} style={{ width, height, borderRadius: 8 }} resizeMode="cover" />;
+    return <FocalImage uri={l.entry.image ?? ''} focal={l.profile.focal} style={{ width, height, borderRadius: 8 }} />;
   }
   return <Cameo entry={l.entry} profile={l.profile} width={width} height={height} bare />;
 }

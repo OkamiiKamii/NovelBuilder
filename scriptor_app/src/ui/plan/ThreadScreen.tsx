@@ -33,6 +33,9 @@ import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { type OpenPlot, usePlot } from './usePlot';
+import { ConnectionsPanel } from '../organize/ConnectionsPanel';
+import { useCast } from '../organize/useCast';
+import { EntityRef } from '../../domain/model/entityRef';
 
 export function ThreadScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -44,6 +47,7 @@ export function ThreadScreen() {
   const [deleting, setDeleting] = useState(false);
   const [form, setForm] = useState({ title: '', nodeId: '', role: 'development' });
   const model = useMemo(() => (plot ? StoryModel.fromSnapshot(plot.snapshot) : null), [plot]);
+  const cast = useCast();
   if (!plot || !model || !id) return null;
   const view = threadPage(model, id);
   const back = () => (router.canGoBack() ? router.back() : router.navigate(threadsPath as never));
@@ -191,6 +195,9 @@ export function ThreadScreen() {
           />
           <OutlineButton label={view.links.board.label} icon="view-column-outline" compact onPress={() => router.navigate(view.links.board.path as never)} />
         </View>
+
+        {/* Every connection the thread has, both ways, as on an entry (connections_panel.dart, before the notes). */}
+        {cast && <ConnectionsPanel open={cast} self={new EntityRef('thread', thread.id)} />}
 
         <Panel style={styles.gap}>
           <SavedText

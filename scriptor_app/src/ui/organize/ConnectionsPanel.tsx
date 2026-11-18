@@ -27,6 +27,7 @@ import { ConfirmDelete, Sheet } from '../dialogs';
 import { Chip, GoldButton, Icon, IconButton, type IconName, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
+import { threadPath } from '../../domain/plot/plotService';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { ChooserField } from './parts';
 import type { OpenCast } from './useCast';
@@ -47,6 +48,11 @@ export function ConnectionsPanel({ open, self }: { open: OpenCast; self: EntityR
   const panel = connectionsPanel(open.cast, self);
 
   const go = (ref: EntityRef) => {
+    // A plot thread has its page here (the Flutter panel opens none; Scriptor's thread page is /plan/thread/<id>).
+    if (ref.type === 'thread') {
+      router.navigate(threadPath(ref.id) as never);
+      return;
+    }
     const where = openRecord(open.cast, ref);
     if (!where) return;
     if (where.kind === 'path') {
@@ -66,7 +72,7 @@ export function ConnectionsPanel({ open, self }: { open: OpenCast; self: EntityR
       </View>
       {panel.empty && <Muted>{panel.empty}</Muted>}
       {panel.lines.map((line, i) => {
-        const other = line.other.opens ? (
+        const other = line.other.opens || line.other.ref.type === 'thread' ? (
           <Text key="o" style={styles.link} onPress={() => go(line.other.ref)} accessibilityRole="link">
             {line.other.name}
           </Text>

@@ -69,7 +69,7 @@ export function WhenField({
                 setV(clean);
                 set(name === 'Year' ? clean : year, name === 'Month' ? clean : month, name === 'Day' ? clean : day, approx);
               }}
-              keyboardType="numbers-and-punctuation"
+              keyboardType="numeric"
               placeholder={name}
               placeholderTextColor={colors.muted}
               accessibilityLabel={`${label}: ${name.toLowerCase()}`}

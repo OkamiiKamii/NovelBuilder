@@ -6,7 +6,7 @@
 
 import { useRouter } from 'expo-router';
 import { type ComponentRef, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Switch, Text, type TextStyle, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, type TextStyle, TextInput, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { captureRef } from 'react-native-view-shot';
 
@@ -33,6 +33,7 @@ import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { Cameo } from './Cameo';
 import type { OpenCast } from './useCast';
+import { FocalImage } from './FocalImage';
 
 // ---------------------------------------------------------------------------------------------------- in their hand
 
@@ -259,7 +260,7 @@ export function CharacterCardSheet({ open, entry, profile, line, onClose }: { op
                 <View style={[StyleSheet.absoluteFill, { alignItems: 'center', justifyContent: 'center' }]}>
                   <View style={{ width: s.size - 2 * s.inset - 4, height: s.size - 2 * s.inset - 4, borderRadius: 999, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}>
                     {isUploadedImage(entry.image) ? (
-                      <Image source={{ uri: entry.image ?? undefined }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+                      <FocalImage uri={entry.image ?? ''} focal={profile?.focal} style={StyleSheet.absoluteFill} />
                     ) : (
                       <Cameo entry={entry} profile={profile} width={s.size - 2 * s.inset - 4} height={s.size - 2 * s.inset - 4} />
                     )}

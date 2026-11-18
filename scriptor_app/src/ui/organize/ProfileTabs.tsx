@@ -167,7 +167,7 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
           <View style={styles.row}>
             {web.shown.map((s) => (
               <Pressable key={s.other.id} accessibilityRole="button" accessibilityLabel={s.label} onPress={() => router.navigate(`/organize/character/${s.other.id}`)} style={styles.webItem}>
-                <Face size={44} image={s.other.image ?? undefined} name={s.other.name} id={s.other.id} />
+                <Face size={44} image={s.other.image ?? undefined} name={s.other.name} id={s.other.id} focal={open.cast.profiles.get(s.other.id)?.focal} />
                 <Text style={styles.webName} numberOfLines={1}>
                   {s.other.name}
                 </Text>
@@ -285,7 +285,7 @@ function RelationshipsTab({ open, listed }: { open: OpenCast; listed: Listed }) 
       ) : (
         view.rows.map((r) => (
           <Pressable key={r.relation.id} accessibilityRole="button" accessibilityLabel={`${r.title}. ${r.subtitle}. ${view.openLabel}`} onPress={() => router.navigate(r.opens)} style={({ pressed }) => [styles.listRow, pressed && { backgroundColor: colors.elevated }]}>
-            <Face size={40} image={r.other.image ?? undefined} name={r.other.name} id={r.other.id} />
+            <Face size={40} image={r.other.image ?? undefined} name={r.other.name} id={r.other.id} focal={open.cast.profiles.get(r.other.id)?.focal} />
             <View style={styles.flex}>
               <Text style={styles.text}>{r.title}</Text>
               <Muted>{r.subtitle}</Muted>

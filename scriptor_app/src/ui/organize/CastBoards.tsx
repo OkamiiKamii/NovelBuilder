@@ -6,7 +6,7 @@
 
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 
 import type { Listed } from '../../domain/characters/cast';
 import { characterPath } from '../../domain/characters/screens/create';
@@ -25,12 +25,13 @@ import { NameForgeSheet, ThisOrThatSheet } from './AidsSheets';
 import { Cameo } from './Cameo';
 import { ChooserField } from './parts';
 import type { OpenCast } from './useCast';
+import { FocalImage } from './FocalImage';
 
 type ViewProps = { open: OpenCast; found: Listed[] };
 
 function Face({ l, width, height, round = 8 }: { l: Listed; width: number; height: number; round?: number }) {
   if (isUploadedImage(l.entry.image)) {
-    return <Image source={{ uri: l.entry.image ?? undefined }} style={{ width, height, borderRadius: round }} resizeMode="cover" />;
+    return <FocalImage uri={l.entry.image ?? ''} focal={l.profile.focal} style={{ width, height, borderRadius: round }} />;
   }
   return (
     <View style={{ width, height, borderRadius: round, overflow: 'hidden' }}>

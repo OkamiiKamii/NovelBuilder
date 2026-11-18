@@ -23,6 +23,7 @@ import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { usePlaces } from './usePlaces';
 import { VizFrame, useVizSelection } from './VizFrame';
+import { PinchBox } from './PinchBox';
 import { AsOfField, WhenField } from './WhenField';
 
 export function FactionsView() {
@@ -160,7 +161,7 @@ function FactionMap({
     .map((e) => ({ from: map.pos.get(e.link.fromId)!, to: map.pos.get(e.link.toId)!, role: e.role, id: e.link.id }));
   return (
     <View style={styles.gap}>
-      <View style={[styles.mapBox, { width: map.width * scale, height: map.height * scale }]} accessibilityLabel={map.label}>
+      <PinchBox width={map.width * scale} height={map.height * scale} style={styles.mapBox} accessibilityLabel={map.label}>
         <Svg width={map.width * scale} height={map.height * scale} viewBox={`0 0 ${map.width} ${map.height}`} style={StyleSheet.absoluteFill}>
           {ties.map((t) => {
             const style = tieStyle[t.role] ?? tieStyle.other!;
@@ -207,7 +208,7 @@ function FactionMap({
             </Pressable>
           );
         })}
-      </View>
+      </PinchBox>
       <View style={styles.row}>
         {map.roles.map((role) => {
           const style = tieStyle[role] ?? tieStyle.other!;

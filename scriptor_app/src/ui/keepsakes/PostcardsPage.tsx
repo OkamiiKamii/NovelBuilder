@@ -181,7 +181,7 @@ export function PostcardsPage() {
       <View style={styles.row}>
         <OutlineButton label="Turn it over" icon="rotate-3d-variant" onPress={() => setTurned(!turned)} />
         <GoldButton label="Send it" icon="send-outline" disabled={picture.working} onPress={() => void picture.share(`Greetings from ${c.place}`)} />
-        <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(c.nodeId)} />
+        <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(c.nodeId, { term: c.line, block: c.block })} />
       </View>
       {picture.message ? <Note ink={light} text={picture.message} /> : null}
     </KeepsakePage>

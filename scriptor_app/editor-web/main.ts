@@ -415,7 +415,32 @@ type Incoming =
   | { type: 'spine'; on: boolean }
   | { type: 'ink'; on: boolean; before?: string[] | null }
   | { type: 'chapterEnd'; info: ChapterEndInfo | null }
-  | { type: 'insert'; replace: number; text: string };
+  | { type: 'insert'; replace: number; text: string }
+  | { type: 'appendLines'; lines: string[] };
+
+/** Lines written at the end of the chapter, each a paragraph of its own, the caret after them (a system's message, from
+ * Systems): into the last paragraph when it is empty, else after it. One step of the history, so one Undo takes them
+ * back; and saved as any typing is. Flutter's chapter_editor.dart `_insertAtEnd`. */
+function appendLines(lines: string[]): void {
+  if (lines.length === 0) return;
+  const { state } = editor;
+  const paragraph = state.schema.nodes.paragraph;
+  const doc = state.doc;
+  const last = doc.lastChild;
+  let tr = state.tr;
+  let rest = lines;
+  if (last !== null && last.type === paragraph && last.textContent.trim().length === 0) {
+    // The empty last paragraph takes the first line (its content replaced, the paragraph kept).
+    const start = doc.content.size - last.nodeSize;
+    tr = tr.replaceWith(start + 1, start + last.nodeSize - 1, lines[0].length === 0 ? Fragment.empty : state.schema.text(lines[0]));
+    rest = lines.slice(1);
+  }
+  const nodes = rest.map((line) => paragraph.create(null, line.length === 0 ? null : state.schema.text(line)));
+  if (nodes.length > 0) tr = tr.insert(tr.doc.content.size, Fragment.from(nodes));
+  tr = tr.setSelection(TextSelection.atEnd(tr.doc)).scrollIntoView();
+  editor.view.dispatch(tr);
+  editor.commands.focus();
+}
 
 function command(name: string, value?: string): void {
   const c = editor.chain().focus();
@@ -556,6 +581,9 @@ function receive(raw: string): void {
         break;
       case 'insert':
         insertAtCaret(m.replace, m.text);
+        break;
+      case 'appendLines':
+        appendLines(m.lines);
         break;
       case 'chapterEnd':
         setChapterEnd(m.info, (action) => send({ type: 'chapterEndTap', action }));

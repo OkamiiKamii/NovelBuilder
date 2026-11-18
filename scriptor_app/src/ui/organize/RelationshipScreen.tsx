@@ -9,7 +9,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { newId } from '../../domain/ids';
-import type { JsonMap } from '../../domain/json';
 import { RelationChanges, type StageInput } from '../../domain/relationships/relationChanges';
 import { relationSettingsOf } from '../../domain/relationships/relationTypes';
 import {
@@ -44,6 +43,8 @@ import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import { ChooserField, SavedText } from './parts';
 import { type OpenNovel, useOpenNovel } from './useNovel';
+import { DateEditor } from '../plan/DateEditor';
+import { resolveChronology } from '../../domain/timeline/chronology';
 
 function message(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
@@ -285,7 +286,18 @@ function StageCard({
       {card.storyEvent && (
         <ChooserField label={card.storyEvent.label} value={card.storyEvent.value} choices={card.storyEvent.choices} onChoose={(v) => update(id, storyEventChosen(v))} />
       )}
-      {card.storyDate && stage && <DateLine when={card.storyDate.when} legend={card.storyDate.legend} onEdit={(edit) => update(id, storyDateEdited(stage, edit))} />}
+      {card.storyDate && stage && (
+        // The full story-time date, as an event's (relationship_page.dart: exact, approximate or relative to an event).
+        <DateEditor
+          key={`${stage.id}:storyDate`}
+          when={card.storyDate.when}
+          calendar={novel.model.calendar}
+          others={resolveChronology(novel.model.events.values(), novel.model.calendar)}
+          legend={card.storyDate.legend}
+          offered={card.storyDate.offered}
+          onEdit={(edit) => update(id, storyDateEdited(stage, edit))}
+        />
+      )}
       <ChooserField label={card.cause.label} value={card.cause.value} choices={card.cause.choices} onChoose={(v) => update(id, causeEventChosen(v))} />
       <ChooserField label={card.shownIn.label} value={card.shownIn.value} choices={card.shownIn.choices} onChoose={(v) => update(id, shownInChosen(v))} />
       <SavedText label={card.origin.label} value={card.origin.value} multiline minLines={2} onSave={(v) => typed(id, 'event', originTyped(v))} />
@@ -304,33 +316,6 @@ function StageCard({
         />
       )}
     </Panel>
-  );
-}
-
-/** A date in story time, as rough as the author knows it: the year, and the month and day when known. The full date
- * editor (seasons, approximate and relative dates, the novel's own calendar) comes with the timeline in Plan. */
-function DateLine({ when, legend, onEdit }: { when: JsonMap | null; legend: string; onEdit: (edit: (when: JsonMap) => JsonMap) => void }) {
-  const num = (k: string) => (typeof when?.[k] === 'number' ? String(when[k]) : '');
-  const set = (k: string, v: string) => {
-    const n = v.trim() === '' ? null : Number(v.trim());
-    if (n !== null && !Number.isInteger(n)) return;
-    onEdit((w) => ({ ...w, precision: w['precision'] ?? 'exact', [k]: n }));
-  };
-  return (
-    <View>
-      <Text style={styles.label}>{legend.toUpperCase()}</Text>
-      <View style={styles.row}>
-        <View style={styles.side}>
-          <SavedText label="Year" value={num('year')} onSave={(v) => set('year', v)} />
-        </View>
-        <View style={styles.side}>
-          <SavedText label="Month" value={num('month')} onSave={(v) => set('month', v)} />
-        </View>
-        <View style={styles.side}>
-          <SavedText label="Day" value={num('day')} onSave={(v) => set('day', v)} />
-        </View>
-      </View>
-    </View>
   );
 }
 

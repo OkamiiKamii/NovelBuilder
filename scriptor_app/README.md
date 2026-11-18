@@ -32,6 +32,15 @@ between the two apps without losing anything. The file format keeps its existing
 | 8: Analytics and keepsakes | 329–347 | Done (2026-11-17), tested on the emulator |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | Done (2026-11-17), tested on the emulator |
 
+**Finishing pass** (after phase 9), closing what earlier phases had left: a portrait's focal point, chosen on the
+profile and kept in view wherever the portrait shows; relationship stages dated with the full story-time editor
+(exact, approximate or relative); a date picker and number keyboards on number and date fields; connections on chapter
+plans and plot threads; every "Read it there" opening the chapter with the words selected; a system message written
+straight into the chapter through the editor (one Undo takes it back); cards dragged on the scene board (long-press,
+with auto-scroll and Undo; the buttons stay); pinch to zoom on the knowledge graph, the ability tree and the maps;
+and the tutorial reworded against Scriptor's own screens (88 lessons shown; 6 describe things Scriptor doesn't have
+and stay hidden).
+
 **Phase 9** finished the app. **Import & export** (Settings › Your data): export the manuscript as Word, PDF,
 Markdown, plain text or a web page (Clean reader or Complete bible, what to include, the whole book or one part), import
 a manuscript from .docx, .rtf, .txt or .md (split into chapters and scenes, previewed, all or nothing), export records

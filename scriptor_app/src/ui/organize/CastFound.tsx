@@ -12,7 +12,7 @@
 
 import { useRouter } from 'expo-router';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { Image, type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
+import { type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { CharacterProfile } from '../../domain/characters/characterRecords';
 import { looksJob } from '../../domain/characters/looks';
@@ -57,6 +57,7 @@ import { useToast } from '../toast';
 import { NameForgeSheet } from './AidsSheets';
 import { Face } from './CastPane';
 import type { OpenCast } from './useCast';
+import { FocalImage } from './FocalImage';
 
 // ------------------------------------------------------------------------------------------------------ shared parts
 
@@ -273,11 +274,11 @@ export function CastPagePanels({ open, scrollTo, children }: { open: OpenCast; s
 
 // ------------------------------------------------------------------------------------------- together on the page
 
-function PairFaceView({ face, style }: { face: PairFace; style?: object }) {
+function PairFaceView({ face, style, focal }: { face: PairFace; style?: object; focal?: { x: number; y: number } | null }) {
   return (
     <View style={[styles.pairFace, style]}>
       {isUploadedImage(face.image) ? (
-        <Image source={{ uri: face.image ?? undefined }} style={styles.pairImage} accessibilityIgnoresInvertColors />
+        <FocalImage uri={face.image ?? ''} focal={focal} style={styles.pairImage} />
       ) : (
         <View style={[styles.pairImage, { backgroundColor: face.tone, alignItems: 'center', justifyContent: 'center' }]}>
           <Text style={{ fontFamily: fonts.display, fontSize: 16, color: face.ink }}>{face.monogram}</Text>
@@ -313,8 +314,8 @@ function TogetherPanel({
           <View key={`${card.pair.a}|${card.pair.b}`} style={styles.card}>
             <View style={styles.cardTop}>
               <View style={styles.pair}>
-                <PairFaceView face={card.a} />
-                <PairFaceView face={card.b} style={{ left: 30 }} />
+                <PairFaceView face={card.a} focal={open.cast.profiles.get(card.a.id)?.focal} />
+                <PairFaceView face={card.b} style={{ left: 30 }} focal={open.cast.profiles.get(card.b.id)?.focal} />
                 <View style={styles.pairAsk}>
                   <Text style={styles.pairAskText}>?</Text>
                 </View>

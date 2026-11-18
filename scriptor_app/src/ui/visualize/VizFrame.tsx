@@ -42,6 +42,7 @@ import { DataExportSheet, type ExportedView } from '../exchange/DataExportSheet'
 import { ActionSheet, ConfirmDelete, PromptSheet, Sheet } from '../dialogs';
 import { GoldButton, Icon, IconButton, type IconName, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
+import { useLockableScroll } from '../scrollLock';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { rememberOrganizeTab } from '../organize/OrganizeScreen';
@@ -143,6 +144,8 @@ export function VizFrame({
   const [sheet, setSheet] = useState<'atlas' | 'saved' | 'manage' | 'details' | 'export' | null>(null);
   const [heading, setHeading] = useState<readonly string[] | null>(null);
   const picture = useRef<ComponentRef<typeof View>>(null);
+  // The view's scroll, held still while a drawing in it is pinched or dragged (scrollLock.tsx).
+  const scroll = useLockableScroll();
   const context = useMemo<VizContext>(
     () => ({
       filter,
@@ -237,7 +240,8 @@ export function VizFrame({
             </Panel>
           </ScrollView>
         ) : (
-          <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+          <ScrollView {...scroll.scrollProps} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+            <scroll.Provider>
             <View style={styles.bar}>
               <ViewButton view={view} onPress={() => setSheet('atlas')} />
               <SavedButton view={view} open={open} onPress={() => setSheet('saved')} />
@@ -293,6 +297,7 @@ export function VizFrame({
             </View>
             {wide && selected !== null && <DetailsPanel open={open} selected={selected} select={context.select} />}
             {wide && selected !== null && <SelectionMarks selected={selected} />}
+            </scroll.Provider>
           </ScrollView>
         )}
         {sheet === 'atlas' && <Atlas current={view} off={off} onClose={() => setSheet(null)} />}

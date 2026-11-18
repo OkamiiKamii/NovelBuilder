@@ -8,7 +8,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { quizPeople } from '../../domain/keepsakes/inputs';
 import { choiceState, quizAsk, quizParts, quizProgress, quoteCardSize, scoreFoot } from '../../domain/keepsakes/pages';
-import { bookQuizJob, quizAtLeast, quizKicker, quizVerdict } from '../../domain/manuscript/bookQuiz';
+import { bookQuizJob, type QuizQuestion, quizAtLeast, quizGap, quizKicker, quizVerdict } from '../../domain/manuscript/bookQuiz';
 import { GoldButton, OutlineButton } from '../kit';
 import { fonts, space } from '../theme';
 import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, useOpenChapter, usePicture, useReading } from './parts';
@@ -114,7 +114,7 @@ export function QuizPage() {
       </View>
       {picked !== null ? (
         <View style={styles.row}>
-          <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(q.nodeId)} />
+          <OutlineButton label="Read it there" icon="book-open-variant" onPress={() => openChapter(q.nodeId, { term: readTerm(q), block: q.block })} />
           <GoldButton
             label={last ? 'See your score' : 'Next'}
             icon={last ? 'trophy-outline' : 'arrow-right'}
@@ -163,3 +163,11 @@ const styles = StyleSheet.create({
   verdict: { fontFamily: fonts.book, fontSize: 15, color: ink, opacity: 0.85, textAlign: 'center' },
   foot: { fontFamily: fonts.ui, fontSize: 9, letterSpacing: 1.4, color: ink, opacity: 0.6, marginTop: 8 },
 });
+
+/** The words "Read it there" lands on, as book_quiz_page.dart chooses them: for which comes first, the right line; for
+ * the missing word, the longest piece around the gap; else the line without its quotation marks. */
+function readTerm(q: QuizQuestion): string {
+  const text = q.kind === 'whichFirst' ? q.options[q.answer] : q.line;
+  if (q.kind === 'missingWord') return text.split(quizGap).reduce((a, b) => (a.length >= b.length ? a : b)).trim();
+  return text.replace(/^[“"]|[”"]$/g, '');
+}

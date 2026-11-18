@@ -31,6 +31,8 @@ import {
   profilePageTabs,
   hasSystems,
   portraitTools,
+  focalAt,
+  focalWords,
   roleChoices,
   saveTemplatePrompt,
   shownProfilePage,
@@ -51,6 +53,7 @@ import { useToast } from '../toast';
 import { ProfileTab } from './ProfileTabs';
 import { SavedText } from './parts';
 import { Cameo } from './Cameo';
+import { FocalImage, type FocalPoint, pictureSize } from './FocalImage';
 import { FaceSketchSheet, InterviewSheet, ThisOrThatSheet } from './AidsSheets';
 import { CharacterCardSheet, JournalSheet, WriteThemInSheet } from './AidsPages';
 import { cardLine, cardLineInput } from '../../domain/characters/aids/characterCard';
@@ -75,6 +78,7 @@ export function CharacterScreen() {
   const [deleting, setDeleting] = useState(false);
   const [finding, setFinding] = useState(false);
   const [removePortrait, setRemovePortrait] = useState(false);
+  const [cropping, setCropping] = useState(false);
   const [aid, setAid] = useState<'interview' | 'thisOrThat' | 'face' | 'journal' | 'writeIn' | 'card' | null>(null);
 
   const listed = open && params.id ? open.cast.listed(params.id) : null;
@@ -160,13 +164,14 @@ export function CharacterScreen() {
           <View style={styles.portraitCol}>
             <View style={[styles.portrait, { backgroundColor: castTone(entry.id) }]} accessibilityLabel={tools.label}>
               {tools.uploaded ? (
-                <Image source={{ uri: entry.image ?? undefined }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+                <FocalImage uri={entry.image ?? ''} focal={profile.focal} style={StyleSheet.absoluteFill} />
               ) : (
                 <Cameo entry={entry} profile={profile} width={150} height={180} bare />
               )}
             </View>
             <View style={styles.row}>
               <IconButton icon="image-plus" label={tools.upload} onPress={() => void upload()} />
+              {tools.adjust && <IconButton icon="crop" label={tools.adjust} onPress={() => setCropping(true)} />}
               {tools.remove && <IconButton icon="image-remove" label={tools.remove} onPress={() => setRemovePortrait(true)} />}
             </View>
             {tools.draw && <OutlineButton label={tools.draw} icon="draw" compact tone="muted" onPress={() => setAid('face')} />}
@@ -300,6 +305,18 @@ export function CharacterScreen() {
           onClose={() => setRemovePortrait(false)}
         />
       )}
+      {cropping && tools.uploaded && (
+        <FocalSheet
+          uri={entry.image ?? ''}
+          name={entry.name}
+          focal={profile.focal}
+          onClose={() => setCropping(false)}
+          onDone={(focal) => {
+            setCropping(false);
+            open.now((c) => c.identity(entry.id, { focal }));
+          }}
+        />
+      )}
       {aid === 'interview' && <InterviewSheet open={open} entry={entry} profile={profile} onClose={() => setAid(null)} />}
       {aid === 'thisOrThat' && <ThisOrThatSheet open={open} entry={entry} onClose={() => setAid(null)} />}
       {aid === 'face' && <FaceSketchSheet open={open} entry={entry} profile={profile} onClose={() => setAid(null)} />}
@@ -417,6 +434,10 @@ function FindSheet({ visible, open, keep, onPick, onClose }: { visible: boolean;
 }
 
 const styles = StyleSheet.create({
+  cropFooter: { flex: 1, flexDirection: 'row', gap: space.sm },
+  cropArea: { marginTop: space.sm, borderRadius: radius.field, overflow: 'hidden' },
+  cropMark: { position: 'absolute', width: 28, height: 28 },
+  cropSizes: { flexDirection: 'row', gap: space.md, alignItems: 'flex-end', marginTop: space.md },
   page: { flex: 1, backgroundColor: colors.background },
   center: { alignItems: 'center', justifyContent: 'center', gap: space.md, padding: space.lg },
   centerText: { textAlign: 'center' },
@@ -463,4 +484,49 @@ function cardLineFor(open: OpenCast, entryId: string): string | null {
   const input = cardLineInput(open.cast, entryId);
   if (!input) return null;
   return cardLine(spokenJob(open.service.storedChapters(open.novelId), input.chapters, input.names)());
+}
+
+/** Choosing the point of the portrait to keep in view when it is cropped; the whole picture is kept (character_page.dart's
+ * _FocalDialog): the picture at full width, a tap choosing the point, a mark on it, and the portrait at three sizes. */
+function FocalSheet({ uri, name, focal, onClose, onDone }: { uri: string; name: string; focal: FocalPoint; onClose: () => void; onDone: (f: FocalPoint) => void }) {
+  const [point, setPoint] = useState<FocalPoint>(focal);
+  const [width, setWidth] = useState(0);
+  const natural = pictureSize(uri);
+  const height = width > 0 && natural !== null ? (width * natural.height) / natural.width : width;
+  return (
+    <Sheet
+      visible
+      onClose={onClose}
+      title={focalWords.title}
+      footer={
+        <View style={styles.cropFooter}>
+          <OutlineButton label={focalWords.cancel} tone="muted" onPress={onClose} style={styles.flex} />
+          <GoldButton label={focalWords.done} onPress={() => onDone(point)} style={styles.flex} />
+        </View>
+      }
+    >
+      <Muted>{focalWords.message}</Muted>
+      <View onLayout={(e) => setWidth(e.nativeEvent.layout.width)} style={styles.cropArea}>
+        {width > 0 && (
+          <Pressable
+            accessibilityRole="adjustable"
+            accessibilityLabel={focalWords.label}
+            onPress={(e) => setPoint(focalAt(e.nativeEvent.locationX, e.nativeEvent.locationY, width, height))}
+            style={{ width, height }}
+          >
+            <Image source={{ uri }} style={{ width, height }} resizeMode="stretch" accessibilityIgnoresInvertColors />
+            <View pointerEvents="none" style={[styles.cropMark, { left: (point.x / 100) * width - 14, top: (point.y / 100) * height - 14 }]}>
+              <Icon name="crosshairs-gps" size={28} color="#FFFFFF" />
+            </View>
+          </Pressable>
+        )}
+      </View>
+      <View style={styles.cropSizes}>
+        {[96, 64, 40].map((size) => (
+          <FocalImage key={size} uri={uri} focal={point} style={{ width: size, height: size, borderRadius: size * 0.18 }} />
+        ))}
+      </View>
+      <Muted style={styles.small}>{name}</Muted>
+    </Sheet>
+  );
 }

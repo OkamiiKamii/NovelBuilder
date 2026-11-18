@@ -69,6 +69,7 @@ import { completionsFor, type NameKey, pageKeys, wordAt } from '../../domain/tex
 import { cardOf, GlanceSheet, GlanceStrip, InChapterStrip, linksIn, NameKeysRow, TitleIdeas, usePageCompany } from './PageCompany';
 import { WordMeter } from './WordMeter';
 import { findIn, onFind, takeFind } from './pendingFind';
+import { onInsert, takeInsert } from './pendingInsert';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { reportSprintWords, SprintBar, SprintButton, SprintCard, sprintRunning, useSprint } from './Sprint';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
@@ -307,6 +308,21 @@ export function EditorPane({
     land();
     return onFind((f) => {
       if (f.nodeId === node.id) land();
+    });
+  }, [ready, node.id]);
+
+  // Lines asked for at the end of this chapter (Systems' "Write it in the chapter"): written once the chapter is in,
+  // and again whenever asked for while it is open, through the editor so they are saved and undone as typing is
+  // (pendingInsert.ts).
+  useEffect(() => {
+    if (ready === 0) return;
+    const write = () => {
+      const i = takeInsert(node.id);
+      if (i !== null) editor.current?.appendLines(i.lines);
+    };
+    write();
+    return onInsert((i) => {
+      if (i.nodeId === node.id) write();
     });
   }, [ready, node.id]);
 

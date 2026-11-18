@@ -344,10 +344,10 @@ function FieldRow({
       {row.numbers && (
         <View style={styles.twoUp}>
           <View style={styles.flex}>
-            <SavedText label={kindsWords.lowest} value={row.numbers.min} onSave={(v) => edit(row.id, fieldPatch.min(v), 'min')} />
+            <SavedText label={kindsWords.lowest} value={row.numbers.min} keyboardType="numeric" onSave={(v) => edit(row.id, fieldPatch.min(v), 'min')} />
           </View>
           <View style={styles.flex}>
-            <SavedText label={kindsWords.highest} value={row.numbers.max} onSave={(v) => edit(row.id, fieldPatch.max(v), 'max')} />
+            <SavedText label={kindsWords.highest} value={row.numbers.max} keyboardType="numeric" onSave={(v) => edit(row.id, fieldPatch.max(v), 'max')} />
           </View>
         </View>
       )}

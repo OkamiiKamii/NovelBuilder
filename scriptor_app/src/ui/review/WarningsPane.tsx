@@ -48,6 +48,8 @@ import { colors, fonts, radius, space } from '../theme';
 import { ChooserField } from '../organize/parts';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { type OpenReview, useReview } from './useReview';
+import { requestFind } from '../write/pendingFind';
+import { allIssues } from '../../domain/continuity/audit';
 import { Skeleton } from '../states';
 
 // ------------------------------------------------------------------------------------------------ shared pieces
@@ -76,13 +78,15 @@ export function Tag({ label, hint }: { label: string; hint?: string | null }) {
 export function useOpenFromReview(r: OpenReview) {
   const router = useRouter();
   const lib = useLibrary();
-  const openChapter = (nodeId: string) => {
+  const openChapter = (nodeId: string, find?: { term: string; block: number } | null) => {
+    // At the words when the warning names them (a passage the continuity check read): pendingFind.ts.
+    requestFind(find && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
     lib.saves.saveNow(`setting:${lastNodeSetting(r.novelId)}`, () => lib.settings.write(lastNodeSetting(r.novelId), nodeId));
     router.navigate('/write');
   };
-  const openPath = (path: string) => {
+  const openPath = (path: string, find?: { term: string; block: number } | null) => {
     const place = scriptorPlace(path);
-    if (place.kind === 'chapter') openChapter(place.nodeId);
+    if (place.kind === 'chapter') openChapter(place.nodeId, find);
     else if (place.kind === 'route') router.navigate(place.path as never);
   };
   const openRef = (ref: EntityRef) => {
@@ -105,7 +109,7 @@ function Links({ r, w }: { r: OpenReview; w: Warning }) {
         <LinkButton key={`${ref.type}:${ref.id}`} label={model.resolve(ref)?.label ?? 'something deleted'} onPress={() => go.openRef(ref)} />
       ))}
       {w.links.map((l) => (
-        <LinkButton key={l.label + l.path} label={worldWords(l.label)} onPress={() => go.openPath(l.path)} />
+        <LinkButton key={l.label + l.path} label={worldWords(l.label)} onPress={() => go.openPath(l.path, passageOf(r, w))} />
       ))}
       {w.context !== null && <LinkButton label={w.context.label} onPress={() => go.openPath(w.context!.path)} />}
     </View>
@@ -532,3 +536,11 @@ const styles = StyleSheet.create({
   seal: { width: 84, height: 84, alignItems: 'center', justifyContent: 'center' },
   sealTick: { position: 'absolute' },
 });
+
+/** The words a warning's passage is about, when the continuity check found it (the warning's key is the issue's): the
+ * matched words in their paragraph, so "Open the passage" lands on them. Null for any other warning. */
+function passageOf(r: OpenReview, w: Warning): { term: string; block: number } | null {
+  if (w.source !== 'continuity' || r.data === null) return null;
+  const issue = allIssues(r.data.manuscript).find((i) => i.key === w.key);
+  return issue === undefined ? null : { term: issue.match, block: issue.block };
+}

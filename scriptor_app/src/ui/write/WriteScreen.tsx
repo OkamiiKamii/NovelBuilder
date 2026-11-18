@@ -37,6 +37,7 @@ import { usePageCompany } from './PageCompany';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
 import { TodaysPageSheet } from './TodaysPageSheet';
 import { onFind } from './pendingFind';
+import { onInsert } from './pendingInsert';
 import { AreaTools } from '../search/AreaTools';
 
 export const lastNodeSetting = (novelId: string) => `write.lastNode.${novelId}`;
@@ -110,6 +111,9 @@ export function WriteScreen() {
 
   // A passage asked for from elsewhere while Write is open (search, the index): its chapter, opened (pendingFind.ts).
   useEffect(() => onFind((f) => select(f.nodeId)), [select]);
+  // Lines asked for at the end of a chapter while Write is open (Systems' "Write it in the chapter"): its chapter,
+  // opened; its editor writes them (pendingInsert.ts).
+  useEffect(() => onInsert((i) => select(i.nodeId)), [select]);
 
   // ---- the contents' actions
 

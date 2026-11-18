@@ -7,7 +7,7 @@
 
 import { useRouter } from 'expo-router';
 import { memo, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Image, type LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, type LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, ClipPath, Defs, Ellipse, G, Line, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { DeviceSpeaker } from '../../data/speech';
@@ -46,6 +46,7 @@ import { InterviewSheet } from './AidsSheets';
 import { Cameo } from './Cameo';
 import type { OpenCast } from './useCast';
 import { Skeleton } from '../states';
+import { FocalImage } from './FocalImage';
 
 type ViewProps = { open: OpenCast; found: Listed[] };
 
@@ -139,7 +140,7 @@ function useWidth(): [number, (e: LayoutChangeEvent) => void] {
 /** A face: their picture, or their cameo. */
 const Face = memo(function Face({ l, width, height, round = 9 }: { l: Listed; width: number; height: number; round?: number }) {
   if (isUploadedImage(l.entry.image)) {
-    return <Image source={{ uri: l.entry.image ?? undefined }} style={{ width, height, borderRadius: round }} resizeMode="cover" />;
+    return <FocalImage uri={l.entry.image ?? ''} focal={l.profile.focal} style={{ width, height, borderRadius: round }} />;
   }
   return (
     <View style={{ width, height, borderRadius: round, overflow: 'hidden' }}>

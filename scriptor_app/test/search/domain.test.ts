@@ -19,9 +19,10 @@ import {
   scriptorTopics,
   toFlutterWords,
 } from '../../src/domain/tutorial/scriptorLessons';
+import { lessonRewrites } from '../../src/domain/tutorial/lessonRewrites';
 import { topicFor } from '../../src/domain/tutorial/topics';
 import { tutorialButtonNames, tutorialGroups, tutorialTopics } from '../../src/domain/tutorial/topicsData';
-import { tourOf } from '../../src/domain/tutorial/tour';
+import { scriptorButtonWords, scriptorTourOf, tourOf } from '../../src/domain/tutorial/tour';
 import { yourPath, yourPathOrder } from '../../src/domain/tutorial/yourPath';
 import { flutterFixturesDir, readJson, samplePath } from '../fixtures';
 import { blockJson, blocksOf, resultJson } from './golden/outputs';
@@ -179,17 +180,33 @@ test('the lesson for each address, as the Flutter app chooses it', () => {
   expect(scriptorOnlyLesson('/write/names')).toBe('index');
 });
 
-test('Scriptor’s words turn back into the Flutter app’s, every lesson word for word; three lessons are not shown', () => {
+test('Scriptor’s words turn back into the Flutter app’s, every lesson word for word; six lessons are not shown', () => {
   for (const t of tutorialTopics) {
+    const r = lessonRewrites[t.id] ?? {};
     const shown = scriptorTopic(t);
-    expect([t.id, toFlutterWords(shown.what), shown.steps.map(toFlutterWords), toFlutterWords(shown.example), shown.where === undefined ? undefined : toFlutterWords(shown.where)]).toEqual([
-      t.id,
-      t.what,
-      t.steps,
-      t.example,
-      t.where,
-    ]);
+    // A field rewritten whole for Scriptor's screen: the Dart's text is still what the rewrite says it replaces.
+    for (const [field, rewrite] of [['what', r.what], ['where', r.where], ['example', r.example]] as const) {
+      if (rewrite === undefined) continue;
+      const dart = t[field];
+      expect([t.id, field, dart !== undefined && dart.startsWith(rewrite[0])]).toEqual([t.id, field, true]);
+      expect([t.id, field, (rewrite[1] ?? '').length > 30]).toEqual([t.id, field, true]);
+    }
+    for (const [i, rewrite] of Object.entries(r.steps ?? {})) {
+      expect([t.id, i, t.steps[Number(i)]?.startsWith(rewrite[0])]).toEqual([t.id, i, true]);
+    }
+    // Everything not rewritten turns back into the Dart's words exactly.
+    const kept = t.steps.flatMap((step, i) => (r.steps?.[i] === undefined ? [step] : []));
+    const keptShown = t.steps.flatMap((_, i) => (r.steps?.[i] === undefined ? [inScriptorWords(t.steps[i])] : []));
+    expect([t.id, keptShown.map(toFlutterWords)]).toEqual([t.id, kept]);
+    expect([t.id, r.what ? t.what : toFlutterWords(shown.what), r.example ? t.example : toFlutterWords(shown.example)]).toEqual([t.id, t.what, t.example]);
+    if (t.where !== undefined && r.where === undefined) expect([t.id, toFlutterWords(shown.where!)]).toEqual([t.id, t.where]);
+    // A lesson Scriptor shows keeps three to five steps, none empty.
+    if (!lessonsNotInScriptor.has(t.id)) {
+      expect([t.id, shown.steps.length >= 3 && shown.steps.length <= 5, shown.steps.every((x) => x.length > 0)]).toEqual([t.id, true, true]);
+    }
   }
+  // Every rewrite is of a lesson there is.
+  for (const id of Object.keys(lessonRewrites)) expect([id, tutorialTopics.some((t) => t.id === id)]).toEqual([id, true]);
   // Every phrase is used by some lesson (none is stale).
   const all = tutorialTopics.map((t) => [t.what, ...t.steps, t.example, t.where ?? ''].join('\n')).join('\n');
   for (const [flutter] of lessonPhrases) expect([flutter, all.includes(flutter)]).toEqual([flutter, true]);
@@ -222,4 +239,21 @@ test('the tour: each step at the first button it names that is on the screen; st
     { step: 2, name: 'Continue writing', at: 2 },
   ]);
   expect(tutorialButtonNames).toContain('Show me on this page');
+});
+
+test('Show me on this page finds Scriptor’s buttons by the words the lessons use for them', () => {
+  const write = scriptorTopics.find((t) => t.id === 'write')!;
+  // The toolbox is labelled "Desk: the writing tools"; the step says "Desk".
+  const at = new Map([['Desk: the writing tools', 'desk'], ['Find and replace', 'find']]);
+  const tour = scriptorTourOf(write.steps, at);
+  expect(tour.map((s) => [s.step, s.name])).toEqual([
+    [1, 'Desk: the writing tools'],
+    [3, 'Desk: the writing tools'],
+    [4, 'Desk: the writing tools'],
+  ]);
+  // Where the step names the magnifier above the page first, it is Find and replace, when the Desk is not shown.
+  expect(scriptorTourOf(write.steps, new Map([['Find and replace', 'find']])).map((s) => s.step)).toEqual([3]);
+  // Every word Scriptor's lessons use for a button is used by some shown lesson.
+  const all = scriptorTopics.flatMap((t) => t.steps).join(' | ');
+  for (const word of Object.keys(scriptorButtonWords)) expect([word, all.includes(word)]).toEqual([word, true]);
 });

@@ -6,7 +6,7 @@
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import Svg, { G, Path, Polygon, Text as SvgText } from 'react-native-svg';
 
 import {
@@ -52,6 +52,7 @@ import { type OpenCast, useCast } from '../organize/useCast';
 import { colors, fonts, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { VizFrame, useVizFilters, useVizSelection } from './VizFrame';
+import { type PanZoom, liveTransform, usePinchPan } from './usePinchPan';
 
 const colorOf = (role: PathRole) => pathStyle[role].color ?? colors.text;
 
@@ -266,7 +267,7 @@ function NodeMark({ standing, color, size = box.circle, selected = false }: { st
 }
 
 /** The tree, drawn from what comes first at the top: paths as curves by kind, abilities as marks with their names. It
- * scrolls both ways; the buttons zoom; a long press shows only an ability's paths. */
+ * moves with one finger and zooms with two (or the buttons); a long press shows only an ability's paths. */
 function TreeDrawing({
   nodes,
   edges,
@@ -297,20 +298,64 @@ function TreeDrawing({
   const size = { width: layout.width + box.pad * 2 + 80, height: layout.height + box.pad };
   const opening = Math.min(1, Math.max(0.6, (screen - space.md * 2) / size.width));
   const [scale, setScale] = useState<number | null>(null);
+  /** The scale the tree is drawn at; while fingers pinch, it is moved and scaled as a whole and drawn again at the
+   * new scale when they lift (usePinchPan.ts), so a pinch stays smooth however many abilities there are. */
   const s = scale ?? opening;
   const at = (key: string) => {
     const p = layout.at.get(key)!;
     return { x: p.x + origin.x, y: p.y + origin.y };
   };
-  const zoom = (by: number) => setScale(Math.min(3, Math.max(0.2, s * by)));
-  const fit = () => setScale(Math.min(1, Math.max(0.2, Math.min((screen - space.md * 2) / size.width, (compact ? 440 : 560) / size.height))));
-  const frameHeight = Math.min(compact ? 440 : 560, Math.max(260, size.height * s + 16));
+  const frameHeight = Math.min(compact ? 440 : 560, Math.max(260, size.height * opening + 16));
+  const [frameW, setFrameW] = useState(Math.max(200, screen - space.md * 2));
+  const centred = (k: number): PanZoom => ({ k, tx: Math.max(0, (frameW - size.width * k) / 2), ty: Math.max(0, (frameHeight - size.height * k) / 2) });
+  const [moved, setMoved] = useState<PanZoom | null>(null);
+  const v = moved ?? centred(s);
+  // Some of the tree always stays in the frame.
+  const clamp = (n: PanZoom): PanZoom => {
+    const w = size.width * n.k;
+    const h2 = size.height * n.k;
+    const keep = 60;
+    return {
+      k: n.k,
+      tx: Math.min(Math.max(n.tx, Math.min(0, frameW - w) - keep), Math.max(0, frameW - w) + keep),
+      ty: Math.min(Math.max(n.ty, Math.min(0, frameHeight - h2) - keep), Math.max(0, frameHeight - h2) + keep),
+    };
+  };
+  const gesture = usePinchPan({
+    view: v,
+    onChange: setMoved,
+    onEnd: (end) => setScale(end.k),
+    min: 0.2,
+    max: 3,
+    pan: true,
+    takeBare: true,
+    clamp,
+  });
+  const zoom = (by: number) => {
+    const k = Math.min(3, Math.max(0.2, v.k * by));
+    // Around the middle of the frame.
+    const r = k / v.k;
+    setMoved(clamp({ k, tx: frameW / 2 - (frameW / 2 - v.tx) * r, ty: frameHeight / 2 - (frameHeight / 2 - v.ty) * r }));
+    setScale(k);
+  };
+  const fit = () => {
+    const k = Math.min(1, Math.max(0.2, Math.min(frameW / size.width, frameHeight / size.height)));
+    setMoved(centred(k));
+    setScale(k);
+  };
   return (
     <View style={styles.gapXs}>
-      <View style={[styles.treeFrame, { height: frameHeight }]} accessibilityLabel={words.label(nodes.length, edges.length)}>
-        <ScrollView nestedScrollEnabled>
-          <ScrollView horizontal nestedScrollEnabled>
-            <View style={{ width: size.width * s, height: size.height * s }}>
+      <View
+        ref={gesture.ref}
+        onLayout={(e) => {
+          setFrameW(e.nativeEvent.layout.width);
+          gesture.onLayout(e);
+        }}
+        style={[styles.treeFrame, { height: frameHeight }]}
+        accessibilityLabel={words.label(nodes.length, edges.length)}
+        {...gesture.panHandlers}
+      >
+            <View style={{ position: 'absolute', left: 0, top: 0, width: size.width * s, height: size.height * s, transform: liveTransform(v, s, size.width * s, size.height * s) }}>
               <Svg width={size.width * s} height={size.height * s} viewBox={`0 0 ${size.width} ${size.height}`} style={StyleSheet.absoluteFill}>
                 {edges.map((e) => {
                   const st = pathStyle[e.role];
@@ -364,8 +409,6 @@ function TreeDrawing({
                 );
               })}
             </View>
-          </ScrollView>
-        </ScrollView>
       </View>
       <View style={styles.zoomRow}>
         <Muted>{words.hint}</Muted>

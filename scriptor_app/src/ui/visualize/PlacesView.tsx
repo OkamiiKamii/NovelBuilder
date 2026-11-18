@@ -31,6 +31,7 @@ import { useToast } from '../toast';
 import { pickMapPicture } from './mapPicture';
 import { type OpenPlaces, usePlaces } from './usePlaces';
 import { VizFrame, useVizFilters, useVizSelection } from './VizFrame';
+import { PinchBox } from './PinchBox';
 
 export function PlacesView() {
   const [list, setList] = useState(false);
@@ -221,8 +222,10 @@ function PlaceMap({
           <OutlineButton label="Cancel" compact tone="muted" onPress={onCancelPut} />
         </View>
       )}
-      <View
-        style={[styles.mapBox, { width: d.width * scale, height: d.height * scale }]}
+      <PinchBox
+        width={d.width * scale}
+        height={d.height * scale}
+        style={styles.mapBox}
         accessibilityLabel={
           `${map.name}: ${plural(pinned.length, 'place')} placed on it` +
           `${map.unit.length > 0 ? `, ${n(map.width)} by ${n(map.height)} ${map.unit}` : ''}. The tree below lists every place in words.`
@@ -282,7 +285,7 @@ function PlaceMap({
               }}
             />
           ))}
-      </View>
+      </PinchBox>
       {on.missing.length > 0 && (
         <Muted>{`Not on this map (${on.missing.length}), still in the tree: ${on.missing.map((e) => e.name).join(', ')}`}</Muted>
       )}
@@ -431,8 +434,8 @@ function Coordinates({ p, map, entryId, onTap }: { p: OpenPlaces; map: WorldMap;
     <View style={styles.gapSm}>
       <Text style={styles.body}>{map.name}</Text>
       <View style={styles.row}>
-        <TextInput value={x} onChangeText={setX} placeholder="Across" placeholderTextColor={colors.muted} keyboardType="numbers-and-punctuation" accessibilityLabel="Across" style={styles.number} />
-        <TextInput value={y} onChangeText={setY} placeholder="Down" placeholderTextColor={colors.muted} keyboardType="numbers-and-punctuation" accessibilityLabel="Down" style={styles.number} />
+        <TextInput value={x} onChangeText={setX} placeholder="Across" placeholderTextColor={colors.muted} keyboardType="numeric" accessibilityLabel="Across" style={styles.number} />
+        <TextInput value={y} onChangeText={setY} placeholder="Down" placeholderTextColor={colors.muted} keyboardType="numeric" accessibilityLabel="Down" style={styles.number} />
         <OutlineButton
           label="Place"
           compact
@@ -561,7 +564,7 @@ function MapsSheet({ p, onClose }: { p: OpenPlaces; onClose: () => void }) {
                   const v = Number(t);
                   if (t.trim().length > 0 && Number.isFinite(v)) p.placesLater(`${map.id}:${key}`, (c) => c.saveMap(map.id, patch(v)));
                 }}
-                keyboardType="numbers-and-punctuation"
+                keyboardType="numeric"
                 accessibilityLabel={label}
                 placeholder={label}
                 placeholderTextColor={colors.muted}

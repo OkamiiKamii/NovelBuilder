@@ -117,7 +117,7 @@ function YearField({ label, value, onChange }: { label: string; value: string; o
       <TextInput
         value={value}
         onChangeText={(v) => onChange(v.replace(/[^-\d]/g, '').replace(/(?!^)-/g, ''))}
-        keyboardType="numbers-and-punctuation"
+        keyboardType="numeric"
         placeholder="Any"
         placeholderTextColor={colors.muted}
         selectionColor={colors.gold}

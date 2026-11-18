@@ -216,7 +216,7 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
           <PagesNamesView key={`names-${system.id}`} sys={sys} systemId={system.id} />
           {speaking && (
             <Sheet visible onClose={() => setSpeaking(false)} title="The system speaks" wide>
-              <SystemSpeaks sys={sys} systemId={system.id} sheetId={null} />
+              <SystemSpeaks sys={sys} systemId={system.id} sheetId={null} onWrite={() => setSpeaking(false)} />
             </Sheet>
           )}
         </View>
@@ -463,7 +463,7 @@ function VariablesTab({ sys, system }: { sys: OpenSystems; system: SystemBluepri
                 if (change) sys.now(change);
               }}
             />
-            {row.base !== null && <SavedText label="Starting value" value={row.base} onSave={save('base')} />}
+            {row.base !== null && <SavedText label="Starting value" value={row.base} keyboardType="numeric" onSave={save('base')} />}
             {row.formula && (
               <FormulaField
                 sys={sys}
@@ -522,8 +522,8 @@ function TrackBox({ sys, system, track, first, last }: { sys: OpenSystems; syste
         />
       </View>
       <SavedText label={trackWords.name} value={track.name} hint={box.key} onSave={save('name')} />
-      {box.cap !== null && <SavedText label={trackWords.cap} value={box.cap} placeholder={trackWords.capHint} onSave={save('cap')} />}
-      {box.points !== null && <SavedText label={trackWords.points} value={box.points} onSave={save('points')} />}
+      {box.cap !== null && <SavedText label={trackWords.cap} value={box.cap} placeholder={trackWords.capHint} keyboardType="number-pad" onSave={save('cap')} />}
+      {box.points !== null && <SavedText label={trackWords.points} value={box.points} keyboardType="decimal-pad" onSave={save('points')} />}
       {box.curve && (
         <FormulaField
           sys={sys}

@@ -15,7 +15,7 @@ import { flutterPathOf, scriptorPlace } from '../../domain/search/places';
 import { scriptorOnlyLesson, scriptorTopics } from '../../domain/tutorial/scriptorLessons';
 import { type Topic, topicFor } from '../../domain/tutorial/topics';
 import { tutorialGroups } from '../../domain/tutorial/topicsData';
-import { namesIn, tourOf } from '../../domain/tutorial/tour';
+import { scriptorNamesIn, scriptorTourOf } from '../../domain/tutorial/tour';
 import { yourPath, type YourPath } from '../../domain/tutorial/yourPath';
 import { GoldButton, Icon, IconButton, Muted, OutlineButton } from '../kit';
 import { useLibrary } from '../LibraryContext';
@@ -82,7 +82,7 @@ function Tutorial({ here }: { here: Topic }) {
   useEffect(() => {
     let live = true;
     void findOnScreen(tourNames(here)).then((at) => {
-      if (live) setPointable(tourOf(here.steps, at).length > 0);
+      if (live) setPointable(scriptorTourOf(here.steps, at).length > 0);
     });
     return () => {
       live = false;
@@ -274,7 +274,7 @@ function Tutorial({ here }: { here: Topic }) {
 
 /** Every button name a lesson's steps mention, for the tour to look for. */
 export function tourNames(t: Topic): string[] {
-  return [...new Set(namesIn(t.steps).flat())];
+  return [...new Set(scriptorNamesIn(t.steps).flat())];
 }
 
 function SpotlightHost({ topic }: { topic: Topic }) {

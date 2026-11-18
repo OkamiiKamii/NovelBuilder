@@ -124,7 +124,7 @@ export function NumberField({
           commit();
         }}
         onSubmitEditing={commit}
-        keyboardType={decimals ? 'decimal-pad' : 'numbers-and-punctuation'}
+        keyboardType={decimals ? 'decimal-pad' : 'numeric'}
         placeholder={hint ?? undefined}
         placeholderTextColor={colors.muted}
         selectionColor={colors.gold}

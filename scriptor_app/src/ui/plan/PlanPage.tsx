@@ -7,11 +7,14 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconButton, Muted } from '../kit';
+import { useLockableScroll } from '../scrollLock';
 import { colors, fonts, space } from '../theme';
 
 export function PlanPage({ title, subtitle, back, children }: { title: string; subtitle?: string; back: string; children: ReactNode }) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  // Held still while a gesture inside needs the page to (the scene board's drag; scrollLock.tsx).
+  const scroll = useLockableScroll();
   return (
     <View style={[styles.page, { paddingTop: insets.top }]}>
       <View style={styles.head}>
@@ -23,8 +26,8 @@ export function PlanPage({ title, subtitle, back, children }: { title: string; s
           {subtitle ? <Muted numberOfLines={1}>{subtitle}</Muted> : null}
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
-        {children}
+      <ScrollView {...scroll.scrollProps} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+        <scroll.Provider>{children}</scroll.Provider>
       </ScrollView>
     </View>
   );

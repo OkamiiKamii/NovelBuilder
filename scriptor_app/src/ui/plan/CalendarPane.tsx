@@ -250,7 +250,7 @@ function DraftField({ label, value, onChange, number = false }: { label: string;
           setText(v);
           onChange(v);
         }}
-        keyboardType={number ? 'numbers-and-punctuation' : 'default'}
+        keyboardType={number ? 'numeric' : 'default'}
         accessibilityLabel={label}
         placeholderTextColor={colors.muted}
         selectionColor={colors.gold}

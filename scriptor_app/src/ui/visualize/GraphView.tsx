@@ -9,8 +9,8 @@
 // shortcuts are left out, the list form keeps every connection reachable); what is shown is
 // src/domain/visualize/world/graphView.ts and src/domain/graph/knowledge.ts.
 
-import { useMemo, useRef, useState } from 'react';
-import { PanResponder, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { useMemo, useState } from 'react';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Svg, { G, Line, Path, Polygon, Text as SvgText } from 'react-native-svg';
 
 import { type GraphNode, type KnowledgeGraph, type Pair, edgeTypeLabel, edgeWords, knowledgeGraph, shapeOf } from '../../domain/graph/knowledge';
@@ -39,6 +39,7 @@ import { ChooserField } from '../organize/parts';
 import { type OpenCast, useCast } from '../organize/useCast';
 import { colors, fonts, radius, space } from '../theme';
 import { VizFrame, useVizFilters, useVizSelection } from './VizFrame';
+import { usePinchPan } from './usePinchPan';
 import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 export function GraphView() {
@@ -360,21 +361,15 @@ function GraphCanvas({
   }, [placed, boxW]);
   const [view, setView] = useState<{ k: number; tx: number; ty: number; key: string } | null>(null);
   const v = view !== null && view.key === layoutKey ? view : { ...fit, key: layoutKey };
-  const start = useRef(v);
-  start.current = v;
-  const drag = useRef({ tx: 0, ty: 0 });
-  const pan = useMemo(
-    () =>
-      PanResponder.create({
-        onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) + Math.abs(g.dy) > 6,
-        onPanResponderTerminationRequest: () => false,
-        onPanResponderGrant: () => {
-          drag.current = { tx: start.current.tx, ty: start.current.ty };
-        },
-        onPanResponderMove: (_, g) => setView({ ...start.current, tx: drag.current.tx + g.dx, ty: drag.current.ty + g.dy }),
-      }),
-    [],
-  );
+  // One finger moves the graph, two zoom it around the point between them; a tap still selects (usePinchPan.ts).
+  const gesture = usePinchPan({
+    view: v,
+    onChange: (next) => setView({ ...next, key: layoutKey }),
+    min: 0.05,
+    max: 4,
+    pan: true,
+    takeBare: true,
+  });
   const zoom = (by: number) => {
     const k = Math.max(0.05, Math.min(4, v.k * by));
     // Zoom round the middle of the box.
@@ -394,7 +389,7 @@ function GraphCanvas({
   const namesShown = nameSize >= 5;
   return (
     <View style={styles.gapSm}>
-      <View style={[styles.canvas, { width: boxW, height: boxH }]} {...pan.panHandlers} accessibilityLabel={`Knowledge graph: ${drawn.nodes.length} records, ${pairs.length} lines. The list form gives every connection in words.`}>
+      <View ref={gesture.ref} onLayout={gesture.onLayout} style={[styles.canvas, { width: boxW, height: boxH }]} {...gesture.panHandlers} accessibilityLabel={`Knowledge graph: ${drawn.nodes.length} records, ${pairs.length} lines. The list form gives every connection in words.`}>
         {laidOut === null && (
           <View style={[StyleSheet.absoluteFill, { alignItems: 'center', justifyContent: 'center' }]}>
             <Muted>Drawing the graph…</Muted>

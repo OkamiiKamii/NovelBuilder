@@ -1,16 +1,17 @@
 // THE SCENE BOARD (FEATURES.md #257–#260): the chapters as columns (or, on a narrow screen, lanes) and their scenes as
-// cards with summary, status, word count and the plot threads recorded there. Cards move by their buttons (earlier,
+// cards with summary, status, word count and the plot threads recorded there. Cards move by dragging (a long press on a
+// title; boardDrag.tsx) or by their buttons (earlier,
 // later, into a volume, act or arc, to another chapter), through the manuscript service the Write area uses; each move
 // and status change can be undone (the last 20), while things are as the board left them. Search, status and thread
 // filters; moving is off while the board is filtered. A port of flutter_app/lib/features/plot/board_page.dart; what it
 // shows is src/domain/plot/screens/boardPage.ts, the moves and the history src/domain/plot/board.ts.
 
 import { useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 
 import { StoryModel } from '../../domain/model/storyModel';
-import { type BoardChange, type BoardColumn, BoardHistory, type Place, nudgePlace, placeOf, statusLabel } from '../../domain/plot/board';
+import { type BoardChange, type BoardColumn, BoardHistory, type BoardPart, type Place, nudgePlace, placeOf, statusLabel } from '../../domain/plot/board';
 import { threadPath } from '../../domain/plot/plotService';
 import {
   addToThread,
@@ -22,6 +23,7 @@ import {
   chapterCard,
   lanesByDefault,
   noBoardFilters,
+  partEnd,
   partHead,
   sceneCard,
   threadChips,
@@ -36,6 +38,7 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { DragHandle, DragScope, DropTarget, DropZone, useBoardDrag, useDragging, useRowScroll } from './boardDrag';
 import { type OpenPlot, usePlot } from './usePlot';
 
 type Menu = { title: string; actions: { label: string; icon: React.ComponentProps<typeof Icon>['name']; onPress: () => void }[] } | null;
@@ -105,6 +108,9 @@ function Board({ plot, threadId }: { plot: OpenPlot; threadId: string | null }) 
     if (bulk) setAsk({ ...bulk, run: go });
     else go();
   };
+
+  // Long press a card's title and drag it (boardDrag.tsx); its buttons still move it too.
+  const drag = useBoardDrag({ nodes, movable: view.movable, moveTo });
 
   const setStatus = (node: StoryNode, status: NodeStatus) => {
     if (node.status === status) return;
@@ -219,7 +225,8 @@ function Board({ plot, threadId }: { plot: OpenPlot; threadId: string | null }) 
   );
 
   return (
-    <View style={styles.gap}>
+    <DragScope state={drag.state}>
+    <View ref={drag.boardRef} collapsable={false} style={styles.gap}>
       <Muted>{view.subtitle}</Muted>
       {filterBar}
       {view.thread && (
@@ -259,15 +266,19 @@ function Board({ plot, threadId }: { plot: OpenPlot; threadId: string | null }) 
               {head.empty ? (
                 <Muted>{head.empty}</Muted>
               ) : lanes ? (
-                part.columns.map((col) => (
-                  <ChapterColumn key={col.chapter.id} {...{ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite }} />
-                ))
-              ) : (
-                <ScrollView horizontal showsHorizontalScrollIndicator contentContainerStyle={styles.columns}>
+                <>
                   {part.columns.map((col) => (
-                    <ChapterColumn key={col.chapter.id} {...{ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite }} />
+                    <ChapterColumn key={col.chapter.id} {...{ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite }} part={null} />
                   ))}
-                </ScrollView>
+                  <DropZone id={part.key} kind="chapter" place={partEnd(part).place} part={null} label={partEnd(part).label} />
+                </>
+              ) : (
+                <ColumnRow part={part}>
+                  {part.columns.map((col) => (
+                    <ChapterColumn key={col.chapter.id} {...{ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite }} part={part.key} />
+                  ))}
+                  <DropZone id={part.key} kind="chapter" place={partEnd(part).place} part={part.key} label={partEnd(part).label} style={styles.endColumn} />
+                </ColumnRow>
               )}
             </View>
           );
@@ -298,7 +309,9 @@ function Board({ plot, threadId }: { plot: OpenPlot; threadId: string | null }) 
           <Muted>{ask.message}</Muted>
         </Sheet>
       )}
+      {drag.feedback}
     </View>
+    </DragScope>
   );
 }
 
@@ -316,9 +329,22 @@ type ColumnProps = {
   threadMenu: (node: StoryNode) => void;
   openPlan: (id: string) => void;
   openInWrite: (id: string) => void;
+  /** The part's row of columns this column scrolls in (columns), or null (lanes). */
+  part: string | null;
 };
 
-function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite }: ColumnProps) {
+/** One part's chapters side by side, scrolling sideways; held still while a card is dragged, which scrolls it itself. */
+function ColumnRow({ part, children }: { part: BoardPart; children: ReactNode }) {
+  const row = useRowScroll(part.key);
+  const dragging = useDragging();
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator contentContainerStyle={styles.columns} scrollEnabled={!dragging} {...(row ?? {})}>
+      {children}
+    </ScrollView>
+  );
+}
+
+function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusMenu, threadMenu, openPlan, openInWrite, part }: ColumnProps) {
   const lib = useLibrary();
   const toast = useToast();
   const chapter = col.chapter;
@@ -329,14 +355,14 @@ function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusM
   };
   const moves = view.movable;
   return (
-    <View style={[styles.column, lanes && styles.lane]}>
+    <DropTarget id={chapter.id} kind="chapter" place={{ parentId: chapter.parentId, beforeId: chapter.id }} part={part} lanes={lanes} style={[styles.column, lanes && styles.lane]}>
       <View style={styles.chapterHead}>
-        <Pressable accessibilityRole="button" accessibilityLabel={cardControls(chapter).planTip} onPress={() => openPlan(chapter.id)} style={styles.flex}>
+        <DragHandle node={chapter} label={cardControls(chapter).planTip} onTap={() => openPlan(chapter.id)}>
           <Text style={styles.chapterName} numberOfLines={2}>
             {card.name}
           </Text>
           <Muted>{card.meta}</Muted>
-        </Pressable>
+        </DragHandle>
         <StatusPill node={chapter} onPress={() => statusMenu(chapter)} />
       </View>
       {chapter.summary.length > 0 && (
@@ -370,14 +396,14 @@ function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusM
           col.scenes.map((sc) => {
             const s = sceneCard(view, sc.node, sc.words);
             return (
-              <View key={sc.node.id} style={styles.card}>
+              <DropTarget key={sc.node.id} id={sc.node.id} kind="scene" place={{ parentId: sc.node.parentId, beforeId: sc.node.id }} part={part} lanes={lanes} style={styles.card}>
                 <View style={styles.cardHead}>
-                  <Pressable accessibilityRole="button" accessibilityLabel={cardControls(sc.node).planTip} onPress={() => openPlan(sc.node.id)} style={styles.flex}>
+                  <DragHandle node={sc.node} label={cardControls(sc.node).planTip} onTap={() => openPlan(sc.node.id)}>
                     <Text style={styles.cardName} numberOfLines={2}>
                       {s.name}
                     </Text>
                     <Muted>{s.meta}</Muted>
-                  </Pressable>
+                  </DragHandle>
                   <StatusPill node={sc.node} onPress={() => statusMenu(sc.node)} />
                 </View>
                 {sc.node.summary.length > 0 && (
@@ -408,10 +434,11 @@ function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusM
                     />
                   )}
                 </View>
-              </View>
+              </DropTarget>
             );
           })
         )}
+        <DropZone id={chapter.id} kind="scene" place={{ parentId: chapter.id, beforeId: null }} part={part} label={`Drop here to move it to the end of “${card.name}”`} />
       </View>
       {!view.filtered && (
         <OutlineButton
@@ -430,7 +457,7 @@ function ChapterColumn({ plot, view, model, col, lanes, setMenu, moveTo, statusM
           style={styles.start}
         />
       )}
-    </View>
+    </DropTarget>
   );
 }
 
@@ -500,6 +527,7 @@ const styles = StyleSheet.create({
   partKind: { fontFamily: fonts.ui, fontSize: 11, fontWeight: '700', letterSpacing: 1.6, color: colors.gold },
   partLabel: { fontFamily: fonts.display, fontSize: 17, color: colors.text },
   columns: { gap: 12, paddingRight: space.md, alignItems: 'flex-start' },
+  endColumn: { width: 200, marginTop: 0 },
   column: { width: 260, gap: space.sm, padding: space.sm, borderRadius: 12, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
   lane: { width: '100%' },
   chapterHead: { flexDirection: 'row', alignItems: 'flex-start', gap: space.sm },

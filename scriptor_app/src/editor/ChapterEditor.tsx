@@ -111,6 +111,8 @@ export type ChapterEditorHandle = {
   chapterEnd(info: ChapterEndInfo | null): void;
   /** Puts text in over the `replace` characters before the caret (a name key). */
   insert(replace: number, text: string): void;
+  /** Writes `lines` at the end of the chapter, a paragraph each, the caret after (one Undo takes them back). */
+  appendLines(lines: string[]): void;
 };
 
 type Props = {
@@ -207,6 +209,7 @@ export const ChapterEditor = forwardRef<ChapterEditorHandle, Props>(function Cha
       ink: (on, before) => post(before === undefined ? { type: 'ink', on } : { type: 'ink', on, before }),
       chapterEnd: (info) => post({ type: 'chapterEnd', info }),
       insert: (replace, text) => post({ type: 'insert', replace, text }),
+      appendLines: (lines) => post({ type: 'appendLines', lines }),
     }),
     [post],
   );

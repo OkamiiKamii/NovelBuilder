@@ -49,7 +49,9 @@ const tried: Readonly<Record<string, (l: Look) => boolean>> = {
   graph: (l) => l.any('savedViews'),
   book: (l) => l.any('bookMatter'),
   team: (l) => l.any('members'),
-  settings: (l) => l.setting('appearance.theme') !== null && l.setting('appearance.theme') !== undefined,
+  // The Flutter app counts a chosen theme. Scriptor has one look; its own choice is the page's look and type, kept
+  // per kind of device from the desk's Writing settings (the Settings page points there), so that counts instead.
+  settings: (l) => ['writing.prefs.phone', 'writing.prefs.tablet'].some((k) => l.setting(k) !== null && l.setting(k) !== undefined),
 };
 
 /** The order the path suggests lessons in: the book first, then its people and world, then its plot, then the rest. */

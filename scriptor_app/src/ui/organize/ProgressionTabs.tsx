@@ -634,7 +634,7 @@ function SnapshotEditor({
           </View>
           {part.tracks.map((t) =>
             t.kind === 'levels' ? (
-              <SavedText key={t.track.id} label={t.label} value={t.value} onSave={(v) => inSys(part.system.id, snapshotEdits.level(t.track, v))} />
+              <SavedText key={t.track.id} label={t.label} value={t.value} keyboardType="number-pad" onSave={(v) => inSys(part.system.id, snapshotEdits.level(t.track, v))} />
             ) : (
               <ChooserField
                 key={t.track.id}
@@ -657,10 +657,10 @@ function SnapshotEditor({
                 />
               )}
               {r.own && (
-                <SavedText label={r.own.label} placeholder={r.own.hint} value={r.own.value} onSave={(v) => inSys(part.system.id, snapshotEdits.own(r.variable, part.auto, v))} />
+                <SavedText label={r.own.label} placeholder={r.own.hint} value={r.own.value} keyboardType="numeric" onSave={(v) => inSys(part.system.id, snapshotEdits.own(r.variable, part.auto, v))} />
               )}
               {r.shown && <Text style={[styles.body, r.shown.error && { color: colors.danger }]}>{r.shown.text}</Text>}
-              {r.byHand && <SavedText label={r.byHand.label} value={r.byHand.value} onSave={(v) => inSys(part.system.id, snapshotEdits.byHand(r.variable, v))} />}
+              {r.byHand && <SavedText label={r.byHand.label} value={r.byHand.value} keyboardType="numeric" onSave={(v) => inSys(part.system.id, snapshotEdits.byHand(r.variable, v))} />}
             </View>
           ))}
           {part.groups.map((g) => (

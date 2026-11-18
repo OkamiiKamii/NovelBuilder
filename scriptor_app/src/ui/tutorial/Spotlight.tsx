@@ -9,7 +9,7 @@ import { AccessibilityInfo, Animated, Modal, Pressable, StyleSheet, Text, useWin
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Topic } from '../../domain/tutorial/topics';
-import { type TourStop, tourOf } from '../../domain/tutorial/tour';
+import { type TourStop, scriptorTourOf } from '../../domain/tutorial/tour';
 import { GoldButton, IconButton, Muted, OutlineButton } from '../kit';
 import { endTour } from '../search/opener';
 import { colors, fonts, radius, space } from '../theme';
@@ -28,7 +28,7 @@ export function Spotlight({ topic, names }: { topic: Topic; names: readonly stri
     const t = setTimeout(() => {
       void findOnScreen(names).then((found) => {
         if (!live) return;
-        const tour = tourOf(topic.steps, found);
+        const tour = scriptorTourOf(topic.steps, found);
         if (tour.length === 0) endTour();
         else setStops(tour);
       });

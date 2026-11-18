@@ -60,7 +60,7 @@ import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { NameForgeSheet } from './AidsSheets';
 import { ConnectionsPanel } from './ConnectionsPanel';
-import { ChooserField, SavedText } from './parts';
+import { ChooserField, DateField, SavedText } from './parts';
 import { type OpenCast, useCast } from './useCast';
 
 /** The kinds page lives at /organize/kinds here (the Flutter app's /organize/world/kinds). */
@@ -368,6 +368,8 @@ function TypedValue({
   onChoose: (v: string) => void;
 }) {
   switch (type) {
+    case 'date':
+      return <DateField label={label} value={value} onSave={onType} onChosen={onChoose} />;
     case 'toggle':
       return (
         <View>
@@ -439,7 +441,7 @@ function TypedValue({
           value={value}
           multiline={type === 'longtext'}
           minLines={type === 'longtext' ? 4 : 1}
-          hint={type === 'date' ? 'A date, as you write dates in this story' : undefined}
+          keyboardType={type === 'number' ? 'numeric' : undefined}
           onSave={onType}
         />
       );

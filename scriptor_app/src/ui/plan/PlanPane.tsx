@@ -13,6 +13,7 @@ import { CalendarPane } from './CalendarPane';
 import { HistoriesPane } from './HistoriesPane';
 import { ThreadsPane } from './ThreadsPane';
 import { TimelinePane } from './TimelinePane';
+import { useLockableScroll } from '../scrollLock';
 
 export type PlanPart = 'timeline' | 'threads' | 'board' | 'histories' | 'calendar';
 
@@ -42,6 +43,8 @@ export function rememberPlanPart(part: PlanPart): void {
 
 export function PlanPane() {
   const [part, setPartState] = useState<PlanPart>(remembered.part);
+  // The page's scroll, held still while a card on the scene board is dragged (scrollLock.tsx).
+  const scroll = useLockableScroll();
   useEffect(() => {
     heard.add(setPartState);
     return () => {
@@ -67,7 +70,8 @@ export function PlanPane() {
           <ThreadsPane />
         </View>
       ) : (
-        <ScrollView key={part} style={styles.flex} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+        <ScrollView key={part} {...scroll.scrollProps} style={styles.flex} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+          <scroll.Provider>
           {part === 'timeline' ? (
             <TimelinePane />
           ) : part === 'board' ? (
@@ -77,6 +81,7 @@ export function PlanPane() {
           ) : (
             <CalendarPane />
           )}
+          </scroll.Provider>
         </ScrollView>
       )}
     </View>

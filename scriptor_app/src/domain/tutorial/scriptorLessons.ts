@@ -4,14 +4,27 @@
 // the top of every area. These exact phrases are said Scriptor's way when a lesson is shown; `toFlutterWords` turns
 // them back, so the test still checks every lesson against the Dart word for word (as 5b's scriptorWords.ts does).
 //
-// Three lessons are about what Scriptor does not have (ribbons, pinning an area to the phone's bar, the phone menu laid
-// out as a book's contents): they are not shown.
+// Where a whole step (or what a lesson is, where it is, its example) describes a screen Scriptor lays out differently,
+// it is rewritten whole in lessonRewrites.ts, which says how the Dart's text began.
+//
+// Six lessons are about what Scriptor does not have: ribbons; pinning an area to the phone's bar; the phone menu "More"
+// laid out as a book's contents; "Today from your book", the daily card on that menu; "Where you were", the trail that
+// menu kept; and "The app wears your book" (Scriptor has one look, System Monolith, and no cover-colour theme). They are
+// not shown.
 
 import { type Topic } from './topics';
+import { lessonRewrites } from './lessonRewrites';
 import { tutorialTopics } from './topicsData';
 
 /** Lessons about what Scriptor does not have. */
-export const lessonsNotInScriptor: ReadonlySet<string> = new Set(['ribbons', 'pinbar', 'contentsparts']);
+export const lessonsNotInScriptor: ReadonlySet<string> = new Set([
+  'ribbons',
+  'pinbar',
+  'contentsparts',
+  'todayfromyourbook',
+  'trail',
+  'wearbook',
+]);
 
 /** [the Flutter app's phrase, Scriptor's], applied in this order (longer phrases first). */
 export const lessonPhrases: readonly (readonly [string, string])[] = [
@@ -81,13 +94,20 @@ export function toFlutterWords(text: string): string {
 
 /** A lesson in Scriptor's words. */
 export function scriptorTopic(t: Topic): Topic {
+  const r = lessonRewrites[t.id] ?? {};
+  const said = (text: string, rewrite: readonly [string, string | null] | undefined): string =>
+    rewrite === undefined ? inScriptorWords(text) : (rewrite[1] ?? '');
   return {
     ...t,
     title: inScriptorWords(t.title),
-    what: inScriptorWords(t.what),
-    steps: t.steps.map(inScriptorWords),
-    example: inScriptorWords(t.example),
-    ...(t.where !== undefined ? { where: inScriptorWords(t.where) } : {}),
+    what: said(t.what, r.what),
+    steps: t.steps.flatMap((step, i) => {
+      const rewrite = r.steps?.[i];
+      if (rewrite === undefined) return [inScriptorWords(step)];
+      return rewrite[1] === null ? [] : [rewrite[1]];
+    }),
+    example: said(t.example, r.example),
+    ...(t.where !== undefined ? { where: said(t.where, r.where) } : {}),
   };
 }
 

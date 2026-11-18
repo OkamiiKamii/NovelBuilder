@@ -35,6 +35,9 @@ import { colors, fonts, space } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { PlanPage } from './PlanPage';
 import { type OpenPlot, usePlot } from './usePlot';
+import { ConnectionsPanel } from '../organize/ConnectionsPanel';
+import { useCast } from '../organize/useCast';
+import { EntityRef } from '../../domain/model/entityRef';
 
 type Menu = { title: string; actions: { label: string; icon: React.ComponentProps<typeof Icon>['name']; onPress: () => void }[] } | null;
 
@@ -52,6 +55,7 @@ function Plan({ plot, nodeId }: { plot: OpenPlot; nodeId: string }) {
   const [beat, setBeat] = useState('');
   const model = useMemo(() => StoryModel.fromSnapshot(plot.snapshot), [plot.snapshot]);
   const view = useMemo(() => planPage(model, plot.snapshot, nodeId), [model, plot.snapshot, nodeId]);
+  const cast = useCast();
 
   if (view.missing) {
     return (
@@ -365,6 +369,9 @@ function Plan({ plot, nodeId }: { plot: OpenPlot; nodeId: string }) {
           </Pressable>
         ))}
       </Panel>
+
+      {/* Every connection the chapter or scene has, both ways (connections_panel.dart, before the private notes). */}
+      {cast && <ConnectionsPanel open={cast} self={new EntityRef('node', id)} />}
 
       <Panel style={styles.panel}>
         <SavedText
