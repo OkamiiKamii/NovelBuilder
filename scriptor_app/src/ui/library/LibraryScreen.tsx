@@ -2,8 +2,8 @@
 // tiles, the novels as cards or a list, collections, and on wide screens the Library Overview, Quick Actions and
 // Recent Activity beside them (below them on a phone).
 
-import { useRouter } from 'expo-router';
-import { type ReactNode, useCallback, useMemo, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -68,6 +68,13 @@ export function LibraryScreen() {
   const [view, setViewState] = useState<'grid' | 'list'>(() => (lib.settings.read(viewSetting) === 'list' ? 'list' : 'grid'));
 
   const [form, setForm] = useState<{ editing: Novel | null; setupFrom: string | null } | null>(null);
+  // The home-screen shortcut "New novel" (scriptor:///?new=1): the form, open.
+  const { new: newAsked } = useLocalSearchParams<{ new?: string }>();
+  useEffect(() => {
+    if (newAsked !== '1') return;
+    setForm({ editing: null, setupFrom: null });
+    router.setParams({ new: undefined });
+  }, [newAsked]); // eslint-disable-line react-hooks/exhaustive-deps
   const [menuFor, setMenuFor] = useState<Novel | null>(null);
   const [deleting, setDeleting] = useState<Novel | null>(null);
   const [preview, setPreview] = useState<ImportPreview | null>(null);

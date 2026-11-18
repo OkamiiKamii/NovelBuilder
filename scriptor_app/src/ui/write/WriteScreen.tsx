@@ -2,7 +2,7 @@
 // chapter editor. On a phone one at a time: the contents, then the editor with a Back arrow. The chapter open last is
 // remembered for each novel.
 
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -116,6 +116,13 @@ export function WriteScreen() {
   // Lines asked for at the end of a chapter while Write is open (Systems' "Write it in the chapter"): its chapter,
   // opened; its editor writes them (pendingInsert.ts).
   useEffect(() => onInsert((i) => select(i.nodeId)), [select]);
+  // The home-screen shortcut "Continue writing" (scriptor:///write?at=end): the chapter, at its last word.
+  const { at } = useLocalSearchParams<{ at?: string }>();
+  useEffect(() => {
+    if (at !== 'end') return;
+    if (selectedId) select(selectedId, 'end');
+    router.setParams({ at: undefined });
+  }, [at]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ---- the contents' actions
 

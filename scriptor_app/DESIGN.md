@@ -107,6 +107,11 @@ is in the app once.
   `background` colour. Every launcher mask (circle, squircle, rounded square) shows the whole crest, wing tips
   included. The launch screen uses the same picture.
 
+- **Home-screen shortcuts** (`plugins/withShortcuts.js`): long-press Scriptor's icon for **Continue writing** (Write,
+  on the chapter last worked in, the caret after its last word: `scriptor:///write?at=end`) and **Start a new novel**
+  (the Library with the New novel form open: `scriptor:///?new=1`), each on a round gold icon with a dark glyph
+  (Material Design Icons' feather and plus). They can be dragged onto the home screen as icons of their own.
+
 ## Motion
 
 Scriptor moves only for three reasons (`src/ui/motion.ts`), all on the native driver:
