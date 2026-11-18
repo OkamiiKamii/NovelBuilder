@@ -26,7 +26,8 @@ import {
 import { type Edition, forecastOf, gazetteJob } from '../../domain/manuscript/gazette';
 import { GoldButton, Icon, type IconName, IconButton, OutlineButton } from '../kit';
 import { fonts, space } from '../theme';
-import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, useOpenChapter, usePicture, useReading } from './parts';
+import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, usePicture, useReading } from './parts';
+import { useOpenChapter } from '../write/pendingFind';
 
 const ground = '#2A241F';
 const paper = '#F1EBDD';
@@ -96,7 +97,7 @@ function FrontPage({ name, book, e }: { name: string; book: string; e: Edition }
             <Icon name={weatherIcon[e.weather] as IconName} size={18} color={ink} />
             <Text style={[styles.small, styles.flex]}>{forecastOf(e.weather)}</Text>
           </View>
-          {e.weatherCount > 0 ? <Text style={[styles.tiny, styles.faint]}>“{e.weatherWord}”, {e.weatherCount} times in the chapter</Text> : null}
+          {e.weatherCount > 0 ? <Text style={[styles.tiny, styles.faint]}>“{e.weatherWord}”, {e.weatherCount === 1 ? 'once' : `${e.weatherCount} times`} in the chapter</Text> : null}
           <View style={styles.hrule} />
           <Text style={styles.caps9}>IN THE NEWS</Text>
           {e.inTheNews.length === 0 ? <Text style={[styles.small, styles.faint]}>A quiet day.</Text> : null}
@@ -126,7 +127,7 @@ export function GazettePage() {
   const [at, setAt] = useState(0);
   const [height, setHeight] = useState(600);
   const [pictureRef, picture] = usePicture({ width: frontPageWidth, height });
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open?.novelId ?? null);
   if (open === null || paper === null) {
     return (
       <KeepsakePage title="The Gazette" ground={ground} ink={light}>

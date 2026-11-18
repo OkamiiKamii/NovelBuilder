@@ -14,7 +14,8 @@ import { backWords, frontColours, postcardPictureScale, postcardScene, postcardS
 import { type Postcard, postcardsJob } from '../../domain/manuscript/postcards';
 import { GoldButton, IconButton, OutlineButton } from '../kit';
 import { fonts, space } from '../theme';
-import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, useOpenChapter, usePicture, useReading } from './parts';
+import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, usePicture, useReading } from './parts';
+import { useOpenChapter } from '../write/pendingFind';
 
 const ground = '#231D19';
 const card = '#F8F1E2';
@@ -142,7 +143,7 @@ export function PostcardsPage() {
   const [at, setAt] = useState(0);
   const [turned, setTurned] = useState(false);
   const [pictureRef, picture] = usePicture(postcardSize, postcardPictureScale);
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open?.novelId ?? null);
   if (open === null || cards === null) {
     return (
       <KeepsakePage title="Postcards from your world" ground={ground} ink={light}>

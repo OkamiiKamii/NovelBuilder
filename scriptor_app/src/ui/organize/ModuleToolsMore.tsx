@@ -28,10 +28,9 @@ import {
   ranksTool,
 } from '../../domain/modules/screens/tools';
 import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from '../kit';
-import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
-import { lastNodeSetting } from '../write/WriteScreen';
+import { useOpenChapter } from '../write/pendingFind';
 import { ChooserField, SavedText } from './parts';
 import type { OpenModules } from './useModules';
 
@@ -53,15 +52,6 @@ const laterWords = 'Not in this app';
 function useEntryLink() {
   const router = useRouter();
   return (e: Entry) => router.navigate((e.category === 'character' ? characterPath(e.id) : worldEntryPath(e.id)) as never);
-}
-
-function useOpenChapter(novelId: string) {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId: string) => {
-    lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
-    router.navigate('/write');
-  };
 }
 
 /** An entry's name, pressed to open it. */

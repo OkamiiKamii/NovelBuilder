@@ -26,10 +26,9 @@ import { addRelationshipDialog, relationshipPath } from '../../domain/relationsh
 import { relationshipsTabView } from '../../domain/relationships/screens/relationshipsTab';
 import { RelationChanges } from '../../domain/relationships/relationChanges';
 import { relationSettingsOf } from '../../domain/relationships/relationTypes';
-import { lastNodeSetting } from '../write/WriteScreen';
+import { useOpenChapter } from '../write/pendingFind';
 import { ConfirmDelete, PromptSheet, Sheet } from '../dialogs';
 import { Chip, Field, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from '../kit';
-import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, space } from '../theme';
 import { useToast } from '../toast';
 import { ProfilePageBoxes } from './CastFound';
@@ -74,16 +73,6 @@ export function ProfileTab({
   }
 }
 
-/** Opens a chapter or scene in Write (the place it is remembered is Write's own). */
-function useOpenChapter(open: OpenCast) {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId: string) => {
-    lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
-    router.navigate('/write');
-  };
-}
-
 function ChapterChips({ chapters, onOpen }: { chapters: ChapterLink[]; onOpen: (id: string) => void }) {
   return (
     <View style={styles.row}>
@@ -100,7 +89,7 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
   const { cast } = open;
   const router = useRouter();
   const toast = useToast();
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open.novelId);
   const entry = listed.entry;
   const sentence = oneSentence(cast, entry.id);
   const [asking, setAsking] = useState<LoglinePart | null>(null);

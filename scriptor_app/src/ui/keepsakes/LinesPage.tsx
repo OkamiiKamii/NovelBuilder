@@ -11,7 +11,8 @@ import { bestLinesJob } from '../../domain/manuscript/bestLines';
 import { type QuoteDress, quoteAt, quoteCard, quoteCardSize, quoteColours, quoteDresses } from '../../domain/keepsakes/pages';
 import { Chip, GoldButton, IconButton, OutlineButton } from '../kit';
 import { fonts, space } from '../theme';
-import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, useOpenChapter, usePicture, useReading } from './parts';
+import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, usePicture, useReading } from './parts';
+import { useOpenChapter } from '../write/pendingFind';
 
 const ground = '#15120F';
 const ink = '#F4EEDF';
@@ -22,7 +23,7 @@ export function LinesPage() {
   const [at, setAt] = useState(0);
   const [dress, setDress] = useState<QuoteDress>('paper');
   const [pictureRef, picture] = usePicture(quoteCardSize);
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open?.novelId ?? null);
   if (open === null || lines === null) {
     return (
       <KeepsakePage title="Your best lines" ground={ground} ink={ink}>

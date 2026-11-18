@@ -137,9 +137,9 @@ export function SystemsPane() {
                 {s.description.length > 0 && <Muted numberOfLines={2}>{s.description}</Muted>}
                 <Muted>
                   {[
-                    `${s.variables.length} attributes & resources`,
-                    `${s.tracks.length} levels & realms`,
-                    `${model.sheets.filter((x) => x.systemId === s.id).length} sheets`,
+                    counted(s.variables.length, 'attribute or resource', 'attributes & resources'),
+                    counted(s.tracks.length, 'level or realm', 'levels & realms'),
+                    counted(model.sheets.filter((x) => x.systemId === s.id).length, 'sheet', 'sheets'),
                   ].join(' · ')}
                 </Muted>
               </View>
@@ -319,6 +319,11 @@ function ExampleWindow({ view }: { view: StatusWindowView }) {
       {view.caption.length > 0 && <Text style={styles.caption}>{view.caption}</Text>}
     </View>
   );
+}
+
+/** "1 sheet", "3 sheets". */
+function counted(n: number, one: string, many: string): string {
+  return `${n} ${n === 1 ? one : many}`;
 }
 
 const styles = StyleSheet.create({

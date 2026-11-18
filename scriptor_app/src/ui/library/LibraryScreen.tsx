@@ -32,6 +32,7 @@ import { ActionSheet, ConfirmDelete, PromptSheet, type SheetAction } from '../di
 import { Brand } from '../frame';
 import { AreaTools } from '../search/AreaTools';
 import { Chip, GoldButton, Icon, type IconName, IconButton, Muted, Panel, SectionTitle } from '../kit';
+import { EmptyState } from '../states';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
@@ -241,9 +242,12 @@ export function LibraryScreen() {
 
   // ---- layout
 
-  const columns = phone ? 2 : size === 'medium' ? 3 : 4;
   const mainWidth = width - (phone ? 0 : size === 'medium' ? 96 : 236) - (size === 'expanded' ? 320 : 0);
   const gutter = phone ? space.md : space.lg;
+  // As many columns as hold a card of at least 170 (its title, progress and Continue need that), two to four.
+  const columns = Math.max(2, Math.min(4, Math.floor((mainWidth - gutter * 2 + space.md) / (170 + space.md))));
+  // The four action tiles stand in one row when each can be 190 wide, else two by two.
+  const twoByTwo = mainWidth - gutter * 2 < 4 * 190 + 3 * space.md;
   const cardWidth = Math.floor((mainWidth - gutter * 2 - space.md * (columns - 1)) / columns);
 
   const header = (
@@ -298,11 +302,11 @@ export function LibraryScreen() {
         )}
       </View>
 
-      <View style={[styles.tiles, phone && styles.tilesPhone]}>
-        <ActionTile icon="file-document-edit-outline" title="New Novel" subtitle="Start a new story" strong onPress={() => setForm({ editing: null, setupFrom: null })} phone={phone} />
-        <ActionTile icon="download-outline" title="Import" subtitle="Import from file" onPress={importFile} phone={phone} />
-        <ActionTile icon="cloud-upload-outline" title="Backup" subtitle="Save or restore" onPress={() => setBackupsOpen(true)} phone={phone} />
-        <ActionTile icon="view-dashboard-outline" title="Templates" subtitle="Use a template" onPress={() => setTemplatesOpen(true)} phone={phone} />
+      <View style={[styles.tiles, twoByTwo && styles.tilesPhone]}>
+        <ActionTile icon="file-document-edit-outline" title="New Novel" subtitle="Start a new story" strong onPress={() => setForm({ editing: null, setupFrom: null })} half={twoByTwo} />
+        <ActionTile icon="download-outline" title="Import" subtitle="Import from file" onPress={importFile} half={twoByTwo} />
+        <ActionTile icon="cloud-upload-outline" title="Backup" subtitle="Save or restore" onPress={() => setBackupsOpen(true)} half={twoByTwo} />
+        <ActionTile icon="view-dashboard-outline" title="Templates" subtitle="Use a template" onPress={() => setTemplatesOpen(true)} half={twoByTwo} />
       </View>
 
       {collection && (
@@ -317,27 +321,29 @@ export function LibraryScreen() {
 
   const novelsBlock =
     data.novels.length === 0 ? (
-      <Panel style={styles.empty}>
-        <Icon name="book-plus-outline" size={44} />
-        <Text style={styles.emptyTitle}>Your library is empty</Text>
-        <Muted style={styles.center}>Start your first novel, or import a backup from Scriptor or Novel Builder.</Muted>
-        <GoldButton label="New Novel" icon="plus" onPress={() => setForm({ editing: null, setupFrom: null })} style={styles.emptyButton} />
-      </Panel>
+      <EmptyState
+        icon="book-plus-outline"
+        title="Your library is empty"
+        message="Start your first novel, or import a backup from Scriptor or Novel Builder."
+        action={<GoldButton label="New Novel" icon="plus" onPress={() => setForm({ editing: null, setupFrom: null })} style={styles.emptyButton} />}
+      />
     ) : shown.length === 0 ? (
-      <Panel style={styles.empty}>
-        <Icon name="magnify-close" size={40} color={colors.muted} />
-        <Text style={styles.emptyTitle}>No novels match</Text>
-        <Muted style={styles.center}>Your novels are unchanged; they are only hidden by the search or filters.</Muted>
-        <GoldButton
-          label="Clear search and filters"
-          onPress={() => {
-            setQuery('');
-            setFilter('all');
-            setCollection(null);
-          }}
-          style={styles.emptyButton}
-        />
-      </Panel>
+      <EmptyState
+        icon="magnify-close"
+        title="No novels match"
+        message="Your novels are unchanged; they are only hidden by the search or filters."
+        action={
+          <GoldButton
+            label="Clear search and filters"
+            onPress={() => {
+              setQuery('');
+              setFilter('all');
+              setCollection(null);
+            }}
+            style={styles.emptyButton}
+          />
+        }
+      />
     ) : view === 'grid' ? (
       <View style={styles.grid}>
         {shown.map((n) => (
@@ -632,21 +638,21 @@ function ActionTile({
   subtitle,
   onPress,
   strong = false,
-  phone,
+  half,
 }: {
   icon: IconName;
   title: string;
   subtitle: string;
   onPress: () => void;
   strong?: boolean;
-  phone: boolean;
+  half: boolean;
 }) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${title}: ${subtitle}`}
       onPress={onPress}
-      style={({ pressed }) => [styles.tile, phone && styles.tilePhone, strong && styles.tileStrong, pressed && { opacity: 0.8 }]}
+      style={({ pressed }) => [styles.tile, half && styles.tilePhone, strong && styles.tileStrong, pressed && { opacity: 0.8 }]}
     >
       <View style={[styles.tileIcon, strong && styles.tileIconStrong]}>
         <Icon name={icon} size={26} color={strong ? colors.gold : colors.sky} />
@@ -696,7 +702,6 @@ const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: colors.background },
   columns: { flex: 1, flexDirection: 'row' },
   flex: { flex: 1 },
-  center: { textAlign: 'center' },
   side: { width: 320, flexGrow: 0, paddingRight: space.lg, paddingLeft: space.xs },
   phoneTop: { marginBottom: space.md },
   phoneTopRow: { flexDirection: 'row', alignItems: 'center' },
@@ -765,8 +770,6 @@ const styles = StyleSheet.create({
   showingText: { fontFamily: fonts.ui, fontSize: 14, color: colors.sky },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
   list: { gap: space.sm },
-  empty: { alignItems: 'center', gap: space.sm, paddingVertical: space.xxl },
-  emptyTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.text },
   emptyButton: { marginTop: space.md },
   block: { marginTop: space.lg },
   collections: { gap: space.md },

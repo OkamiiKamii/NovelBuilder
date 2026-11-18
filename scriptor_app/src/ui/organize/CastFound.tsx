@@ -47,8 +47,7 @@ import {
 import { spokenJob } from '../../domain/characters/voice';
 import { voicePrintsJob } from '../../domain/characters/voicePrint';
 import type { Entry } from '../../domain/records/entry';
-import { lastNodeSetting } from '../write/WriteScreen';
-import { requestFind } from '../write/pendingFind';
+import { useOpenChapter } from '../write/pendingFind';
 import { PromptSheet, Sheet } from '../dialogs';
 import { Icon, type IconName, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
@@ -118,17 +117,6 @@ function useStoreSetting() {
       lib.settings.write(key, value);
       lib.novels.touchSettings();
     });
-}
-
-/** Opens a chapter or scene in Write. */
-function useOpenChapter(open: OpenCast) {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId: string, find?: { term: string; block: number }) => {
-    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
-    lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
-    router.navigate('/write');
-  };
 }
 
 /** A change made now, said in a toast with **Open** to what it made. */
@@ -485,7 +473,7 @@ function NamesPanel({
 export function ProfilePageBoxes({ open, entry, profile }: { open: OpenCast; entry: Entry; profile: CharacterProfile | null }) {
   void profile;
   const lib = useLibrary();
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open.novelId);
   const { cast, novelId } = open;
   const textVersion = lib.novels.versionOf(novelId, ['chapterContents']);
   const stored = () => open.service.storedChapters(novelId);

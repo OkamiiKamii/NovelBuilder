@@ -13,6 +13,15 @@ export const colors = {
   muted: '#94A3B8',
   danger: '#F87171',
   success: '#4ADE80',
+  // The two ends of the gold gradient (filled buttons, progress bars, the ink).
+  goldLight: '#FFD36B',
+  goldDeep: '#C98A12',
+} as const;
+
+// See-through forms of the colours above, for lines and veils laid over pictures and covers.
+export const tints = {
+  goldRule: 'rgba(243, 182, 58, 0.45)',
+  veil: 'rgba(10, 11, 14, 0.55)',
 } as const;
 
 // Bundled typefaces (app.json, expo-font). On Android the family is the file's name.

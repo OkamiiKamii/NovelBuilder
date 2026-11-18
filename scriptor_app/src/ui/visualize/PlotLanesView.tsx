@@ -32,10 +32,9 @@ import {
   lanesWords as words,
 } from '../../domain/visualize/story/screens';
 import { Chip, Muted, Panel } from '../kit';
-import { useLibrary } from '../LibraryContext';
 import { useCast } from '../organize/useCast';
 import { colors, fonts, sizeClassOf, space } from '../theme';
-import { lastNodeSetting } from '../write/WriteScreen';
+import { useOpenChapter } from '../write/pendingFind';
 import { VizFrame, type VizFilters, useVizFilters, useVizSelection } from './VizFrame';
 import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
@@ -175,15 +174,6 @@ function LanesBody({ list }: { list: boolean }) {
       {selectedLane !== undefined && <Sequence model={model} lane={selectedLane} lanes={lanes} novelId={open.novelId} />}
     </View>
   );
-}
-
-function useOpenChapter(novelId: string) {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId: string) => {
-    lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
-    router.navigate('/write');
-  };
 }
 
 /** What a chapter holds for a lane: each place, its beats and events. */

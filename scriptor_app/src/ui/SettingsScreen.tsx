@@ -99,8 +99,9 @@ export function SettingsScreen() {
           </View>
           <View style={styles.flex}>
             <Text style={styles.body}>
-              {rank.wordsWritten.toLocaleString('en-US')} words written · {rank.daysWritten} days at the desk ·{' '}
-              {rank.chaptersFinished} chapters finished · {rank.xp.toLocaleString('en-US')} XP
+              {rank.wordsWritten.toLocaleString('en-US')} {rank.wordsWritten === 1 ? 'word' : 'words'} written · {rank.daysWritten}{' '}
+              {rank.daysWritten === 1 ? 'day' : 'days'} at the desk · {rank.chaptersFinished}{' '}
+              {rank.chaptersFinished === 1 ? 'chapter' : 'chapters'} finished · {rank.xp.toLocaleString('en-US')} XP
             </Text>
             <Muted style={styles.later}>
               Earned only by writing, in every novel on this phone: 1 XP for each word written, {xpPerDayWritten} XP for
@@ -156,7 +157,6 @@ export function SettingsScreen() {
           style={styles.start}
           onPress={() => {
             try {
-              // eslint-disable-next-line @typescript-eslint/no-require-imports
               const file: unknown = require('../../assets/sample/the-drowned-road.novel.json');
               addSampleNovel(lib.novels, file, Date.now(), lib.library.uniqueTitle(sampleNovelTitle));
               toast('The sample novel is in your library');

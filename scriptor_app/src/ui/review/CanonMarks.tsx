@@ -99,7 +99,7 @@ export function SvgCanonBadge({ mark, x, y, size = 11, anchorRight = false }: { 
   return (
     <G accessibilityLabel={markWords(mark)}>
       <Rect x={left} y={y} width={w} height={h} rx={5} fill={bg} stroke={fg} strokeOpacity={0.6} strokeWidth={1} />
-      <SvgText x={left + w / 2} y={y + h - 3.5} fontSize={size} fontWeight="700" fill={fg} textAnchor="middle">
+      <SvgText fontFamily={fonts.ui} x={left + w / 2} y={y + h - 3.5} fontSize={size} fontWeight="700" fill={fg} textAnchor="middle">
         {badge.glyph}
       </SvgText>
     </G>

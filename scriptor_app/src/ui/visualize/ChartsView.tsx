@@ -239,10 +239,10 @@ function ColumnChart({ chart, words, selectedKey, onSelect }: { chart: Chart; wo
             {[0, 0.5, 1].map((f) => (
               <Line key={f} x1={left} y1={height - f * height + 2} x2={left + inner} y2={height - f * height + 2} stroke={colors.border} strokeWidth={1} />
             ))}
-            <SvgText x={left - 6} y={8} fontSize={10} fill={colors.muted} textAnchor="end">
+            <SvgText fontFamily={fonts.ui} x={left - 6} y={8} fontSize={10} fill={colors.muted} textAnchor="end">
               {grouped(most)}
             </SvgText>
-            <SvgText x={left - 6} y={height + 4} fontSize={10} fill={colors.muted} textAnchor="end">
+            <SvgText fontFamily={fonts.ui} x={left - 6} y={height + 4} fontSize={10} fill={colors.muted} textAnchor="end">
               0
             </SvgText>
             {bars.map((b, i) => {
@@ -264,7 +264,7 @@ function ColumnChart({ chart, words, selectedKey, onSelect }: { chart: Chart; wo
             })}
             {bars.map((b, i) =>
               i % every === 0 ? (
-                <SvgText key={`l-${b.key}`} x={left + i * slot + slot / 2} y={height + 16} fontSize={10} fill={colors.muted} textAnchor="middle">
+                <SvgText fontFamily={fonts.ui} key={`l-${b.key}`} x={left + i * slot + slot / 2} y={height + 16} fontSize={10} fill={colors.muted} textAnchor="middle">
                   {b.short}
                 </SvgText>
               ) : null,

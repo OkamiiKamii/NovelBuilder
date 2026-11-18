@@ -125,7 +125,7 @@ export function NovelRow({ novel, stats, onContinue, onMenu }: Omit<CardProps, '
           </Text>
         </View>
         <StatusChip novel={novel} />
-        <Text style={styles.meta} numberOfLines={1}>
+        <Text style={styles.meta} numberOfLines={2}>
           {stats?.chapters ?? 0} chapters · {words.toLocaleString('en-US')} words · Last read {formatDate(novel.lastOpenedAt)}
         </Text>
         {progress !== null && <ProgressBar value={progress} />}

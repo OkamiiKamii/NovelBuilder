@@ -4,7 +4,10 @@
 // once). A port of the Flutter app's `pendingFindProvider` (features/write/write_providers.dart).
 
 
+import { useRouter } from 'expo-router';
+
 import type { Library } from '../../data/library';
+import { useLibrary } from '../LibraryContext';
 import { lastNodeSetting } from './WriteScreen';
 
 /** A passage to land on: the chapter, the words as written, and the paragraph (headings and paragraphs in reading
@@ -47,6 +50,16 @@ export function openChapterAt(
   lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
   requestFind(find && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
   router.navigate('/write' as never);
+}
+
+/** `openChapterAt` for novel `novelId` (nothing while no novel is open): what every "Read it there" and chapter link
+ * calls. */
+export function useOpenChapter(novelId: string | null): (nodeId: string, find?: { term: string; block: number }) => void {
+  const lib = useLibrary();
+  const router = useRouter();
+  return (nodeId, find) => {
+    if (novelId !== null) openChapterAt(lib, router, novelId, nodeId, find);
+  };
 }
 
 /** Where `term` is in `blocks` (the chapter's paragraphs and headings): in paragraph `block` when it is there, else the

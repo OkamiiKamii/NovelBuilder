@@ -124,6 +124,8 @@ export function SavedText({
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latest = useRef(onSave);
   latest.current = onSave;
+  // What was last typed, for the save when the field goes away before its timer runs.
+  const typed = useRef(value);
   // The stored value replaces what is shown only while nothing is being typed.
   useEffect(() => {
     if (!typing.current) setText(value);
@@ -133,12 +135,12 @@ export function SavedText({
     timer.current = null;
     if (typing.current) {
       typing.current = false;
-      latest.current(text);
+      latest.current(typed.current);
     }
   };
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  // Leaving the page within the 600 ms after a keystroke (the back arrow, a closed sheet) unmounts the field with no
+  // blur, so the last edit is saved here rather than dropped with the timer.
+  useEffect(() => () => flush(), []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label.toUpperCase()}</Text>
@@ -146,6 +148,7 @@ export function SavedText({
         value={text}
         onChangeText={(v) => {
           setText(v);
+          typed.current = v;
           typing.current = true;
           if (timer.current) clearTimeout(timer.current);
           timer.current = setTimeout(() => {

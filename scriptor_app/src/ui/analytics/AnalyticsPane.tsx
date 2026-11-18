@@ -388,15 +388,15 @@ function ColumnChart({ label, bars, words, labelEvery }: { label: string; bars: 
             <Svg width={left + inner + 8} height={height + 26}>
               <Line x1={left} y1={y(0)} x2={left + inner} y2={y(0)} stroke={colors.border} strokeWidth={1} />
               <Line x1={left} y1={y(top)} x2={left + inner} y2={y(top)} stroke={colors.border} strokeWidth={1} strokeDasharray="3 3" />
-              <SvgText x={left - 6} y={y(top) + 4} fontSize={10} fill={colors.muted} textAnchor="end">
+              <SvgText fontFamily={fonts.ui} x={left - 6} y={y(top) + 4} fontSize={10} fill={colors.muted} textAnchor="end">
                 {signed(top)}
               </SvgText>
               {bottom < 0 && (
-                <SvgText x={left - 6} y={y(bottom)} fontSize={10} fill={colors.muted} textAnchor="end">
+                <SvgText fontFamily={fonts.ui} x={left - 6} y={y(bottom)} fontSize={10} fill={colors.muted} textAnchor="end">
                   {signed(bottom)}
                 </SvgText>
               )}
-              <SvgText x={left - 6} y={y(0) + 4} fontSize={10} fill={colors.muted} textAnchor="end">
+              <SvgText fontFamily={fonts.ui} x={left - 6} y={y(0) + 4} fontSize={10} fill={colors.muted} textAnchor="end">
                 0
               </SvgText>
               {bars.map((b, i) => {
@@ -419,7 +419,7 @@ function ColumnChart({ label, bars, words, labelEvery }: { label: string; bars: 
               })}
               {bars.map((b, i) =>
                 i % labelEvery === 0 ? (
-                  <SvgText key={`l-${b.key}`} x={left + i * slot + slot / 2} y={height + 22} fontSize={10} fill={colors.muted} textAnchor="middle">
+                  <SvgText fontFamily={fonts.ui} key={`l-${b.key}`} x={left + i * slot + slot / 2} y={height + 22} fontSize={10} fill={colors.muted} textAnchor="middle">
                     {b.short}
                   </SvgText>
                 ) : null,

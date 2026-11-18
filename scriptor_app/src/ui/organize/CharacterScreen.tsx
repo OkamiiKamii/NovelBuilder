@@ -166,7 +166,7 @@ export function CharacterScreen() {
               {tools.uploaded ? (
                 <FocalImage uri={entry.image ?? ''} focal={profile.focal} style={StyleSheet.absoluteFill} />
               ) : (
-                <Cameo entry={entry} profile={profile} width={150} height={180} bare />
+                <Cameo entry={entry} profile={profile} width={150} height={180} />
               )}
             </View>
             <View style={styles.row}>

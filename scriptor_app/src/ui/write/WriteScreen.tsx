@@ -300,7 +300,7 @@ export function WriteScreen() {
                 key={n.id}
                 accessibilityRole="button"
                 accessibilityState={{ selected: isSel }}
-                accessibilityLabel={`${n.kind === 'scene' ? 'Scene' : `Chapter ${chapterNumber.get(n.id)}`}: ${n.title}, ${n.wordCount} words, ${status}`}
+                accessibilityLabel={`${n.kind === 'scene' ? 'Scene' : `Chapter ${chapterNumber.get(n.id)}`}: ${n.title}, ${n.wordCount} ${n.wordCount === 1 ? 'word' : 'words'}, ${status}`}
                 onPress={() => select(n.id)}
                 onLongPress={() => setMenuFor(n)}
                 style={[styles.line, { paddingLeft: space.md + depth * 14 }, isSel && styles.lineOn]}

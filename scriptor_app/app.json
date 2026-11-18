@@ -20,7 +20,7 @@
         "android.permission.WRITE_EXTERNAL_STORAGE"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/android-icon-foreground.png",
+        "foregroundImage": "./assets/android-icon-foreground-safe.png",
         "backgroundColor": "#0A0B0E"
       },
       "predictiveBackGestureEnabled": false,
@@ -32,13 +32,116 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Outfit.ttf",
-            "./assets/fonts/Merriweather.ttf",
-            "./assets/fonts/Merriweather-Italic.ttf",
-            "./assets/fonts/JetBrainsMono.ttf",
-            "./assets/fonts/Cinzel.ttf"
-          ]
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Outfit",
+                "path": "./assets/fonts/Outfit.ttf",
+                "fontDefinitions": [
+                  {
+                    "weight": 400
+                  },
+                  {
+                    "weight": 500
+                  },
+                  {
+                    "weight": 600
+                  },
+                  {
+                    "weight": 700
+                  },
+                  {
+                    "weight": 800
+                  },
+                  {
+                    "weight": 900
+                  }
+                ]
+              },
+              {
+                "fontFamily": "Merriweather",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/Merriweather.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "./assets/fonts/Merriweather.ttf",
+                    "weight": 600
+                  },
+                  {
+                    "path": "./assets/fonts/Merriweather.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "./assets/fonts/Merriweather.ttf",
+                    "weight": 900
+                  },
+                  {
+                    "path": "./assets/fonts/Merriweather-Italic.ttf",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/Merriweather-Italic.ttf",
+                    "weight": 700,
+                    "style": "italic"
+                  }
+                ]
+              },
+              {
+                "fontFamily": "Merriweather-Italic",
+                "path": "./assets/fonts/Merriweather-Italic.ttf",
+                "fontDefinitions": [
+                  {
+                    "weight": 400
+                  },
+                  {
+                    "weight": 700
+                  }
+                ]
+              },
+              {
+                "fontFamily": "JetBrainsMono",
+                "path": "./assets/fonts/JetBrainsMono.ttf",
+                "fontDefinitions": [
+                  {
+                    "weight": 400
+                  },
+                  {
+                    "weight": 500
+                  },
+                  {
+                    "weight": 600
+                  },
+                  {
+                    "weight": 700
+                  },
+                  {
+                    "weight": 800
+                  }
+                ]
+              },
+              {
+                "fontFamily": "Cinzel",
+                "path": "./assets/fonts/Cinzel.ttf",
+                "fontDefinitions": [
+                  {
+                    "weight": 400
+                  },
+                  {
+                    "weight": 600
+                  },
+                  {
+                    "weight": 700
+                  },
+                  {
+                    "weight": 900
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "expo-router",
@@ -50,7 +153,15 @@
           "cameraPermission": false
         }
       ],
-      "./plugins/withReleaseSigning"
+      "./plugins/withReleaseSigning",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0A0B0E",
+          "image": "./assets/android-icon-foreground-safe.png",
+          "imageWidth": 220
+        }
+      ]
     ]
   }
 }

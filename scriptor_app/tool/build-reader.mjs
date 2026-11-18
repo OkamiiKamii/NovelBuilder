@@ -2,7 +2,7 @@
 // Run after changing anything in reader-web/:   npm run build:pages
 //
 // The page loads nothing from a network. The book's typefaces are the device's own (as the Flutter reader uses them),
-// plus the app's fonts from the Android app's assets (file:///android_asset/fonts/), the base address it opens at.
+// plus the app's fonts from the Android app's resources (file:///android_res/font/, where expo-font's families put them).
 
 import { build } from 'esbuild';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -24,9 +24,9 @@ const script = result.outputFiles[0].text.replace(/<\/script/gi, '<\\/script');
 
 // The look (typeface, size, colours, spacing) comes from the app as the dynamic style; these are the fixed parts.
 const css = `
-@font-face { font-family: 'Merriweather'; src: url('fonts/Merriweather.ttf'); }
-@font-face { font-family: 'Merriweather'; font-style: italic; src: url('fonts/Merriweather-Italic.ttf'); }
-@font-face { font-family: 'Outfit'; src: url('fonts/Outfit.ttf'); }
+@font-face { font-family: 'Merriweather'; font-weight: 300 900; src: url('file:///android_res/font/merriweather.ttf'); }
+@font-face { font-family: 'Merriweather'; font-style: italic; font-weight: 300 900; src: url('file:///android_res/font/merriweather_italic.ttf'); }
+@font-face { font-family: 'Outfit'; font-weight: 100 900; src: url('file:///android_res/font/outfit.ttf'); }
 :root { --bg: #FFFFFF; --fg: #1A1A1A; --muted: rgba(26,26,26,0.65); --size: 18px; --leading: 1.5; --measure: 34em;
   --font: serif; --align: left; --pad: 20px; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); -webkit-text-size-adjust: 100%; }

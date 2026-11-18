@@ -1,8 +1,8 @@
 // Builds the chapter editor page (editor-web/) into one HTML string the app carries: src/editor/editorPage.generated.ts.
 // Run after changing anything in editor-web/:   npm run build:editor
 //
-// The page loads nothing from a network. Its fonts are the app's own, which expo-font puts in the Android app's assets
-// (file:///android_asset/fonts/), the base address the WebView opens the page at.
+// The page loads nothing from a network. Its fonts are the app's own: expo-font's font families (app.json) put them
+// in the Android app's resources, which the WebView reads at file:///android_res/font/ (named as the plugin names them).
 
 import { build } from 'esbuild';
 import { writeFileSync } from 'node:fs';
@@ -23,11 +23,11 @@ const result = await build({
 const script = result.outputFiles[0].text.replace(/<\/script/gi, '<\\/script');
 
 const css = `
-@font-face { font-family: 'Merriweather'; src: url('fonts/Merriweather.ttf'); }
-@font-face { font-family: 'Merriweather'; font-style: italic; src: url('fonts/Merriweather-Italic.ttf'); }
-@font-face { font-family: 'Cinzel'; src: url('fonts/Cinzel.ttf'); }
-@font-face { font-family: 'Outfit'; src: url('fonts/Outfit.ttf'); }
-@font-face { font-family: 'JetBrains Mono'; src: url('fonts/JetBrainsMono.ttf'); }
+@font-face { font-family: 'Merriweather'; font-weight: 300 900; src: url('file:///android_res/font/merriweather.ttf'); }
+@font-face { font-family: 'Merriweather'; font-style: italic; font-weight: 300 900; src: url('file:///android_res/font/merriweather_italic.ttf'); }
+@font-face { font-family: 'Cinzel'; font-weight: 400 900; src: url('file:///android_res/font/cinzel.ttf'); }
+@font-face { font-family: 'Outfit'; font-weight: 100 900; src: url('file:///android_res/font/outfit.ttf'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 100 800; src: url('file:///android_res/font/jet_brains_mono.ttf'); }
 :root {
   --size: 18px; --line: 1.7; --para: 0.9em; --width: 720px; --pad: 20px;
   --text: #F8FAFC; --muted: #94A3B8; --gold: #F3B63A; --sky: #38BDF8; --page: transparent;

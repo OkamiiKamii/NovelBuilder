@@ -212,7 +212,7 @@ export function DraftRoad({ words, target }: { words: number; target: number | n
               );
             })}
             {labels.map((l) => (
-              <SvgText key={l.text} x={l.x} y={y + 22} fontSize={10} textAnchor="middle" fill={l.passed ? colors.gold : colors.muted} fontWeight={l.passed ? '700' : '400'}>
+              <SvgText fontFamily={fonts.ui} key={l.text} x={l.x} y={y + 22} fontSize={10} textAnchor="middle" fill={l.passed ? colors.gold : colors.muted} fontWeight={l.passed ? '700' : '400'}>
                 {l.text}
               </SvgText>
             ))}

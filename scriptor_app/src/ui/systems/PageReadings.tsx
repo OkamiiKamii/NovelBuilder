@@ -42,8 +42,7 @@ import { Chip, Icon, type IconName, Muted, OutlineButton, Panel, ProgressBar } f
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
-import { lastNodeSetting } from '../write/WriteScreen';
-import { requestFind } from '../write/pendingFind';
+import { useOpenChapter } from '../write/pendingFind';
 import type { OpenCast } from '../organize/useCast';
 import { useCast } from '../organize/useCast';
 import type { OpenSystems } from './useSystems';
@@ -74,17 +73,6 @@ function useReading<T>(key: string, read: () => T): T | undefined {
     };
   }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
   return kept !== null && kept.key === key ? kept.value : undefined;
-}
-
-/** Opens a chapter in Write (the place is remembered as Write's own), as a profile's chapter chips do. */
-function useOpenChapter(novelId: string): (nodeId: string, find?: { term: string; block: number }) => void {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId, find) => {
-    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
-    lib.saves.saveNow(`setting:${lastNodeSetting(novelId)}`, () => lib.settings.write(lastNodeSetting(novelId), nodeId));
-    router.navigate('/write');
-  };
 }
 
 /** Writes a device setting at once, and has the screens read it again. */

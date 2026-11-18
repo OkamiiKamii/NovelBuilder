@@ -22,6 +22,10 @@ The code that holds these values is `src/ui/theme.ts`. Screens take colours and 
 | `muted` | `#94A3B8` | Secondary text: dates, counts, captions |
 | `danger` | `#F87171` | Errors, deleting, "At war", "Rivals" |
 | `success` | `#4ADE80` | "Completed", a finished progress bar's end |
+| `goldLight` | `#FFD36B` | The light end of the gold gradient (filled buttons, the ink's surface) |
+| `goldDeep` | `#C98A12` | The deep end of the gold gradient (buttons, progress bars, the ink's foot) |
+| `tints.goldRule` | gold at 45% | Thin gold lines over pictures (the cover medallion's outer ring) |
+| `tints.veil` | background at 55% | A dark veil under a mark set on a picture (the cover medallion) |
 
 Status colours from the mock-ups: Ongoing sky, On hold gold, Completed green, Archived muted.
 
@@ -37,6 +41,23 @@ Status colours from the mock-ups: Ongoing sky, On hold gold, Completed green, Ar
 All bundled with the app (SIL Open Font License, licences in `assets/fonts/`), so it looks the same on every phone and
 needs no network.
 
+**Weights.** The files are variable fonts. `app.json` declares each one to Android as a font family with named weights
+(expo-font's `android.fonts`), so `fontWeight` picks a real face of the same typeface: text with no weight is Regular
+(400), `'700'` is that font's Bold. (Before 2026-11-18 Android drew each file's default instance, Outfit at Thin 100
+and Merriweather at Light 300, and every bold fell back to Roboto.)
+
+| Family | Weights declared |
+|---|---|
+| Outfit | 400, 500, 600, 700, 800, 900 |
+| Merriweather (and its italic) | 400, 600, 700, 900 (italic 400, 700) |
+| Merriweather-Italic | 400, 700 |
+| JetBrainsMono | 400, 500, 600, 700, 800 |
+| Cinzel | 400, 600, 700, 900 |
+
+The editor and reader pages (WebViews) read the same files from `file:///android_res/font/` (the names expo-font gives
+them: `outfit.ttf`, `merriweather.ttf`, `merriweather_italic.ttf`, `cinzel.ttf`, `jet_brains_mono.ttf`), so each font
+is in the app once.
+
 ## Shapes and effects
 
 - **Panels:** `surface` ground, 1 px `border` outline, about 10 px rounded corners, a soft sky-blue glow along the edge.
@@ -46,9 +67,37 @@ needs no network.
 - **Progress bars:** thin, gold on a dark track, with the percentage beside them in gold.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
+- **Designed covers** (a novel with no picture of its own, `NovelCover.tsx`, choices in `domain/coverArt.ts`): the
+  book's own colour from top to foot; a fine gold line pattern from its **primary** genre (fantasy: pointed arches;
+  sci-fi: orbits and stars; adventure and the sea: waves; mystery and crime: rain; romance: a lattice of rings; horror:
+  rings round a moon; LitRPG and progression: climbing chevrons; anything else: ruled manuscript paper), each drawn
+  faint enough to carry the same weight; a double gold rule with diamond corners; a shaded spine fold on the left; and a
+  medallion with the title's initial in Cinzel (past "The", "A", "An"). With the title shown, the title and the author
+  stand under the medallion.
 - **Section headings:** an icon in gold, then the title in Outfit capitals ("LIBRARY OVERVIEW", "QUICK ACTIONS").
 - **Editor:** a dark page, the chapter title in Cinzel with a gold ornament line under it, the text in Merriweather,
   the chapters list on the left with the open chapter filled gold, word count / characters / reading time at the foot.
+
+## Launch and icon
+
+- **Launch screen** (`expo-splash-screen` in `app.json`): the `background` near-black with the crest in the middle,
+  so opening Scriptor never flashes white.
+- **Launcher icon:** the owner's crest (`assets/android-icon-foreground.png`, kept as it is) scaled into Android's
+  safe zone, with its square plate fading to transparency, in `assets/android-icon-foreground-safe.png` on the
+  `background` colour. Every launcher mask (circle, squircle, rounded square) shows the whole crest, wing tips
+  included. The launch screen uses the same picture.
+
+## Motion
+
+Scriptor moves only for three reasons (`src/ui/motion.ts`), all on the native driver:
+
+- **A touch is acknowledged:** buttons and chips give a little under the finger (scale 0.97; icon buttons 0.92).
+- **A state is shown:** a progress bar's fill grows from the left once, when it is first shown (600 ms).
+- **One authored moment:** on Progress, the page filling with ink rises to its level (1.1 s, after 150 ms).
+
+The easing is one confident arrival that settles (`cubic-bezier(0.16, 1, 0.3, 1)`), never a bounce. With Android's
+"Remove animations" on, nothing moves: fills and ink stand at their level, and the press scale stays, since it confirms
+the touch. No entrance choreography, count-ups or looping decoration.
 
 ## Layout by screen size (Android)
 

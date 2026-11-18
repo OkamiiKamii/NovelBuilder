@@ -359,10 +359,10 @@ function MapPart({ open, category, list, pick, selectedId, keep }: PartProps) {
             <Line key={`y${t}`} x1={left} y1={py(t)} x2={w - 16} y2={py(t)} stroke={colors.border} strokeWidth={1} />
           ))}
           {niceTicks(x0, x1).map((t) => (
-            <SvgText key={`xl${t}`} x={px(t)} y={h - 8} fontSize={10} fill={colors.muted} textAnchor="middle">{`${t}`}</SvgText>
+            <SvgText fontFamily={fonts.ui} key={`xl${t}`} x={px(t)} y={h - 8} fontSize={10} fill={colors.muted} textAnchor="middle">{`${t}`}</SvgText>
           ))}
           {niceTicks(y0, y1).map((t) => (
-            <SvgText key={`yl${t}`} x={left - 6} y={py(t) + 3} fontSize={10} fill={colors.muted} textAnchor="end">{`${t}`}</SvgText>
+            <SvgText fontFamily={fonts.ui} key={`yl${t}`} x={left - 6} y={py(t) + 3} fontSize={10} fill={colors.muted} textAnchor="end">{`${t}`}</SvgText>
           ))}
           {points.map((p) => {
             const on = p.entry.id === selectedId;
@@ -371,7 +371,7 @@ function MapPart({ open, category, list, pick, selectedId, keep }: PartProps) {
             );
           })}
           {points.map((p) => (
-            <SvgText key={`n${p.entry.id}`} x={px(p.x) + 8} y={py(p.y) + 4} fontSize={11} fill={colors.text}>
+            <SvgText fontFamily={fonts.ui} key={`n${p.entry.id}`} x={px(p.x) + 8} y={py(p.y) + 4} fontSize={11} fill={colors.text}>
               {p.entry.name}
             </SvgText>
           ))}

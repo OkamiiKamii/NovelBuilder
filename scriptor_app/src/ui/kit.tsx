@@ -3,8 +3,9 @@
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import type { ComponentProps, ReactNode } from 'react';
+import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
 import {
+  Animated,
   Pressable,
   StyleSheet,
   Text,
@@ -15,6 +16,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 
+import { motion, useReducedMotion } from './motion';
 import { colors, fonts, radius, space } from './theme';
 import { useSpot } from './tutorial/spots';
 
@@ -76,10 +78,10 @@ export function GoldButton({ label, onPress, icon, disabled, style, accessibilit
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.buttonOuter, compact && styles.compact, { opacity: disabled ? 0.45 : pressed ? 0.85 : 1 }, style]}
+      style={({ pressed }) => [styles.buttonOuter, compact && styles.compact, { opacity: disabled ? 0.45 : pressed ? 0.85 : 1 }, pressed && styles.pressed, style]}
     >
       <LinearGradient
-        colors={['#FFD36B', colors.gold, '#C98A12']}
+        colors={[colors.goldLight, colors.gold, colors.goldDeep]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.buttonFill, compact && styles.compact]}
@@ -117,6 +119,7 @@ export function OutlineButton({
         styles.outline,
         compact && styles.compact,
         { borderColor: color, opacity: disabled ? 0.45 : 1, backgroundColor: pressed ? colors.elevated : 'transparent' },
+        pressed && styles.pressed,
         style,
       ]}
     >
@@ -150,7 +153,7 @@ export function IconButton({
       accessibilityLabel={label}
       hitSlop={6}
       onPress={onPress}
-      style={({ pressed }) => [styles.iconButton, bordered && styles.iconButtonBordered, pressed && { backgroundColor: colors.elevated }]}
+      style={({ pressed }) => [styles.iconButton, bordered && styles.iconButtonBordered, pressed && styles.iconPressed]}
     >
       <Icon name={icon} size={size} color={color} />
     </Pressable>
@@ -177,7 +180,7 @@ export function Chip({
       hitSlop={4}
       accessibilityState={{ selected }}
       onPress={onPress}
-      style={[styles.chip, selected && styles.chipSelected]}
+      style={({ pressed }) => [styles.chip, selected && styles.chipSelected, pressed && styles.pressed]}
     >
       {icon && <Icon name={icon} size={16} color={selected ? colors.gold : colors.muted} />}
       <Text style={[styles.chipText, { color: selected ? colors.gold : colors.text }]}>{label}</Text>
@@ -189,15 +192,29 @@ export function Chip({
 export function ProgressBar({ value, showPercent = true }: { value: number; showPercent?: boolean }) {
   const pct = Math.round(Math.max(0, Math.min(1, value)) * 100);
   const whole = pct >= 100;
+  // The fill grows from the left once, when the bar is first shown, so the eye reads how far; later changes just move.
+  const reduced = useReducedMotion();
+  const [grow] = useState(() => new Animated.Value(0));
+  useEffect(() => {
+    if (reduced) {
+      grow.setValue(1);
+      return;
+    }
+    const run = Animated.timing(grow, { toValue: 1, duration: motion.state, easing: motion.arrive, useNativeDriver: true });
+    run.start();
+    return () => run.stop();
+  }, [grow, reduced]);
   return (
     <View style={styles.progressRow} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: pct }}>
       <View style={styles.progressTrack}>
-        <LinearGradient
-          colors={whole ? [colors.gold, colors.success] : ['#C98A12', colors.gold]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={[styles.progressFill, { width: `${pct}%` }]}
-        />
+        <Animated.View style={[styles.progressGrow, { width: `${pct}%`, transform: [{ scaleX: grow }] }]}>
+          <LinearGradient
+            colors={whole ? [colors.gold, colors.success] : [colors.goldDeep, colors.gold]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.progressFill}
+          />
+        </Animated.View>
       </View>
       {showPercent && <Text style={styles.progressText}>{pct}%</Text>}
     </View>
@@ -238,11 +255,6 @@ export function Muted({
   );
 }
 
-export const kitStyles = StyleSheet.create({
-  flex: { flex: 1 },
-  row: { flexDirection: 'row', alignItems: 'center' },
-});
-
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   panel: {
@@ -267,6 +279,9 @@ const styles = StyleSheet.create({
     borderRadius: radius.field,
   },
   compact: { minHeight: 40, paddingHorizontal: space.md },
+  // A touch is acknowledged at once: the control gives a little under the finger.
+  pressed: { transform: [{ scale: motion.press }] },
+  iconPressed: { backgroundColor: colors.elevated, transform: [{ scale: 0.92 }] },
   outline: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -295,7 +310,8 @@ const styles = StyleSheet.create({
   chipText: { fontFamily: fonts.ui, fontSize: 14 },
   progressRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   progressTrack: { flex: 1, height: 6, borderRadius: 3, backgroundColor: colors.border, overflow: 'hidden' },
-  progressFill: { height: 6, borderRadius: 3 },
+  progressGrow: { height: 6, transformOrigin: 'left' },
+  progressFill: { flex: 1, borderRadius: 3 },
   progressText: { fontFamily: fonts.ui, fontSize: 13, color: colors.text, minWidth: 38, textAlign: 'right' },
   field: { marginBottom: space.lg },
   fieldLabel: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.4, color: colors.gold, marginBottom: 6 },

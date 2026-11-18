@@ -285,7 +285,7 @@ export function RelationshipMapScreen() {
                             <G key={n.id}>
                               {p.ring && <Circle cx={c.x} cy={c.y} r={p.radius + 4} stroke={colors.gold} strokeWidth={3} fill="none" />}
                               <Circle cx={c.x} cy={c.y} r={p.radius} fill={p.accent ? colors.gold : colors.elevated} stroke={colors.gold} strokeWidth={1.5} opacity={p.opacity} />
-                              <SvgText x={c.x} y={c.y + p.radius * 0.32} fontSize={p.radius * 0.9} fill={p.accent ? colors.onGold : colors.text} textAnchor="middle" opacity={p.opacity}>
+                              <SvgText fontFamily={fonts.ui} x={c.x} y={c.y + p.radius * 0.32} fontSize={p.radius * 0.9} fill={p.accent ? colors.onGold : colors.text} textAnchor="middle" opacity={p.opacity}>
                                 {p.initial}
                               </SvgText>
                             </G>
@@ -400,7 +400,7 @@ function Backed({ text, x, y, size, color, opacity }: { text: string; x: number;
   return (
     <G opacity={opacity}>
       <Rect x={x - width / 2 - 3} y={y - height / 2 - 1} width={width + 6} height={height + 2} rx={3} fill={colors.surface} fillOpacity={0.8} />
-      <SvgText x={x} y={y + size * 0.36} fontSize={size} fontWeight="600" fill={color} textAnchor="middle">
+      <SvgText fontFamily={fonts.ui} x={x} y={y + size * 0.36} fontSize={size} fontWeight="600" fill={color} textAnchor="middle">
         {shown}
       </SvgText>
     </G>

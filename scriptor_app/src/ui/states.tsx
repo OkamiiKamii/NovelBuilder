@@ -3,9 +3,10 @@
 // error (with Try again) and no-results states. Ports of flutter_app/lib/core/widgets/{skeleton,states}.dart.
 
 import { type ReactNode, useEffect, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, StyleSheet, Text, View } from 'react-native';
+import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
 import { GoldButton, Icon, type IconName, Muted, OutlineButton, Panel } from './kit';
+import { useReducedMotion } from './motion';
 import { colors, fonts, space } from './theme';
 
 /** The lengths of lines of prose: most full, the last of a paragraph short. */
@@ -25,16 +26,7 @@ export function Skeleton({
   heading?: boolean;
 }) {
   const [light] = useState(() => new Animated.Value(0.5));
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    let live = true;
-    void AccessibilityInfo.isReduceMotionEnabled().then((r) => {
-      if (live) setReduced(r);
-    });
-    return () => {
-      live = false;
-    };
-  }, []);
+  const reduced = useReducedMotion();
   useEffect(() => {
     if (reduced) {
       light.setValue(0.5);

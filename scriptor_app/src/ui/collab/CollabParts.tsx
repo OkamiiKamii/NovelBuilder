@@ -256,10 +256,6 @@ export function ActivityList({ activity }: { activity: readonly Activity[] }) {
   );
 }
 
-export const collabStyles = StyleSheet.create({
-  gap: { gap: space.md },
-});
-
 const styles = StyleSheet.create({
   card: { gap: space.sm },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, alignItems: 'center' },

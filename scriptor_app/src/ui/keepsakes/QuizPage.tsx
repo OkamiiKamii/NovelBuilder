@@ -11,7 +11,8 @@ import { choiceState, quizAsk, quizParts, quizProgress, quoteCardSize, scoreFoot
 import { bookQuizJob, type QuizQuestion, quizAtLeast, quizGap, quizKicker, quizVerdict } from '../../domain/manuscript/bookQuiz';
 import { GoldButton, OutlineButton } from '../kit';
 import { fonts, space } from '../theme';
-import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, useOpenChapter, usePicture, useReading } from './parts';
+import { Empty, KeepsakePage, Note, Waiting, bookNames, useKeepsake, usePicture, useReading } from './parts';
+import { useOpenChapter } from '../write/pendingFind';
 
 const night = '#0F1622';
 const ink = '#F2EDE2';
@@ -30,7 +31,7 @@ export function QuizPage() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [pictureRef, picture] = usePicture(quoteCardSize);
-  const openChapter = useOpenChapter(open);
+  const openChapter = useOpenChapter(open?.novelId ?? null);
   const page = (body: ReactNode) => (
     <KeepsakePage title="The book quiz" ground={night} ink={ink}>
       {body}

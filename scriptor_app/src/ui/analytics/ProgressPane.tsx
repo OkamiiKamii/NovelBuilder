@@ -6,9 +6,9 @@
 //
 // It sits in the Analytics area's scroll view (no scroll of its own).
 
-import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import Svg, { Line, Path, Rect, Text as SvgText } from 'react-native-svg';
+import { useEffect, useMemo, useState } from 'react';
+import { Animated, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import Svg, { Defs, Line, Path, Rect, Stop, LinearGradient as SvgGradient, Text as SvgText } from 'react-native-svg';
 
 import { taskCategories, taskLabels } from '../../domain/analytics/goalChanges';
 import { computeJournal, type Journal, writingSessionOf } from '../../domain/desk/dayBook';
@@ -61,6 +61,7 @@ import { Novel } from '../../domain/records/novel';
 import { StoryNode } from '../../domain/records/storyNode';
 import { ConfirmDelete, Sheet } from '../dialogs';
 import { Chip, Field, GoldButton, Icon, type IconName, IconButton, Muted, OutlineButton, Panel } from '../kit';
+import { motion, useReducedMotion } from '../motion';
 import { useCast } from '../organize/useCast';
 import { colors, fonts, radius, space } from '../theme';
 import { useGoals } from './useGoals';
@@ -340,23 +341,60 @@ function JournalHeroView({ journal, report, wide }: { journal: Journal; report: 
   );
 }
 
-/** A sheet of manuscript filling with ink from the foot as the words reach the target; just lines without one. */
+/** A sheet of manuscript filling with ink from the foot as the words reach the target; just lines without one. The ink
+ * rises to its level when the page is first shown (the area's one authored moment), and stands still for less motion. */
 function InkPage({ fill }: { fill: number | null }) {
   const w = 62;
   const h = 82;
   const fold = 14;
+  const wave = 4;
   const sheet = `M0 0 L${w - fold} 0 L${w} ${fold} L${w} ${h} L0 ${h} Z`;
-  const top = fill === null ? h : h * (1 - Math.max(0, Math.min(1, fill)));
+  const level = fill === null ? 0 : Math.max(0, Math.min(1, fill));
+  const top = h * (1 - level);
+  const reduced = useReducedMotion();
+  const [rise] = useState(() => new Animated.Value(h));
+  useEffect(() => {
+    if (reduced) {
+      rise.setValue(top);
+      return;
+    }
+    const run = Animated.timing(rise, { toValue: top, duration: motion.focal, delay: 150, easing: motion.arrive, useNativeDriver: true });
+    run.start();
+    return () => run.stop();
+  }, [rise, top, reduced]);
+  // The ink's surface: a soft meniscus, lighter where it meets the page.
+  const surface = `M0 ${wave} Q${w * 0.25} 0 ${w * 0.5} ${wave} T${w} ${wave}`;
   return (
-    <Svg width={w} height={h}>
-      <Path d={sheet} fill={colors.elevated} />
-      {fill !== null && fill > 0 && <Rect x={0} y={top} width={w} height={h - top} fill={colors.gold} fillOpacity={0.85} />}
-      {pageLines(h).map((y) => (
-        <Line key={y} x1={9} y1={y} x2={w - 9} y2={y} stroke={colors.muted} strokeOpacity={0.35} strokeWidth={1.5} />
-      ))}
-      <Path d={sheet} fill="none" stroke={colors.border} />
-      <Path d={`M${w - fold} 0 L${w - fold} ${fold} L${w} ${fold}`} fill="none" stroke={colors.border} />
-    </Svg>
+    <View style={{ width: w, height: h }}>
+      <Svg width={w} height={h} style={StyleSheet.absoluteFill}>
+        <Path d={sheet} fill={colors.elevated} />
+      </Svg>
+      {level > 0 && (
+        <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]}>
+          <Animated.View style={{ position: 'absolute', left: 0, right: 0, top: -wave, height: h + wave, transform: [{ translateY: rise }] }}>
+            <Svg width={w} height={h + wave}>
+              <Defs>
+                <SvgGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="0" stopColor={colors.gold} stopOpacity={0.95} />
+                  <Stop offset="1" stopColor={colors.goldDeep} stopOpacity={0.9} />
+                </SvgGradient>
+              </Defs>
+              <Path d={`${surface} L${w} ${h + wave} L0 ${h + wave} Z`} fill="url(#ink)" />
+              <Path d={surface} fill="none" stroke={colors.goldLight} strokeWidth={1.25} />
+            </Svg>
+          </Animated.View>
+        </View>
+      )}
+      <Svg width={w} height={h} style={StyleSheet.absoluteFill}>
+        {pageLines(h).map((y) => (
+          <Line key={y} x1={9} y1={y} x2={w - 9} y2={y} stroke={colors.muted} strokeOpacity={0.35} strokeWidth={1.5} />
+        ))}
+        {/* The folded corner is cut from the sheet, so the rising ink never shows through it. */}
+        <Path d={`M${w - fold} 0 L${w} 0 L${w} ${fold} Z`} fill={colors.surface} />
+        <Path d={sheet} fill="none" stroke={colors.border} />
+        <Path d={`M${w - fold} 0 L${w - fold} ${fold} L${w} ${fold}`} fill="none" stroke={colors.border} />
+      </Svg>
+    </View>
   );
 }
 

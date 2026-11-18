@@ -238,7 +238,7 @@ export function RankPanel() {
       </View>
       <View style={styles.rankTrack}>
         <LinearGradient
-          colors={['#C98A12', colors.gold]}
+          colors={[colors.goldDeep, colors.gold]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={[styles.rankFill, { width: `${Math.round(r.progress * 100)}%` }]}

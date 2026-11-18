@@ -18,8 +18,6 @@ import { IconButton, Muted } from '../kit';
 import { useLibrary } from '../LibraryContext';
 import { type OpenNovel, useOpenNovel } from '../organize/useNovel';
 import { fonts, space } from '../theme';
-import { lastNodeSetting } from '../write/WriteScreen';
-import { requestFind } from '../write/pendingFind';
 
 /** A keepsake's page: its ground, a back arrow to Analytics, its name, and what it shows, scrolling. */
 export function KeepsakePage({
@@ -148,18 +146,6 @@ export function usePicture(
   return [ref, { working, message, share }];
 }
 
-/** Opens chapter `nodeId` in Write. */
-export function useOpenChapter(open: OpenNovel | null) {
-  const lib = useLibrary();
-  const router = useRouter();
-  return (nodeId: string, find?: { term: string; block: number }) => {
-    if (open === null) return;
-    requestFind(find !== undefined && find.term.length > 0 ? { nodeId, term: find.term, block: find.block } : null);
-    lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
-    router.navigate('/write');
-  };
-}
-
 /** A small line under a page, in its ink. */
 export function Note({ text, ink = '#F4EEDF' }: { text: string; ink?: string }) {
   return <Muted style={[styles.note, { color: ink }]}>{text}</Muted>;
@@ -169,14 +155,6 @@ export function Note({ text, ink = '#F4EEDF' }: { text: string; ink?: string }) 
 export function bookNames(open: OpenNovel): { title: string; author: string } {
   return { title: String(open.snapshot.project['title'] ?? ''), author: String(open.snapshot.project['author'] ?? '') };
 }
-
-export const keepsakeStyles = StyleSheet.create({
-  row: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, justifyContent: 'center' },
-  center: { alignItems: 'center' },
-  serif: { fontFamily: fonts.book },
-  italic: { fontFamily: fonts.bookItalic },
-  display: { fontFamily: fonts.display },
-});
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },

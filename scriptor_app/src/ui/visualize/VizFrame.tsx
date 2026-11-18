@@ -693,36 +693,6 @@ function DetailsPanel({ open, selected, select, bare = false }: { open: OpenCast
 
 // ------------------------------------------------------------------------------------------------------ the badge
 
-/** A record's canon or continuity mark (canon_badge.dart): its glyphs (? provisional, ≠ conflicting, ↺ retconned,
- * ✕ non-canon, A an alternate branch, ! and how many findings are open) on a small tag in the tone of the worst
- * finding, with its words for a screen reader. The marks themselves come from Review's checks. */
-export function CanonBadge({
-  label,
-  glyph,
-  tone = 'warn',
-  compact = false,
-}: {
-  /** What it says, for a screen reader (and on the tag when there is no glyph). */
-  label: string;
-  glyph?: string;
-  tone?: 'warn' | 'error' | 'muted' | 'info';
-  compact?: boolean;
-}) {
-  const colour = tone === 'error' ? colors.danger : tone === 'muted' || tone === 'info' ? colors.muted : colors.gold;
-  return (
-    <View style={[styles.badge, { borderColor: colour, backgroundColor: tone === 'error' ? 'rgba(248, 113, 113, 0.18)' : colors.elevated }]} accessibilityLabel={label}>
-      {glyph !== undefined ? (
-        <Text style={[styles.badgeText, { color: colour }]}>{glyph}</Text>
-      ) : (
-        <>
-          <Icon name={tone === 'error' ? 'alert-circle-outline' : 'alert-outline'} size={compact ? 12 : 14} color={colour} />
-          {!compact && <Text style={[styles.badgeText, { color: colour }]}>{label}</Text>}
-        </>
-      )}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center' },
@@ -771,6 +741,4 @@ const styles = StyleSheet.create({
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   item: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 16, borderWidth: 1, borderColor: colors.border },
   itemText: { fontFamily: fonts.ui, fontSize: 13.5, color: colors.text },
-  badge: { flexDirection: 'row', alignItems: 'center', gap: 3, paddingHorizontal: 5, paddingVertical: 1, borderRadius: 5, borderWidth: 1 },
-  badgeText: { fontFamily: fonts.ui, fontSize: 11, fontWeight: '700' },
 });
