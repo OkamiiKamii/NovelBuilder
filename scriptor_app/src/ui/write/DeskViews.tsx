@@ -10,7 +10,7 @@ import { type Nudge } from '../../domain/desk/nudges';
 import { type LapseFrame } from '../../domain/manuscript/timeLapse';
 import { type RhythmReport, type RhythmSentence, sameBeatRun } from '../../domain/text/rhythm';
 import { Sheet } from '../dialogs';
-import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton } from '../kit';
+import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton, ProgressBar } from '../kit';
 import { colors, fonts, radius, space } from '../theme';
 
 // ------------------------------------------------------------------------------------------------------ the margin
@@ -153,6 +153,7 @@ export function NextNoteSheet({
   title,
   leaving,
   initial,
+  tally,
   onPin,
   onDismiss,
 }: {
@@ -160,6 +161,8 @@ export function NextNoteSheet({
   title: string;
   leaving: boolean;
   initial: string;
+  /** On leaving after a sitting: what was written, said before the note is asked for. */
+  tally?: SessionTally | null;
   onPin: (text: string) => void;
   onDismiss: () => void;
 }) {
@@ -180,6 +183,7 @@ export function NextNoteSheet({
         </>
       }
     >
+      {leaving && tally && <TallyHead tally={tally} />}
       <Text style={styles.noteBody}>{words.body}</Text>
       <View style={styles.chips}>
         {words.starts.map((s) => (
@@ -199,6 +203,40 @@ export function NextNoteSheet({
         accessibilityLabel="The note"
       />
     </Sheet>
+  );
+}
+
+export type SessionTally = { session: number; today: number; goal: number | null; streak: number };
+
+/** The close of a sitting: the words written in it, large, then today against the goal and the days in a row. */
+function TallyHead({ tally }: { tally: SessionTally }) {
+  const { session, today, goal, streak } = tally;
+  const met = goal !== null && goal > 0 && today >= goal;
+  return (
+    <View style={styles.tally} accessible accessibilityLabel={`${session} words in this sitting. Today ${today}${goal ? ` of ${goal}` : ''} words. ${streak} ${streak === 1 ? 'day' : 'days'} in a row.`}>
+      <Text style={styles.tallyWords}>+{session.toLocaleString('en-US')}</Text>
+      <Text style={styles.tallyLabel}>WORDS IN THIS SITTING</Text>
+      <View style={styles.tallyRow}>
+        <View style={styles.tallyCell}>
+          <Text style={styles.tallyFigure}>
+            {today.toLocaleString('en-US')}
+            {goal !== null && goal > 0 ? <Text style={styles.tallyOf}> / {goal.toLocaleString('en-US')}</Text> : null}
+          </Text>
+          <Text style={styles.tallySmall}>{met ? 'today · goal met' : 'today'}</Text>
+          {goal !== null && goal > 0 && <ProgressBar value={today / goal} showPercent={false} />}
+        </View>
+        <View style={styles.tallyRule} />
+        <View style={styles.tallyCell}>
+          <Text style={styles.tallyFigure}>{streak}</Text>
+          <Text style={styles.tallySmall}>{streak === 1 ? 'day in a row' : 'days in a row'}</Text>
+        </View>
+      </View>
+      <View style={styles.tallyOrnament} importantForAccessibility="no-hide-descendants">
+        <View style={styles.tallyLine} />
+        <View style={styles.tallyDiamond} />
+        <View style={styles.tallyLine} />
+      </View>
+    </View>
   );
 }
 
@@ -471,6 +509,7 @@ export function TimeLapseSheet({ visible, title, frames, onClose }: { visible: b
 }
 
 const styles = StyleSheet.create({
+tally: { alignItems: 'center', gap: 2, marginBottom: space.md },  tallyWords: { fontFamily: fonts.display, fontWeight: '700', fontSize: 44, lineHeight: 52, color: colors.gold },  tallyLabel: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 11, letterSpacing: 1.8, color: colors.muted },  tallyRow: { flexDirection: 'row', alignItems: 'stretch', alignSelf: 'stretch', marginTop: space.md, gap: space.md },  tallyCell: { flex: 1, alignItems: 'center', gap: 4 },  tallyRule: { width: 1, backgroundColor: colors.border },  tallyFigure: { fontFamily: fonts.numbers, fontWeight: '700', fontSize: 20, color: colors.text },  tallyOf: { fontWeight: '400', color: colors.muted },  tallySmall: { fontFamily: fonts.ui, fontSize: 12, color: colors.muted },  tallyOrnament: { flexDirection: 'row', alignItems: 'center', alignSelf: 'stretch', gap: space.sm, marginTop: space.md },  tallyLine: { flex: 1, height: 1, backgroundColor: colors.gold, opacity: 0.45 },  tallyDiamond: { width: 7, height: 7, borderWidth: 1, borderColor: colors.gold, transform: [{ rotate: '45deg' }] },
   flex: { flex: 1 },
   cards: { gap: space.md },
   indexCard: {

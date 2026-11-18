@@ -78,6 +78,9 @@ is in the app once.
   ones don't count), the top of the Library is a blank jacket in the same banner style, with "YOUR FIRST BOOK" in gold
   and the title typed straight onto it in Cinzel over a gold rule; "Begin chapter one" makes the book (the last author
   name used) and opens Chapter 1. It gives way to Pick up the thread once a book of their own exists.
+- **Before you go** (`DeskViews.tsx` `NextNoteSheet`, leaving after a sitting of 100 words or more): the close of the
+  sitting before the note for next time: the words written in it large in Cinzel gold ("+347", "WORDS IN THIS
+  SITTING"), then today against the daily goal with its bar, and the days in a row, over the gold ornament line.
 - **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, as a banner of its own jacket (its
   colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
   gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic

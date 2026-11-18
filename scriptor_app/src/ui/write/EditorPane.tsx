@@ -52,7 +52,8 @@ import {
 import { nudgeLine, nudgeSeed, nudgesFor, nudgesKey, stuckAfterMs } from '../../domain/desk/nudges';
 import { timeLapse } from '../../domain/manuscript/timeLapse';
 import { RhythmReport, rhythmOf } from '../../domain/text/rhythm';
-import { FirstPage, MarginCards, NextNoteSheet, NudgeChip, RhythmSheet, TimeLapseSheet } from './DeskViews';
+import { FirstPage, MarginCards, NextNoteSheet, NudgeChip, RhythmSheet, type SessionTally, TimeLapseSheet } from './DeskViews';
+import { dayBookOf, writingSessionOf } from '../../domain/desk/dayBook';
 import { type JsonMap, numOrNull, str } from '../../domain/json';
 import { type StoryNode } from '../../domain/outline';
 import { namesToFind } from '../../domain/characters/namedIn';
@@ -409,7 +410,7 @@ export function EditorPane({
   const [notesTick, setNotesTick] = useState(0);
   const notes = useMemo(() => readNextNotes(lib.settings.read(notesKey)), [lib, notesKey, notesTick]);
   const note = notes.get(node.id);
-  const [noteSheet, setNoteSheet] = useState<{ leaving: boolean } | null>(null);
+  const [noteSheet, setNoteSheet] = useState<{ leaving: boolean; tally?: SessionTally } | null>(null);
   const keepNote = (text: string) => {
     const next = withNextNote(notes, node.id, text, Date.now());
     lib.saves.saveNow(`setting:${notesKey}`, () => {
@@ -421,8 +422,12 @@ export function EditorPane({
   /** Back to the contents: what is typed saved first, and after a real sitting, a note offered. */
   const leave = async () => {
     await saveNow();
-    if (offersNoteOnLeaving(words.now - words.atOpen, note !== undefined)) setNoteSheet({ leaving: true });
-    else onBack?.();
+    if (offersNoteOnLeaving(words.now - words.atOpen, note !== undefined)) {
+      // The close of the sitting: its words, today against the goal, the days in a row (read now, after the save).
+      const book = dayBookOf(lib.novels.rowsIn(novelId, 'writingSessions').map(writingSessionOf), Date.now());
+      const today = lib.manuscript.wordsWritten(novelId).today;
+      setNoteSheet({ leaving: true, tally: { session: words.now - words.atOpen, today, goal: goals.daily, streak: book.streak } });
+    } else onBack?.();
   };
 
   const end = useMemo(() => chapterEndOf(nodes, node, author), [nodes, node, author]);
@@ -1083,6 +1088,7 @@ export function EditorPane({
         title={node.title || 'Untitled'}
         leaving={noteSheet?.leaving ?? false}
         initial={note?.text ?? ''}
+        tally={noteSheet?.tally ?? null}
         onPin={(text) => {
           const leaving = noteSheet?.leaving;
           keepNote(text);
