@@ -140,6 +140,13 @@ The easing is one confident arrival that settles (`cubic-bezier(0.16, 1, 0.3, 1)
 "Remove animations" on, nothing moves: fills and ink stand at their level, and the press scale stays, since it confirms
 the touch. No entrance choreography, count-ups or looping decoration.
 
+## The reader
+
+The book as a reader sees it (`reader-web`, `src/reader/bookHtml.ts`). Each chapter opens as in a printed book: lower on
+the page, its label in spaced Outfit capitals, the title in Cinzel bold, a thin ornament (two rules and a diamond) under
+it; then the first paragraph of prose opens with a drop cap in Cinzel and its first line in small capitals. In every
+format (standard novel, ebook, web serial) and on every page colour, since all of it takes the page's own ink.
+
 ## Layout by screen size (Android)
 
 | Width | Layout |

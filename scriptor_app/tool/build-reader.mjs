@@ -27,6 +27,7 @@ const css = `
 @font-face { font-family: 'Merriweather'; font-weight: 300 900; src: url('file:///android_res/font/merriweather.ttf'); }
 @font-face { font-family: 'Merriweather'; font-style: italic; font-weight: 300 900; src: url('file:///android_res/font/merriweather_italic.ttf'); }
 @font-face { font-family: 'Outfit'; font-weight: 100 900; src: url('file:///android_res/font/outfit.ttf'); }
+@font-face { font-family: 'Cinzel'; font-weight: 400 900; src: url('file:///android_res/font/cinzel.ttf'); }
 :root { --bg: #FFFFFF; --fg: #1A1A1A; --muted: rgba(26,26,26,0.65); --size: 18px; --leading: 1.5; --measure: 34em;
   --font: serif; --align: left; --pad: 20px; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); -webkit-text-size-adjust: 100%; }
@@ -60,6 +61,17 @@ p { margin: 0; text-align: var(--align); orphans: 2; widows: 2; }
 .nav a { color: var(--fg); border: 1px solid var(--muted); border-radius: 20px; padding: 8px 14px; text-decoration: none;
   font-family: 'Outfit', sans-serif; font-size: 0.8em; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nav a.off { opacity: 0.35; pointer-events: none; }
+/* A chapter opens as in a printed book: lower on the page, the title in the display face, an ornament, a drop cap. */
+.opening { padding-top: 3.5em; padding-bottom: 1.25em; break-after: avoid; text-align: center; }
+.opening .label { font-family: 'Outfit', sans-serif; font-size: 0.72em; letter-spacing: 0.32em; }
+.chapter-title { font-family: 'Cinzel', var(--font); font-size: 1.6em; font-weight: 700; letter-spacing: 0.02em;
+  margin-top: 0.35em; }
+.ornament { display: flex; align-items: center; justify-content: center; gap: 0.6em; margin-top: 0.9em; opacity: 0.55; }
+.ornament span { width: 3.2em; height: 1px; background: currentColor; }
+.ornament i { width: 0.42em; height: 0.42em; border: 1px solid currentColor; transform: rotate(45deg); }
+p.opens::first-letter { float: left; font-family: 'Cinzel', var(--font); font-weight: 700; font-size: 3.4em;
+  line-height: 0.82; padding: 0.06em 0.08em 0 0; }
+p.opens::first-line { font-variant: small-caps; letter-spacing: 0.04em; }
 `;
 
 const html = `<!DOCTYPE html><html><head><meta charset="utf-8">

@@ -127,10 +127,16 @@ function chapterHtml(book: Book, s: Section, prefs: ReaderPrefs, body?: { notes:
   const look = resolveLook(prefs);
   const L = prefs.leading;
   const paraGap = look.indented ? 0 : prefs.spacing * L;
+  // Set as a printed chapter opens: lower on the page, the label in spaced capitals, the title in the display face, an
+  // ornament under it; the first paragraph then opens with a drop cap and its first line in small capitals.
   const head = [
-    s.showsLabel ? `<p class="label" style="${before(2, L)}">${esc(s.label.toUpperCase())}</p>` : '',
-    `<h2 class="heading" style="font-size:1.5em;${before((s.showsLabel ? 0.5 : 2) / 1.5, L)}">${esc(s.title)}</h2>`,
+    '<div class="opening">',
+    s.showsLabel ? `<p class="label">${esc(s.label.toUpperCase())}</p>` : '',
+    `<h2 class="heading chapter-title">${esc(s.title)}</h2>`,
+    '<div class="ornament" aria-hidden="true"><span></span><i></i><span></span></div>',
+    '</div>',
   ].join('');
+  let opened = false;
   const out: string[] = [];
   let first = true;
   let gapNext = 1.5; // In lines.
@@ -156,7 +162,10 @@ function chapterHtml(book: Book, s: Section, prefs: ReaderPrefs, body?: { notes:
           `text-align:${align};`,
           block.quote ? 'font-style:italic;padding-left:2em;' : '',
         ].join('');
-        out.push(`<p style="${style}">${block.runs.length === 0 ? '&nbsp;' : runsHtml(block.runs)}</p>`);
+        // The chapter's first paragraph of prose (not a quote, not centred) opens the chapter.
+        const opens = !opened && block.runs.length > 0 && !block.quote && block.align !== 'center' && block.align !== 'right';
+        if (opens) opened = true;
+        out.push(`<p${opens ? ' class="opens"' : ''} style="${style}">${block.runs.length === 0 ? '&nbsp;' : runsHtml(block.runs)}</p>`);
         first = false;
         break;
       }
