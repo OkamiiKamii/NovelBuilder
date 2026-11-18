@@ -337,6 +337,12 @@ export function LibraryScreen() {
             requestEnd(chapter.id);
             openNovel(novel, chapter.id);
           }}
+          onPledge={(words) => {
+            const { novel } = data.pickUp!;
+            if (attempt(() => lib.manuscript.setWordGoal(novel.id, 'daily', words), 'The goal could not be saved')) {
+              toast(`Today's goal: ${words.toLocaleString('en-US')} words. The ring on Write fills as you write.`);
+            }
+          }}
         />
       )}
 

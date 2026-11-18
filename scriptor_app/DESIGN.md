@@ -82,8 +82,9 @@ is in the app once.
   colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
   gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic
   (whole, at most four lines: the end of the last paragraph, starting at a sentence), the writer's own **note for next
-  time** on that chapter when they left one, the editor's gold ornament line, today's words against the daily goal,
-  and one filled gold **Continue writing** that opens that chapter with the caret after its last word. Hidden while
+  time** on that chapter when they left one, the editor's gold ornament line, today's words against the daily goal (or,
+  with no daily goal yet, **How much a day?**: four pace cards, 100 / 250 / 500 / 1,000 words in Cinzel gold with what
+  that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word. Hidden while
   searching; absent until a book has been opened.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
