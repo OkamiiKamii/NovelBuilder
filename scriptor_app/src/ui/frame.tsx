@@ -32,6 +32,7 @@ export const bottomBarHeight = 64;
 const insideOrganize = ['/plan', '/visualize', '/review'];
 
 function areaOf(pathname: string): string {
+  if (pathname === '/keepsakes' || pathname.startsWith('/keepsakes/')) return '/analytics';
   if (insideOrganize.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return '/organize';
   const found = areas.find((a) => a.path !== '/' && (pathname === a.path || pathname.startsWith(`${a.path}/`)));
   return found ? found.path : '/';

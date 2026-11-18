@@ -29,8 +29,18 @@ between the two apps without losing anything. The file format keeps its existing
 | 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | Done (2026-11-17), tested on the emulator |
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | Done (2026-11-17), tested on the emulator |
 | 7: Review and collaboration by file | 306–328 | Done (2026-11-17), tested on the emulator |
-| 8: Analytics and keepsakes | 329–347 | To do |
+| 8: Analytics and keepsakes | 329–347 | Done (2026-11-17), tested on the emulator |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 8** built the Analytics area, in three tabs. **Progress**: the journal (days in a row, words against the
+target as a page filling with ink, the projected finish), the length shelf, a year of writing, milestone seals, today,
+this week and this month with their targets, net words per week, where the manuscript stands, deadlines, tasks and
+the last 12 sessions. **Analytics**: observations stated as facts, writing output, sessions and streaks, the
+manuscript's structure, character presence and plot threads, with charts and tables. **Keepsakes**: your best lines,
+the book quiz, your book so far, the book fingerprint, the full jacket, the Gazette, postcards from your world, the
+trailer, the sampler (a PDF made on the phone, with no PDF library: Scriptor's own writer, laid out exactly as the
+Flutter app's, checked line by line against the real Dart), and the submission kit with its query letter. The logic
+matches the Dart on every fixture (121 tests, plus the original app's analytics golden).
 
 **Phase 7** built Review, as Organize's Review tab (the owner's choice of 2026-11-17), with the Flutter app's parts
 and Proofreading: **All warnings** (every check's findings by severity and certainty, one at a time with decisions and

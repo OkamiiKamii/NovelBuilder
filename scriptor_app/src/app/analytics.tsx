@@ -1,17 +1,5 @@
-import { ComingSoon } from '../ui/ComingSoon';
+import { AnalyticsScreen } from '../ui/analytics/AnalyticsScreen';
 
 export default function Analytics() {
-  return (
-    <ComingSoon
-      icon="chart-bar"
-      title="Analytics"
-      phase="later phases"
-      holds={[
-        'Writing progress: words today and this week, streaks, deadlines',
-        'Analytics and charts of your book',
-        'Review: continuity, canon, timeline and proofreading checks',
-        'The keepsakes made from your book',
-      ]}
-    />
-  );
+  return <AnalyticsScreen />;
 }
