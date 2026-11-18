@@ -5,6 +5,8 @@
 // src/domain/plot/screens/threadPage.ts.
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
+
+import { consequencesPath } from '../../domain/consequences/consequences';
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -221,6 +223,7 @@ export function ThreadScreen() {
 
 /** One development: its chapter, role, the threads it crosses (an intersection), title and note, open its chapter, remove. */
 function BeatEditor({ plot, threadId, beat, onOpen }: { plot: OpenPlot; threadId: string; beat: BeatEditorView; onOpen: (nodeId: string) => void }) {
+  const router = useRouter();
   const change = (fields: Record<string, unknown>) => plot.now(threadChanges.beat(threadId, beat.beatId, fields));
   const later = (key: string, fields: Record<string, unknown>) =>
     plot.later(beatSaveKey(threadId, beat.beatId, key), threadChanges.beat(threadId, beat.beatId, fields));
@@ -230,6 +233,7 @@ function BeatEditor({ plot, threadId, beat, onOpen }: { plot: OpenPlot; threadId
         <Text style={[styles.place, beat.struck && styles.struck]}>
           {beat.number}. {beat.place}
         </Text>
+        <IconButton icon="source-branch" label={`What depends on ${beat.name}?`} onPress={() => router.navigate(consequencesPath({ threadId, beatId: beat.beatId }) as never)} color={colors.muted} />
         <IconButton icon="close" label={beat.removeTip} onPress={() => plot.now(threadChanges.removeBeat(threadId, beat.beatId))} color={colors.muted} />
       </View>
       <ChooserField

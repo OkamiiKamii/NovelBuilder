@@ -13,6 +13,7 @@ import { deviceLibraryFile } from '../data/expoSql';
 import { type Library, openLibrary } from '../data/library';
 import { addSampleNovelOnFirstStart } from '../data/sampleNovel';
 import { openNovelSettingKey } from '../data/settingsStore';
+import { ReviewGate } from '../ui/collab/ReviewGate';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 import { AppFrame, bottomBarHeight } from '../ui/frame';
 import { LibraryProvider } from '../ui/LibraryContext';
@@ -73,7 +74,9 @@ export default function RootLayout() {
           <ToastProvider bottomOffset={phone ? bottomBarHeight : 0}>
             <AppFrame>
               <ErrorBoundary where="page">
-                <Slot />
+                <ReviewGate>
+                  <Slot />
+                </ReviewGate>
               </ErrorBoundary>
             </AppFrame>
           </ToastProvider>

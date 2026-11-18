@@ -54,10 +54,9 @@ export const isBuilt = (v: VisualView): boolean => v.phase <= builtThroughPhase;
 export const viewOf = (key: string): VisualView | null => visualViews.find((v) => v.key === key) ?? null;
 export const viewLabel = (key: string): string => viewOf(key)?.label ?? key;
 
-/** Where each view opens in Scriptor: its own page under /visualize, but the relationship map (Organize's, at
- * /organize/ties) and Secrets and knowledge (a page of Review, a later phase: null). */
+/** Where each view opens in Scriptor: its own page under /visualize (Secrets and knowledge too, since phase 7), but
+ * the relationship map (Organize's, at /organize/ties). */
 export function scriptorPath(key: string): string | null {
   if (key === 'relationships') return '/organize/ties';
-  if (key === 'knowledge') return null;
   return `/visualize/${key}`;
 }

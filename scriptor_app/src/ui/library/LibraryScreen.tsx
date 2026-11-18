@@ -8,6 +8,9 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BackupService, type ImportPreview } from '../../data/backupService';
+import { ReviewMark } from '../../domain/collab/reviewFiles';
+import { SnapshotError } from '../../domain/snapshot/novelSnapshot';
+import { openReviewCopy } from '../collab/useCollab';
 import { pickTextFile, shareTextFile } from '../../data/files';
 import { openNovelSettingKey } from '../../data/settingsStore';
 import { lastNodeSetting } from '../write/WriteScreen';
@@ -494,6 +497,25 @@ export function LibraryScreen() {
           const p = preview;
           setPreview(null);
           if (p) attempt(() => toast(`Imported “${lib.library.importAsCopy(p).title}”`), 'It could not be imported');
+        }}
+        onOpenReview={() => {
+          const p = preview;
+          setPreview(null);
+          if (!p) return;
+          const mark = ReviewMark.of(p.snapshot.project);
+          try {
+            const id = openReviewCopy(lib, p.snapshot);
+            lib.settings.write(openNovelSettingKey, id);
+            router.navigate('/write');
+            toast(`Opened the review copy of “${mark?.title ?? p.title}”. It is in Write.`);
+          } catch (e) {
+            toast(
+              e instanceof SnapshotError
+                ? `This review copy cannot be opened: ${e.reason}.`
+                : `The review copy could not be opened, and nothing was changed (${message(e)}).`,
+              { error: true },
+            );
+          }
         }}
         onReplace={() => {
           const p = preview;

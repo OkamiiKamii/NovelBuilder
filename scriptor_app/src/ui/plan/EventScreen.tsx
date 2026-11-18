@@ -6,6 +6,8 @@
 // the logic is src/domain/timeline/screens/eventPage.ts.
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
+
+import { consequencesPath } from '../../domain/consequences/consequences';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -96,7 +98,7 @@ export function EventScreen() {
   return (
     <PlanPage title={view.title} subtitle={view.subtitle} back={eventWords.back}>
       <View style={styles.row}>
-        <OutlineButton label={eventWords.consequences} icon="source-branch" compact tone="muted" disabled onPress={() => undefined} accessibilityLabel={`${eventWords.consequences} ${later}`} />
+        <OutlineButton label={eventWords.consequences} icon="source-branch" compact onPress={() => router.navigate(consequencesPath({ eventId: id }) as never)} />
         <OutlineButton label={eventWords.back} icon="timeline-text-outline" compact onPress={() => router.navigate('/plan' as never)} />
       </View>
 
@@ -109,7 +111,7 @@ export function EventScreen() {
               <Text style={styles.issue}>{t}</Text>
             </View>
           ))}
-          {view.reviewLink && <Muted>{`${view.reviewLink} (${later.toLowerCase()})`}</Muted>}
+          {view.reviewLink && <OutlineButton label={view.reviewLink} compact tone="muted" onPress={() => router.navigate('/review/timeline' as never)} style={styles.start} />}
         </Panel>
       )}
 

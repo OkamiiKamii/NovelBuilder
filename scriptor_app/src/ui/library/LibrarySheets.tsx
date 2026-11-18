@@ -5,6 +5,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { ImportPreview } from '../../data/backupService';
+import { roleLabel, roleSummary } from '../../domain/collab/access';
+import { ReviewMark } from '../../domain/collab/reviewFiles';
 import type { RestorePoint } from '../../data/draftStore';
 import type { CustomCollection } from '../../domain/libraryView';
 import type { Novel } from '../../domain/novel';
@@ -22,26 +24,33 @@ export function ImportSheet({
   preview,
   onAsCopy,
   onReplace,
+  onOpenReview,
   onClose,
 }: {
   preview: ImportPreview | null;
   onAsCopy: () => void;
   onReplace: () => void;
+  /** A review copy someone sent: opened as one (a newer one in place of the one held). */
+  onOpenReview: () => void;
   onClose: () => void;
 }) {
   if (!preview) return null;
   const counts = [...preview.counts.entries()];
   const changes = [...preview.changes.entries()];
-  const reviewCopy = typeof preview.snapshot.project['review'] === 'object' && preview.snapshot.project['review'] !== null;
+  const mark = ReviewMark.of(preview.snapshot.project);
+  const reviewCopy = mark !== null;
   return (
     <Sheet
       visible
       onClose={onClose}
-      title="Import a backup"
+      title={mark !== null ? `A review copy of “${mark.title}”` : 'Import a backup'}
       wide
       footer={
         reviewCopy ? (
-          <OutlineButton label="Close" onPress={onClose} tone="muted" style={styles.flex} />
+          <>
+            <OutlineButton label="Cancel" onPress={onClose} tone="muted" style={styles.flex} />
+            <GoldButton label={preview.existing ? 'Update it' : 'Open it'} icon="book-open-page-variant-outline" onPress={onOpenReview} style={styles.flex} />
+          </>
         ) : preview.existing ? (
           <>
             <OutlineButton label="Import as a copy" onPress={onAsCopy} style={styles.flex} />
@@ -56,10 +65,9 @@ export function ImportSheet({
       }
     >
       <Text style={styles.bookTitle}>{preview.title || 'Untitled novel'}</Text>
-      {reviewCopy ? (
+      {mark !== null ? (
         <Muted>
-          This file is a review copy someone made for you. Opening review copies comes with collaboration in a later
-          phase of Scriptor. Nothing was imported.
+          {`From ${mark.ownerName}, for ${mark.memberName} as ${roleLabel[mark.role]}: ${roleSummary[mark.role]} You read it, comment and suggest; nothing you do changes the author’s book, and your feedback file goes back to them when you choose.${preview.existing ? ' It takes the place of the review copy you have, keeping your own changes not yet sent.' : ''}`}
         </Muted>
       ) : (
         <>

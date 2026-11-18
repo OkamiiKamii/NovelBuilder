@@ -28,9 +28,28 @@ between the two apps without losing anything. The file format keeps its existing
 | 5c: Organize — Systems and character progression (with the profile's Status tab) | 228–249, 175 | Done (2026-11-17), tested on the emulator |
 | 6a: Organize — Plan: plot threads, the scene board, the timeline (with the story-time date editor) | 250–273 | Done (2026-11-17), tested on the emulator |
 | 6b: Organize — Visualize: the workspace and its views, places and journeys, the knowledge graph | 274–305 | Done (2026-11-17), tested on the emulator |
-| 7: Review and collaboration by file | 306–328 | To do |
+| 7: Review and collaboration by file | 306–328 | Done (2026-11-17), tested on the emulator |
 | 8: Analytics and keepsakes | 329–347 | To do |
 | 9: Import and export, search and the index, the tutorial, the shared behaviours; finishing | 348–369 | To do |
+
+**Phase 7** built Review, as Organize's Review tab (the owner's choice of 2026-11-17), with the Flutter app's parts
+and Proofreading: **All warnings** (every check's findings by severity and certainty, one at a time with decisions and
+quick reasons, filters, and the "In good order" certificate), **Record check** (broken and nameless references,
+values that don't fit, duplicates and merge with a restore point and Undo, the record-to-record rules), **Timeline
+review**, **Canon** (statements with status and sources, retcons, possible contradictions), the **Continuity check**
+(the manuscript read against tracked rules and the character profiles; it never changes the text) with its **tracked
+rules**, **Proofreading**, **What depends on this**, and **Team and feedback** (collaboration by file: the roster,
+review copies per role, the reviewer's workspace, feedback brought in with a preview, conversations, suggestions,
+activity). **Secrets and knowledge** is a Visualize view, and canon and continuity marks now show on the timeline,
+relationship map, plot lanes and knowledge graph. A review copy opened in Scriptor can't change the book: every save
+is checked against the copy's role in the store itself. The logic matches the Dart on every fixture (166 tests:
+golden output from the real Dart, and the original app's integrity, canon and collab goldens).
+
+Fixed on the way: a parent loop in a damaged novel (two chapters each inside the other) made "which chapters are
+inside this one" run forever, as the Dart does; it now takes each chapter once.
+
+Left for later: "Read it there" opens the chapter without finding the sentence; the reviewer's workspace is one column
+at every width; template sharing comes with Import and export.
 
 **Phase 6b** built Visualize, as Organize's Visualize tab: the atlas of 17 views in groups (People, Time, The story,
 The world, Numbers), any of them turned off per novel. Every view shares one frame: the view picker, filters by name
@@ -210,7 +229,6 @@ app writes (`test/golden/flutter-roundtrip`, made by the Flutter app itself).
 
 Still to come in later phases:
 - The screens that use some of this: the editor's recovery banner, Settings' restore points, Listen.
-- The review-copy guard (section 33).
 - The import preview's list of missing references (section 32).
 - Running whole-book work off the screen thread (#11), first needed by the book-reading features.
 

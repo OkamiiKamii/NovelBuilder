@@ -13,11 +13,12 @@ import { CastPane } from './CastPane';
 import { SystemsPane } from '../systems/SystemsPane';
 import { ModulesPane } from './ModulesPane';
 import { PlanPane } from '../plan/PlanPane';
+import { ReviewPane } from '../review/ReviewPane';
 import { VisualizePane } from '../visualize/VisualizePane';
 import { WorldPane } from './WorldPane';
 import { useOpenNovel } from './useNovel';
 
-export type Tab = 'characters' | 'world' | 'systems' | 'modules' | 'plan' | 'visualize';
+export type Tab = 'characters' | 'world' | 'systems' | 'modules' | 'plan' | 'visualize' | 'review';
 const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; holds: string[] } }[] = [
   { key: 'characters', label: 'Characters', icon: 'account-group-outline' },
   {
@@ -41,6 +42,7 @@ const tabs: { key: Tab; label: string; icon: IconName; later?: { phase: string; 
     label: 'Visualize',
     icon: 'graph-outline',
   },
+  { key: 'review', label: 'Review', icon: 'check-decagram-outline' },
 ];
 
 /** The tab last chosen, kept while the app runs: coming back from an entry or a character opens where you were. */
@@ -127,6 +129,8 @@ export function OrganizeScreen() {
         <VisualizePane />
       ) : tab === 'plan' ? (
         <PlanPane />
+      ) : tab === 'review' ? (
+        <ReviewPane />
       ) : (
         <CastPane novel={novel} />
       )}

@@ -76,9 +76,15 @@ export function readingOrder(nodes: Iterable<StoryNode>): StoryNode[] {
 export function subtreeIds(nodes: Iterable<StoryNode>, rootId: string): string[] {
   const list = [...nodes];
   const out = [rootId];
+  // Each node taken once: the Dart's list wherever it finishes, and an end on a parent cycle (a damaged novel can hold
+  // one; the Dart's loop then never ends, which on the phone freezes the app).
+  const seen = new Set(out);
   for (let i = 0; i < out.length; i++) {
     for (const node of list) {
-      if (node.parentId === out[i]) out.push(node.id);
+      if (node.parentId === out[i] && !seen.has(node.id)) {
+        seen.add(node.id);
+        out.push(node.id);
+      }
     }
   }
   return out;

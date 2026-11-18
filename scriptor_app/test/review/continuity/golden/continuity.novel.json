@@ -1,0 +1,698 @@
+{
+ "format": "novel-builder/project",
+ "version": 4,
+ "exportedAt": 0,
+ "project": {
+  "id": "cont",
+  "title": "Continuity checks"
+ },
+ "collections": {
+  "chapters": [
+   {
+    "id": "v1",
+    "projectId": "cont",
+    "parentId": null,
+    "kind": "volume",
+    "title": "Part One",
+    "order": 0,
+    "createdAt": 1
+   },
+   {
+    "id": "c1",
+    "projectId": "cont",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "The Ford",
+    "order": 0,
+    "createdAt": 2
+   },
+   {
+    "id": "c2",
+    "projectId": "cont",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "The Keep",
+    "order": 1,
+    "createdAt": 3
+   },
+   {
+    "id": "c3",
+    "projectId": "cont",
+    "parentId": "v1",
+    "kind": "chapter",
+    "title": "The Road",
+    "order": 2,
+    "createdAt": 4
+   },
+   {
+    "id": "s1",
+    "projectId": "cont",
+    "parentId": "c3",
+    "kind": "scene",
+    "title": "Night Watch",
+    "order": 0,
+    "createdAt": 5
+   },
+   {
+    "id": "c4",
+    "projectId": "cont",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "",
+    "order": 1,
+    "createdAt": 6
+   },
+   {
+    "id": "c5",
+    "projectId": "cont",
+    "parentId": null,
+    "kind": "chapter",
+    "title": "Blank Page",
+    "order": 2,
+    "createdAt": 7
+   }
+  ],
+  "chapterContents": [
+   {
+    "id": "c1",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira drew the Sunblade and raised it high. Her grey eyes shone."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "They rode for two days to reach Vell from the Keep."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Alex was nineteen years old. Alex’s hair was black."
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "attrs": {
+        "level": 2
+       },
+       "content": [
+        {
+         "type": "text",
+         "text": "Interlude"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira said nothing , and Jmaes waved. the the end"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "c2",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira smiled at Kai."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "They spoke of Mira, who had said nothing."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Kai drew the Sunblade in the dark of night."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "The ",
+         "marks": [
+          {
+           "type": "entityLink",
+           "attrs": {
+            "entryId": "mira"
+           }
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": "heir",
+         "marks": [
+          {
+           "type": "bold"
+          },
+          {
+           "type": "entityLink",
+           "attrs": {
+            "entryId": "mira"
+           }
+          }
+         ]
+        },
+        {
+         "type": "text",
+         "text": " laughed and walked away."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Alex’s hair was golden. Alex, 25, ran. Alex is 21 and tall."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Her blue eyes shone when Mira turned."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "James ran. James stopped. James looked back. Kai didn’t looked back."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "c3",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "In the dark cave, Kai called on the Void."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "It took half an hour to cross from Vell to the Keep."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Kai ran with both hands on the rope."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "She wore the Ring, then pocketed the Ring."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "“Wait, she said. The road is gone."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "The Void answered, far from any cave."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "s1",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Mira walked in, and Mira said: “Night is here.”"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "It was a journey of three weeks by sea to Vell; the Keep was a day away."
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Kai was twenty-two years old."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "c4",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Some words with no title above them. i saw it. he left. she stayed."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "c5",
+    "projectId": "cont",
+    "doc": {
+     "type": "doc",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": ""
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "loreEntries": [
+   {
+    "id": "mira",
+    "projectId": "cont",
+    "category": "character",
+    "name": "Mira",
+    "fields": [
+     {
+      "id": "m-age",
+      "key": "Age",
+      "value": "19"
+     },
+     {
+      "id": "m-eyes",
+      "key": "Eyes",
+      "value": "Grey"
+     },
+     {
+      "id": "m-hair",
+      "key": "Hair colour",
+      "value": "Black"
+     }
+    ],
+    "createdAt": 1,
+    "updatedAt": 1
+   },
+   {
+    "id": "kai",
+    "projectId": "cont",
+    "category": "character",
+    "name": "Kai",
+    "fields": [
+     {
+      "id": "k-age",
+      "key": "Age",
+      "value": "about 20 years"
+     }
+    ],
+    "createdAt": 2,
+    "updatedAt": 2
+   },
+   {
+    "id": "alex",
+    "projectId": "cont",
+    "category": "character",
+    "name": "Alex",
+    "fields": [
+     {
+      "id": "a-age",
+      "key": "Age",
+      "value": "20"
+     },
+     {
+      "id": "a-hair",
+      "key": "Hair",
+      "value": "black"
+     }
+    ],
+    "createdAt": 3,
+    "updatedAt": 3
+   },
+   {
+    "id": "james",
+    "projectId": "cont",
+    "category": "character",
+    "name": "James Hollis",
+    "fields": [],
+    "createdAt": 4,
+    "updatedAt": 4
+   },
+   {
+    "id": "sunblade",
+    "projectId": "cont",
+    "category": "item",
+    "name": "Sunblade",
+    "fields": [],
+    "createdAt": 5,
+    "updatedAt": 5
+   },
+   {
+    "id": "ring",
+    "projectId": "cont",
+    "category": "item",
+    "name": "Ring",
+    "fields": [],
+    "createdAt": 6,
+    "updatedAt": 6
+   },
+   {
+    "id": "vell",
+    "projectId": "cont",
+    "category": "location",
+    "name": "Vell",
+    "fields": [],
+    "createdAt": 7,
+    "updatedAt": 7
+   },
+   {
+    "id": "keep",
+    "projectId": "cont",
+    "category": "location",
+    "name": "the Keep",
+    "fields": [],
+    "createdAt": 8,
+    "updatedAt": 8
+   },
+   {
+    "id": "void",
+    "projectId": "cont",
+    "category": "power",
+    "name": "Void",
+    "fields": [],
+    "createdAt": 9,
+    "updatedAt": 9
+   }
+  ],
+  "continuityRules": [
+   {
+    "projectId": "cont",
+    "aliases": [
+     "the heir"
+    ],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c1",
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 10,
+    "id": "r1",
+    "kind": "status",
+    "entryId": "mira",
+    "state": "deceased",
+    "createdAt": 10
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "lost his left hand",
+    "words": [
+     "both hands",
+     "ran"
+    ],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c2",
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 11,
+    "id": "r2",
+    "kind": "status",
+    "entryId": "kai",
+    "state": "condition",
+    "createdAt": 11
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": "mira",
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c1",
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 12,
+    "id": "r3",
+    "kind": "possession",
+    "entryId": "sunblade",
+    "state": "held",
+    "createdAt": 12
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "c2",
+    "untilNodeId": "s1",
+    "note": "",
+    "updatedAt": 13,
+    "id": "r4",
+    "kind": "possession",
+    "entryId": "ring",
+    "state": "lost",
+    "createdAt": 13
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": "keep",
+    "amount": 3,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 14,
+    "id": "r5",
+    "kind": "travel",
+    "entryId": "vell",
+    "createdAt": 14
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [
+     "dark",
+     "cave"
+    ],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 15,
+    "id": "r6",
+    "kind": "power",
+    "entryId": "void",
+    "createdAt": 15
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "needs the sea",
+    "words": [
+     "cave"
+    ],
+    "scope": "paragraph",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 15,
+    "id": "r7",
+    "kind": "power",
+    "entryId": "void",
+    "createdAt": 15
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": null,
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 16,
+    "id": "r8",
+    "kind": "status",
+    "entryId": "gone",
+    "state": "absent",
+    "createdAt": 16
+   },
+   {
+    "projectId": "cont",
+    "aliases": [],
+    "label": "",
+    "words": [],
+    "scope": "scene",
+    "holderId": null,
+    "toEntryId": null,
+    "amount": null,
+    "unit": "days",
+    "fromNodeId": "s1",
+    "untilNodeId": null,
+    "note": "",
+    "updatedAt": 17,
+    "id": "r9",
+    "kind": "status",
+    "entryId": "kai",
+    "state": "absent",
+    "createdAt": 17
+   }
+  ],
+  "continuityResolutions": [
+   {
+    "id": "d1",
+    "projectId": "cont",
+    "key": "canon|x",
+    "kind": "dismissed",
+    "note": "",
+    "message": "Elsewhere",
+    "nodeId": null,
+    "createdAt": 20,
+    "updatedAt": 20
+   },
+   {
+    "id": "d2",
+    "projectId": "cont",
+    "key": "status|gone|c9|zz",
+    "kind": "intentional",
+    "note": "Disguise",
+    "message": "An old finding",
+    "nodeId": null,
+    "createdAt": 21,
+    "updatedAt": 21
+   }
+  ]
+ }
+}

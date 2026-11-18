@@ -95,8 +95,8 @@ export function TimelinePane() {
       </View>
       <View style={styles.row}>
         <OutlineButton label="Story calendar" icon="calendar-month-outline" compact onPress={() => router.navigate('/plan/calendar' as never)} />
-        <OutlineButton label={view.review} icon="check-decagram-outline" compact tone="muted" disabled onPress={() => undefined} accessibilityLabel={`${view.review}. ${later}`} />
-        <OutlineButton label="Draw it" icon="chart-timeline" compact tone="muted" disabled onPress={() => undefined} accessibilityLabel={`Draw it. ${later}`} />
+        <OutlineButton label={view.review} icon="check-decagram-outline" compact onPress={() => router.navigate('/review/timeline' as never)} />
+        <OutlineButton label="Draw it" icon="chart-timeline" compact onPress={() => router.navigate('/visualize/timeline' as never)} />
       </View>
       <View style={styles.search}>
         <Icon name="magnify" size={20} color={colors.muted} />

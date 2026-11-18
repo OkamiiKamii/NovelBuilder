@@ -48,6 +48,7 @@ import { colors, fonts, sizeClassOf, space } from '../theme';
 import { VizFrame, useVizFilter, useVizSelection } from './VizFrame';
 import type { JsonMap } from '../../domain/json';
 import { matchingKeys } from '../../domain/visualize/screens/frame';
+import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 /** The events the shared filters keep, as record keys (`event:<id>`), or null when no filter is on. A name matches
  * when it holds the typed words (accents and case aside); a character is involved when they take part. */
@@ -320,6 +321,8 @@ function Chart({
   const marks = new Map<string, AxisMark>();
   for (const t of tracks) for (const m of t.axis.marks) marks.set(m.id, m);
   const tap = (e: GestureResponderEvent) => onSelect(hitAt(hits, e.nativeEvent.locationX, e.nativeEvent.locationY));
+  // Canon and continuity badges, when the marks are on: before each mark, as the Flutter chart paints them.
+  const canonMarks = useCanonMarks();
   return (
     <View style={styles.frame}>
       <ScrollView horizontal showsHorizontalScrollIndicator>
@@ -347,6 +350,11 @@ function Chart({
                 ))}
               </G>
             ))}
+            {canonMarks !== null &&
+              hits.map((h, i) => {
+                const centre = h.rect.top - 2 + chartSizes.lane / 2 + (h.mark.kind === 'lasting' || h.mark.kind === 'ongoing' ? 8 : 0);
+                return <SvgCanonBadge key={`badge${i}`} mark={canonMarks.get(`event:${h.mark.id}`)} x={h.rect.left + 6 - 8} y={centre - 8} anchorRight />;
+              })}
           </Svg>
         </Pressable>
       </ScrollView>

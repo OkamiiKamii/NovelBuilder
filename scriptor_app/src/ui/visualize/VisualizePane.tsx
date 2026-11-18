@@ -1,7 +1,7 @@
 // VISUALIZE (Organize › Visualize, FEATURES.md #274): the atlas of views as plates, gathered by subject (People, Time,
 // The story, The world, Numbers); views the novel turned off are left out, and "Turn views on or off" brings them back.
-// A plate opens its view's page (/visualize/<view>, the relationship map at Organize's); Secrets and knowledge, a page
-// of Review, says it comes later. A port of the Flutter app's Visualize area page and view_atlas.dart.
+// A plate opens its view's page (/visualize/<view>, the relationship map at Organize's). A port of the Flutter app's
+// Visualize area page and view_atlas.dart.
 
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';

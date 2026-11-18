@@ -6,6 +6,8 @@
 // src/domain/plot/screens/planPage.ts.
 
 import { useRouter } from 'expo-router';
+
+import { consequencesPath } from '../../domain/consequences/consequences';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -92,6 +94,7 @@ function Plan({ plot, nodeId }: { plot: OpenPlot; nodeId: string }) {
     <PlanPage title={view.title} subtitle={view.subtitle} back="Back">
       <View style={styles.row}>
         <GoldButton label={view.actions.write} icon="pencil-outline" compact onPress={openInWrite} />
+        <OutlineButton label={view.actions.consequences} icon="source-branch" compact onPress={() => router.navigate(consequencesPath({ nodeId }) as never)} />
         <OutlineButton label={view.actions.board.label} icon="view-column-outline" compact onPress={() => router.navigate(view.actions.board.path as never)} />
       </View>
 

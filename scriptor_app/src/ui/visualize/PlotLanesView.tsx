@@ -37,6 +37,7 @@ import { useCast } from '../organize/useCast';
 import { colors, fonts, sizeClassOf, space } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { VizFrame, type VizFilters, useVizFilters, useVizSelection } from './VizFrame';
+import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 /** The colour of a beat's role. Each role also has its own shape, so colour is never the only difference. */
 export function roleColor(role: string | null): string {
@@ -300,6 +301,8 @@ function LanesDrawing({
   const x = (col: number) => nameW + col * laneColumn + laneColumn / 2;
   const y = (lane: number) => lanesHead + lane * laneRow + laneRow / 2;
   const laneOf = new Map(lanes.lanes.map((l, i) => [l.thread.id, i]));
+  // Canon and continuity badges, when the marks are on: over each chapter's number and on each thread's name.
+  const canonMarks = useCanonMarks();
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator accessibilityLabel={lanesLabel(lanes)}>
       <View style={{ width, height }}>
@@ -355,6 +358,16 @@ function LanesDrawing({
               </G>
             );
           })}
+          {canonMarks !== null && (
+            <G>
+              {lanes.chapters.map((c, i) => (
+                <SvgCanonBadge key={`nb${c.id}`} mark={canonMarks.get(`node:${c.id}`)} x={x(i) + 6} y={0} size={9} />
+              ))}
+              {lanes.lanes.map((lane, l) => (
+                <SvgCanonBadge key={`tb${lane.thread.id}`} mark={canonMarks.get(`thread:${lane.thread.id}`)} x={nameW - 30} y={lanesHead + l * laneRow + 26} size={9} />
+              ))}
+            </G>
+          )}
         </Svg>
         {lanes.lanes.map((lane, l) => (
           <View key={lane.thread.id}>

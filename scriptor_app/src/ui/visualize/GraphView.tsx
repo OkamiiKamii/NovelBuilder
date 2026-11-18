@@ -38,6 +38,7 @@ import { ChooserField } from '../organize/parts';
 import { type OpenCast, useCast } from '../organize/useCast';
 import { colors, fonts, radius, space } from '../theme';
 import { VizFrame, useVizFilters, useVizSelection } from './VizFrame';
+import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 export function GraphView() {
   const [list, setList] = useState(false);
@@ -375,6 +376,8 @@ function GraphCanvas({
     // Zoom round the middle of the box.
     setView({ k, tx: boxW / 2 - ((boxW / 2 - v.tx) / v.k) * k, ty: boxH / 2 - ((boxH / 2 - v.ty) / v.k) * k, key: layoutKey });
   };
+  // Canon and continuity badges, when the marks are on: beside each record, at the drawing's zoom.
+  const canonMarks = useCanonMarks();
   const at = (key: string) => {
     const p = placed.get(key) ?? { x: 0, y: 0 };
     return { x: v.tx + p.x * v.k, y: v.ty + p.y * v.k };
@@ -455,6 +458,7 @@ function GraphCanvas({
                     {clip(n.label, 22)}
                   </SvgText>
                 )}
+                {canonMarks !== null && <SvgCanonBadge mark={canonMarks.get(n.key)} x={c.x + r * 0.7} y={c.y - r - 8 * v.k} size={Math.max(7, 11 * v.k)} />}
               </G>
             );
           })}

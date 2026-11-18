@@ -4,9 +4,13 @@
 // Every method that writes is one transaction. `revision` changes after every successful write, and listeners are
 // told, so screens can refresh.
 //
-// Not ported yet: the review-copy guard (collaboration by file, FEATURES.md section 33). Until that phase there are no
-// review copies in Scriptor.
+// REVIEW COPY GUARD (collaboration by file, FEATURES.md section 33): in a review copy every write is judged by its
+// role's rule (src/domain/collab/access.ts `refusal`) before anything is written; a change the role may not make is
+// refused with PermissionError and nothing of the write is saved. The keys of the changes it allows are kept in the
+// copy's mark: they are what the person's feedback file carries back.
 
+import { PermissionError, refusal } from '../domain/collab/access';
+import { ReviewMark } from '../domain/collab/reviewFiles';
 import { type JsonMap, jsonEquals, str } from '../domain/json';
 import { NovelSnapshot } from '../domain/snapshot/novelSnapshot';
 import type { AppDatabase } from './database';
@@ -199,6 +203,12 @@ export class NovelStore {
     this.db.transaction(() => {
       const stored = first<{ json: string }>(this.sql, 'SELECT json FROM novels WHERE id = ?', [id]);
       if (!stored) throw new StaleWriteError('The novel');
+      const storedProject = JSON.parse(stored.json) as JsonMap;
+      const mark = ReviewMark.of(storedProject);
+      const changedKeys: string[] = [];
+      if (mark !== null && !jsonEquals(after.project, before.project)) {
+        throw new PermissionError('Only the owner changes the project itself.');
+      }
       if (!jsonEquals(after.project, before.project)) {
         if (!jsonEquals(JSON.parse(stored.json), before.project)) throw new StaleWriteError('The novel');
         this.sql.run('UPDATE novels SET json = ?, updated_at = ? WHERE id = ?', [
@@ -222,6 +232,7 @@ export class NovelStore {
         for (const rowId of old.keys()) {
           if (next.has(rowId)) continue;
           expectStored(rowId);
+          if (mark !== null) changedKeys.push(...guarded(mark, name, rowId, old.get(rowId) ?? null, null));
           this.sql.run('DELETE FROM records WHERE project_id = ? AND collection = ? AND id = ?', [id, name, rowId]);
           wrote.add(name);
         }
@@ -230,6 +241,7 @@ export class NovelStore {
           const was = old.get(rowId);
           if (was !== undefined && jsonEquals(was, value)) continue;
           expectStored(rowId);
+          if (mark !== null) changedKeys.push(...guarded(mark, name, rowId, was ?? null, value));
           wrote.add(name);
           if (was === undefined) {
             this.sql.run(
@@ -243,6 +255,9 @@ export class NovelStore {
             );
           }
         }
+      }
+      if (mark !== null && changedKeys.length > 0) {
+        this.sql.run('UPDATE novels SET json = ? WHERE id = ?', [JSON.stringify(marked(storedProject, mark, changedKeys)), id]);
       }
     });
     this.wrote(id, wrote);
@@ -306,10 +321,15 @@ export class NovelStore {
    * `updatedAt` becomes now. */
   writeRows(projectId: string, writes: readonly RowWrite[], touchNovel = true): void {
     const now = this.clock();
+    let markChanged = false;
     this.db.transaction(() => {
       const head = first<{ json: string }>(this.sql, 'SELECT json FROM novels WHERE id = ?', [projectId]);
       if (!head) throw new Error('That novel is no longer in the library.');
+      const project = JSON.parse(head.json) as JsonMap;
+      const mark = ReviewMark.of(project);
+      const changedKeys: string[] = [];
       for (const w of writes) {
+        if (mark !== null) changedKeys.push(...guarded(mark, w.collection, w.id, this.row(projectId, w.collection, w.id), w.value));
         if (w.expect !== undefined) {
           const stored = this.row(projectId, w.collection, w.id);
           const same = w.expect === null ? stored === null : stored !== null && jsonEquals(stored, w.expect);
@@ -333,25 +353,35 @@ export class NovelStore {
           );
         }
       }
+      markChanged = mark !== null && changedKeys.length > 0;
+      const withMark = mark !== null && markChanged ? marked(project, mark, changedKeys) : project;
       if (touchNovel) {
         this.sql.run('UPDATE novels SET json = ?, updated_at = ? WHERE id = ?', [
-          JSON.stringify({ ...JSON.parse(head.json), updatedAt: now }),
+          JSON.stringify({ ...withMark, updatedAt: now }),
           now,
           projectId,
         ]);
+      } else if (withMark !== project) {
+        this.sql.run('UPDATE novels SET json = ? WHERE id = ?', [JSON.stringify(withMark), projectId]);
       }
     });
-    this.wrote(
-      projectId,
-      writes.map((w) => w.collection),
-    );
+    // The novel's own row: only when the review copy's mark changed, not for its time.
+    this.wrote(projectId, [...(markChanged ? ['project'] : []), ...writes.map((w) => w.collection)]);
     this.changed();
   }
 
   /** Replaces the novel's own details (title, author…). Fields Scriptor does not know are kept by the caller. */
   putNovelDetails(raw: JsonMap): void {
     const id = str(raw['id']);
-    if (!this.exists(id)) throw new StaleWriteError('The novel');
+    const stored = first<{ json: string }>(this.sql, 'SELECT json FROM novels WHERE id = ?', [id]);
+    if (!stored) throw new StaleWriteError('The novel');
+    const was = JSON.parse(stored.json) as JsonMap;
+    if (ReviewMark.of(was) !== null) {
+      // On a review copy the person may change only what they keep for themselves (pinned, archived…).
+      const keys = new Set([...Object.keys(was), ...Object.keys(raw)]);
+      const others = [...keys].filter((k) => !personal.has(k) && !jsonEquals(was[k], raw[k]));
+      if (others.length > 0) throw new PermissionError('Only the owner changes the project itself.');
+    }
     this.sql.run('UPDATE novels SET json = ?, updated_at = ? WHERE id = ?', [JSON.stringify(raw), this.clock(), id]);
     this.wrote(id, ['project']);
     this.changed();
@@ -439,6 +469,22 @@ const notSample =
   "r.project_id NOT IN (SELECT id FROM novels WHERE json_extract(json, '$.scriptorSample') = 1)";
 
 /** Whether two versions of a novel's own row differ in nothing but when it was last written. */
+/** In a review copy, a change judged by its role's rule: refused with PermissionError, or the key it is kept under in
+ * the copy's mark (what the person's feedback file carries back). */
+function guarded(mark: ReviewMark, collection: string, id: string, before: JsonMap | null, after: JsonMap | null): string[] {
+  const reason = refusal(mark.role, mark.memberId, `${collection}:${id}`, before, after);
+  if (reason !== null) throw new PermissionError(reason);
+  return [`${collection}:${id}`];
+}
+
+/** The project with the keys of a review copy's newly allowed changes added to its mark. */
+function marked(project: JsonMap, mark: ReviewMark, keys: readonly string[]): JsonMap {
+  return { ...project, review: { ...mark.toJson(), changed: [...new Set([...mark.changed, ...keys])] } };
+}
+
+/** The details a person keeps for themselves on a review copy: they may change these, and nothing else of it. */
+const personal = new Set(['pinned', 'archived', 'lastOpenedAt', 'updatedAt']);
+
 function sameButTime(a: JsonMap, b: JsonMap): boolean {
   const { updatedAt: _a, ...ra } = a;
   const { updatedAt: _b, ...rb } = b;

@@ -93,7 +93,11 @@ export function siblingsOf(nodes: readonly StoryNode[], parentId: string | null)
 /** A node and everything inside it, depth first. */
 export function subtreeIds(nodes: readonly StoryNode[], id: string): string[] {
   const out: string[] = [];
+  // Each node visited once, so a parent cycle in a damaged novel ends the walk instead of overflowing the stack.
+  const seen = new Set<string>();
   const walk = (at: string) => {
+    if (seen.has(at)) return;
+    seen.add(at);
     out.push(at);
     for (const child of siblingsOf(nodes, at)) walk(child.id);
   };

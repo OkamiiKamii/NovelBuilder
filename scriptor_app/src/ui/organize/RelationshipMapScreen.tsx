@@ -55,6 +55,7 @@ import { useToast } from '../toast';
 import { ChooserField } from './parts';
 import { useRelate } from './RelationshipScreen';
 import { useOpenNovel } from './useNovel';
+import { SvgCanonBadge, useCanonMarks } from '../review/CanonMarks';
 
 export function RelationshipMapScreen() {
   const novel = useOpenNovel();
@@ -74,6 +75,7 @@ export function RelationshipMapScreen() {
   const settings = novel ? relationSettingsOf(novel.snapshot.rows('relationSettings')) : null;
   const net = useMemo(() => (novel ? relationNetwork(novel.model, networkFilterOf(state)) : null), [novel, state]);
   const drawing = useMemo(() => (net ? mapDrawing(net) : null), [net]);
+  const canonMarks = useCanonMarks();
   if (!novel || !settings || !net || !drawing) {
     return (
       <View style={[styles.page, styles.center, { paddingTop: insets.top }]}>
@@ -282,6 +284,23 @@ export function RelationshipMapScreen() {
                           const at = nameAt(drawing.at.get(n.id)!, p.radius);
                           return <Backed key={`name:${n.id}`} text={n.name} x={at.x} y={at.y} size={12} color={colors.text} opacity={p.nameOpacity} />;
                         })}
+                        {/* Canon and continuity badges, when the marks are on (turned on in a Visualize view): beside
+                            each character, and by the middle of each tie (relationship_map_page.dart). */}
+                        {canonMarks !== null && (
+                          <G>
+                            {net.edges.map((e) => {
+                              const a = drawing.at.get(e.from)!;
+                              const b = drawing.at.get(e.to)!;
+                              const mark = canonMarks.get(`relation:${e.id}`) ?? canonMarks.get(`link:${e.id}`);
+                              return <SvgCanonBadge key={`eb:${e.id}`} mark={mark} x={(a.x + b.x) / 2 + 6} y={(a.y + b.y) / 2 + 8} />;
+                            })}
+                            {net.nodes.map((n) => {
+                              const c = drawing.at.get(n.id)!;
+                              const r = nodePaint(net, n, sel).radius;
+                              return <SvgCanonBadge key={`nb:${n.id}`} mark={canonMarks.get(`entry:${n.id}`)} x={c.x + r * 0.7} y={c.y - r - 8} />;
+                            })}
+                          </G>
+                        )}
                       </G>
                     </Svg>
                   </Pressable>

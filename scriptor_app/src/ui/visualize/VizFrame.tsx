@@ -4,7 +4,7 @@
 // of the view to share, turning views on or off, and the details of what is selected (a panel below the view on a wide
 // screen, a sheet on a phone) with "Open". The filters and the selection carry across views while the app runs. A port
 // of flutter_app/lib/features/visualize/viz_frame.dart and view_atlas.dart; the logic is
-// src/domain/visualize/screens/frame.ts. Canon and continuity marks read Review's overlay and come with Review.
+// src/domain/visualize/screens/frame.ts. Canon and continuity marks are Review's (src/ui/review/CanonMarks.tsx).
 
 import { useRouter } from 'expo-router';
 import { type ComponentRef, createContext, type ReactNode, useContext, useMemo, useRef, useState } from 'react';
@@ -48,6 +48,7 @@ import { rememberOrganizeTab } from '../organize/OrganizeScreen';
 import { type OpenCast, useCast } from '../organize/useCast';
 import { ChooserField } from '../organize/parts';
 import { lastNodeSetting } from '../write/WriteScreen';
+import { MarksBar, SelectionMarks } from '../review/CanonMarks';
 
 // ------------------------------------------------------------------------------------------- filters and selection
 
@@ -259,6 +260,7 @@ export function VizFrame({
             )}
             {kept.missing > 0 && <Muted>{frameWords.missing(kept.missing)}</Muted>}
             {actions ? <View style={styles.actions}>{actions}</View> : null}
+            <MarksBar view={view} onSelect={context.select} />
             {!wide && selected !== null && (
               <View style={styles.selectedRow}>
                 <Text style={styles.selectedText} numberOfLines={2}>
@@ -272,6 +274,7 @@ export function VizFrame({
               {children}
             </View>
             {wide && selected !== null && <DetailsPanel open={open} selected={selected} select={context.select} />}
+            {wide && selected !== null && <SelectionMarks selected={selected} />}
           </ScrollView>
         )}
         {sheet === 'atlas' && <Atlas current={view} off={off} onClose={() => setSheet(null)} />}
@@ -279,6 +282,7 @@ export function VizFrame({
         {sheet === 'details' && selected !== null && (
           <Sheet visible onClose={() => setSheet(null)} title={selectedLabel ?? frameWords.notFound.title} wide>
             <DetailsPanel open={open} selected={selected} select={context.select} bare />
+            <SelectionMarks selected={selected} />
           </Sheet>
         )}
         {sheet === 'saved' && (

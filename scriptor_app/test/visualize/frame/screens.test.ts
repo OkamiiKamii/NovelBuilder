@@ -39,10 +39,10 @@ test('every view offered is under one subject, in the atlas’s order', () => {
   expect(atlasOf(offeredViews(['charts'])).map(([s]) => s)).not.toContain('Numbers');
 });
 
-test('a plate opens the view’s page here: the relationship map at Organize’s, Secrets and knowledge later', () => {
+test('a plate opens the view’s page here: the relationship map at Organize’s, Secrets and knowledge at its own', () => {
   expect(plateTarget(viewOf('journeys')!)).toBe('/visualize/journeys');
   expect(plateTarget(viewOf('relationships')!)).toBe('/organize/ties');
-  expect(plateTarget(viewOf('knowledge')!)).toBeNull();
+  expect(plateTarget(viewOf('knowledge')!)).toBe('/visualize/knowledge');
 });
 
 test('the shared filters narrow by name and by character, and narrow nothing when empty', () => {
