@@ -65,6 +65,10 @@ is in the app once.
 - **Main buttons:** gold outline with gold text and icon ("New Novel", "Continue"); the most important action is filled
   gold.
 - **Progress bars:** thin, gold on a dark track, with the percentage beside them in gold.
+- **The day's ring** (`frame.tsx`, on the bottom bar and the rail): with a daily word goal set on the open novel, the
+  Write area's feather sits in a thin ring that fills gold, clockwise from the top, as today's words reach the goal;
+  once it is met, the feather stands dark on a solid gold disc. Visible from every area, so the day's writing is never
+  more than a glance away. No goal, no ring. A screen reader hears "Write: 127 of 250 words today".
 - **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, the chapter it was left in (in
   gold), the last lines written there in Merriweather italic (whole, at most four lines: the end of the last paragraph,
   starting at a sentence), the editor's gold ornament line, today's words against the daily goal, and one filled gold

@@ -7,6 +7,9 @@ import { usePathname, useRouter } from 'expo-router';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Image, Keyboard, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Circle } from 'react-native-svg';
+
+import { openNovelSettingKey } from '../data/settingsStore';
 
 import { writerRank } from '../domain/writerRank';
 import { useFocusMode } from './write/deskState';
@@ -111,6 +114,7 @@ function BottomBar() {
   const { current, go } = useNavigate();
   const keyboardUp = useKeyboardVisible();
   const focused = useFocusMode();
+  const day = useTodayGoal();
   // The bar steps aside for the keyboard, and for focus mode.
   if (keyboardUp || focused) return null;
   return (
@@ -122,12 +126,12 @@ function BottomBar() {
             key={a.path}
             accessibilityRole="tab"
             accessibilityState={{ selected }}
-            accessibilityLabel={a.label}
+            accessibilityLabel={areaLabel(a, day)}
             onPress={() => go(a.path)}
             style={styles.barItem}
           >
             {selected && <View style={styles.barGlow} />}
-            <Icon name={a.icon} size={24} color={selected ? colors.gold : colors.muted} />
+            <AreaIcon area={a} color={selected ? colors.gold : colors.muted} day={day} />
             <Text style={[styles.barLabel, { color: selected ? colors.gold : colors.muted }]}>{a.label}</Text>
           </Pressable>
         );
@@ -139,6 +143,7 @@ function BottomBar() {
 function Rail({ expanded }: { expanded: boolean }) {
   const insets = useSafeAreaInsets();
   const { current, go } = useNavigate();
+  const day = useTodayGoal();
   return (
     <View
       style={[
@@ -157,7 +162,7 @@ function Rail({ expanded }: { expanded: boolean }) {
               key={a.path}
               accessibilityRole="tab"
               accessibilityState={{ selected }}
-              accessibilityLabel={a.label}
+              accessibilityLabel={areaLabel(a, day)}
               onPress={() => go(a.path)}
               style={[styles.railItem, !expanded && styles.railItemNarrow]}
             >
@@ -169,7 +174,7 @@ function Rail({ expanded }: { expanded: boolean }) {
                   style={[StyleSheet.absoluteFill, styles.railSelected]}
                 />
               )}
-              <Icon name={a.icon} size={24} color={selected ? colors.gold : colors.text} />
+              <AreaIcon area={a} color={selected ? colors.gold : colors.text} day={day} />
               <Text
                 style={[
                   expanded ? styles.railLabel : styles.railLabelNarrow,
@@ -194,6 +199,63 @@ function Rail({ expanded }: { expanded: boolean }) {
       ) : (
         <RankBadge />
       )}
+    </View>
+  );
+}
+
+/** Today's words in the open novel against its daily goal, for the Write area's ring. Null with no novel open or no
+ * daily goal set. Read again after every save, so the ring fills as the writer types. */
+function useTodayGoal(): { today: number; goal: number } | null {
+  const lib = useLibrary();
+  const revision = useLibraryRevision();
+  return useMemo(() => {
+    const id = lib.settings.read(openNovelSettingKey);
+    if (typeof id !== 'string' || !lib.novels.exists(id)) return null;
+    const goal = lib.manuscript.wordGoals(id).daily;
+    if (goal === null || goal <= 0) return null;
+    return { today: lib.manuscript.wordsWritten(id).today, goal };
+    // revision: read again after every write.
+  }, [lib, revision]); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+function areaLabel(a: (typeof areas)[number], day: { today: number; goal: number } | null): string {
+  if (a.path !== '/write' || day === null) return a.label;
+  return day.today >= day.goal
+    ? `${a.label}: today's goal met, ${day.today} words`
+    : `${a.label}: ${day.today} of ${day.goal} words today`;
+}
+
+const ring = { size: 34, stroke: 2.5 };
+
+/** An area's icon. Write's sits in a ring of today's words against the daily goal, filling gold as the writer writes;
+ * with the goal met, the feather stands on a gold disc. */
+function AreaIcon({ area, color, day }: { area: (typeof areas)[number]; color: string; day: { today: number; goal: number } | null }) {
+  const icon = <Icon name={area.icon} size={24} color={color} />;
+  if (area.path !== '/write' || day === null) return <View style={styles.areaIcon}>{icon}</View>;
+  const met = day.today >= day.goal;
+  const c = ring.size / 2;
+  const r = c - ring.stroke / 2;
+  const length = 2 * Math.PI * r;
+  const part = Math.max(0, Math.min(1, day.today / day.goal));
+  return (
+    <View style={styles.areaIcon}>
+      <Svg width={ring.size} height={ring.size} style={StyleSheet.absoluteFill}>
+        <Circle cx={c} cy={c} r={r} stroke={met ? colors.gold : colors.border} strokeWidth={ring.stroke} fill={met ? colors.gold : 'none'} />
+        {!met && part > 0 && (
+          <Circle
+            cx={c}
+            cy={c}
+            r={r}
+            stroke={colors.gold}
+            strokeWidth={ring.stroke}
+            strokeLinecap="round"
+            strokeDasharray={`${length * part} ${length}`}
+            fill="none"
+            transform={`rotate(-90 ${c} ${c})`}
+          />
+        )}
+      </Svg>
+      <Icon name={area.icon} size={18} color={met ? colors.onGold : color} />
     </View>
   );
 }
@@ -284,6 +346,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   barLabel: { fontFamily: fonts.ui, fontSize: 12 },
+  areaIcon: { width: ring.size, height: ring.size, alignItems: 'center', justifyContent: 'center' },
   rail: { borderRightWidth: 1, borderRightColor: colors.border, backgroundColor: colors.surface },
   railWide: { width: 236, paddingHorizontal: space.md },
   railNarrow: { width: 96, paddingHorizontal: space.sm, alignItems: 'stretch' },
