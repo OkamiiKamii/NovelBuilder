@@ -46,3 +46,10 @@ export function whereOnRoad(
   const passed = road.filter((m) => words >= m.words);
   return { passed: passed.length > 0 ? passed[passed.length - 1] : null, next: road.find((m) => words < m.words) ?? null };
 }
+
+/** The milestone passed by going from [before] to [after] words (the furthest, when a paste passes two), or null. Only
+ * going up passes one: cutting back below a milestone and writing past it again passes it again. */
+export function milestoneCrossed(before: number, after: number, road: readonly Milestone[]): Milestone | null {
+  const passed = road.filter((m) => before < m.words && after >= m.words);
+  return passed.length > 0 ? passed[passed.length - 1] : null;
+}

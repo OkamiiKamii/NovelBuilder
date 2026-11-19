@@ -87,6 +87,11 @@ is in the app once.
 - **Before you go** (`DeskViews.tsx` `NextNoteSheet`, leaving after a sitting of 100 words or more): the close of the
   sitting before the note for next time: the words written in it large in Cinzel gold ("+347", "WORDS IN THIS
   SITTING"), then today against the daily goal with its bar, and the days in a row, over the gold ornament line.
+- **A milestone on the road** (`write/MilestoneMoment.tsx`): the moment the whole book passes a length on the road to the
+  draft while writing (1,000 words, a short story's 7,500, a novelette's 17,500, a novella's 40,000, the whole draft
+  at the target), the page dims and a gold-edged card stands over it: "THE ROAD TO THE DRAFT", the number large in
+  Cinzel gold, "WORDS", what the book has become in Merriweather italic, and the road's diamonds with this one lit. It
+  holds about four seconds and goes; it never takes a touch or the keyboard. Larger and rarer than the day's seal.
 - **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, as a banner of its own jacket (its
   colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
   gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic

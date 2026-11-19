@@ -70,6 +70,7 @@ import { completionsFor, type NameKey, pageKeys, wordAt } from '../../domain/tex
 import { cardOf, GlanceSheet, GlanceStrip, InChapterStrip, linksIn, NameKeysRow, TitleIdeas, usePageCompany } from './PageCompany';
 import { WordMeter } from './WordMeter';
 import { DaySeal } from './DaySeal';
+import { MilestoneMoment } from './MilestoneMoment';
 import { findIn, onFind, takeFind } from './pendingFind';
 import { onInsert, takeInsert } from './pendingInsert';
 import { GoalPledgeSheet } from './GoalPledgeSheet';
@@ -132,6 +133,9 @@ export function EditorPane({
   const [recovered, setRecovered] = useState<{ doc: JsonMap; at: number } | null>(null);
   const [conflict, setConflict] = useState<JsonMap | null>(null);
   const [words, setWords] = useState({ now: node.wordCount, atOpen: node.wordCount });
+  // The rest of the book's words (every chapter but this one), read as the chapter opens: with this chapter's words
+  // now, the whole book's, for the milestones on the road to the draft.
+  const [otherWords, setOtherWords] = useState<number | null>(null);
   const [title, setTitle] = useState(node.title);
   const [findOpen, setFindOpen] = useState(false);
   const [linkOpen, setLinkOpen] = useState(false);
@@ -265,6 +269,8 @@ export function EditorPane({
     setRecovered(opened.recovered);
     setConflict(null);
     const w = measureDoc(opened.doc).words;
+    const book = lib.novels.stats().get(novelId)?.words;
+    setOtherWords(book === undefined ? null : Math.max(0, book - w));
     setWords({ now: w, atOpen: w });
     editor.current?.load(opened.doc);
     readPage(opened.doc, false);
@@ -958,6 +964,12 @@ export function EditorPane({
           onChapterEnd={(a) => void onChapterEnd(a)}
         />
         {editable && <DaySeal today={written.today} goal={goals.daily} />}
+        {editable && (
+          <MilestoneMoment
+            bookWords={otherWords === null ? null : otherWords + words.now}
+            target={lib.library.novel(novelId)?.targetWordCount ?? null}
+          />
+        )}
         {stuck && editable && (
           <View style={styles.nudgeSpot} pointerEvents="box-none">
             <NudgeChip
