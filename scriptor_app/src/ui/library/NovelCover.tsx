@@ -14,7 +14,7 @@ import type { Novel } from '../../domain/novel';
 import { colors, fonts, tints } from '../theme';
 
 /** Darkens a #rrggbb colour toward black. */
-function shade(hex: string, amount: number): string {
+export function shade(hex: string, amount: number): string {
   const n = Number.parseInt(hex.slice(1), 16);
   const c = (shift: number) => Math.round(((n >> shift) & 255) * (1 - amount));
   return `rgb(${c(16)}, ${c(8)}, ${c(0)})`;

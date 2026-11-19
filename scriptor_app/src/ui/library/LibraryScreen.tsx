@@ -44,6 +44,7 @@ import { useToast } from '../toast';
 import { BackupSheet, CollectionPicker, ImportSheet, TemplatesSheet } from './LibrarySheets';
 import { FirstBook } from './FirstBook';
 import { PickUp, pickUpPlace } from './PickUp';
+import { ShelfView } from './ShelfView';
 import { formatDate, NovelCard, NovelRow } from './NovelCard';
 import { NovelForm, type NovelFormResult } from './NovelForm';
 
@@ -68,7 +69,10 @@ export function LibraryScreen() {
   const [filter, setFilter] = useState<LibraryFilter>('all');
   const [collection, setCollection] = useState<CollectionKey | null>(null);
   const [sort, setSort] = useState<LibrarySort>('edited');
-  const [view, setViewState] = useState<'grid' | 'list'>(() => (lib.settings.read(viewSetting) === 'list' ? 'list' : 'grid'));
+  const [view, setViewState] = useState<'grid' | 'list' | 'shelf'>(() => {
+    const v = lib.settings.read(viewSetting);
+    return v === 'list' || v === 'shelf' ? v : 'grid';
+  });
 
   const [form, setForm] = useState<{ editing: Novel | null; setupFrom: string | null } | null>(null);
   // The home-screen shortcut "New novel" (scriptor:///?new=1): the form, open.
@@ -119,7 +123,7 @@ export function LibraryScreen() {
     { words: 0, chapters: 0 },
   );
 
-  const setView = (v: 'grid' | 'list') => {
+  const setView = (v: 'grid' | 'list' | 'shelf') => {
     setViewState(v);
     lib.saves.saveNow(`setting:${viewSetting}`, () => lib.settings.write(viewSetting, v));
   };
@@ -294,6 +298,7 @@ export function LibraryScreen() {
         <View style={styles.viewToggle}>
           <IconButton icon="view-grid" label="Show as cards" onPress={() => setView('grid')} color={view === 'grid' ? colors.gold : colors.muted} />
           <IconButton icon="format-list-bulleted" label="Show as a list" onPress={() => setView('list')} color={view === 'list' ? colors.gold : colors.muted} />
+          <IconButton icon="bookshelf" label="Show on a shelf" onPress={() => setView('shelf')} color={view === 'shelf' ? colors.gold : colors.muted} />
         </View>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
@@ -425,6 +430,8 @@ export function LibraryScreen() {
           />
         ))}
       </View>
+    ) : view === 'shelf' ? (
+      <ShelfView novels={shown} stats={data.stats} onOpen={(n) => openNovel(n)} onMenu={(n) => setMenuFor(n)} />
     ) : (
       <View style={styles.list}>
         {shown.map((n) => (

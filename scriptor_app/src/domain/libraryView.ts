@@ -131,3 +131,37 @@ export function readingTime(words: number): string {
 export function wantsFirstBook(novels: readonly Novel[]): boolean {
   return !novels.some((n) => !n.archived && n.raw['scriptorSample'] !== true);
 }
+
+// ---------------------------------------------------------------------------------------------------- the shelf
+
+/** How thick a book's spine stands on the Library's shelf: thicker as it is written (the square root, so a first
+ * chapter shows and a long novel does not crowd the rest), from 30 to 78 points. */
+export function spineThickness(words: number): number {
+  return Math.round(Math.min(78, 30 + Math.sqrt(Math.max(0, words)) / 5));
+}
+
+/** A spine's height: a little different for every book, as real books are, the same every time for the same book. */
+export function spineHeight(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return 168 + (h % 5) * 8;
+}
+
+/** The books in rows that fit `width`, left to right, `gap` between spines; every row holds at least one book. */
+export function shelfRows<T extends { thickness: number }>(books: readonly T[], width: number, gap: number): T[][] {
+  const rows: T[][] = [];
+  let row: T[] = [];
+  let used = 0;
+  for (const b of books) {
+    const need = (row.length > 0 ? gap : 0) + b.thickness;
+    if (row.length > 0 && used + need > width) {
+      rows.push(row);
+      row = [];
+      used = 0;
+    }
+    used += row.length > 0 ? gap + b.thickness : b.thickness;
+    row.push(b);
+  }
+  if (row.length > 0) rows.push(row);
+  return rows;
+}

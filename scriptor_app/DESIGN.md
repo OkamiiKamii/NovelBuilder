@@ -98,6 +98,11 @@ is in the app once.
   that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word, with a gold-outlined
   **15-minute sprint** under it (the same, with a sprint started and the desk cleared into focus). Hidden while
   searching; absent until a book has been opened.
+- **The shelf** (`ShelfView.tsx`, the Library's third view beside cards and list): every novel stands as a book on a
+  shelf, its spine in the book's own colour (shaded to look round) with gold bands top and bottom and its title up the
+  spine in Cinzel bold, a star on a favorite; as thick as it is written (`spineThickness`, the square root of its words,
+  30 to 78 points) and a little different in height for each book. Rows stand on a dark board with a gold edge; under
+  them, "Each book stands as thick as it is written." A press opens the book, a long press its menu.
 - **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
   title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
 - **Designed covers** (a novel with no picture of its own, `NovelCover.tsx`, choices in `domain/coverArt.ts`): the
