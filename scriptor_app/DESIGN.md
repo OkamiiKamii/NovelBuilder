@@ -60,7 +60,13 @@ is in the app once.
 
 ## Shapes and effects
 
-- **Panels:** `surface` ground, 1 px `border` outline, about 10 px rounded corners, a soft sky-blue glow along the edge.
+- **The backdrop** (`Backdrop.tsx`, under every page in the app frame): deep navy (`backdropTop` `#0B1426`) darkening to
+  the `background`, lit by a cold sky-blue glow from the top corner and a fainter blue one from the foot, as the
+  owner's mock-ups draw it. One static drawing; the pages themselves are transparent over it (the reader, the editor's
+  page, sheets and overlays stay opaque).
+- **Panels:** a slightly see-through ground (`tints.panel`), a 1 px blue-steel edge (`edge` `#22395F`), about 10 px
+  rounded corners, and a real soft blue glow along the edge (`glow.sky`, React Native's `boxShadow`). What is chosen or
+  acts glows gold (`glow.gold`; filled gold buttons `glow.goldSoft`).
 - **Selected navigation item:** filled with a gold gradient, dark text, a brighter gold edge.
 - **Main buttons:** gold outline with gold text and icon ("New Novel", "Continue"); the most important action is filled
   gold.
@@ -92,24 +98,21 @@ is in the app once.
   at the target), the page dims and a gold-edged card stands over it: "THE ROAD TO THE DRAFT", the number large in
   Cinzel gold, "WORDS", what the book has become in Merriweather italic, and the road's diamonds with this one lit. It
   holds about four seconds and goes; it never takes a touch or the keyboard. Larger and rarer than the day's seal.
-- **Pick up the thread** (top of the Library, `PickUp.tsx`): the book last opened, as a banner of its own jacket (its
-  colour and genre pattern, `NovelCover` with `backdrop`, darkening into the panel) with the chapter it was left in in
-  gold capitals and the title large in Cinzel bold over it; then the last lines written there in Merriweather italic
-  (whole, at most four lines: the end of the last paragraph, starting at a sentence), the writer's own **note for next
-  time** on that chapter when they left one, **this week** as seven marks Monday first (filled gold for a day
-  written, a gold ring for today still to write, faint for the rest; the initials under them, today's in gold) beside
-  the run of days ("3 days in a row · write today to keep it"), the editor's gold ornament line, today's words against the daily goal (or,
-  with no daily goal yet, **How much a day?**: four pace cards, 100 / 250 / 500 / 1,000 words in Cinzel gold with what
-  that is in pages; one press sets the goal, and the ring and the seal follow from it), and one filled gold **Continue writing** that opens that chapter with the caret after its last word, with a gold-outlined
-  **15-minute sprint** under it (the same, with a sprint started and the desk cleared into focus). Hidden while
-  searching; absent until a book has been opened.
+- **Pick up the thread** (top of the Library, `PickUp.tsx`): a slim gold-lit strip (the owner's choice, 2026-11-18, so the
+  novels stand on the first screen): the cover, the chapter in gold capitals, the title in Cinzel, two lines of where
+  the writing stopped in Merriweather italic (the end of the last paragraph, from a sentence), today against the goal,
+  and **Continue writing** (the chapter, the caret after its last word) with **15 min** beside it (a sprint started).
+  Pressed, it opens to the writer's own **note for next time** on that chapter, **this week** as seven marks Monday
+  first (gold for a day written, a gold ring for today still to write) beside the run of days, the daily nudge, and
+  with no daily goal yet **How much a day?** (four pace cards, 100 / 250 / 500 / 1,000 words; one press sets the goal).
+  Hidden while searching; absent until a book has been opened.
 - **The shelf** (`ShelfView.tsx`, the Library's third view beside cards and list): every novel stands as a book on a
   shelf, its spine in the book's own colour (shaded to look round) with gold bands top and bottom and its title up the
   spine in Cinzel bold, a star on a favorite; as thick as it is written (`spineThickness`, the square root of its words,
   30 to 78 points) and a little different in height for each book. Rows stand on a dark board with a gold edge; under
   them, "Each book stands as thick as it is written." A press opens the book, a long press its menu.
-- **Novel cards:** the cover picture fills the card top, a status chip at the top left, a "…" menu at the top right, the
-  title in Cinzel, then progress, chapters and last-read date, then Continue and a stats button.
+- **Novel cards:** the cover picture fills the card top (taller than wide), a status chip at the top left, a "…" menu at
+  the top right, the title in Cinzel bold on the cover's foot over a fade, inside a gold frame that glows, then progress, chapters and last-read date, then Continue and a stats button.
 - **Designed covers** (a novel with no picture of its own, `NovelCover.tsx`, choices in `domain/coverArt.ts`): the
   book's own colour from top to foot; a fine gold line pattern from its **primary** genre (fantasy: pointed arches;
   sci-fi: orbits and stars; adventure and the sea: waves; mystery and crime: rain; romance: a lattice of rings; horror:

@@ -3,7 +3,7 @@
 // stopped in, the last lines they wrote there, the note they left themselves for next time, today's words against the
 // day's goal, and one button that opens that chapter with the caret at its last word.
 
-import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type BookDay, carryOnNode, dayBookHeadline, dayBookOf, dayLabel, weekInitials, writingSessionOf } from '../../domain/desk/dayBook';
@@ -16,7 +16,7 @@ import { blockTexts, lastLines } from '../../domain/prose';
 import type { StoryNode } from '../../domain/outline';
 import { GoldButton, Icon, Muted, OutlineButton, ProgressBar } from '../kit';
 import type { Library } from '../../data/library';
-import { colors, fonts, radius, space, tints } from '../theme';
+import { colors, fonts, glow, radius, space, tints } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { NovelCover } from './NovelCover';
 
@@ -61,8 +61,6 @@ export function pickUpPlace(lib: Library, novels: readonly Novel[]): PickUpPlace
   };
 }
 
-const banner = { phone: 200, wide: 240 };
-
 export function PickUp({
   place,
   wide,
@@ -74,7 +72,7 @@ export function PickUp({
   place: PickUpPlace;
   wide: boolean;
   onContinue: () => void;
-  /** "15-minute sprint": the same chapter, with a sprint started. */
+  /** "15 min": the same chapter, with a sprint started. */
   onSprint: () => void;
   /** With no daily goal yet: the writer chose one of the paces here. */
   onPledge: (words: number) => void;
@@ -83,82 +81,75 @@ export function PickUp({
 }) {
   const { novel, chapter, lines, note, today, goal } = place;
   const title = novel.title || 'Untitled novel';
-  const height = wide ? banner.wide : banner.phone;
+  // A slim strip, so the novels stand on the first screen (the owner's choice, 2026-11-18); the week, the nudge and the
+  // day's goal open under it.
+  const [open, setOpen] = useState(false);
   return (
     <View style={styles.panel}>
-      <View style={{ height }}>
-        <NovelCover novel={novel} height={height} showTitle={false} backdrop />
-        {/* The jacket darkens toward its foot, so the title reads and the banner runs into the page below. */}
-        <LinearGradient
-          colors={['rgba(10, 11, 14, 0)', 'rgba(10, 11, 14, 0.55)', colors.surface]}
-          locations={[0, 0.55, 1]}
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
-        />
-        <View style={styles.heading}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        accessibilityLabel={`${title}, ${displayTitle(chapter)}. ${open ? 'Hide' : 'Show'} this week and today's goal`}
+        onPress={() => setOpen(!open)}
+        style={styles.strip}
+      >
+        <View style={styles.cover}>
+          <NovelCover novel={novel} height={wide ? 104 : 88} showTitle={false} />
+        </View>
+        <View style={styles.text}>
           <Text style={styles.kicker} numberOfLines={1}>
             {displayTitle(chapter)}
           </Text>
-          <Text style={[styles.title, wide && styles.titleWide]} numberOfLines={2} accessibilityRole="header">
+          <Text style={styles.title} numberOfLines={1} accessibilityRole="header">
             {title}
           </Text>
-        </View>
-      </View>
-      <View style={styles.body}>
-        {lines !== null ? (
-          <Text style={styles.lines} numberOfLines={4} accessibilityLabel={`Where you stopped: ${lines}`}>
-            {lines}
+          <Text style={styles.lines} numberOfLines={2}>
+            {lines ?? 'The page is still blank. The first line is yours.'}
           </Text>
-        ) : (
-          <Text style={styles.lines}>The page is still blank. The first line is yours.</Text>
-        )}
-        {note !== null && (
-          <View style={styles.note} accessible accessibilityLabel={`Your note for next time: ${note}`}>
-            <Icon name="pin-outline" size={18} color={colors.gold} />
-            <View style={styles.flex}>
-              <Text style={styles.noteLabel}>YOUR NOTE FOR NEXT TIME</Text>
-              <Text style={styles.noteText} numberOfLines={3}>
-                {note}
-              </Text>
-            </View>
-          </View>
-        )}
-        <WeekStrip days={place.week} run={place.run} />
-        <Nudge time={place.reminder} onRemind={onRemind} />
-        <View style={styles.ornament} importantForAccessibility="no-hide-descendants">
-          <View style={styles.rule} />
-          <View style={styles.diamond} />
-          <View style={styles.rule} />
         </View>
-        <View style={[styles.foot, wide && styles.footWide]}>
-          <View style={styles.today}>
-            {goal !== null && goal > 0 ? (
-              <>
-                <Muted>
-                  Today: {today.toLocaleString('en-US')} of {goal.toLocaleString('en-US')} words
-                </Muted>
-                <ProgressBar value={today / goal} />
-              </>
-            ) : (
-              <Pledge today={today} onPledge={onPledge} />
-            )}
-          </View>
-          <GoldButton
-            label={lines === null ? 'Start writing' : 'Continue writing'}
-            icon="feather"
-            onPress={onContinue}
-            accessibilityLabel={`Continue writing ${title}, ${displayTitle(chapter)}, at your last line`}
-            style={wide ? undefined : styles.fullWidth}
-          />
-          <OutlineButton
-            label="15-minute sprint"
-            icon="timer-outline"
-            onPress={onSprint}
-            accessibilityLabel={`Write in ${title} for 15 minutes: a sprint, from your last line`}
-            style={wide ? undefined : styles.fullWidth}
-          />
+        <Icon name={open ? 'chevron-up' : 'chevron-down'} size={22} color={colors.gold} />
+      </Pressable>
+      {goal !== null && goal > 0 && (
+        <View style={styles.today}>
+          <Muted>
+            Today: {today.toLocaleString('en-US')} of {goal.toLocaleString('en-US')} words
+          </Muted>
+          <ProgressBar value={today / goal} />
         </View>
+      )}
+      <View style={styles.actions}>
+        <GoldButton
+          label={lines === null ? 'Start writing' : 'Continue writing'}
+          icon="feather"
+          onPress={onContinue}
+          accessibilityLabel={`Continue writing ${title}, ${displayTitle(chapter)}, at your last line`}
+          style={styles.flex}
+        />
+        <OutlineButton
+          label="15 min"
+          icon="timer-outline"
+          onPress={onSprint}
+          accessibilityLabel={`Write in ${title} for 15 minutes: a sprint, from your last line`}
+        />
       </View>
+      {open && (
+        <View style={styles.more}>
+          {note !== null && (
+            <View style={styles.note} accessible accessibilityLabel={`Your note for next time: ${note}`}>
+              <Icon name="pin-outline" size={18} color={colors.gold} />
+              <View style={styles.flex}>
+                <Text style={styles.noteLabel}>Your note for next time</Text>
+                <Text style={styles.noteText} numberOfLines={3}>
+                  {note}
+                </Text>
+              </View>
+            </View>
+          )}
+          <WeekStrip days={place.week} run={place.run} />
+          <Nudge time={place.reminder} onRemind={onRemind} />
+          {(goal === null || goal <= 0) && <Pledge today={today} onPledge={onPledge} />}
+        </View>
+      )}
     </View>
   );
 }
@@ -260,30 +251,23 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   panel: {
     marginBottom: space.lg,
+    padding: space.md,
+    gap: space.md,
     borderRadius: radius.panel,
     borderWidth: 1,
     borderColor: colors.gold,
-    backgroundColor: colors.surface,
-    overflow: 'hidden',
-    shadowColor: colors.gold,
-    shadowOpacity: 0.35,
-    shadowRadius: 14,
-    elevation: 6,
+    backgroundColor: tints.panel,
+    boxShadow: glow.gold,
   },
-  heading: { position: 'absolute', left: space.lg, right: space.lg, bottom: space.md, gap: 2 },
-  kicker: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 13, letterSpacing: 1.6, color: colors.gold, textTransform: 'uppercase' },
-  title: {
-    fontFamily: fonts.display,
-    fontWeight: '700',
-    fontSize: 30,
-    lineHeight: 36,
-    color: colors.text,
-    textShadowColor: 'rgba(0, 0, 0, 0.85)',
-    textShadowRadius: 10,
-  },
-  titleWide: { fontSize: 38, lineHeight: 44 },
-  body: { padding: space.lg, paddingTop: space.sm, gap: space.md },
-  lines: { fontFamily: fonts.bookItalic, fontSize: 16, lineHeight: 25, color: colors.text, opacity: 0.9 },
+  strip: { flexDirection: 'row', alignItems: 'center', gap: space.md },
+  cover: { width: 64, borderRadius: 6, overflow: 'hidden', borderWidth: 1, borderColor: tints.goldRule },
+  text: { flex: 1, gap: 2 },
+  kicker: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 12, letterSpacing: 1.4, color: colors.gold, textTransform: 'uppercase' },
+  title: { fontFamily: fonts.display, fontWeight: '700', fontSize: 20, lineHeight: 25, color: colors.text },
+  lines: { fontFamily: fonts.bookItalic, fontSize: 14, lineHeight: 20, color: colors.text, opacity: 0.85 },
+  today: { gap: 4 },
+  actions: { flexDirection: 'row', gap: space.sm },
+  more: { gap: space.md, paddingTop: space.xs, borderTopWidth: 1, borderTopColor: colors.border },
   note: {
     flexDirection: 'row',
     gap: space.sm,
@@ -293,15 +277,8 @@ const styles = StyleSheet.create({
     borderColor: tints.goldRule,
     backgroundColor: colors.elevated,
   },
-  noteLabel: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 11, letterSpacing: 1.4, color: colors.gold, marginBottom: 2 },
+  noteLabel: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 12, color: colors.gold, marginBottom: 2 },
   noteText: { fontFamily: fonts.bookItalic, fontSize: 15, lineHeight: 22, color: colors.text },
-  ornament: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  rule: { flex: 1, height: 1, backgroundColor: colors.gold, opacity: 0.45 },
-  diamond: { width: 7, height: 7, borderWidth: 1, borderColor: colors.gold, transform: [{ rotate: '45deg' }] },
-  foot: { gap: space.md },
-  footWide: { flexDirection: 'row', alignItems: 'center' },
-  today: { flex: 1, gap: 6 },
-  fullWidth: { alignSelf: 'stretch' },
   pledge: { gap: space.sm },
   nudgeAsk: { gap: space.sm },
   nudge: { flexDirection: 'row', alignItems: 'center', gap: space.sm },

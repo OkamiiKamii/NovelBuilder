@@ -2,13 +2,14 @@
 // the top right, the title in Cinzel, how far it is, its chapters and when it was last opened, then Continue and its
 // numbers. And the same novel as a row, for the list view.
 
+import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { NovelStats } from '../../data/novelStore';
 import { type Novel, novelStatusLabel } from '../../domain/novel';
 import { progressOf } from '../../domain/libraryView';
 import { Icon, type IconName, IconButton, OutlineButton, ProgressBar } from '../kit';
-import { colors, fonts, radius, space } from '../theme';
+import { colors, fonts, glow, radius, space, tints } from '../theme';
 import { NovelCover } from './NovelCover';
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -53,7 +54,8 @@ type CardProps = {
 export function NovelCard({ novel, stats, width, onContinue, onMenu, onStats }: CardProps) {
   const words = stats?.words ?? 0;
   const progress = progressOf(novel, words);
-  const coverHeight = Math.round(width * 0.95);
+  // The cover fills the top of the card, taller than wide, and the title stands on its foot (the mock-up's card).
+  const coverHeight = Math.round(width * 1.2);
   const done = novel.status === 'complete';
   return (
     <View style={[styles.card, { width }, novel.pinned && styles.cardPinned]}>
@@ -65,6 +67,15 @@ export function NovelCard({ novel, stats, width, onContinue, onMenu, onStats }: 
             <IconButton icon="dots-horizontal" label={`More for ${novel.title}`} onPress={onMenu} size={20} />
           </View>
         </View>
+        <LinearGradient
+          colors={['rgba(10, 11, 14, 0)', 'rgba(10, 11, 14, 0.7)', tints.panelSolid]}
+          locations={[0, 0.55, 1]}
+          style={styles.coverFoot}
+          pointerEvents="none"
+        />
+        <Text style={styles.cardTitle} numberOfLines={3} adjustsFontSizeToFit minimumFontScale={0.75}>
+          {novel.title || 'Untitled novel'}
+        </Text>
         {novel.pinned && (
           <View style={styles.pin} accessible accessibilityLabel="Favorite">
             <Icon name="star" size={16} color={colors.gold} />
@@ -72,9 +83,6 @@ export function NovelCard({ novel, stats, width, onContinue, onMenu, onStats }: 
         )}
       </View>
       <View style={styles.cardBody}>
-        <Text style={styles.cardTitle} numberOfLines={3} adjustsFontSizeToFit minimumFontScale={0.75}>
-          {novel.title || 'Untitled novel'}
-        </Text>
         {progress !== null ? <ProgressBar value={progress} /> : <Text style={styles.noTarget}>No word target</Text>}
         <View style={styles.metaRow}>
           <Icon name="book-open-outline" size={16} color={colors.muted} />
@@ -141,14 +149,11 @@ const styles = StyleSheet.create({
     borderRadius: radius.panel,
     borderWidth: 1,
     borderColor: '#5A4618',
-    backgroundColor: colors.surface,
+    backgroundColor: tints.panel,
     overflow: 'hidden',
-    shadowColor: colors.sky,
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 4,
+    boxShadow: glow.goldSoft,
   },
-  cardPinned: { borderColor: colors.gold },
+  cardPinned: { borderColor: colors.gold, boxShadow: glow.gold },
   coverTop: {
     position: 'absolute',
     top: space.sm,
@@ -161,7 +166,7 @@ const styles = StyleSheet.create({
   menuButton: { backgroundColor: 'rgba(10, 11, 14, 0.7)', borderRadius: radius.field },
   pin: {
     position: 'absolute',
-    bottom: space.sm,
+    top: 56,
     right: space.sm,
     padding: 4,
     borderRadius: 12,
@@ -179,7 +184,21 @@ const styles = StyleSheet.create({
   },
   statusText: { fontFamily: fonts.ui, fontSize: 13 },
   cardBody: { padding: space.md, gap: space.sm },
-  cardTitle: { fontFamily: fonts.display, fontSize: 20, lineHeight: 26, textAlign: 'center', color: colors.text, minHeight: 52 },
+  coverFoot: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '55%' },
+  cardTitle: {
+    position: 'absolute',
+    left: space.sm,
+    right: space.sm,
+    bottom: space.sm,
+    fontFamily: fonts.display,
+    fontWeight: '700',
+    fontSize: 21,
+    lineHeight: 26,
+    textAlign: 'center',
+    color: colors.text,
+    textShadowColor: 'rgba(0, 0, 0, 0.9)',
+    textShadowRadius: 8,
+  },
   noTarget: { fontFamily: fonts.ui, fontSize: 12, color: colors.muted },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   meta: { fontFamily: fonts.ui, fontSize: 13, color: colors.muted },
