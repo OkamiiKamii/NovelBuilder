@@ -42,3 +42,17 @@ Scriptor is **Android only** for now: no iOS or web setup.
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Parallel development (main session only; subagents follow their own definitions)
+
+The main session coordinates five agents in `.claude/agents/`: `scriptor-ui-dev`, `scriptor-feature-dev`,
+`scriptor-architect`, `scriptor-perf`, and the read-only `scriptor-qa`. Follow `.claude/PARALLEL_DEV.md` when a
+request splits into independent pieces. In short:
+
+- Don't delegate simple tasks; do them directly.
+- Check `git status` first and never overwrite uncommitted work.
+- Give every agent an exact list of files it may edit. No two agents hold the same file at once.
+- Run at most four implementation agents at a time, launched together.
+- Name the skill each brief needs, or none (the mapping is in `PARALLEL_DEV.md`).
+- After integration, run typecheck, Jest and lint yourself, then have `scriptor-qa` review before reporting.
+- Device testing stays with the main session, one step at a time.
