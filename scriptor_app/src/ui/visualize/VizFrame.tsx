@@ -699,7 +699,7 @@ const styles = StyleSheet.create({
   centerText: { textAlign: 'center' },
   start: { alignSelf: 'flex-start' },
   bold: { fontWeight: '700' },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingHorizontal: space.sm, paddingVertical: space.sm },
   title: { fontFamily: fonts.display, fontSize: 20, color: colors.text },
   body: { padding: space.md, gap: space.md, width: '100%', paddingBottom: space.xxl },

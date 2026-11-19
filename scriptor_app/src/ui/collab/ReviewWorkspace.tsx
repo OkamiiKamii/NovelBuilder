@@ -556,7 +556,7 @@ function EntryEditSheet({
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   body_: { padding: space.md, gap: space.md, paddingBottom: space.xxl },
   gap: { gap: space.md },
   gapSm: { gap: space.sm },

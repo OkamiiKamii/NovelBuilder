@@ -35,7 +35,7 @@ export function PlanPage({ title, subtitle, back, children }: { title: string; s
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingHorizontal: space.sm, paddingVertical: space.sm },
   title: { fontFamily: fonts.display, fontSize: 20, color: colors.text },
   body: { padding: space.md, gap: space.md, width: '100%', paddingBottom: space.xxl },

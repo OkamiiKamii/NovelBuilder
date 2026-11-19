@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import { motion, useReducedMotion } from './motion';
-import { colors, fonts, radius, space } from './theme';
+import { colors, fonts, glow, radius, space, tints } from './theme';
 import { useSpot } from './tutorial/spots';
 
 export type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -264,11 +264,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     padding: space.lg,
   },
-  glow: { shadowColor: colors.sky, shadowOpacity: 0.35, shadowRadius: 12, elevation: 4 },
-  panelActive: { borderColor: colors.gold },
+  glow: { borderColor: colors.edge, backgroundColor: tints.panel, boxShadow: glow.sky },
+  panelActive: { borderColor: colors.gold, boxShadow: glow.gold },
   sectionRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm, marginBottom: space.md },
   sectionTitle: { fontFamily: fonts.ui, fontSize: 15, letterSpacing: 1.6, color: colors.text },
-  buttonOuter: { borderRadius: radius.field, minHeight: 44 },
+  buttonOuter: { borderRadius: radius.field, minHeight: 44, boxShadow: glow.goldSoft },
   buttonFill: {
     flexDirection: 'row',
     alignItems: 'center',

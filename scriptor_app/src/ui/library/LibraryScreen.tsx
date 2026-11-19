@@ -39,7 +39,7 @@ import { AreaTools } from '../search/AreaTools';
 import { Chip, GoldButton, Icon, type IconName, IconButton, Muted, Panel, SectionTitle } from '../kit';
 import { EmptyState } from '../states';
 import { useLibrary, useLibraryRevision } from '../LibraryContext';
-import { colors, fonts, radius, sizeClassOf, space } from '../theme';
+import { colors, fonts, glow, radius, sizeClassOf, space, tints } from '../theme';
 import { useToast } from '../toast';
 import { BackupSheet, CollectionPicker, ImportSheet, TemplatesSheet } from './LibrarySheets';
 import { FirstBook } from './FirstBook';
@@ -773,7 +773,7 @@ function timeAgo(at: number): string {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   columns: { flex: 1, flexDirection: 'row' },
   flex: { flex: 1 },
   side: { width: 320, flexGrow: 0, paddingRight: space.lg, paddingLeft: space.xs },
@@ -810,15 +810,12 @@ const styles = StyleSheet.create({
     padding: space.md,
     borderRadius: radius.panel,
     borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    shadowColor: colors.sky,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 3,
+    borderColor: colors.edge,
+    backgroundColor: tints.panel,
+    boxShadow: glow.sky,
   },
   tilePhone: { flexBasis: '45%' },
-  tileStrong: { borderColor: colors.gold, shadowColor: colors.gold },
+  tileStrong: { borderColor: colors.gold, boxShadow: glow.gold },
   tileIcon: {
     width: 44,
     height: 44,

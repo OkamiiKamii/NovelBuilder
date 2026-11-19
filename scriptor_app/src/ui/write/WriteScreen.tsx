@@ -436,7 +436,7 @@ export function WriteScreen() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   row: { flex: 1, flexDirection: 'row' },
   flex: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center' },

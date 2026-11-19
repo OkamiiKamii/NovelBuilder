@@ -221,7 +221,7 @@ function Row({
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   flex: { flex: 1 },
   heading: { flexDirection: 'row', alignItems: 'center', gap: space.md, marginBottom: space.sm },
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.text },

@@ -146,7 +146,7 @@ export function IndexScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingHorizontal: space.sm, paddingVertical: space.sm },
   title: { fontFamily: fonts.display, fontSize: 22, color: colors.gold },
   subtitle: { fontFamily: fonts.bookItalic, fontSize: 14, color: colors.muted },

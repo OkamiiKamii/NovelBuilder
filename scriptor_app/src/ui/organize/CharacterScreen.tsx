@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   cropArea: { marginTop: space.sm, borderRadius: radius.field, overflow: 'hidden' },
   cropMark: { position: 'absolute', width: 28, height: 28 },
   cropSizes: { flexDirection: 'row', gap: space.md, alignItems: 'flex-end', marginTop: space.md },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center', gap: space.md, padding: space.lg },
   centerText: { textAlign: 'center' },
   flex: { flex: 1 },

@@ -295,7 +295,7 @@ function IdPicker({ label, chosen, options, onChange }: { label: string; chosen:
 
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center', padding: space.lg },
   centerText: { textAlign: 'center' },
   missing: { alignItems: 'center', gap: space.md, maxWidth: 420 },

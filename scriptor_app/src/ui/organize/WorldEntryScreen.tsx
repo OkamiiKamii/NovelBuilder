@@ -599,7 +599,7 @@ function LinkLabelInput({ value, onChange }: { value: string; onChange: (v: stri
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center', gap: space.md, padding: space.lg },
   centerText: { textAlign: 'center' },
   flex: { flex: 1 },

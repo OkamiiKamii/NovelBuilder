@@ -15,10 +15,11 @@ import { writerRank } from '../domain/writerRank';
 import { useFocusMode } from './write/deskState';
 import { Icon, type IconName } from './kit';
 import { useLibrary, useLibraryRevision } from './LibraryContext';
+import { Backdrop } from './Backdrop';
 import { SavePill } from './SavePill';
 import { SearchHost } from './search/SearchSheet';
 import { TutorialHost } from './tutorial/TutorialSheet';
-import { colors, fonts, radius, sizeClassOf, space } from './theme';
+import { colors, fonts, glow, radius, sizeClassOf, space } from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const logo = require('../../assets/logo.png');
@@ -49,6 +50,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   if (size === 'compact') {
     return (
       <View style={styles.page}>
+        <Backdrop />
         <View style={styles.flex}>{children}</View>
         <BottomBar />
         <StatusScrim />
@@ -58,6 +60,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   }
   return (
     <View style={[styles.page, styles.row]}>
+      <Backdrop />
       <Rail expanded={size === 'expanded'} />
       <View style={styles.flex}>{children}</View>
       <StatusScrim />
@@ -375,10 +378,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.gold,
     backgroundColor: '#15110A',
-    shadowColor: colors.gold,
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 4,
+    boxShadow: glow.gold,
   },
   rankRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   rankName: { fontFamily: fonts.ui, fontSize: 18, color: colors.gold },

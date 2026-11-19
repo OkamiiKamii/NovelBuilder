@@ -798,7 +798,7 @@ function MetersTool({ mods, at }: { mods: OpenModules; at: ToolAt }) {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   flex: { flex: 1 },
   start: { alignSelf: 'flex-start' },
   head: { flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, paddingHorizontal: space.md, paddingTop: space.sm, paddingBottom: space.sm },

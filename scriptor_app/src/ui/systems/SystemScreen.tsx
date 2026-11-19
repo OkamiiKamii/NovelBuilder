@@ -1000,7 +1000,7 @@ function SheetsTab({
 
 const styles = StyleSheet.create({
   speaks: { alignSelf: 'flex-start' },
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingHorizontal: space.sm, paddingTop: space.sm },
   title: { fontFamily: fonts.display, fontSize: 22, color: colors.text },
   subtitle: { fontFamily: fonts.ui, fontSize: 13, color: colors.muted },

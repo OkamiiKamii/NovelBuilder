@@ -124,7 +124,7 @@ export function BookDetailsScreen() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   body: { paddingHorizontal: space.lg, gap: space.sm, maxWidth: 760, width: '100%', alignSelf: 'center' },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   title: { flex: 1, fontFamily: fonts.display, fontSize: 24, color: colors.gold },

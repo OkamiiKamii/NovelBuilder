@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { Novel, novelAccents } from '../../domain/novel';
 import { GoldButton } from '../kit';
-import { colors, fonts, radius, space } from '../theme';
+import { colors, fonts, glow, radius, space } from '../theme';
 import { NovelCover } from './NovelCover';
 
 export function FirstBook({ wide, onBegin }: { wide: boolean; onBegin: (title: string) => void }) {
@@ -68,10 +68,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gold,
     backgroundColor: colors.surface,
     overflow: 'hidden',
-    shadowColor: colors.gold,
-    shadowOpacity: 0.35,
-    shadowRadius: 14,
-    elevation: 6,
+    boxShadow: glow.gold,
   },
   heading: { position: 'absolute', left: space.lg, right: space.lg, bottom: space.sm, gap: 2 },
   kicker: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 13, letterSpacing: 1.6, color: colors.gold },

@@ -320,7 +320,7 @@ function StageCard({
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center', gap: space.md, padding: space.lg },
   flex: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingHorizontal: space.sm, paddingVertical: space.sm },

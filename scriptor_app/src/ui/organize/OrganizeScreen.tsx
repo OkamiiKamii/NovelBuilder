@@ -157,7 +157,7 @@ export function OrganizeScreen() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
   center: { alignItems: 'center', justifyContent: 'center' },
   centerText: { textAlign: 'center' },
   empty: { alignItems: 'center', gap: space.md, margin: space.lg, maxWidth: 420 },
