@@ -130,6 +130,10 @@ is in the app once.
   `background` colour. Every launcher mask (circle, squircle, rounded square) shows the whole crest, wing tips
   included. The launch screen uses the same picture.
 
+- **The Quick Settings tile** (`plugins/withWritingWidget.js`, `ScriptorTile`): "Write" with the feather in the panel
+  pulled down from the top of the screen (added from the panel's edit list), today's words under it ("238 of 250
+  today", "Goal met · 1,076"); lit once the day's goal is met. A tap opens Write at the last word. It reads what the
+  widget reads.
 - **Home-screen shortcuts** (`plugins/withShortcuts.js`): long-press Scriptor's icon for **Continue writing** (Write,
   on the chapter last worked in, the caret after its last word: `scriptor:///write?at=end`) and **Start a new novel**
   (the Library with the New novel form open: `scriptor:///?new=1`), each on a round gold icon with a dark glyph

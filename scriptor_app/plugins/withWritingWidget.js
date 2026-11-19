@@ -42,7 +42,7 @@ class ScriptorWidget : AppWidgetProvider() {
     manager.updateAppWidget(id, render(context, options))
   }
 
-  private data class Book(val title: String, val today: Int, val goal: Int?, val lines: String?, val week: List<Int>, val run: String)
+  internal data class Book(val title: String, val today: Int, val goal: Int?, val lines: String?, val week: List<Int>, val run: String)
 
   companion object {
     /** Redraws every Scriptor widget (when the app goes to the background). Never throws. */
@@ -162,7 +162,7 @@ class ScriptorWidget : AppWidgetProvider() {
     }
 
     /** The book last opened (not archived), today's net words in it, and its daily goal. Null with none. */
-    private fun read(context: Context): Book? {
+    internal fun read(context: Context): Book? {
       val file = File(context.filesDir, "library/scriptor.sqlite3")
       if (!file.exists()) return null
       // Opened for reading only by what it asks; read-write so SQLite can use the write-ahead log as the app does.
@@ -223,6 +223,51 @@ class ScriptorWidget : AppWidgetProvider() {
       } finally {
         db.close()
       }
+    }
+  }
+}
+`;
+
+// The Quick Settings tile: "Write" in the panel pulled down from the top of the screen, today's words under it, lit once
+// the day's goal is met; a tap opens Write at the last word. It reads what the widget reads.
+const tile = `package ${pkg}
+
+import android.app.PendingIntent
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.service.quicksettings.Tile
+import android.service.quicksettings.TileService
+import java.util.Locale
+
+class ScriptorTile : TileService() {
+  override fun onStartListening() {
+    val tile = qsTile ?: return
+    val book = try { ScriptorWidget.read(this) } catch (e: Exception) { null }
+    val goal = book?.goal
+    val met = book != null && goal != null && goal > 0 && book.today >= goal
+    tile.label = "Write"
+    if (Build.VERSION.SDK_INT >= 29) {
+      val words = String.format(Locale.US, "%,d", book?.today ?: 0)
+      tile.subtitle = when {
+        book == null -> "Scriptor"
+        met -> "Goal met · " + words
+        goal != null && goal > 0 -> words + " of " + String.format(Locale.US, "%,d", goal) + " today"
+        else -> words + " words today"
+      }
+    }
+    tile.state = if (met) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+    tile.updateTile()
+  }
+
+  override fun onClick() {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("scriptor:///write?at=end")).setClassName(this, "${pkg}.MainActivity")
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    if (Build.VERSION.SDK_INT >= 34) {
+      startActivityAndCollapse(PendingIntent.getActivity(this, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+    } else {
+      @Suppress("DEPRECATION")
+      startActivityAndCollapse(intent)
     }
   }
 }
@@ -339,6 +384,17 @@ module.exports = function withWritingWidget(config) {
   config = withAndroidManifest(config, (mod) => {
     const app = mod.modResults.manifest.application[0];
     app.receiver = (app.receiver ?? []).filter((r) => r.$['android:name'] !== '.ScriptorWidget');
+    app.service = (app.service ?? []).filter((r) => r.$['android:name'] !== '.ScriptorTile');
+    app.service.push({
+      $: {
+        'android:name': '.ScriptorTile',
+        'android:exported': 'true',
+        'android:label': 'Write',
+        'android:icon': '@drawable/scriptor_notification',
+        'android:permission': 'android.permission.BIND_QUICK_SETTINGS_TILE',
+      },
+      'intent-filter': [{ action: [{ $: { 'android:name': 'android.service.quicksettings.action.QS_TILE' } }] }],
+    });
     app.receiver.push({
       $: { 'android:name': '.ScriptorWidget', 'android:exported': 'false', 'android:label': 'Scriptor' },
       'intent-filter': [{ action: [{ $: { 'android:name': 'android.appwidget.action.APPWIDGET_UPDATE' } }] }],
@@ -369,6 +425,7 @@ module.exports = function withWritingWidget(config) {
         fs.writeFileSync(at, text);
       };
       write(`app/src/main/java/${pkg.replace(/\./g, '/')}/ScriptorWidget.kt`, kotlin);
+      write(`app/src/main/java/${pkg.replace(/\./g, '/')}/ScriptorTile.kt`, tile);
       write('app/src/main/res/layout/scriptor_widget.xml', layout);
       write('app/src/main/res/drawable/scriptor_widget_bg.xml', bg);
       write('app/src/main/res/drawable/scriptor_widget_button.xml', button);
