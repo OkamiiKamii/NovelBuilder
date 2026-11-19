@@ -1,6 +1,7 @@
 // Home-screen shortcuts: long-press Scriptor's icon for "Continue writing" (the last chapter, the caret after its last
 // word) and "New novel". Static Android app shortcuts (res/xml/shortcuts.xml) that open Scriptor's own scriptor://
 // links, so nothing leaves the phone. android/ is generated from app.json, so this is how they survive each build.
+// It also writes the daily nudge's small notification icon (a white feather, tinted gold).
 // The icons are Material Design Icons' feather and plus (Apache 2.0, the set the app's icons come from).
 const { withAndroidManifest, withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
@@ -39,6 +40,20 @@ const shortcuts = `<?xml version="1.0" encoding="utf-8"?>
 ${shortcut('continue_writing', 'Continue writing', 'Continue writing at your last line', 'shortcut_write', 'scriptor:///write?at=end')}${shortcut('new_novel', 'New novel', 'Start a new novel', 'shortcut_new', 'scriptor:///?new=1')}</shortcuts>
 `;
 
+// The daily nudge's small icon (expo-notifications reads it from the manifest): the feather in white, as Android
+// draws a notification icon from its shape alone, tinted gold.
+const notificationIcon = `<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+  <path android:fillColor="#FFFFFFFF" android:pathData="${feather}"/>
+</vector>
+`;
+const notificationColor = `<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="scriptor_notification_gold">${gold}</color>
+</resources>
+`;
+
 // Shortcut labels must be string resources.
 const strings = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -56,6 +71,12 @@ module.exports = function withShortcuts(config) {
     if (!main) throw new Error('withShortcuts: MainActivity was not found in the manifest.');
     main['meta-data'] = (main['meta-data'] ?? []).filter((m) => m.$['android:name'] !== 'android.app.shortcuts');
     main['meta-data'].push({ $: { 'android:name': 'android.app.shortcuts', 'android:resource': '@xml/shortcuts' } });
+    const names = ['expo.modules.notifications.default_notification_icon', 'expo.modules.notifications.default_notification_color'];
+    app['meta-data'] = (app['meta-data'] ?? []).filter((m) => !names.includes(m.$['android:name']));
+    app['meta-data'].push(
+      { $: { 'android:name': names[0], 'android:resource': '@drawable/scriptor_notification' } },
+      { $: { 'android:name': names[1], 'android:resource': '@color/scriptor_notification_gold' } },
+    );
     return mod;
   });
   return withDangerousMod(config, [
@@ -70,6 +91,8 @@ module.exports = function withShortcuts(config) {
       write('drawable/shortcut_write.xml', icon(feather));
       write('drawable/shortcut_new.xml', icon(plus));
       write('values/shortcut_strings.xml', strings);
+      write('drawable/scriptor_notification.xml', notificationIcon);
+      write('values/scriptor_notification_color.xml', notificationColor);
       return mod;
     },
   ]);

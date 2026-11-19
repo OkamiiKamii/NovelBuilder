@@ -1,7 +1,7 @@
 // Starts Scriptor: opens the library on this device, then shows the app in its frame; or, when the library cannot be
 // opened, a screen that says why and offers to try again (FEATURES.md #1). A port of flutter_app/lib/app/bootstrap.dart.
 
-import { Slot } from 'expo-router';
+import { router, Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, useWindowDimensions } from 'react-native';
@@ -18,6 +18,7 @@ import { ErrorBoundary } from '../ui/ErrorBoundary';
 import { AppFrame, bottomBarHeight } from '../ui/frame';
 import { LibraryProvider } from '../ui/LibraryContext';
 import { LibraryErrorScreen } from '../ui/LibraryErrorScreen';
+import { followReminders, planReminders } from '../ui/reminders';
 import { sizeClassOf } from '../ui/theme';
 import { ToastProvider } from '../ui/toast';
 
@@ -61,10 +62,17 @@ export default function RootLayout() {
   useEffect(() => {
     if (!library) return;
     const sub = AppState.addEventListener('change', (state) => {
-      if (state !== 'active') library.saves.flush();
+      if (state !== 'active') {
+        library.saves.flush();
+        // The daily nudge planned again: today's dropped once today is written, the last line kept current.
+        void planReminders(library);
+      }
     });
     return () => sub.remove();
   }, [library]);
+
+  // A pressed nudge opens what it names (Write, at the last word).
+  useEffect(() => (library ? followReminders((url) => router.navigate(url as never)) : undefined), [library]);
 
   return (
     <SafeAreaProvider>

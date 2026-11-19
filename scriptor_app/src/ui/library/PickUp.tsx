@@ -10,6 +10,7 @@ import { type BookDay, carryOnNode, dayBookHeadline, dayBookOf, dayLabel, weekIn
 import { formatNumber } from '../../domain/desk/format';
 import { displayTitle, nextNotesKey, readNextNotes } from '../../domain/desk/pageAround';
 import { dailyChoices, pagesOf } from '../../domain/goals/goalPledge';
+import { readReminder, reminderChoices, reminderLabel, reminderSetting, type ReminderTime } from '../../domain/goals/reminder';
 import type { Novel } from '../../domain/novel';
 import { blockTexts, lastLines } from '../../domain/prose';
 import type { StoryNode } from '../../domain/outline';
@@ -30,6 +31,8 @@ export type PickUpPlace = {
   /** This week, Monday to Sunday, and the run of days ("3 days in a row · write today to keep it"). */
   week: BookDay[];
   run: string;
+  /** The daily nudge's time, or null with none. */
+  reminder: ReminderTime | null;
 };
 
 /** Where the writer left off: the most recently opened book that is not archived, and its chapter. Null when no book
@@ -49,6 +52,7 @@ export function pickUpPlace(lib: Library, novels: readonly Novel[]): PickUpPlace
     lines: lastLines(blockTexts(saved?.['doc']), 130),
     note: readNextNotes(lib.settings.read(nextNotesKey(novel.id))).get(chapter.id)?.text ?? null,
     today: lib.manuscript.wordsWritten(novel.id).today,
+    reminder: readReminder(lib.settings.read(reminderSetting)),
     ...(() => {
       const book = dayBookOf(lib.novels.rowsIn(novel.id, 'writingSessions').map(writingSessionOf), Date.now(), 1);
       return { week: book.days, run: dayBookHeadline(book) };
@@ -65,6 +69,7 @@ export function PickUp({
   onContinue,
   onSprint,
   onPledge,
+  onRemind,
 }: {
   place: PickUpPlace;
   wide: boolean;
@@ -73,6 +78,8 @@ export function PickUp({
   onSprint: () => void;
   /** With no daily goal yet: the writer chose one of the paces here. */
   onPledge: (words: number) => void;
+  /** A time chosen for the daily nudge, or null to stop it. */
+  onRemind: (time: ReminderTime | null) => void;
 }) {
   const { novel, chapter, lines, note, today, goal } = place;
   const title = novel.title || 'Untitled novel';
@@ -117,6 +124,7 @@ export function PickUp({
           </View>
         )}
         <WeekStrip days={place.week} run={place.run} />
+        <Nudge time={place.reminder} onRemind={onRemind} />
         <View style={styles.ornament} importantForAccessibility="no-hide-descendants">
           <View style={styles.rule} />
           <View style={styles.diamond} />
@@ -176,6 +184,43 @@ function WeekStrip({ days, run }: { days: BookDay[]; run: string }) {
       <Text style={styles.run} numberOfLines={2}>
         {run}
       </Text>
+    </View>
+  );
+}
+
+/** The daily nudge: the three times to choose from, or the time chosen and Off. */
+function Nudge({ time, onRemind }: { time: ReminderTime | null; onRemind: (time: ReminderTime | null) => void }) {
+  if (time !== null) {
+    return (
+      <View style={styles.nudge}>
+        <Icon name="bell-ring-outline" size={18} color={colors.gold} />
+        <Text style={styles.nudgeText}>A nudge at {reminderLabel(time)}, never on a day you have written</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel="Stop the daily nudge" onPress={() => onRemind(null)} hitSlop={8}>
+          <Text style={styles.nudgeOff}>Off</Text>
+        </Pressable>
+      </View>
+    );
+  }
+  return (
+    <View style={styles.nudgeAsk}>
+      <View style={styles.nudge}>
+        <Icon name="bell-outline" size={18} color={colors.muted} />
+        <Text style={styles.nudgeText}>A nudge each day, at the hour you write?</Text>
+      </View>
+      <View style={styles.nudgeTimes}>
+        {reminderChoices.map((c) => (
+          <Pressable
+            key={c.label}
+            accessibilityRole="button"
+            accessibilityLabel={`Nudge me each day at ${reminderLabel(c.time)}`}
+            onPress={() => onRemind(c.time)}
+            style={({ pressed }) => [styles.nudgeTime, pressed && styles.pacePressed]}
+          >
+            <Text style={styles.nudgeTimeLabel}>{c.label}</Text>
+            <Text style={styles.nudgeTimeAt}>{reminderLabel(c.time)}</Text>
+          </Pressable>
+        ))}
+      </View>
     </View>
   );
 }
@@ -258,6 +303,24 @@ const styles = StyleSheet.create({
   today: { flex: 1, gap: 6 },
   fullWidth: { alignSelf: 'stretch' },
   pledge: { gap: space.sm },
+  nudgeAsk: { gap: space.sm },
+  nudge: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  nudgeText: { flex: 1, fontFamily: fonts.ui, fontSize: 13, lineHeight: 18, color: colors.text },
+  nudgeOff: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 13, color: colors.gold, textDecorationLine: 'underline' },
+  nudgeTimes: { flexDirection: 'row', gap: space.sm },
+  nudgeTime: {
+    flex: 1,
+    minHeight: 48,
+    paddingVertical: 6,
+    borderRadius: radius.field,
+    borderWidth: 1,
+    borderColor: tints.goldRule,
+    backgroundColor: colors.elevated,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nudgeTimeLabel: { fontFamily: fonts.ui, fontWeight: '600', fontSize: 13, color: colors.gold },
+  nudgeTimeAt: { fontFamily: fonts.numbers, fontSize: 11, color: colors.muted },
   week: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   weekDays: { flexDirection: 'row', gap: 6 },
   weekDay: { alignItems: 'center', gap: 3, width: 20 },

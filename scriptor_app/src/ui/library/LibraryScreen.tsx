@@ -15,6 +15,8 @@ import { pickTextFile, shareTextFile } from '../../data/files';
 import { openNovelSettingKey } from '../../data/settingsStore';
 import { requestEnd } from '../write/pendingFind';
 import { startWritingSprint } from '../write/Sprint';
+import { allowReminders, planReminders } from '../reminders';
+import { reminderLabel, reminderSetting } from '../../domain/goals/reminder';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { recentActivity } from '../../domain/activity';
 import {
@@ -343,6 +345,20 @@ export function LibraryScreen() {
             requestEnd(chapter.id);
             openNovel(novel, chapter.id);
             startWritingSprint(lib, 15);
+          }}
+          onRemind={(time) => {
+            void (async () => {
+              if (time !== null && !(await allowReminders())) {
+                toast('Notifications are off for Scriptor. Turn them on in Android’s settings to get the nudge.', { error: true });
+                return;
+              }
+              lib.saves.saveNow(`setting:${reminderSetting}`, () => {
+                lib.settings.write(reminderSetting, time);
+                lib.novels.touchSettings();
+              });
+              await planReminders(lib);
+              toast(time ? `A nudge each day at ${reminderLabel(time)}, never on a day you have written.` : 'No more daily nudge.');
+            })();
           }}
           onPledge={(words) => {
             const { novel } = data.pickUp!;

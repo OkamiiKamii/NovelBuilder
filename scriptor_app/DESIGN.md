@@ -78,6 +78,12 @@ is in the app once.
   ones don't count), the top of the Library is a blank jacket in the same banner style, with "YOUR FIRST BOOK" in gold
   and the title typed straight onto it in Cinzel over a gold rule; "Begin chapter one" makes the book (the last author
   name used) and opens Chapter 1. It gives way to Pick up the thread once a book of their own exists.
+- **The daily nudge** (`domain/goals/reminder.ts`, `ui/reminders.ts`, on the pick-up banner under the week): "A nudge each
+  day, at the hour you write?" with three times (Morning 8:00 AM, Midday 12:30 PM, Evening 8:00 PM); once chosen, "A nudge
+  at 8:00 PM, never on a day you have written" and Off. A local Android notification (`expo-notifications`, nothing sent
+  anywhere) titled "Your next page: <the book>" with the last line written; pressed, it opens Write at the last word.
+  The next week is planned at once and again whenever Scriptor goes to the background, so today's is dropped once today
+  is written. Its small icon is the feather in white, tinted gold.
 - **Before you go** (`DeskViews.tsx` `NextNoteSheet`, leaving after a sitting of 100 words or more): the close of the
   sitting before the note for next time: the words written in it large in Cinzel gold ("+347", "WORDS IN THIS
   SITTING"), then today against the daily goal with its bar, and the days in a row, over the gold ornament line.
