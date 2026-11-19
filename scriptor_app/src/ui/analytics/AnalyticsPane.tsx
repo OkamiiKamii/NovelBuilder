@@ -6,10 +6,11 @@
 // the counting is src/domain/analytics/analytics.ts. It sits in the scroll view the Analytics area gives it.
 
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Svg, { Line, Rect, Text as SvgText } from 'react-native-svg';
 
+import { recentActivity } from '../../domain/activity';
 import { type Analytics, computeAnalytics, type PlaceWords } from '../../domain/analytics/analytics';
 import { Goal, grouped, mediumDay, type TrendPoint, WritingSession } from '../../domain/analytics/progress';
 import { characterPath } from '../../domain/characters/screens/create';
@@ -18,7 +19,8 @@ import { threadPath } from '../../domain/plot/plotService';
 import { ProgressSnapshot } from '../../domain/progression/snapshots';
 import { intOrNull } from '../../domain/records/jsonRecord';
 import { Muted, OutlineButton, Panel } from '../kit';
-import { useLibrary } from '../LibraryContext';
+import { formatDate } from '../library/NovelCard';
+import { useLibrary, useLibraryRevision } from '../LibraryContext';
 import { colors, fonts, space } from '../theme';
 import { lastNodeSetting } from '../write/WriteScreen';
 import { type OpenCast, useCast } from '../organize/useCast';
@@ -116,6 +118,8 @@ export function AnalyticsPane() {
           ))
         )}
       </Panel>
+
+      <RecentActivity novelId={open.novelId} />
 
       <Heading text="Writing output" />
       <Tiles>
@@ -261,6 +265,46 @@ export function AnalyticsPane() {
 }
 
 // ---------------------------------------------------------------------------------------------------- pieces
+
+/** What changed lately in this novel (moved here from the Library, owner 2026-11-19): read from when each record was
+ * last written, again after every change. */
+function RecentActivity({ novelId }: { novelId: string }) {
+  const lib = useLibrary();
+  const revision = useLibraryRevision();
+  // revision: read again after every write.
+  const items = useMemo(() => recentActivity(lib.novels.recentRows(novelId, 80), 6), [lib, novelId, revision]); // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <Panel style={styles.panel}>
+      <Text style={styles.panelTitle} accessibilityRole="header">
+        Recent activity
+      </Text>
+      {items.length === 0 ? (
+        <Text style={styles.small}>Nothing yet. What you write and change in this novel shows here.</Text>
+      ) : (
+        items.map((a, i) => (
+          <View key={`${a.what}-${i}`} style={styles.activity}>
+            <View style={styles.activityDot} />
+            <Text style={[styles.body, styles.flex]} numberOfLines={1}>
+              {a.what}
+            </Text>
+            <Text style={styles.small}>{timeAgo(a.at)}</Text>
+          </View>
+        ))
+      )}
+    </Panel>
+  );
+}
+
+function timeAgo(at: number): string {
+  const minutes = Math.round((Date.now() - at) / 60000);
+  if (minutes < 1) return 'now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return formatDate(at);
+}
 
 function Heading({ text }: { text: string }) {
   return (
@@ -540,6 +584,8 @@ function Row({
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   gap: { gap: space.md },
+  activity: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.xs },
+  activityDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.sky },
   gapSm: { gap: space.sm },
   gapXs: { gap: space.xs },
   start: { alignSelf: 'flex-start' },

@@ -229,7 +229,7 @@ export const castViews: readonly CastView[] = [
 ];
 export const castViewKey = 'characters.view';
 
-/** The view remembered, cards when none (or one this version does not have). */
+/** The view remembered, the list when none (or one this version does not have). */
 export function castViewOf(value: unknown): CastView {
-  return castViews.find((v) => v === value) ?? 'cards';
+  return castViews.find((v) => v === value) ?? 'list';
 }

@@ -63,12 +63,14 @@ type ButtonProps = {
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
   compact?: boolean;
+  /** The name the tutorial's tour finds it by, when its label is a short form of it ("New" for "New character"). */
+  spot?: string;
 };
 
 /** The main action: filled with a gold gradient, dark lettering. */
-export function GoldButton({ label, onPress, icon, disabled, style, accessibilityLabel, compact }: ButtonProps) {
+export function GoldButton({ label, onPress, icon, disabled, style, accessibilityLabel, compact, spot: spotName }: ButtonProps) {
   // The tutorial's tour finds it by its label (tutorial/spots.ts).
-  const spot = useSpot(label);
+  const spot = useSpot(spotName ?? label);
   return (
     <Pressable
       ref={spot}

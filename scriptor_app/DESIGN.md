@@ -121,6 +121,16 @@ is in the app once.
   medallion with the title's initial in Cinzel (past "The", "A", "An"). With the title shown, the title and the author
   stand under the medallion.
 - **Section headings:** an icon in gold, then the title in Outfit capitals ("LIBRARY OVERVIEW", "QUICK ACTIONS").
+- **Characters** (Organize, from the owner's Character Vault mock-up, 2026-11-19):
+  - **Top row:** search, Filters, a gold **New** and **⋯**. The ⋯ menu holds the Relationship map, the Cast list for the book, the Group photo and View.
+  - **The cast:** a list by default, one panel row per character: a round face, the name in bold, then "N chapters • epithet • roles".
+  - **Suggestions:** the ones from the pages fold into one strip under the list, "✦ N suggestions from your pages".
+  - **New cast:** the playbill and the empty chairs stay at the top while the cast is three or fewer.
+- **A character's page** (the Character Vault, from the mock-ups):
+  - **Dossier header:** a gold-framed portrait; pressing it opens upload, adjust, remove and Draw their face. Beside it go the name in Cinzel, the epithet in italic, the role chips and Edit profile. Then the summary, and three labelled counts (LINKED IN, IN THE TEXT, NAME MENTIONS).
+  - **Tabs:** icon and label, the chosen one underlined in gold. They are Status (with systems), Overview, Relationships, Details, Story (Progression, then History) and Notes (Notes, then Secrets).
+  - **Quick actions:** a panel on Overview and Status holding Write them in, Interview, This or that, In their hand and Share their card.
+  - **Overview:** a GENERAL INFO table, and each section's empty suggested fields fold behind "+ Add details (N)".
 - **Editor:** a dark page, the chapter title in Cinzel with a gold ornament line under it, the text in Merriweather,
   the chapters list on the left with the open chapter filled gold, word count / characters / reading time at the foot.
 
@@ -174,8 +184,11 @@ format (standard novel, ebook, web serial) and on every page colour, since all o
 
 | Width | Layout |
 |---|---|
-| Phone (under 600 px) | Content full width; bottom bar with Library, Write, Organize, Analytics, Settings (selected item in gold) |
-| Tablet (600 px and up) | Left rail (logo, the same areas, the selected one filled gold) and the content; on wide tablets a right column of panels (overview, quick actions, recent activity) as in the Library mock-up |
+| Phone (under 600 px) | Content full width; inside a novel, a bottom bar with Library, Write, Organize, Analytics, Settings (selected item in gold) |
+| Tablet (600 px and up) | Inside a novel, a left rail (logo, the same areas, the selected one filled gold) and the content; the Library has no rail, and on wide tablets a right column of panels (overview, quick actions) as in the Library mock-up |
+
+The Library stands outside every novel, so it shows no bar or rail; its top row has the logo, search, the tutorial
+and Settings (owner, 2026-11-19).
 
 ## Decided by the owner (2026-11-16)
 
@@ -183,6 +196,6 @@ format (standard novel, ebook, web serial) and on every page colour, since all o
 |---|---|
 | Five areas in the mock-ups, eight in the Flutter app | **Five**: Library, Write, Organize, Analytics, Settings. Plan, Visualize and Review (the consistency checks; moved from Analytics by the owner on 2026-11-17) are tabs inside Organize; Progress, Analytics and the Keepsakes are tabs inside Analytics. Nothing is dropped. |
 | The writer's rank and level ("Rank: SSS, Lv. 125") | **Built, earned by writing**: experience from words written, days written in a row and chapters finished, read from the writing log on this device. Ranks F, E, D, C, B, A, S, SS, SSS. |
-| Collections and Recent Activity in the Library | **Built, all of it**: Favorites (pinned books), My Drafts, Completed and On Hold (by status), the writer's own custom collections, and a Recent Activity list of what changed lately. |
+| Collections and Recent Activity in the Library | **Built, all of it**: Favorites (pinned books), My Drafts, Completed and On Hold (by status), the writer's own custom collections, and a Recent Activity list of what changed lately. On 2026-11-19 the owner moved Recent Activity out of the Library: each novel's is in its Analytics tab. |
 | Sync, Premium, the notifications bell, a profile picture | **Left out for now.** Kept as possible later features in `FEATURES.md` ("Possible later features"). Sync and Premium would reverse the offline, no-account decision. |
 | "Upload Backup" | Saving a `.novel.json` backup wherever the writer chooses (the share sheet), and restoring one: no cloud. |

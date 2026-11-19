@@ -1,6 +1,7 @@
 // THE LIBRARY (FEATURES.md section 4, laid out as the owner's mock-up): search and status filters, the four action
-// tiles, the novels as cards or a list, collections, and on wide screens the Library Overview, Quick Actions and
-// Recent Activity beside them (below them on a phone).
+// tiles, the novels as cards or a list, collections, and on wide screens the Library Overview and Quick Actions beside
+// them (the Overview below them on a phone). It stands outside every novel, so the areas' bar is not shown here and
+// Settings opens from its top row; each novel's Recent Activity is in its Analytics (owner, 2026-11-19).
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,7 +19,6 @@ import { startWritingSprint } from '../write/Sprint';
 import { allowReminders, planReminders } from '../reminders';
 import { reminderLabel, reminderSetting } from '../../domain/goals/reminder';
 import { lastNodeSetting } from '../write/WriteScreen';
-import { recentActivity } from '../../domain/activity';
 import {
   type CollectionKey,
   inCollection,
@@ -45,7 +45,7 @@ import { BackupSheet, CollectionPicker, ImportSheet, TemplatesSheet } from './Li
 import { FirstBook } from './FirstBook';
 import { PickUp, pickUpPlace } from './PickUp';
 import { ShelfView } from './ShelfView';
-import { formatDate, NovelCard, NovelRow } from './NovelCard';
+import { NovelCard, NovelRow } from './NovelCard';
 import { NovelForm, type NovelFormResult } from './NovelForm';
 
 const viewSetting = 'library.view';
@@ -96,12 +96,10 @@ export function LibraryScreen() {
     const novels = lib.library.novels();
     lib.collections.prune(new Set(novels.map((n) => n.id)));
     const stats = lib.novels.stats();
-    const titles = new Map(novels.map((n) => [n.id, n.title]));
     return {
       novels,
       stats,
       custom: lib.collections.list(),
-      activity: recentActivity(lib.novels.recentRows(80), 6).map((a) => ({ ...a, title: titles.get(a.projectId) ?? '' })),
       restorePoints: lib.restorePoints.list(),
       pickUp: pickUpPlace(lib, novels),
     };
@@ -140,14 +138,15 @@ export function LibraryScreen() {
     }
   };
 
-  /** Opens the novel in Write: at `chapterId` when given, otherwise where the writer left it. */
-  const openNovel = (novel: Novel, chapterId?: string | null) => {
+  /** Opens the novel in Write (or `to`, another of its areas): at `chapterId` when given, otherwise where the writer
+   * left it. */
+  const openNovel = (novel: Novel, chapterId?: string | null, to: '/write' | '/analytics' = '/write') => {
     attempt(() => {
       lib.settings.write(openNovelSettingKey, novel.id);
       if (chapterId) lib.settings.write(lastNodeSetting(novel.id), chapterId);
       lib.library.markOpened(novel.id);
     }, 'It could not be opened');
-    router.navigate('/write');
+    router.navigate(to);
   };
 
   const startWriting = (novel: Novel) => {
@@ -261,7 +260,8 @@ export function LibraryScreen() {
 
   // ---- layout
 
-  const mainWidth = width - (phone ? 0 : size === 'medium' ? 96 : 236) - (size === 'expanded' ? 320 : 0);
+  // No rail in the Library: only the side column on wide screens takes width from the novels.
+  const mainWidth = width - (size === 'expanded' ? 320 : 0);
   const gutter = phone ? space.md : space.lg;
   // As many columns as hold a card of at least 170 (its title, progress and Continue need that), two to four.
   const columns = Math.max(2, Math.min(4, Math.floor((mainWidth - gutter * 2 + space.md) / (170 + space.md))));
@@ -271,14 +271,13 @@ export function LibraryScreen() {
 
   const header = (
     <View style={{ paddingTop: insets.top + (phone ? space.md : space.lg) }}>
-      {phone && (
-        <View style={[styles.phoneTop, styles.phoneTopRow]}>
-          <View style={styles.flex}>
-            <Brand />
-          </View>
-          <AreaTools />
+      <View style={[styles.phoneTop, styles.phoneTopRow]}>
+        <View style={styles.flex}>
+          <Brand />
         </View>
-      )}
+        <AreaTools />
+        <IconButton icon="cog-outline" label="Settings" onPress={() => router.navigate('/settings')} color={colors.muted} />
+      </View>
       <View style={[styles.searchRow, phone && styles.searchRowPhone]}>
         <View style={styles.search}>
           <Icon name="magnify" size={22} color={colors.muted} />
@@ -426,7 +425,7 @@ export function LibraryScreen() {
             width={cardWidth}
             onContinue={() => openNovel(n)}
             onMenu={() => setMenuFor(n)}
-            onStats={() => router.navigate('/analytics')}
+            onStats={() => openNovel(n, null, '/analytics')}
           />
         ))}
       </View>
@@ -505,29 +504,8 @@ export function LibraryScreen() {
     </Panel>
   );
 
-  const activityBlock = (
-    <Panel style={styles.block}>
-      <SectionTitle icon="history" title="Recent Activity" />
-      {data.activity.length === 0 ? (
-        <Muted>Nothing yet. What you write and change shows here.</Muted>
-      ) : (
-        data.activity.map((a, i) => (
-          <View key={`${a.projectId}-${i}`} style={styles.activity}>
-            <View style={styles.activityDot} />
-            <View style={styles.flex}>
-              <Text style={styles.activityWhat} numberOfLines={1}>
-                {a.what}
-              </Text>
-              <Muted>{a.title || 'Untitled novel'}</Muted>
-            </View>
-            <Muted>{timeAgo(a.at)}</Muted>
-          </View>
-        ))
-      )}
-    </Panel>
-  );
-
-  const bottomPad = (phone ? 0 : insets.bottom) + space.xl;
+  // No bottom bar in the Library: the page itself keeps clear of the system's navigation.
+  const bottomPad = insets.bottom + space.xl;
 
   return (
     <View style={styles.page}>
@@ -540,18 +518,12 @@ export function LibraryScreen() {
           {header}
           {novelsBlock}
           {collectionsBlock}
-          {size !== 'expanded' && (
-            <>
-              {overview}
-              {activityBlock}
-            </>
-          )}
+          {size !== 'expanded' && overview}
         </ScrollView>
         {size === 'expanded' && (
           <ScrollView style={styles.side} contentContainerStyle={{ paddingTop: insets.top + space.lg, paddingBottom: bottomPad }}>
             {overview}
             {quickActions}
-            {activityBlock}
           </ScrollView>
         )}
       </View>
@@ -761,17 +733,6 @@ function QuickAction({ icon, label, onPress }: { icon: IconName; label: string; 
   );
 }
 
-function timeAgo(at: number): string {
-  const minutes = Math.round((Date.now() - at) / 60000);
-  if (minutes < 1) return 'now';
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.round(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return formatDate(at);
-}
-
 const styles = StyleSheet.create({
   page: { flex: 1 },
   columns: { flex: 1, flexDirection: 'row' },
@@ -876,7 +837,4 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   quickText: { fontFamily: fonts.ui, fontSize: 15, color: colors.text },
-  activity: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm },
-  activityDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.sky },
-  activityWhat: { fontFamily: fonts.ui, fontSize: 15, color: colors.text },
 });

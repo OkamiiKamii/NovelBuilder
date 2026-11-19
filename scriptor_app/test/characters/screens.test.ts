@@ -4,17 +4,22 @@
 // at 200% text, contrast, the editor's popup, uploading a picture) belongs to the screens and is not here.
 
 import { CastFilters, fieldNamed } from '../../src/domain/characters/cast';
-import { CastData } from '../../src/domain/characters/castData';
+import { CastData, castViewOf } from '../../src/domain/characters/castData';
 import { type CharacterChanges, referencesTo } from '../../src/domain/characters/characterChanges';
 import { FieldSuggestion } from '../../src/domain/characters/characterRecords';
 import { namedIn, namesToFind } from '../../src/domain/characters/namedIn';
 import { recordIn } from '../../src/domain/characters/recordLook';
 import { CastingCall, characterPath, makeNewCharacter } from '../../src/domain/characters/screens/create';
 import { recordLines } from '../../src/domain/characters/screens/history';
-import { cardLabel, cardWhere, libraryView, monogram, castTone, roleTabs } from '../../src/domain/characters/screens/library';
+import { cardLabel, cardWhere, libraryView, listRow, monogram, castTone, roleTabs } from '../../src/domain/characters/screens/library';
 import { keepAnswer, oneSentence } from '../../src/domain/characters/screens/oneSentence';
 import {
   deleteDialog,
+  profileViewLabel,
+  profileViewOf,
+  profileViewPages,
+  profileViewTabs,
+  shownProfileView,
   ownStatusValue,
   statusChoices,
   vaultStep,
@@ -173,6 +178,23 @@ describe('the casting call and the library (characters_screens_test.dart)', () =
   test('a character keeps their colour and monogram whatever the list around them', () => {
     expect(castTone('kael-1')).toBe(castTone('kael-1'));
     expect([monogram('Kai & Ren'), monogram('Mira'), monogram('  '), monogram('Old Tam')]).toEqual(['KR', 'M', '?', 'OT']);
+  });
+
+  test('the list row: the name, then chapters, epithet and roles', () => {
+    const w = new World();
+    const kael = w.createCharacter('Kael', { roles: ['Protagonist', 'Rival'], epithet: 'The Oathbreaker' });
+    const mira = w.createCharacter('Mira');
+    const kai = w.createCharacter('Kai', { epithet: 'The Quiet' });
+    w.chapter('one', { order: 0, mentions: [kael, kai] });
+    w.chapter('two', { order: 1, mentions: [kael] });
+    const cast = castOf(w);
+    expect(listRow(cast.listed(kael)!)).toEqual({ title: 'Kael', subtitle: '2 chapters • The Oathbreaker • Protagonist, Rival' });
+    expect(listRow(cast.listed(kai)!)).toEqual({ title: 'Kai', subtitle: '1 chapter • The Quiet' });
+    expect(listRow(cast.listed(mira)!)).toEqual({ title: 'Mira', subtitle: 'Not in the manuscript yet' });
+  });
+
+  test('the remembered cast view falls back to the list', () => {
+    expect([castViewOf(undefined), castViewOf('gone'), castViewOf('cards'), castViewOf('orbit')]).toEqual(['list', 'list', 'cards', 'orbit']);
   });
 
   test('the cast wall: each card says where they are in the book', () => {
@@ -372,5 +394,43 @@ describe('named in the text, on the cards (named_in_screen_test.dart)', () => {
       ['two', 'Nobody came but Kai.'],
     ]);
     expect(cardWhere(cast.listed(kai)!, cast.model.order)).toBe('In chapter 2');
+  });
+});
+
+describe('profile views', () => {
+  it('orders the tabs, Status only with systems', () => {
+    expect(profileViewTabs({ systems: true })).toEqual(['status', 'overview', 'relationships', 'details', 'story', 'notes']);
+    expect(profileViewTabs({ systems: false })).toEqual(['overview', 'relationships', 'details', 'story', 'notes']);
+    expect(profileViewTabs({ systems: true }).map((v) => profileViewLabel[v])).toEqual([
+      'Status', 'Overview', 'Relationships', 'Details', 'Story', 'Notes',
+    ]);
+  });
+  it('groups pages into views and back', () => {
+    expect(profileViewPages('story')).toEqual(['progression', 'history']);
+    expect(profileViewPages('notes')).toEqual(['notes', 'secrets']);
+    expect(profileViewPages('details')).toEqual(['details']);
+    expect(profileViewOf('progression')).toBe('story');
+    expect(profileViewOf('history')).toBe('story');
+    expect(profileViewOf('secrets')).toBe('notes');
+    expect(profileViewOf('notes')).toBe('notes');
+    expect(profileViewOf('status')).toBe('status');
+    expect(profileViewOf('relationships')).toBe('relationships');
+  });
+  it('reads a tab as a page name or a view name', () => {
+    const s = { systems: true };
+    expect(shownProfileView('progression', s)).toBe('story');
+    expect(shownProfileView('history', s)).toBe('story');
+    expect(shownProfileView('secrets', s)).toBe('notes');
+    expect(shownProfileView('story', s)).toBe('story');
+    expect(shownProfileView('notes', s)).toBe('notes');
+    expect(shownProfileView('details', { systems: false })).toBe('details');
+  });
+  it('defaults by systems; Status without systems is Overview', () => {
+    expect(shownProfileView(null, { systems: true })).toBe('status');
+    expect(shownProfileView(undefined, { systems: false })).toBe('overview');
+    expect(shownProfileView('nonsense', { systems: true })).toBe('status');
+    expect(shownProfileView('nonsense', { systems: false })).toBe('overview');
+    expect(shownProfileView('status', { systems: false })).toBe('overview');
+    expect(shownProfileView('status', { systems: true })).toBe('status');
   });
 });

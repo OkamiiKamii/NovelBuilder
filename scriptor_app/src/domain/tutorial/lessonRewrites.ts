@@ -35,7 +35,7 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
       ],
       3: [
         'The Ideas shelf',
-        'The four tiles at the top: New Novel, Import (from a file), Backup (save or restore) and Templates. Further down: your collections, the Library overview, quick actions and what changed lately.',
+        'The four tiles at the top: New Novel, Import (from a file), Backup (save or restore) and Templates. Further down: your collections, the Library overview and quick actions. What changed lately in a novel is in its Analytics.',
       ],
       4: [
         'Use the ⋯ menu on a book',
@@ -50,7 +50,7 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
   areas: {
     what: [
       'The Library is the shelf',
-      'Five areas, always along the bottom: Library, Write, Organize (with Plan, Visualize and Review as its tabs), Analytics (with Progress and the Keepsakes) and Settings.',
+      'Inside a novel, five areas along the bottom: Library, Write, Organize (with Plan, Visualize and Review as its tabs), Analytics (with Progress and the Keepsakes) and Settings. The Library itself stands outside every novel, with Settings at its top.',
     ],
     steps: {
       2: ['The ribbon at the right edge', null],
@@ -185,7 +185,11 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
     steps: {
       4: [
         'To find someone, type in Search the cast',
-        'To find someone, type in Search characters and pick a role from the chips. The chip with the view’s name (Cards, at first) holds every way to see the cast; the sliders button beside the search, Arrange the cast, holds In what order and the filters.',
+        'To find someone, type in Search characters and pick a role from the chips. Filters narrows the cast; New adds a character. The ⋯ menu holds the Relationship map, the Cast list for the book, the Group photo and View, which switches between List, Cards, Ties, Orbit and the rest. The list comes first.',
+      ],
+      3: [
+        'Use the profile’s tabs',
+        'A profile’s tabs are Status (when the book has systems), Overview, Relationships, Details, Story (progression and history) and Notes (notes and secrets). Press the portrait for its tools.',
       ],
     },
   },
@@ -235,17 +239,17 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
   castcheck: {
     where: [
       'Organize, Characters: under the cast photograph',
-      'Organize, Characters: under the cast, counted in From your pages, once the book has three chapters or more.',
+      'Organize, Characters: the strip under the cast list, “suggestions from your pages”, once the book has three chapters or more.',
     ],
   },
   fromyourpages: {
-    where: ['Organize, Characters: From your pages', 'Organize, Characters: From your pages, just above the cast.'],
+    where: ['Organize, Characters: From your pages', 'Organize, Characters: the strip under the cast list, “suggestions from your pages”.'],
     steps: {
       0: [
         'Under the photograph, From your pages',
-        'Just above the cast, From your pages: a note for each kind with something to say, and how many.',
+        'Under the cast list, press “✦ N suggestions from your pages”. It unfolds a note for each kind with something to say, and how many.',
       ],
-      2: ['Then the search, the views', 'The cast comes first, on the first screen; what the notes count is kept under it.'],
+      2: ['Then the search, the views', 'The cast comes first, on the first screen; the notes are folded into one strip under it.'],
     },
   },
   nameboard: { where: ['Organize, Characters: the Names view', inCast('Names')] },
@@ -255,9 +259,9 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
       'Eleven ways to see the same cast',
       'Twelve ways to see the same cast, each showing something the others do not, all in one place.',
     ],
-    where: ['Organize, Characters: on a phone, the button', 'Organize, Characters: the chip with the view’s name, beside the search.'],
+    where: ['Organize, Characters: on a phone, the button', 'Organize, Characters: the ⋯ menu beside New, then View.'],
     steps: {
-      0: ['On a phone, press the button', 'Press the chip that names the view you are in (Cards, at first).'],
+      0: ['On a phone, press the button', 'Press ⋯, then View, and choose one. The list is the view you start in.'],
     },
   },
   compass: { where: ['Organize, Characters: the Compass view', inCast('Compass')] },
@@ -268,11 +272,11 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
   dramatis: {
     where: [
       'Organize, Characters: Cast list for the book',
-      'Organize, Characters: Cast list for the book, under New character. Book details edits it after.',
+      'Organize, Characters: Cast list for the book, in the ⋯ menu beside New. Book details edits it after.',
     ],
   },
   journal: {
-    where: ['A character’s page, at the top: their journal.', 'A character’s page, at the top: In their hand.'],
+    where: ['A character’s page, at the top: their journal.', 'A character’s page, Overview tab, Quick actions: In their hand.'],
     steps: {
       0: [
         'Open a character and press their journal.',
@@ -281,8 +285,23 @@ export const lessonRewrites: Readonly<Record<string, LessonRewrite>> = {
     },
   },
   charactercard: {
+    where: ['On every character’s profile, at the top', 'On every character’s profile, Overview tab, Quick actions: Share their card.'],
     steps: {
       3: ['Press Share: on a phone', 'Press Share: the share sheet opens with the card as a picture, 1080 by 1350, the shape of a post.'],
+    },
+  },
+  thisorthat: { where: ['A character’s profile, at the top', 'A character’s profile, Overview tab, Quick actions: This or that.'] },
+  drawface: { where: ['A character’s profile, under their portrait', 'A character’s profile: press the portrait, then Draw their face.'] },
+  cast: {
+    steps: {
+      2: [
+        'Together on the page, at the top of the cast',
+        'Together on the page, one of the suggestions under the cast, names the pairs the book keeps side by side with no tie: How are they tied? records one in a press, Not tied sets it aside. In Ties, a “+” between two does the same.',
+      ],
+      4: [
+        'At the top, the whole cast stands',
+        'The whole cast stands for a photograph, the principals in front: press anyone to open them. It sits at the top of a small cast; once the cast is more than three, it is in ⋯ → Group photo.',
+      ],
     },
   },
   kinds: {

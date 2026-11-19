@@ -36,7 +36,6 @@ export const scriptorButtonWords: Readonly<Record<string, string>> = {
   'In their hand': 'In their hand',
   'Open Import & export': 'Open Import & export',
   'Continue on a book': 'Continue',
-  'the sliders button': 'Arrange the cast',
 };
 
 /** For each of Scriptor's lesson steps, the labels of the buttons it names, in the order the step names them: the Flutter

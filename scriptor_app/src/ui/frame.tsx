@@ -1,6 +1,7 @@
 // THE APP FRAME (DESIGN.md, FEATURES.md section 2): the five areas of the owner's mock-ups. On a phone a bottom bar; on a
 // tablet a rail on the left with the Scriptor mark, the areas (the current one filled gold), and on wide screens the
-// writer's rank and level.
+// writer's rank and level. The areas are a novel's, so the Library (outside every novel) shows neither (owner,
+// 2026-11-19).
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { usePathname, useRouter } from 'expo-router';
@@ -44,15 +45,22 @@ function areaOf(pathname: string): string {
   return found ? found.path : '/';
 }
 
+/** Whether the areas (bar or rail) show at `pathname`: inside a novel's areas, not in the Library, which is outside
+ * every novel. */
+export function showsAreas(pathname: string): boolean {
+  return pathname !== '/';
+}
+
 export function AppFrame({ children }: { children: ReactNode }) {
   const { width } = useWindowDimensions();
   const size = sizeClassOf(width);
+  const areasShown = showsAreas(usePathname());
   if (size === 'compact') {
     return (
       <View style={styles.page}>
         <Backdrop />
         <View style={styles.flex}>{children}</View>
-        <BottomBar />
+        {areasShown && <BottomBar />}
         <StatusScrim />
         <Overlays />
       </View>
@@ -61,7 +69,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   return (
     <View style={[styles.page, styles.row]}>
       <Backdrop />
-      <Rail expanded={size === 'expanded'} />
+      {areasShown && <Rail expanded={size === 'expanded'} />}
       <View style={styles.flex}>{children}</View>
       <StatusScrim />
       <Overlays />

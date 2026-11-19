@@ -126,6 +126,16 @@ describe('novels', () => {
     expect(stats.characters).toBeGreaterThan(0);
   });
 
+  it('lists only one novel’s recent records', () => {
+    const lib = openLibrary(memoryLibrary());
+    lib.novels.putNovel(novel('a'));
+    lib.novels.putNovel(novel('b'));
+    lib.novels.writeRows('a', [putRow('plotThreads', { id: 't1', title: 'Debt' })]);
+    lib.novels.writeRows('b', [putRow('plotThreads', { id: 't2', title: 'Flood' })]);
+    expect(lib.novels.recentRows('a', 10).map((r) => r.projectId)).toEqual(['a']);
+    expect(lib.novels.recentRows('b', 10).map((r) => r.json['title'])).toEqual(['Flood']);
+  });
+
   it('notifies listeners after every write', () => {
     const lib = openLibrary(memoryLibrary());
     const seen: number[] = [];

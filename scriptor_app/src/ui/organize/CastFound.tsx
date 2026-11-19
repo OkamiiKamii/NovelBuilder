@@ -156,14 +156,15 @@ function Grid({ min, most, children }: { min: number; most: number; children: Re
 
 // --------------------------------------------------------------------------------------- the panels under the cast
 
-/** The strip of notes and the four panels. Put it straight in the cast's scrolling content: a note pressed calls
- * `scrollTo` with where its panel is in that content (brought up a little below the top). */
-/** The strip of notes, then `children` (the cast itself, which comes first), then the panels the notes scroll to. */
+/** The strip of notes, then `children` (the cast itself, which comes first), then the panels the notes scroll to.
+ * Put it straight in the cast's scrolling content: a note pressed calls `scrollTo` with where its panel is in that
+ * content (brought up a little below the top). */
 export function CastPagePanels({ open, scrollTo, children }: { open: OpenCast; scrollTo?: (y: number) => void; children?: ReactNode }) {
   const lib = useLibrary();
   useLibraryRevision();
   const store = useStoreSetting();
   const [top, setTop] = useState(0);
+  const [unfolded, setUnfolded] = useState(false);
   const [places] = useState(() => new Map<PageNote, number>());
   const { cast, novelId } = open;
   const textVersion = lib.novels.versionOf(novelId, ['chapterContents']);
@@ -211,24 +212,32 @@ export function CastPagePanels({ open, scrollTo, children }: { open: OpenCast; s
     if (y !== undefined && scrollTo) scrollTo(Math.max(0, top + y - 24));
   };
 
+  const total = [...counts.values()].reduce((a, b) => a + b, 0);
+  const fold = `${total} ${total === 1 ? 'suggestion' : 'suggestions'} from your pages`;
+
   return (
     <View style={styles.panels} onLayout={(e) => setTop(e.nativeEvent.layout.y)}>
-      <Text style={styles.stripHeading}>{strip.heading}</Text>
-      <View style={styles.row}>
-        {strip.chips.map((c) => (
-          <Pressable key={c.key} accessibilityRole="button" accessibilityLabel={c.label} onPress={() => go(c.note)} style={({ pressed }) => [styles.note, pressed && { borderColor: colors.gold }]}>
-            <Icon name={iconOf(c.icon)} size={16} />
-            <Text style={styles.noteText}>{c.label}</Text>
-          </Pressable>
-        ))}
-      </View>
       {children}
-      {together && (
+      <Pressable accessibilityRole="button" accessibilityLabel={fold} accessibilityState={{ expanded: unfolded }} onPress={() => setUnfolded(!unfolded)} style={({ pressed }) => [styles.fold, pressed && { borderColor: colors.gold }]}>
+        <Text style={styles.foldText}>✦ {fold}</Text>
+        <Icon name={unfolded ? 'chevron-up' : 'chevron-right'} size={20} color={colors.gold} />
+      </Pressable>
+      {unfolded && (
+        <View style={styles.row}>
+          {strip.chips.map((c) => (
+            <Pressable key={c.key} accessibilityRole="button" accessibilityLabel={c.label} onPress={() => go(c.note)} style={({ pressed }) => [styles.note, pressed && { borderColor: colors.gold }]}>
+              <Icon name={iconOf(c.icon)} size={16} />
+              <Text style={styles.noteText}>{c.label}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
+      {unfolded && together && (
         <View onLayout={place('together')}>
           <TogetherPanel open={open} view={together} onAll={() => setAllPairs(!allPairs)} onNotTied={(card) => store(notTiedKey(novelId), notTiedAfter(notTied, card.pair))} />
         </View>
       )}
-      {check && (
+      {unfolded && check && (
         <View onLayout={place('check')}>
           <Panel style={styles.panel}>
             <Head icon={check.icon} heading={check.heading} caption={check.caption} />
@@ -238,7 +247,7 @@ export function CastPagePanels({ open, scrollTo, children }: { open: OpenCast; s
           </Panel>
         </View>
       )}
-      {waiting && (
+      {unfolded && waiting && (
         <View onLayout={place('waiting')}>
           <WaitingPanel
             open={open}
@@ -251,7 +260,7 @@ export function CastPagePanels({ open, scrollTo, children }: { open: OpenCast; s
           />
         </View>
       )}
-      {names && (
+      {unfolded && names && (
         <View onLayout={place('names')}>
           <NamesPanel open={open} view={names} onAll={() => setAllNames(!allNames)} onAside={(n) => store(notCharactersKey(novelId), notCharacterAfter(namesStored, n))} />
         </View>
@@ -596,7 +605,8 @@ const styles = StyleSheet.create({
   panels: { gap: space.md, marginBottom: space.sm },
   panel: { gap: space.sm },
   kicker: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold },
-  stripHeading: { fontFamily: fonts.ui, fontSize: 11, fontWeight: '700', letterSpacing: 2, color: colors.gold },
+  fold: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 48, paddingHorizontal: space.md, borderRadius: radius.panel, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
+  foldText: { flex: 1, fontFamily: fonts.ui, fontSize: 14, color: colors.gold },
   note: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 36, paddingHorizontal: space.md, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
   noteText: { fontFamily: fonts.ui, fontSize: 13, color: colors.text },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },

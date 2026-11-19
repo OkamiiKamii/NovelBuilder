@@ -4,7 +4,7 @@
 // shares. A port of flutter_app/lib/features/characters/widgets/sections_view.dart (logic in
 // src/domain/characters/screens/sections.ts).
 
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Listed } from '../../domain/characters/cast';
@@ -66,11 +66,11 @@ export function SectionsView({ open, listed, tab }: { open: OpenCast; listed: Li
           {view.loose.offeredTitle && (
             <>
               <Muted>{view.loose.offeredTitle}</Muted>
-              <View style={styles.row}>
+              <Folded count={view.loose.offered.length}>
                 {view.loose.offered.map((d) => (
                   <Chip key={d.id} label={d.name} icon="plus" selected={false} onPress={() => open.now((c) => c.setFieldValue(id, d.id, ''))} />
                 ))}
-              </View>
+              </Folded>
             </>
           )}
         </Panel>
@@ -138,13 +138,11 @@ function SectionCard({
       {card.fields.map((f) => (
         <FieldRow key={f.id} card={fieldCard(cast, entry, profile, f, section)} onPress={() => onEdit(f.id)} />
       ))}
-      {offer.suggestions.length > 0 && (
-        <View style={styles.row}>
-          {offer.suggestions.map((s) => (
-            <Chip key={s.field.name} label={s.field.name} icon="plus" selected={false} onPress={() => open.now((c) => c.addField(id, section.id, s.field))} />
-          ))}
-        </View>
-      )}
+      <Folded count={offer.suggestions.length}>
+        {offer.suggestions.map((s) => (
+          <Chip key={s.field.name} label={s.field.name} icon="plus" selected={false} onPress={() => open.now((c) => c.addField(id, section.id, s.field))} />
+        ))}
+      </Folded>
       {offer.button && <OutlineButton label={offer.button.label} icon="plus" compact tone="muted" onPress={() => setMore(true)} style={styles.start} />}
       {offer.form && (
         <View style={styles.form}>
@@ -224,6 +222,18 @@ function SectionCard({
         </Sheet>
       )}
     </Panel>
+  );
+}
+
+/** Unfilled suggestions behind one muted line, so a new character's page isn't a wall of "+" chips. */
+function Folded({ count, children }: { count: number; children: ReactNode }) {
+  const [shown, setShown] = useState(false);
+  if (count === 0) return null;
+  if (shown) return <View style={styles.row}>{children}</View>;
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Add details, ${count} suggested fields`} onPress={() => setShown(true)} style={styles.fold}>
+      <Text style={styles.foldText}>{`+ Add details (${count})`}</Text>
+    </Pressable>
   );
 }
 
@@ -350,6 +360,8 @@ const styles = StyleSheet.create({
   column: { gap: space.sm, marginTop: space.md },
   start: { alignSelf: 'flex-start' },
   form: { marginTop: space.sm },
+  fold: { minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' },
+  foldText: { fontFamily: fonts.ui, fontSize: 14, color: colors.muted },
   field: { paddingVertical: space.sm, paddingHorizontal: space.xs, borderBottomWidth: 1, borderBottomColor: colors.border, borderRadius: radius.field, gap: 2 },
   fieldLabel: { fontFamily: fonts.ui, fontSize: 12, color: colors.muted },
   value: { fontFamily: fonts.ui, fontSize: 15, color: colors.text },

@@ -58,9 +58,40 @@ export function shownProfilePage(name: string | null | undefined, options: { sys
   return asked === 'status' && !options.systems ? 'overview' : asked;
 }
 
-/** The tabs of a novel with or without systems. */
-export function profilePageTabs(options: { systems: boolean }): ProfilePage[] {
-  return profilePages.filter((p) => p !== 'status' || options.systems);
+// The tabs as shown: fewer, with pages grouped. Addresses keep naming pages; a view shows one or two of them.
+
+export type ProfileView = 'status' | 'overview' | 'relationships' | 'details' | 'story' | 'notes';
+const profileViews: readonly ProfileView[] = ['status', 'overview', 'relationships', 'details', 'story', 'notes'];
+export const profileViewLabel: Readonly<Record<ProfileView, string>> = {
+  status: 'Status',
+  overview: 'Overview',
+  relationships: 'Relationships',
+  details: 'Details',
+  story: 'Story',
+  notes: 'Notes',
+};
+
+/** The pages a view shows, top to bottom. */
+export function profileViewPages(view: ProfileView): ProfilePage[] {
+  return view === 'story' ? ['progression', 'history'] : view === 'notes' ? ['notes', 'secrets'] : [view];
+}
+
+/** The view a page is shown in. */
+export function profileViewOf(page: ProfilePage): ProfileView {
+  return page === 'progression' || page === 'history' ? 'story' : page === 'secrets' ? 'notes' : page;
+}
+
+/** The tabs shown, in order (Status only with systems). */
+export function profileViewTabs(options: { systems: boolean }): ProfileView[] {
+  return profileViews.filter((v) => v !== 'status' || options.systems);
+}
+
+/** The view an address's `tab` asks for: a page name or a view name; none or unknown gives the default. */
+export function shownProfileView(name: string | null | undefined, options: { systems: boolean }): ProfileView {
+  const view = profileViews.find((v) => v === name);
+  return view !== undefined && (view !== 'status' || options.systems)
+    ? view
+    : profileViewOf(shownProfilePage(name, options));
 }
 
 /** Whether the novel has systems (so the profile has a Status tab). */

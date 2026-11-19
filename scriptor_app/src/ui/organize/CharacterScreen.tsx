@@ -4,7 +4,7 @@
 // flutter_app/lib/features/characters/character_page.dart; the logic is src/domain/characters/screens/profile.ts.
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { type ComponentRef, useEffect, useMemo, useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -27,15 +27,16 @@ import {
   type ProfileMenuItem,
   profileMenu,
   type ProfilePage,
-  profilePageLabel,
-  profilePageTabs,
+  type ProfileView,
+  profileViewLabel,
+  profileViewTabs,
   hasSystems,
   portraitTools,
   focalAt,
   focalWords,
   roleChoices,
   saveTemplatePrompt,
-  shownProfilePage,
+  shownProfileView,
   statusChoices,
   toggledRoles,
   vaultMatches,
@@ -46,7 +47,7 @@ import {
 } from '../../domain/characters/screens/profile';
 import { docBlocks } from '../../domain/prose';
 import { ActionSheet, ConfirmDelete, PromptSheet, Sheet } from '../dialogs';
-import { Chip, Field, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from '../kit';
+import { Chip, Field, GoldButton, Icon, type IconName, IconButton, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
@@ -61,6 +62,15 @@ import { spokenJob } from '../../domain/characters/voice';
 import { acquaintance } from '../../domain/characters/aids/interview';
 import { type OpenCast, useCast } from './useCast';
 
+const viewIcons: Record<ProfileView, IconName> = {
+  status: 'pulse',
+  overview: 'information-outline',
+  relationships: 'account-multiple-outline',
+  details: 'card-text-outline',
+  story: 'timeline-text-outline',
+  notes: 'note-text-outline',
+};
+
 export function CharacterScreen() {
   const params = useLocalSearchParams<{ id: string; tab?: string }>();
   const open = useCast();
@@ -70,19 +80,33 @@ export function CharacterScreen() {
   const lib = useLibrary();
   const { width } = useWindowDimensions();
   const phone = sizeClassOf(width) === 'compact';
-  const [tab, setTab] = useState<ProfilePage | null>(null);
+  const [tab, setTab] = useState<ProfileView | null>(null);
   const [editing, setEditing] = useState(false);
   const [menu, setMenu] = useState(false);
   const [layouts, setLayouts] = useState(false);
   const [template, setTemplate] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [finding, setFinding] = useState(false);
+  const [portraitMenu, setPortraitMenu] = useState(false);
   const [removePortrait, setRemovePortrait] = useState(false);
   const [cropping, setCropping] = useState(false);
   const [aid, setAid] = useState<'interview' | 'thisOrThat' | 'face' | 'journal' | 'writeIn' | 'card' | null>(null);
 
   const listed = open && params.id ? open.cast.listed(params.id) : null;
-  useEffect(() => setTab(null), [params.id]);
+  // The page a deep link or "Go to" asked for; the screen scrolls to it once, when its tab has laid out.
+  const wanted = useRef<string | null>(null);
+  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const tabTop = useRef(0);
+  const [landed, setLanded] = useState<{ page: ProfilePage; y: number } | null>(null);
+  useEffect(() => {
+    setTab(null);
+    wanted.current = params.tab ?? null;
+  }, [params.id, params.tab]);
+  useEffect(() => {
+    if (!landed || wanted.current !== landed.page) return;
+    wanted.current = null;
+    scroll.current?.scrollTo({ y: tabTop.current + landed.y, animated: false });
+  }, [landed]);
   // How often their names occur in the text: worked out from the saved chapters.
   const mentions = useMemo(() => {
     if (!open || !listed) return null;
@@ -104,11 +128,15 @@ export function CharacterScreen() {
   const entry = listed.entry;
   const profile = listed.profile;
   const systems = hasSystems(cast);
-  const shown = tab ?? shownProfilePage(params.tab, { systems });
-  const tabs = profilePageTabs({ systems });
+  const shown = tab ?? shownProfileView(params.tab, { systems });
+  const tabs = profileViewTabs({ systems });
   const idv = identityView(entry, profile);
   const tools = portraitTools(entry);
   const known = acquaintance(entry, profile, cast.templates);
+  const onTab = (view: ProfileView, page: ProfilePage) => {
+    wanted.current = page;
+    setTab(view);
+  };
   const go = (by: number) => {
     const next = vaultStep(cast, entry.id, by);
     if (next) router.replace(characterPath(next, { tab: shown }));
@@ -140,6 +168,19 @@ export function CharacterScreen() {
     }
   };
 
+  const pw = phone ? 112 : 150;
+  const ph = phone ? 136 : 180;
+  const quick = (
+    <Panel style={styles.quick}>
+      <Text style={styles.label}>QUICK ACTIONS</Text>
+      <GoldButton label={vaultWords.writeIn(entry.name)} icon="feather" compact onPress={() => setAid('writeIn')} />
+      <OutlineButton label={`${known.known === known.of ? 'Known well' : `Known ${known.known} of ${known.of}`} · Interview`} icon="comment-question-outline" compact tone="sky" onPress={() => setAid('interview')} />
+      <OutlineButton label="This or that" icon="swap-horizontal-variant" compact tone="sky" onPress={() => setAid('thisOrThat')} />
+      <OutlineButton label="In their hand" icon="notebook-edit-outline" compact tone="sky" onPress={() => setAid('journal')} />
+      <OutlineButton label="Share their card" icon="card-account-details-outline" compact tone="sky" onPress={() => setAid('card')} />
+    </Panel>
+  );
+
   return (
     <View style={[styles.page, { paddingTop: insets.top }]}>
       <View style={styles.bar}>
@@ -152,7 +193,7 @@ export function CharacterScreen() {
         <IconButton icon="account-search-outline" label={vaultWords.find} onPress={() => setFinding(true)} />
         <IconButton icon="dots-vertical" label={vaultWords.moreOptions(entry.name)} onPress={() => setMenu(true)} />
       </View>
-      <ScrollView contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
+      <ScrollView ref={scroll} contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
         {profile.archived && (
           <View style={styles.banner}>
             <Icon name="archive-outline" size={20} color={colors.sky} />
@@ -160,83 +201,100 @@ export function CharacterScreen() {
             <OutlineButton label={vaultWords.restore} compact onPress={() => open.now((c) => c.setArchived(entry.id, false))} />
           </View>
         )}
-        <Panel style={[styles.header, !phone && styles.headerWide]}>
-          <View style={styles.portraitCol}>
-            <View style={[styles.portrait, { backgroundColor: castTone(entry.id) }]} accessibilityLabel={tools.label}>
+        <Panel style={styles.header}>
+          <View style={styles.top}>
+            <Pressable accessibilityRole="button" accessibilityLabel={tools.label} onPress={() => setPortraitMenu(true)} style={[styles.portrait, { width: pw, height: ph, backgroundColor: castTone(entry.id) }]}>
               {tools.uploaded ? (
                 <FocalImage uri={entry.image ?? ''} focal={profile.focal} style={StyleSheet.absoluteFill} />
               ) : (
-                <Cameo entry={entry} profile={profile} width={150} height={180} />
+                <Cameo entry={entry} profile={profile} width={pw} height={ph} />
               )}
+            </Pressable>
+            <View style={styles.identity}>
+              <Text style={styles.name} accessibilityRole="header">
+                {entry.name}
+              </Text>
+              {profile.epithet.length > 0 && <Text style={styles.epithet}>{profile.epithet}</Text>}
+              <View style={styles.row}>
+                {idv.roles.map((r) => (
+                  <View key={r} style={styles.tag}>
+                    <Text style={styles.tagText}>{r.toUpperCase()}</Text>
+                  </View>
+                ))}
+                {idv.status && (
+                  <View style={[styles.tag, styles.statusTag]}>
+                    <Text style={[styles.tagText, { color: colors.sky }]}>{idv.status}</Text>
+                  </View>
+                )}
+                {idv.archived && (
+                  <View style={styles.tag}>
+                    <Text style={[styles.tagText, { color: colors.muted }]}>{idv.archived}</Text>
+                  </View>
+                )}
+              </View>
+              {!editing && <OutlineButton label={idv.edit} icon="pencil-outline" compact onPress={() => setEditing(true)} style={styles.start} />}
             </View>
-            <View style={styles.row}>
-              <IconButton icon="image-plus" label={tools.upload} onPress={() => void upload()} />
-              {tools.adjust && <IconButton icon="crop" label={tools.adjust} onPress={() => setCropping(true)} />}
-              {tools.remove && <IconButton icon="image-remove" label={tools.remove} onPress={() => setRemovePortrait(true)} />}
-            </View>
-            {tools.draw && <OutlineButton label={tools.draw} icon="draw" compact tone="muted" onPress={() => setAid('face')} />}
-            {tools.webNote && <Muted style={styles.small}>{tools.webNote}</Muted>}
           </View>
-          <View style={styles.identity}>
-            {editing ? (
-              <IdentityForm open={open} entryId={entry.id} onDone={() => setEditing(false)} />
-            ) : (
-              <>
-                <Text style={styles.name} accessibilityRole="header">
-                  {entry.name}
-                </Text>
-                {profile.epithet.length > 0 && <Text style={styles.epithet}>{profile.epithet}</Text>}
-                <View style={styles.row}>
-                  {idv.roles.map((r) => (
-                    <View key={r} style={styles.tag}>
-                      <Text style={styles.tagText}>{r.toUpperCase()}</Text>
-                    </View>
-                  ))}
-                  {idv.status && (
-                    <View style={[styles.tag, styles.statusTag]}>
-                      <Text style={[styles.tagText, { color: colors.sky }]}>{idv.status}</Text>
-                    </View>
-                  )}
-                  {idv.archived && (
-                    <View style={styles.tag}>
-                      <Text style={[styles.tagText, { color: colors.muted }]}>{idv.archived}</Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={[styles.summary, idv.noSummary && { color: colors.muted }]}>{idv.summary}</Text>
-                {idv.aliases && <Muted>{idv.aliases}</Muted>}
-                {idv.tags && <Muted>{idv.tags}</Muted>}
-                <OutlineButton label={idv.edit} icon="pencil-outline" compact onPress={() => setEditing(true)} style={styles.start} />
-              </>
-            )}
-            <View style={styles.aids}>
-              <OutlineButton label={vaultWords.writeIn(entry.name)} icon="feather" compact onPress={() => setAid('writeIn')} />
-              <OutlineButton label={`${known.known === known.of ? 'Known well' : `Known ${known.known} of ${known.of}`} · Interview`} icon="comment-question-outline" compact tone="muted" onPress={() => setAid('interview')} />
-              <OutlineButton label="This or that" icon="swap-horizontal-variant" compact tone="muted" onPress={() => setAid('thisOrThat')} />
-              <OutlineButton label="In their hand" icon="notebook-edit-outline" compact tone="muted" onPress={() => setAid('journal')} />
-              <OutlineButton label="Share their card" icon="card-account-details-outline" compact tone="muted" onPress={() => setAid('card')} />
-            </View>
-            <View style={styles.stats}>
-              {headerStats(listed, mentions).map((s) => (
-                <View key={s.label} style={styles.stat} accessible accessibilityLabel={s.said}>
-                  <Text style={styles.statValue}>{s.value}</Text>
-                  <Text style={styles.statLabel}>{s.label}</Text>
-                </View>
-              ))}
-            </View>
+          {tools.webNote && <Muted style={styles.small}>{tools.webNote}</Muted>}
+          {editing ? (
+            <IdentityForm open={open} entryId={entry.id} onDone={() => setEditing(false)} />
+          ) : (
+            <>
+              <Text style={[styles.summary, idv.noSummary && { color: colors.muted }]}>{idv.summary}</Text>
+              {idv.aliases && <Muted>{idv.aliases}</Muted>}
+              {idv.tags && <Muted>{idv.tags}</Muted>}
+            </>
+          )}
+          <View style={styles.stats}>
+            {headerStats(listed, mentions).map((s, i) => (
+              <View key={s.label} style={[styles.stat, i > 0 && styles.statDivider]} accessible accessibilityLabel={s.said}>
+                <Text style={styles.statLabel}>{s.label.toUpperCase()}</Text>
+                <Text style={styles.statValue} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>{s.value}</Text>
+              </View>
+            ))}
           </View>
         </Panel>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
-          {tabs.map((t) => (
-            <Pressable key={t} accessibilityRole="tab" accessibilityState={{ selected: t === shown }} onPress={() => setTab(t)} style={[styles.tab, t === shown && styles.tabOn]}>
-              <Text style={[styles.tabText, t === shown && { color: colors.onGold }]}>{profilePageLabel[t]}</Text>
-            </Pressable>
-          ))}
+          {tabs.map((t) => {
+            const on = t === shown;
+            return (
+              <Pressable key={t} accessibilityRole="tab" accessibilityState={{ selected: on }} onPress={() => {
+                  wanted.current = null;
+                  setTab(t);
+                }} style={[styles.tab, on && styles.tabOn]}>
+                <Icon name={viewIcons[t]} size={18} color={on ? colors.gold : colors.muted} />
+                <Text style={[styles.tabText, on && { color: colors.gold }]}>{profileViewLabel[t]}</Text>
+              </Pressable>
+            );
+          })}
         </ScrollView>
-        <ProfileTab page={shown} open={open} listed={listed} onTab={setTab} />
+        {shown === 'overview' || shown === 'status' ? (
+          <View style={[styles.overview, !phone && styles.overviewWide]}>
+            {phone && quick}
+            <View style={styles.flex}>
+              <ProfileTab view={shown} open={open} listed={listed} onTab={onTab} />
+            </View>
+            {!phone && <View style={styles.quickCol}>{quick}</View>}
+          </View>
+        ) : (
+          <View onLayout={(e) => (tabTop.current = e.nativeEvent.layout.y)}>
+            <ProfileTab view={shown} open={open} listed={listed} onTab={onTab} onPageY={(page, y) => setLanded({ page, y })} />
+          </View>
+        )}
       </ScrollView>
 
+      <ActionSheet
+        visible={portraitMenu}
+        title={tools.label}
+        onClose={() => setPortraitMenu(false)}
+        actions={[
+          { label: tools.upload, icon: 'image-plus', onPress: () => void upload() },
+          { label: tools.adjust ?? '', icon: 'crop', hidden: !tools.adjust, onPress: () => setCropping(true) },
+          { label: tools.remove ?? '', icon: 'image-remove', hidden: !tools.remove, onPress: () => setRemovePortrait(true) },
+          { label: tools.draw ?? '', icon: 'draw', hidden: !tools.draw, onPress: () => setAid('face') },
+        ]}
+      />
       <ActionSheet
         visible={menu}
         title={entry.name}
@@ -448,11 +506,24 @@ const styles = StyleSheet.create({
   body: { padding: space.md, gap: space.md, maxWidth: 1100, width: '100%', alignSelf: 'center' },
   banner: { flexDirection: 'row', alignItems: 'center', gap: space.sm, padding: space.md, borderRadius: radius.panel, borderWidth: 1, borderColor: colors.sky, backgroundColor: colors.surface },
   header: { gap: space.md },
-  headerWide: { flexDirection: 'row' },
-  portraitCol: { alignItems: 'center', gap: 4 },
-  portrait: { width: 150, height: 180, borderRadius: radius.panel, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.gold },
-  monogram: { fontFamily: fonts.display, fontSize: 52, color: '#FFFFFF' },
+  top: { flexDirection: 'row', gap: space.md },
+  portrait: { borderRadius: radius.panel, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.gold },
   identity: { flex: 1, gap: space.xs },
+  small: { fontSize: 11 },
+  stats: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: colors.border, paddingTop: space.sm },
+  stat: { flex: 1, paddingHorizontal: space.sm },
+  statDivider: { borderLeftWidth: 1, borderLeftColor: colors.border },
+  statValue: { fontFamily: fonts.ui, fontSize: 18, fontWeight: '600', color: colors.text, marginTop: 2 },
+  statLabel: { fontFamily: fonts.ui, fontSize: 10, letterSpacing: 1.2, color: colors.gold },
+  tabs: { gap: space.xs, borderBottomWidth: 1, borderBottomColor: colors.border },
+  tab: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingHorizontal: space.md, borderBottomWidth: 3, borderBottomColor: 'transparent' },
+  tabOn: { borderBottomColor: colors.gold },
+  tabText: { fontFamily: fonts.ui, fontSize: 14, color: colors.muted },
+  overview: { gap: space.md },
+  overviewWide: { flexDirection: 'row', alignItems: 'flex-start' },
+  quick: { gap: space.sm },
+  quickCol: { width: 280 },
+  monogram: { fontFamily: fonts.display, fontSize: 52, color: '#FFFFFF' },
   name: { fontFamily: fonts.display, fontSize: 28, color: colors.text },
   epithet: { fontFamily: fonts.bookItalic, fontSize: 16, color: colors.muted },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, alignItems: 'center' },
@@ -460,17 +531,7 @@ const styles = StyleSheet.create({
   statusTag: { borderColor: colors.sky },
   tagText: { fontFamily: fonts.ui, fontSize: 11, letterSpacing: 1, color: colors.gold },
   summary: { fontFamily: fonts.book, fontSize: 15, lineHeight: 23, color: colors.text, marginTop: space.xs },
-  aids: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm },
-  stats: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md, marginTop: space.sm },
-  stat: { minWidth: 90, padding: space.sm, borderRadius: radius.field, backgroundColor: colors.elevated },
-  statValue: { fontFamily: fonts.numbers, fontSize: 15, color: colors.gold },
-  statLabel: { fontFamily: fonts.ui, fontSize: 11, color: colors.muted },
-  tabs: { gap: space.sm },
-  tab: { minHeight: 40, justifyContent: 'center', paddingHorizontal: space.md, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
-  tabOn: { backgroundColor: colors.gold, borderColor: colors.gold },
-  tabText: { fontFamily: fonts.ui, fontSize: 14, color: colors.text },
   text: { fontFamily: fonts.ui, fontSize: 15, lineHeight: 22, color: colors.text },
-  small: { fontSize: 11, maxWidth: 160, textAlign: 'center' },
   start: { alignSelf: 'flex-start', marginTop: space.sm },
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold, marginBottom: space.xs },
   ownRow: { marginVertical: space.sm },

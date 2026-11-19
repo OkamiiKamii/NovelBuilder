@@ -1,5 +1,6 @@
-// RECENT ACTIVITY (new in Scriptor, from the owner's mock-ups): what changed lately across the library, read from when
-// each record was last written. Nothing extra is logged: it is worked out from the records themselves.
+// RECENT ACTIVITY (new in Scriptor, from the owner's mock-ups): what changed lately in a novel, shown in its Analytics
+// (moved out of the Library by the owner, 2026-11-19), read from when each record was last written. Nothing extra is
+// logged: it is worked out from the records themselves.
 
 import { type JsonMap, str } from './json';
 

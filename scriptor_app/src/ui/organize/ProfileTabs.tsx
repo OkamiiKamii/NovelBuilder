@@ -17,7 +17,7 @@ import { historyWords, recordLines, storyLines } from '../../domain/characters/s
 import { copyDialog, noteCard, notesWords } from '../../domain/characters/screens/notes';
 import { keepAnswer, keptAnswer, oneSentence, oneSentenceWords } from '../../domain/characters/screens/oneSentence';
 import { characterThreads, characterTimeline, inTheManuscript, type ChapterLink } from '../../domain/characters/screens/overview';
-import type { ProfilePage } from '../../domain/characters/screens/profile';
+import { type ProfilePage, profilePageLabel, type ProfileView, profileViewOf, profileViewPages } from '../../domain/characters/screens/profile';
 import { deleteSecretWords, knowledgeChoices, secretCard, secretsWords } from '../../domain/characters/screens/secrets';
 import { theirPages, theirPagesInputs } from '../../domain/characters/screens/theirPages';
 import { relationWeb, identityFacts } from '../../domain/characters/screens/vault';
@@ -41,18 +41,35 @@ import { ChooserField, SavedText } from './parts';
 import { SectionsView } from './SectionsView';
 import type { OpenCast } from './useCast';
 
+/** A merged tab's pages stacked top to bottom: Story = Progression then History, Notes = Notes then Secrets. */
 export function ProfileTab({
-  page,
+  view,
   open,
   listed,
   onTab,
+  onPageY,
 }: {
-  page: ProfilePage;
+  view: ProfileView;
   open: OpenCast;
   listed: Listed;
-  /** Moves to another tab (the Status tab's "Go to" and "Their whole sheet"). */
-  onTab?: (tab: ProfilePage) => void;
+  /** Moves to another tab, naming the page asked for (the Status tab's "Go to" and "Their whole sheet"). */
+  onTab?: (tab: ProfileView, page: ProfilePage) => void;
+  /** Where a later page of a merged tab starts (its y within this tab), so the screen can scroll to it. */
+  onPageY?: (page: ProfilePage, y: number) => void;
 }) {
+  return (
+    <View style={styles.wrap}>
+      {profileViewPages(view).map((page, i) => (
+        <View key={page} style={styles.wrap} onLayout={i > 0 && onPageY ? (e) => onPageY(page, e.nativeEvent.layout.y) : undefined}>
+          {i > 0 && <Text style={styles.partHead}>{profilePageLabel[page].toUpperCase()}</Text>}
+          <PageBody page={page} open={open} listed={listed} onTab={onTab && ((p) => onTab(profileViewOf(p), p))} />
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function PageBody({ page, open, listed, onTab }: { page: ProfilePage; open: OpenCast; listed: Listed; onTab?: (tab: ProfilePage) => void }) {
   switch (page) {
     case 'status':
       return <StatusTab open={open} entryId={listed.entry.id} onTab={onTab} />;
@@ -139,8 +156,9 @@ function OverviewTab({ open, listed }: { open: OpenCast; listed: Listed }) {
       )}
       {facts.length > 0 && (
         <Panel style={styles.panel}>
-          {facts.map((f) => (
-            <View key={f.name} style={styles.fact}>
+          <Text style={styles.kicker}>GENERAL INFO</Text>
+          {facts.map((f, i) => (
+            <View key={f.name} style={[styles.fact, i < facts.length - 1 && styles.factRule]}>
               <Text style={styles.factName}>{f.name}</Text>
               <Text style={styles.factValue}>{f.value}</Text>
             </View>
@@ -695,7 +713,9 @@ const styles = StyleSheet.create({
   filled: { color: colors.gold, textDecorationLine: 'underline' },
   part: { gap: space.xs },
   gap: { color: colors.sky, textDecorationLine: 'underline', textDecorationStyle: 'dashed' },
-  fact: { flexDirection: 'row', gap: space.md },
+  partHead: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold, marginTop: space.md },
+  fact: { flexDirection: 'row', gap: space.md, paddingVertical: space.sm },
+  factRule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
   factName: { width: 110, fontFamily: fonts.ui, fontSize: 13, color: colors.muted },
   factValue: { flex: 1, fontFamily: fonts.ui, fontSize: 14, color: colors.text },
   webItem: { width: 84, alignItems: 'center', gap: 2 },

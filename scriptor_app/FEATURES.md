@@ -204,7 +204,7 @@ through so they can be referred to by number ("build #42 next"). The source file
 
 ## 13. Characters: found in your pages
 
-144. **Notes strip** — Chips counting what the app noticed in the manuscript about the cast, each jumping to its panel. [features/characters/widgets/page_notes.dart]
+144. **Notes strip** — One strip under the cast list, "✦ N suggestions from your pages", that unfolds chips counting what the app noticed in the manuscript about the cast, each jumping to its panel. [features/characters/widgets/page_notes.dart]
 145. **Together on the page** — Pairs who share 3+ chapters but have no recorded relationship, with "How are they tied?" to record one. [features/characters/widgets/together_on_page.dart]
 146. **The cast, checked** — Editor-style notes: a lead the book forgets, one who goes quiet, two always together, a one-chapter character with no ties. [features/characters/widgets/cast_check.dart]
 147. **Waiting for a name** — Unnamed recurring people in the text ("the waitress") with where they appear; "Name them" creates a character whose aliases claim the existing mentions. [features/characters/widgets/waiting_for_a_name.dart]
@@ -240,7 +240,7 @@ through so they can be referred to by number ("build #42 next"). The source file
 168. **Portrait** — Upload, replace, remove; images are rotated, shrunk to 800 px and stored in the novel; set the focal point kept in view. [features/characters/character_page.dart, features/characters/data/portrait_image.dart]
 169. **Cameo (drawn portrait)** — With no picture, a silhouette bust is drawn in the character's colour from their profile (hair, eyes, skin, age, species, scars, glasses, crown…). [features/characters/widgets/cameo.dart]
 170. **Draw their face** — Pick hair, cut, eyes, skin and marks; "Keep this face" writes them into the appearance fields. [features/characters/widgets/face_sketch.dart]
-171. **Profile tabs** — Status (when the novel has systems), Overview, Relationships, Details, Progression, Secrets, Notes, History. [features/characters/character_page.dart]
+171. **Profile tabs** — Six: Status (when the novel has systems), Overview, Relationships, Details, Story (Progression and History) and Notes (Notes and Secrets). The aids (Write in, Interview, This or that, In their hand, Share their card) are the Quick actions panel on Overview; pressing the portrait opens its tools. [features/characters/character_page.dart]
 172. **Sections and fields** — Add, rename, reorder, duplicate, hide, move or delete sections; add fields (suggested from templates or custom) with types: text, long text, number, date, yes/no, choice, several choices, tags, link to a record, links to several. [features/characters/widgets/sections_view.dart, features/characters/widgets/typed_input.dart]
 173. **Shared fields** — Fields defined for every character in the novel appear on each profile. [features/characters/widgets/sections_view.dart]
 174. **Profile layouts** — Add sections from a layout; save this profile's layout as a template for new characters. [features/characters/character_page.dart]
@@ -521,7 +521,7 @@ through so they can be referred to by number ("build #42 next"). The source file
 - **Five areas** — Library, Write, Organize, Analytics, Settings. Plan and Visualize are tabs inside Organize; Progress and Review are tabs inside Analytics.
 - **Writer rank and level** — experience earned from words written, days written in a row and chapters finished, read from the writing log on this device; ranks F to SSS, shown in the side rail.
 - **Library collections** — Favorites (pinned), My Drafts, Completed, On Hold, and the writer's own custom collections.
-- **Recent Activity** — what changed lately across the library: chapters written, characters added, entries changed.
+- **Recent Activity** — what changed lately in a novel: chapters written, characters added, entries changed. In each novel's Analytics tab (moved out of the Library by the owner, 2026-11-19).
 - **Library Overview and Quick Actions** — panels beside the novels on wide screens.
 
 ## Possible later features (shown in the mock-ups, left out for now by the owner's choice)

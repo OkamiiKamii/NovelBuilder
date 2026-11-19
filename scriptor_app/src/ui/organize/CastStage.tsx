@@ -6,7 +6,7 @@
 
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Defs, Ellipse, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { castPhotoCaption, castPhotoRows, castPhotoStage, figureLabel } from '../../domain/characters/aids/castPhoto';
@@ -137,15 +137,15 @@ function EmptyChairs({ open, active }: { open: OpenCast; active: Listed[] }) {
 
 function CastPhoto({ active }: { active: Listed[] }) {
   const router = useRouter();
-  const { width } = useWindowDimensions();
+  // Measured, so it fits where it is (inline, or inside the Group photo Sheet's narrower body).
+  const [w, setW] = useState(0);
   const caption = castPhotoCaption(active);
   if (!caption) return null;
   const rows = castPhotoRows(active);
-  const w = width - space.md * 2;
   const stage = castPhotoStage(rows, w);
   return (
-    <View style={styles.photo}>
-      <View style={{ width: w, height: stage.height }}>
+    <View style={styles.photo} onLayout={(e) => setW(Math.floor(e.nativeEvent.layout.width))}>
+      {w > 0 && <View style={{ width: w, height: stage.height }}>
         <Svg style={StyleSheet.absoluteFill} width={w} height={stage.height}>
           <Defs>
             <RadialGradient id="photoLight" cx="50%" cy="57.5%" r="75%">
@@ -168,7 +168,7 @@ function CastPhoto({ active }: { active: Listed[] }) {
             <Face l={f.listed} width={f.width} height={f.height} />
           </Pressable>
         ))}
-      </View>
+      </View>}
       <Text style={styles.caption}>{caption}</Text>
     </View>
   );

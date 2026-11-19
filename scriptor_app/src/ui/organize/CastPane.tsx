@@ -20,18 +20,18 @@ import {
   filtersLabel,
   libraryView,
   libraryWords,
-  listRow,
   monogram,
   moveInOrder,
   moveTooltips,
   noResults,
+  listRow,
   presenceOf,
   roleTabs,
   showMoreLabel,
   whereNote,
 } from '../../domain/characters/screens/library';
 import { characterPath } from '../../domain/characters/screens/create';
-import { Sheet } from '../dialogs';
+import { ActionSheet, Sheet } from '../dialogs';
 import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton } from '../kit';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { NewCharacterSheet } from './NewCharacterSheet';
@@ -63,6 +63,8 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
   const lib = useLibrary();
   const castView = castViewOf(lib.settings.read(castViewKey));
   const [choosing, setChoosing] = useState(false);
+  const [more, setMore] = useState(false);
+  const [stage, setStage] = useState(false);
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const chooseView = (v: CastView) =>
     lib.saves.saveNow(`setting:${castViewKey}`, () => {
@@ -92,11 +94,6 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
   return (
     <View style={styles.flex}>
       <ScrollView ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
-        <View style={styles.actions}>
-          <GoldButton label={libraryWords.newCharacter} icon="account-plus-outline" compact onPress={() => setCreating(true)} />
-          <OutlineButton label="Relationship map" icon="graph-outline" compact onPress={() => router.navigate('/organize/ties')} />
-          <OutlineButton label="Cast list for the book" icon="script-text-outline" compact onPress={() => setDramatis(true)} />
-        </View>
         <View style={styles.searchRow}>
           <View style={styles.search}>
             <Icon name="magnify" size={20} color={colors.muted} />
@@ -121,15 +118,19 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
             color={filters.active > 0 ? colors.gold : colors.text}
             bordered
           />
+          <GoldButton label="New" spot={libraryWords.newCharacter} accessibilityLabel={libraryWords.newCharacter} icon="account-plus-outline" compact onPress={() => setCreating(true)} />
+          <IconButton icon="dots-horizontal" label="More" onPress={() => setMore(true)} bordered />
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
-          <Chip label={castViewButton(castView).label} icon={viewIcon[castView]} selected={false} onPress={() => setChoosing(true)} />
-          <Chip label={castSortLabel[sort]} icon="sort" selected={false} onPress={() => setArrange(true)} />
           {tabs.map((t) => (
             <Chip key={t.label} label={t.label} selected={t.selected} onPress={() => setFilters(t.filters)} />
           ))}
         </ScrollView>
-        {!query && filters.active === 0 && !filters.archived && filters.role === '' && <CastStage open={open} onNew={() => setCreating(true)} />}
+        {/* A new cast starts here: the playbill (nobody yet) and the empty chairs (three or fewer) stay in sight; a
+            bigger cast's group photo is in the ⋯ menu. */}
+        {!query && filters.active === 0 && !filters.archived && filters.role === '' && cast.list.filter((l) => !l.profile.archived).length <= 3 && (
+          <CastStage open={open} onNew={() => setCreating(true)} />
+        )}
         <Muted>{view.count}</Muted>
 
         <CastPagePanels open={open} scrollTo={(y) => scroll.current?.scrollTo({ y, animated: true })}>
@@ -169,16 +170,16 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
         ) : (
           <View>
             {found.map((l) => {
-              const row = listRow(l);
               const tips = moveTooltips(l);
+              const text = listRow(l);
               return (
-                <Pressable key={l.entry.id} accessibilityRole="button" onPress={() => go(l)} style={({ pressed }) => [styles.row, pressed && { backgroundColor: colors.elevated }]}>
-                  <Face l={l} size={40} />
+                <Pressable key={l.entry.id} accessibilityRole="button" accessibilityLabel={cardLabel(l, cast.model.order)} onPress={() => go(l)} style={({ pressed }) => [styles.row, pressed && { borderColor: colors.gold }]}>
+                  <Face l={l} size={56} />
                   <View style={styles.flex}>
-                    <Text style={styles.rowTitle} numberOfLines={1}>
-                      {row.title}
+                    <Text style={styles.rowTitle} numberOfLines={2}>
+                      {text.title}
                     </Text>
-                    <Muted numberOfLines={2}>{row.subtitle}</Muted>
+                    <Muted numberOfLines={2}>{text.subtitle}</Muted>
                   </View>
                   {reorderable && (
                     <>
@@ -223,6 +224,20 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
         )}
         {menus.empty && <Muted>{menus.empty}</Muted>}
         {menus.clear && <OutlineButton label={menus.clear.label} compact tone="muted" onPress={() => setFilters(menus.clear!.filters)} style={styles.start} />}
+      </Sheet>
+      <ActionSheet
+        visible={more}
+        title="The cast"
+        onClose={() => setMore(false)}
+        actions={[
+          { label: 'Relationship map', icon: 'graph-outline', onPress: () => router.navigate('/organize/ties') },
+          { label: 'Cast list for the book', icon: 'script-text-outline', onPress: () => setDramatis(true) },
+          { label: 'Group photo', icon: 'image-multiple-outline', onPress: () => setStage(true) },
+          { label: `View: ${castViewButton(castView).label}`, icon: viewIcon[castView], onPress: () => setChoosing(true) },
+        ]}
+      />
+      <Sheet visible={stage} onClose={() => setStage(false)} title="Group photo">
+        <CastStage open={open} onNew={() => { setStage(false); setCreating(true); }} />
       </Sheet>
       <NewCharacterSheet visible={creating} onClose={() => setCreating(false)} />
       {choosing && <ViewChooser current={castView} onPick={(v) => { setChoosing(false); const next = castViewPicked(castView, v); if (next) chooseView(next); }} />}
@@ -295,7 +310,6 @@ function CastCard({ l, width, short, where, label, presence, onPress }: { l: Lis
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   body: { padding: space.md, gap: space.sm, paddingBottom: space.xxl },
-  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   search: {
     flex: 1,
@@ -328,8 +342,8 @@ const styles = StyleSheet.create({
   thread: { flexDirection: 'row', gap: 2, marginTop: 4 },
   tick: { flex: 1, height: 4, maxWidth: 10, borderRadius: 1, backgroundColor: colors.border },
   where: { fontFamily: fonts.ui, fontSize: 11, color: colors.muted },
-  row: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 60, paddingHorizontal: space.sm, borderRadius: radius.field, borderBottomWidth: 1, borderBottomColor: colors.border },
-  rowTitle: { fontFamily: fonts.ui, fontSize: 16, color: colors.text },
+  row: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 76, padding: space.sm, marginBottom: space.sm, borderRadius: radius.panel, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
+  rowTitle: { fontFamily: fonts.ui, fontSize: 16, fontWeight: '700', color: colors.text },
   more: { alignSelf: 'center', marginTop: space.sm },
   note: { marginTop: space.md, fontSize: 12 },
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold, marginTop: space.sm, marginBottom: space.xs },

@@ -246,7 +246,8 @@ status, move, reorder, duplicate, split, merge, delete with Undo).
   tablets.
 - The shared building blocks: panels, gold buttons, chips, progress bars, sheets, toasts with Undo, hold-to-delete.
 - The Library: search, status filters, sort, cards or a list, the New Novel / Import / Backup / Templates tiles,
-  Collections (Favorites, My Drafts, Completed, On Hold, your own), Library Overview, Quick Actions, Recent Activity.
+  Collections (Favorites, My Drafts, Completed, On Hold, your own), Library Overview, Quick Actions, Recent Activity
+  (since 2026-11-19 in each novel's Analytics, and the Library shows no area bar).
 - Every novel action: create (with chapter one), edit details, cover picture, favorite, add to collection, duplicate,
   archive, save a backup, delete with a restore point and Undo, start writing, import a backup as a copy or in place.
 - Settings: appearance, the writer's rank and how it is earned, restore points, the sample novel, your data.

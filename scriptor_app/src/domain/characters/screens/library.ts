@@ -297,18 +297,11 @@ export const whereNote =
   'Where each character is in the book is read from the text: a link to them, or their name, a part of it that is ' +
   'theirs alone, an alias or their title on the page.';
 
-/** A row of the list view: its title and the line under it. */
+/** A row of the list view: the name, and under it where they are in the book, their epithet and their roles. */
 export function listRow(l: Listed): { title: string; subtitle: string } {
-  return {
-    title: [l.entry.name, ...(l.profile.epithet.length > 0 ? [l.profile.epithet] : [])].join(' · '),
-    subtitle: [
-      ...(l.profile.roles.length > 0 ? [l.profile.roles.join(', ')] : []),
-      ...(l.entry.summary.length > 0 ? [l.entry.summary] : []),
-      l.seenIn.length === 0
-        ? 'Not in the manuscript yet'
-        : `In ${formatNumber(l.seenIn.length)} ${l.seenIn.length === 1 ? 'chapter' : 'chapters'}`,
-    ].join(' · '),
-  };
+  const n = l.seenIn.length;
+  const chapters = n === 0 ? 'Not in the manuscript yet' : `${formatNumber(n)} ${n === 1 ? 'chapter' : 'chapters'}`;
+  return { title: l.entry.name, subtitle: [chapters, l.profile.epithet, l.profile.roles.join(', ')].filter(Boolean).join(' • ') };
 }
 
 /** Whether the list's rows can be moved: in "My order", while not searching. */

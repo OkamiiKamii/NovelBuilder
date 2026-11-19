@@ -439,14 +439,14 @@ export class NovelStore {
     );
   }
 
-  /** The most recently written records across the library, newest first, for Recent Activity. */
-  recentRows(limit = 60): { projectId: string; collection: string; json: JsonMap; updatedAt: number }[] {
+  /** One novel's most recently written records, newest first, for its Recent Activity (in Analytics). */
+  recentRows(projectId: string, limit = 60): { projectId: string; collection: string; json: JsonMap; updatedAt: number }[] {
     return this.sql
       .all<{ project_id: string; collection: string; json: string; updated_at: number }>(
         'SELECT project_id, collection, json, updated_at FROM records ' +
-          "WHERE collection NOT IN ('writingSessions', 'chapterRevisions', 'activity') " +
+          "WHERE project_id = ? AND collection NOT IN ('writingSessions', 'chapterRevisions', 'activity') " +
           'ORDER BY updated_at DESC LIMIT ?',
-        [limit],
+        [projectId, limit],
       )
       .map((r) => ({
         projectId: r.project_id,

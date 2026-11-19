@@ -1,7 +1,7 @@
 // Starts Scriptor: opens the library on this device, then shows the app in its frame; or, when the library cannot be
 // opened, a screen that says why and offers to try again (FEATURES.md #1). A port of flutter_app/lib/app/bootstrap.dart.
 
-import { router, Slot } from 'expo-router';
+import { router, Slot, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, useWindowDimensions } from 'react-native';
@@ -15,7 +15,7 @@ import { addSampleNovelOnFirstStart } from '../data/sampleNovel';
 import { openNovelSettingKey } from '../data/settingsStore';
 import { ReviewGate } from '../ui/collab/ReviewGate';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
-import { AppFrame, bottomBarHeight } from '../ui/frame';
+import { AppFrame, bottomBarHeight, showsAreas } from '../ui/frame';
 import { LibraryProvider } from '../ui/LibraryContext';
 import { LibraryErrorScreen } from '../ui/LibraryErrorScreen';
 import { followReminders, planReminders } from '../ui/reminders';
@@ -57,6 +57,9 @@ export default function RootLayout() {
   const retry = useCallback(() => setOpened(start()), []);
   const library = 'library' in opened ? opened.library : null;
   const phone = sizeClassOf(useWindowDimensions().width) === 'compact';
+  // Toasts sit above the bottom bar where it shows; the Library has none.
+  const pathname = usePathname();
+  const barShown = phone && showsAreas(pathname);
 
   // Pending saves are written when the app goes to the background or is closed (FEATURES.md #7).
   useEffect(() => {
@@ -79,7 +82,7 @@ export default function RootLayout() {
       <StatusBar style="light" />
       {library ? (
         <LibraryProvider value={library}>
-          <ToastProvider bottomOffset={phone ? bottomBarHeight : 0}>
+          <ToastProvider bottomOffset={barShown ? bottomBarHeight : 0}>
             <AppFrame>
               <ErrorBoundary where="page">
                 <ReviewGate>
