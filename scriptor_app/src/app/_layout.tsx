@@ -21,6 +21,7 @@ import { LibraryErrorScreen } from '../ui/LibraryErrorScreen';
 import { followReminders, planReminders } from '../ui/reminders';
 import { sizeClassOf } from '../ui/theme';
 import { ToastProvider } from '../ui/toast';
+import { followWidgetSummary, writeWidgetSummary } from '../ui/widgetSummaryFile';
 
 type Opened = { library: Library } | { error: string };
 
@@ -67,6 +68,8 @@ export default function RootLayout() {
     const sub = AppState.addEventListener('change', (state) => {
       if (state !== 'active') {
         library.saves.flush();
+        // Written before the paused activity redraws the widget from it.
+        writeWidgetSummary(library);
         // The daily nudge planned again: today's dropped once today is written, the last line kept current.
         void planReminders(library);
       }
@@ -76,6 +79,9 @@ export default function RootLayout() {
 
   // A pressed nudge opens what it names (Write, at the last word).
   useEffect(() => (library ? followReminders((url) => router.navigate(url as never)) : undefined), [library]);
+
+  // The home-screen widget's and tile's page, kept current: they read it, never the library.
+  useEffect(() => (library ? followWidgetSummary(library) : undefined), [library]);
 
   return (
     <SafeAreaProvider>

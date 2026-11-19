@@ -1,8 +1,10 @@
 // THE WRITING WIDGET: a home-screen widget for the book last worked in: its title, today's words against the daily
 // goal (with a bar), and Continue writing, which opens Write on that chapter at its last word (scriptor:///write?at=end).
-// It only reads the library file on this phone (never writes it), refreshes every 30 minutes and whenever Scriptor goes
-// to the background, and says "Open Scriptor" when there is nothing to show. android/ is generated from app.json, so
-// this plugin writes the widget's Kotlin, layout and resources there on each build.
+// It reads only the small summary file the app writes (files/widget/today.json, src/ui/widgetSummaryFile.ts), never the
+// library: a second SQLite in the app's process unlinked the library's write-ahead log and lost saves. It refreshes
+// every 30 minutes and soon after Scriptor goes to the background, and says "Open Scriptor" when there is nothing to
+// show. android/ is generated from app.json, so this plugin writes the widget's Kotlin, layout and resources there on
+// each build.
 const { withAndroidManifest, withDangerousMod, withMainActivity } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
@@ -18,12 +20,10 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
@@ -31,7 +31,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-/** Scriptor's home-screen widget (plugins/withWritingWidget.js). Reads the library file; never writes it. */
+/** Scriptor's home-screen widget (plugins/withWritingWidget.js). Reads the app's summary file, never the library. */
 class ScriptorWidget : AppWidgetProvider() {
   override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
     for (id in ids) manager.updateAppWidget(id, render(context, manager.getAppWidgetOptions(id)))
@@ -119,110 +119,46 @@ class ScriptorWidget : AppWidgetProvider() {
       return views
     }
 
-    /** The text of a paragraph or heading node: its text runs, a hard break as a space. */
-    private fun textOf(node: JSONObject): String {
-      if (node.optString("type") == "text") return node.optString("text")
-      if (node.optString("type") == "hardBreak") return " "
-      val kids = node.optJSONArray("content") ?: return ""
-      val out = StringBuilder()
-      for (i in 0 until kids.length()) kids.optJSONObject(i)?.let { out.append(textOf(it)) }
-      return out.toString()
-    }
-
-    /** Every paragraph and heading of a document, in reading order. */
-    private fun blocks(node: JSONObject, into: MutableList<String>) {
-      val type = node.optString("type")
-      if (type == "paragraph" || type == "heading") { into.add(textOf(node)); return }
-      val kids = node.optJSONArray("content") ?: return
-      for (i in 0 until kids.length()) kids.optJSONObject(i)?.let { blocks(it, into) }
-    }
-
-    /** The end of the last paragraph with words in the chapter last worked in (about 100 characters, from a sentence when
-     * one starts in reach, else from a word after "…"), as the Library's banner shows it (prose.ts lastLines). */
-    private fun lastLines(db: SQLiteDatabase, novelId: String): String? {
-      var chapter: String? = null
-      db.rawQuery("SELECT json FROM settings WHERE key = ?", arrayOf("write.lastNode." + novelId)).use { c ->
-        if (c.moveToFirst()) chapter = JSONArray("[" + c.getString(0) + "]").optString(0, "")
-      }
-      val id = chapter?.takeIf { it.isNotBlank() } ?: return null
-      var doc: JSONObject? = null
-      db.rawQuery("SELECT json FROM records WHERE project_id = ? AND collection = 'chapterContents' AND id = ?", arrayOf(novelId, id)).use { c ->
-        if (c.moveToFirst()) doc = JSONObject(c.getString(0)).optJSONObject("doc")
-      }
-      val all = mutableListOf<String>()
-      doc?.let { blocks(it, all) }
-      val last = all.lastOrNull { it.isNotBlank() }?.trim() ?: return null
-      val max = 100
-      if (last.length <= max) return last
-      val tail = last.substring(last.length - max)
-      val m = Regex("""[.!?][”"’']? +(?=[^ ])""").find(tail)
-      if (m != null && tail.length - (m.range.last + 1) >= 30) return tail.substring(m.range.last + 1)
-      val space = tail.indexOf(' ')
-      return "…" + (if (space >= 0) tail.substring(space + 1) else tail)
-    }
-
-    /** The book last opened (not archived), today's net words in it, and its daily goal. Null with none. */
+    /** The app's summary (src/ui/widgetSummaryFile.ts): the book last opened (not archived), its daily goal, its last
+     * lines and each day's net words. Today, the week and the run are worked out here, so they stay right past midnight.
+     * Null with no file, a damaged one, another version, or no book. */
     internal fun read(context: Context): Book? {
-      val file = File(context.filesDir, "library/scriptor.sqlite3")
+      // While the app replaces the file (delete, then rename), the finished .tmp is read instead.
+      val dir = File(context.filesDir, "widget")
+      val file = File(dir, "today.json").takeIf { it.exists() } ?: File(dir, "today.json.tmp")
       if (!file.exists()) return null
-      // Opened for reading only by what it asks; read-write so SQLite can use the write-ahead log as the app does.
-      val db = SQLiteDatabase.openDatabase(file.path, null, SQLiteDatabase.OPEN_READWRITE)
-      try {
-        var bestId: String? = null
-        var bestTitle = ""
-        var bestAt = -1.0
-        db.rawQuery("SELECT id, json FROM novels", null).use { c ->
-          while (c.moveToNext()) {
-            val j = JSONObject(c.getString(1))
-            if (j.optBoolean("archived", false)) continue
-            if (j.isNull("lastOpenedAt")) continue
-            val at = j.optDouble("lastOpenedAt", -1.0)
-            if (at > bestAt) { bestAt = at; bestId = c.getString(0); bestTitle = j.optString("title", "") }
-          }
+      val summary = JSONObject(file.readText())
+      if (summary.optInt("version", 0) != 1) return null
+      val j = summary.optJSONObject("book") ?: return null
+      val days = j.optJSONObject("days") ?: JSONObject()
+      val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+      val words = days.optJSONObject(today)?.optInt("net", 0) ?: 0
+      val written = HashSet<String>()
+      for (day in days.keys()) if (days.optJSONObject(day)?.optBoolean("written", false) == true) written.add(day)
+      val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+      val cal = Calendar.getInstance()
+      val kept = written.contains(today)
+      if (!kept) cal.add(Calendar.DAY_OF_MONTH, -1)
+      var run = 0
+      while (written.contains(fmt.format(cal.time))) { run++; cal.add(Calendar.DAY_OF_MONTH, -1) }
+      // This week, Monday first: written, today still to write, a day missed, or a day to come.
+      val monday = Calendar.getInstance()
+      monday.add(Calendar.DAY_OF_MONTH, -((monday.get(Calendar.DAY_OF_WEEK) + 5) % 7))
+      val week = (0 until 7).map {
+        val key = fmt.format(monday.time)
+        monday.add(Calendar.DAY_OF_MONTH, 1)
+        when {
+          written.contains(key) -> R.drawable.scriptor_dot_written
+          key == today -> R.drawable.scriptor_dot_today
+          key > today -> R.drawable.scriptor_dot_ahead
+          else -> R.drawable.scriptor_dot_missed
         }
-        val id = bestId ?: return null
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-        var words = 0
-        val written = HashSet<String>()
-        db.rawQuery("SELECT json FROM records WHERE project_id = ? AND collection = 'writingSessions'", arrayOf(id)).use { c ->
-          while (c.moveToNext()) {
-            val j = JSONObject(c.getString(0))
-            val day = j.optString("day")
-            if (day == today) words += j.optInt("netWords", 0)
-            // A day is written when a session added words or ended with more (dayBook.ts).
-            if (j.optInt("netWords", 0) > 0 || j.optInt("added", 0) > 0) written.add(day)
-          }
-        }
-        val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val cal = Calendar.getInstance()
-        val kept = written.contains(today)
-        if (!kept) cal.add(Calendar.DAY_OF_MONTH, -1)
-        var run = 0
-        while (written.contains(fmt.format(cal.time))) { run++; cal.add(Calendar.DAY_OF_MONTH, -1) }
-        // This week, Monday first: written, today still to write, a day missed, or a day to come.
-        val monday = Calendar.getInstance()
-        monday.add(Calendar.DAY_OF_MONTH, -((monday.get(Calendar.DAY_OF_WEEK) + 5) % 7))
-        val week = (0 until 7).map {
-          val key = fmt.format(monday.time)
-          monday.add(Calendar.DAY_OF_MONTH, 1)
-          when {
-            written.contains(key) -> R.drawable.scriptor_dot_written
-            key == today -> R.drawable.scriptor_dot_today
-            key > today -> R.drawable.scriptor_dot_ahead
-            else -> R.drawable.scriptor_dot_missed
-          }
-        }
-        var goal: Int? = null
-        db.rawQuery("SELECT json FROM records WHERE project_id = ? AND collection = 'goals' ORDER BY position", arrayOf(id)).use { c ->
-          while (goal == null && c.moveToNext()) {
-            val j = JSONObject(c.getString(0))
-            if (j.optString("kind") == "daily" && j.has("targetWords") && !j.isNull("targetWords")) goal = j.optInt("targetWords")
-          }
-        }
-        return Book(if (bestTitle.isBlank()) "Untitled novel" else bestTitle, words, goal, lastLines(db, id), week, headline(run, kept))
-      } finally {
-        db.close()
       }
+      // optString/optInt read a JSON null as "null"/0: asked first.
+      val goal = if (j.isNull("goal")) null else j.optInt("goal")
+      val lines = if (j.isNull("lines")) null else j.optString("lines")
+      val title = if (j.isNull("title")) "" else j.optString("title", "")
+      return Book(if (title.isBlank()) "Untitled novel" else title, words, goal, lines, week, headline(run, kept))
     }
   }
 }
@@ -380,6 +316,23 @@ const strings = `<?xml version="1.0" encoding="utf-8"?>
 </resources>
 `;
 
+// Leaving Scriptor redraws the widget, so today's words are right on the home screen: 1.5 s later, once the app has
+// written the summary as it went to the background. An earlier build's onPause (either form) is taken out first.
+const legacyPause = 'override fun onPause() {\n    super.onPause()\n    ScriptorWidget.refresh(this)\n  }\n\n  ';
+const pause =
+  '// scriptor-widget-pause begin\n  override fun onPause() {\n    super.onPause()\n' +
+  '    val app = applicationContext\n' +
+  '    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({ ScriptorWidget.refresh(app) }, 1500)\n' +
+  '  }\n  // scriptor-widget-pause end\n\n  ';
+function withPause(src) {
+  src = src.replace(legacyPause, '').replace(/\/\/ scriptor-widget-pause begin[\s\S]*?\/\/ scriptor-widget-pause end\n\n {2}/, '');
+  src = src.replace(/override fun getMainComponentName\(\)/, pause + 'override fun getMainComponentName()');
+  if (!src.includes(pause) || src.split('override fun onPause').length !== 2) {
+    throw new Error('withWritingWidget: MainActivity was not as expected.');
+  }
+  return src;
+}
+
 module.exports = function withWritingWidget(config) {
   config = withAndroidManifest(config, (mod) => {
     const app = mod.modResults.manifest.application[0];
@@ -402,17 +355,8 @@ module.exports = function withWritingWidget(config) {
     });
     return mod;
   });
-  // Leaving Scriptor redraws the widget, so today's words are right on the home screen.
   config = withMainActivity(config, (mod) => {
-    let src = mod.modResults.contents;
-    if (!src.includes('ScriptorWidget.refresh')) {
-      src = src.replace(
-        /override fun getMainComponentName\(\)/,
-        'override fun onPause() {\n    super.onPause()\n    ScriptorWidget.refresh(this)\n  }\n\n  override fun getMainComponentName()',
-      );
-      if (!src.includes('ScriptorWidget.refresh')) throw new Error('withWritingWidget: MainActivity was not as expected.');
-    }
-    mod.modResults.contents = src;
+    mod.modResults.contents = withPause(mod.modResults.contents);
     return mod;
   });
   return withDangerousMod(config, [
