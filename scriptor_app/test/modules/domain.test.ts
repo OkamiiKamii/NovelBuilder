@@ -2,6 +2,7 @@
 // the ORIGINAL app's extension service: flutter_app/test/fixtures/golden/modules.golden.json, written by the
 // TypeScript app the Flutter app replaced), module_match_test.dart and try_on_test.dart's first test.
 
+import '../flutterBuiltins';
 import { join } from 'node:path';
 import { toFlutterWords } from '../../src/domain/modules/scriptorWords';
 

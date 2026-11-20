@@ -34,8 +34,6 @@ import {
   encyclopedia,
   kindColor,
   kindOfEntry,
-  newEntry,
-  newEntryKinds,
   volumeColumns,
   volumePressed,
   worldShelves,
@@ -51,6 +49,8 @@ import { useLibrary } from '../LibraryContext';
 import { colors, fonts, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { ChooserField } from './parts';
+import { QuickEntrySheet } from './QuickEntrySheet';
+import { SortTypesCard } from './SortTypesCard';
 import { type OpenCast, useCast } from './useCast';
 import { WorldChart } from './WorldChart';
 
@@ -108,11 +108,6 @@ export function WorldPane() {
   const go = (id: string) => router.navigate(worldEntryPath(id) as never);
   const inner = width - space.md * 2;
 
-  const make = (key: string) => {
-    const made = open.now((c) => newEntry(c, key));
-    if (made) go(made.id);
-  };
-
   return (
     <View style={styles.flex}>
       <ScrollView ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
@@ -120,6 +115,8 @@ export function WorldPane() {
           <GoldButton label={worldWords.newEntry} icon="plus" compact onPress={() => setMaking(true)} />
           <OutlineButton label={worldWords.kinds} icon="tune-variant" compact onPress={() => router.navigate('/organize/kinds' as never)} />
         </View>
+
+        <SortTypesCard open={open} />
 
         <FoundInPages open={open} width={inner} />
 
@@ -192,12 +189,7 @@ export function WorldPane() {
           </>
         )}
       </ScrollView>
-      <ActionSheet
-        visible={making}
-        title={worldWords.newEntry}
-        onClose={() => setMaking(false)}
-        actions={newEntryKinds(shelves.kinds).map((k) => ({ label: k.label, icon: 'plus', onPress: () => make(k.key) }))}
-      />
+      {making && <QuickEntrySheet open={open} kinds={shelves.kinds.filter((k) => !k.archived)} onClose={() => setMaking(false)} onSaved={go} />}
     </View>
   );
 }

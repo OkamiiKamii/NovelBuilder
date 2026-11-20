@@ -1264,3 +1264,170 @@ export const blankBlueprint: JsonMap = deepFreeze({
   items: [],
   matrices: [],
 });
+
+/** A job, a level, and a skill for every level whose rank can boost a stat. Kept apart from `systemPresets`, which stays
+ * the original's four (the Flutter port's golden output covers exactly those); a screen offers `allSystemPresets`. */
+const levelingJobJson: JsonMap = deepFreeze({
+  id: "leveling-job",
+  name: "Leveling Job",
+  description:
+    "A job and a level that climbs. Powers gained each level go in Skills and can boost a stat by their rank: Super Strength at rank S multiplies Strength by 20.",
+  content: {
+    name: "The Job",
+    description:
+      "A job, a level, and a skill for every level. A skill's rank carries a power number that can boost a stat.",
+    variables: [
+      {
+        id: "v-strength",
+        name: "Strength",
+        key: "strength",
+        kind: "number",
+        unit: "",
+        base: 10,
+        formula: "",
+        options: [],
+        note: "",
+      },
+      {
+        id: "v-speed",
+        name: "Speed",
+        key: "speed",
+        kind: "number",
+        unit: "",
+        base: 10,
+        formula: "",
+        options: [],
+        note: "",
+      },
+      {
+        id: "v-intelligence",
+        name: "Intelligence",
+        key: "intelligence",
+        kind: "number",
+        unit: "",
+        base: 10,
+        formula: "",
+        options: [],
+        note: "",
+      },
+      {
+        id: "v-defense",
+        name: "Defense",
+        key: "defense",
+        kind: "number",
+        unit: "",
+        base: 10,
+        formula: "",
+        options: [],
+        note: "",
+      },
+      {
+        id: "v-vitality",
+        name: "Vitality",
+        key: "vitality",
+        kind: "number",
+        unit: "",
+        base: 10,
+        formula: "",
+        options: [],
+        note: "",
+      },
+      {
+        id: "v-health",
+        name: "Health",
+        key: "health",
+        kind: "derived",
+        unit: "HP",
+        base: 0,
+        formula: "vitality * 10",
+        options: [],
+        note: "",
+      },
+    ],
+    tracks: [
+      {
+        id: "t-level",
+        name: "Level",
+        key: "level",
+        kind: "levels",
+        cap: 0,
+        curve: "",
+        curveUnit: "",
+        points: 0,
+        sources: [],
+        stages: [],
+      },
+    ],
+    ranks: [
+      {
+        id: "r-f",
+        name: "F",
+        power: 1.5,
+      },
+      {
+        id: "r-e",
+        name: "E",
+        power: 2,
+      },
+      {
+        id: "r-d",
+        name: "D",
+        power: 3,
+      },
+      {
+        id: "r-c",
+        name: "C",
+        power: 5,
+      },
+      {
+        id: "r-b",
+        name: "B",
+        power: 8,
+      },
+      {
+        id: "r-a",
+        name: "A",
+        power: 12,
+      },
+      {
+        id: "r-s",
+        name: "S",
+        power: 20,
+      },
+      {
+        id: "r-ss",
+        name: "SS",
+        power: 35,
+      },
+      {
+        id: "r-sss",
+        name: "SSS",
+        power: 60,
+      },
+    ],
+    groups: [
+      {
+        id: "g-job",
+        name: "Job",
+        single: true,
+      },
+      {
+        id: "g-skills",
+        name: "Skills",
+        single: false,
+      },
+    ],
+    items: [],
+    matrices: [],
+  },
+});
+
+export const levelingJobPreset: SystemPreset = {
+  id: str(levelingJobJson["id"]),
+  name: str(levelingJobJson["name"]),
+  description: str(levelingJobJson["description"]),
+  content: mapOrNull(levelingJobJson["content"])!,
+};
+
+/** Every preset to begin from: the original's four, then the Leveling Job. */
+export const allSystemPresets: readonly SystemPreset[] = [...systemPresets, levelingJobPreset];

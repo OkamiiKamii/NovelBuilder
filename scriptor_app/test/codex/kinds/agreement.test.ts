@@ -7,6 +7,7 @@
 //
 // Set KINDS_DART to dump.dart's whole output (run it with FULL=1) to compare whole when this fails.
 
+import '../../flutterBuiltins';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 

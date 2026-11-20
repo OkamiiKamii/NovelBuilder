@@ -20,6 +20,8 @@ export class SheetProfile {
   readonly values: ReadonlyMap<string, string | number>;
   readonly progress: ReadonlyMap<string, string | number>;
   readonly itemIds: readonly string[];
+  /** Held items switched off: listed, but they change nothing. */
+  readonly offIds: readonly string[];
   readonly xp: readonly XpEntry[];
   readonly spent: ReadonlyMap<string, number>;
   /** Values the author has set by hand, by variable id. Other formulas that read an overridden value read the
@@ -31,6 +33,7 @@ export class SheetProfile {
       values?: ReadonlyMap<string, string | number>;
       progress?: ReadonlyMap<string, string | number>;
       itemIds?: readonly string[];
+      offIds?: readonly string[];
       xp?: readonly XpEntry[];
       spent?: ReadonlyMap<string, number>;
       overrides?: ReadonlyMap<string, unknown>;
@@ -39,17 +42,18 @@ export class SheetProfile {
     this.values = args.values ?? new Map();
     this.progress = args.progress ?? new Map();
     this.itemIds = args.itemIds ?? [];
+    this.offIds = args.offIds ?? [];
     this.xp = args.xp ?? [];
     this.spent = args.spent ?? new Map();
     this.overrides = args.overrides ?? new Map();
   }
 
   static of(sheet: SystemSheet, xp?: readonly XpEntry[]): SheetProfile {
-    return new SheetProfile({ values: sheet.values, progress: sheet.progress, itemIds: sheet.itemIds, xp: xp ?? sheet.xp, spent: sheet.spent });
+    return new SheetProfile({ values: sheet.values, progress: sheet.progress, itemIds: sheet.itemIds, offIds: sheet.offIds, xp: xp ?? sheet.xp, spent: sheet.spent });
   }
 
   withXp(xp: readonly XpEntry[]): SheetProfile {
-    return new SheetProfile({ values: this.values, progress: this.progress, itemIds: this.itemIds, xp, spent: this.spent, overrides: this.overrides });
+    return new SheetProfile({ values: this.values, progress: this.progress, itemIds: this.itemIds, offIds: this.offIds, xp, spent: this.spent, overrides: this.overrides });
   }
 }
 
@@ -61,6 +65,8 @@ export type SheetRow = {
   /** Classes, skills and the like that changed this value. */
   sources: string[];
   error: string | null;
+  /** How a boosted value came out ("10 base × 20 Super Strength (S)"); null when nothing changed it. */
+  breakdown: string | null;
 };
 
 export type SheetXp = { total: number; into: number; needed: number | null; gained: number; progress: string };
@@ -94,6 +100,8 @@ export type SheetItem = {
   /** The stage that gives it ("C Tier"), when it is held because the sheet reached that stage (and not chosen as
    * well); null for what the sheet holds of its own. */
   from: string | null;
+  /** Held but switched off: listed, and its modifiers are skipped. */
+  off: boolean;
 };
 
 export type ComputedSheet = {
@@ -127,7 +135,21 @@ const messageOf = (err: unknown): string => (err instanceof FormulaError ? err.m
 const isNumber = (v: unknown): v is number => typeof v === 'number';
 const lastOrNull = <T>(list: readonly T[]): T | null => (list.length === 0 ? null : list[list.length - 1]);
 
-type Change = { item: SysItem; target: SysVariable; op: string; amount: number };
+type Change = { item: SysItem; target: SysVariable; op: string; amount: number; rank: string };
+
+/** What the stages reached give ("every new tier, a new power"), by item id, with the first stage that gives each. A
+ * sheet with no stage chosen is at a track's first. */
+export function stageGrants(system: SystemBlueprint, progress: ReadonlyMap<string, unknown>): Map<string, string> {
+  const grantedBy = new Map<string, string>();
+  for (const track of system.tracks) {
+    if (track.kind !== 'stages' || track.stages.length === 0) continue;
+    const at = Math.max(0, track.stages.findIndex((s) => s.id === progress.get(track.id)));
+    for (const s of track.stages.slice(0, at + 1)) {
+      for (const id of s.grants) if (!grantedBy.has(id)) grantedBy.set(id, s.name);
+    }
+  }
+  return grantedBy;
+}
 
 /** Works out everything a blueprint says about a profile. Order: levels from logged experience; starting values, the
  * profile's own numbers and the points placed on them; then what its classes, skills and so on add, multiply or
@@ -139,16 +161,7 @@ export function computeSheet(system: SystemBlueprint, profile: SheetProfile = ne
   const allItems = system.items;
   const byKey = new Map<string, SysVariable>();
   for (const v of variables) byKey.set(lower(v.key), v);
-  // What the stages reached give ("every new tier, a new power"): held as given by the stage, the first stage that
-  // gives each. A sheet with no stage chosen is at a track's first.
-  const grantedBy = new Map<string, string>();
-  for (const track of tracks) {
-    if (track.kind !== 'stages' || track.stages.length === 0) continue;
-    const at = Math.max(0, track.stages.findIndex((s) => s.id === profile.progress.get(track.id)));
-    for (const s of track.stages.slice(0, at + 1)) {
-      for (const id of s.grants) if (!grantedBy.has(id)) grantedBy.set(id, s.name);
-    }
-  }
+  const grantedBy = stageGrants(system, profile.progress);
   const holds = (itemId: string): boolean => profile.itemIds.includes(itemId) || grantedBy.has(itemId);
   const held = allItems.filter((item) => holds(item.id));
   const groupOf = (item: SysItem): SysGroup | null => groups.find((g) => g.id === item.groupId) ?? null;
@@ -295,28 +308,54 @@ export function computeSheet(system: SystemBlueprint, profile: SheetProfile = ne
   const changes: Change[] = [];
   const itemErrors = new Map<string, string>();
   for (const item of held) {
+    if (profile.offIds.includes(item.id)) continue;
     for (const modifier of item.modifiers) {
       const target = byKey.get(lower(modifier.target));
       if (target === undefined || target.kind === 'choice') continue;
       try {
-        changes.push({ item, target, op: modifier.op, amount: work(modifier.value) });
+        let amount: number;
+        if (modifier.byRank) {
+          const power = system.rankPower(item);
+          if (power === null) {
+            const rank = system.rankName(item);
+            itemErrors.set(item.id, rank.length > 0 ? `Give rank “${rank}” a power number, or type a number for this boost.` : `Give ${item.name} a rank with a power number, or type a number for this boost.`);
+            continue;
+          }
+          amount = power;
+        } else {
+          amount = work(modifier.value);
+        }
+        changes.push({ item, target, op: modifier.op, amount, rank: modifier.byRank ? system.rankName(item) : '' });
       } catch (err) {
         itemErrors.set(item.id, messageOf(err));
       }
     }
   }
+  const breakdowns = new Map<string, string>();
   const apply = (variable: SysVariable): void => {
     const mine = changes.filter((c) => c.target.id === variable.id);
     const id = lower(variable.key);
     const before = values.get(id);
     if (mine.length === 0 || !isNumber(before)) return;
     const set = lastOrNull(mine.filter((c) => c.op === 'set'));
-    const added = mine.filter((c) => c.op === 'add').reduce((n, c) => n + c.amount, set?.amount ?? before);
+    const adds = mine.filter((c) => c.op === 'add');
+    const multiplies = mine.filter((c) => c.op === 'multiply');
+    const added = adds.reduce((n, c) => n + c.amount, set?.amount ?? before);
     values.set(
       id,
-      mine.filter((c) => c.op === 'multiply').reduce((n, c) => n * c.amount, added),
+      multiplies.reduce((n, c) => n * c.amount, added),
     );
     sources.set(id, [...new Set(mine.map((c) => c.item.name))]);
+    const name = (c: Change): string => `${c.item.name}${c.rank.length > 0 ? ` (${c.rank})` : ''}`;
+    // Adds come before multiplies, so with both the sum is bracketed: "(10 base + 5 Iron Skin) × 20 Super Strength (S)".
+    const sum = [
+      set === null ? `${formatNumber(before)} base` : `${formatNumber(set.amount)} set by ${name(set)}`,
+      ...adds.map((c) => `${c.amount < 0 ? '−' : '+'} ${formatNumber(Math.abs(c.amount))} ${name(c)}`),
+    ].join(' ');
+    breakdowns.set(
+      id,
+      [adds.length > 0 && multiplies.length > 0 ? `(${sum})` : sum, ...multiplies.map((c) => `× ${formatNumber(c.amount)} ${name(c)}`)].join(' '),
+    );
   };
 
   const byHand = (variable: SysVariable): boolean => {
@@ -329,7 +368,10 @@ export function computeSheet(system: SystemBlueprint, profile: SheetProfile = ne
   for (const v of variables) {
     if (v.kind === 'derived') continue;
     apply(v);
-    if (byHand(v)) sources.delete(lower(v.key));
+    if (byHand(v)) {
+      sources.delete(lower(v.key));
+      breakdowns.delete(lower(v.key));
+    }
   }
   // Formulas read while working out those amounts saw the values from before; work them out afresh.
   for (const v of variables) {
@@ -358,6 +400,7 @@ export function computeSheet(system: SystemBlueprint, profile: SheetProfile = ne
       display: shown === null ? '—' : `${shown}${v.unit.length > 0 && shown.length > 0 ? ` ${v.unit}` : ''}`,
       sources: sources.get(id) ?? [],
       error: errors.get(id) ?? null,
+      breakdown: breakdowns.get(id) ?? null,
     };
   });
 
@@ -437,6 +480,7 @@ export function computeSheet(system: SystemBlueprint, profile: SheetProfile = ne
       effects,
       error: gate.error ?? itemErrors.get(item.id) ?? null,
       from: profile.itemIds.includes(item.id) ? null : (grantedBy.get(item.id) ?? null),
+      off: profile.offIds.includes(item.id),
     };
   });
 
@@ -461,7 +505,7 @@ export function settle(
   system: SystemBlueprint,
   sheet: SheetProfile,
   reached?: (nodeId: string | null) => boolean,
-): { values: Map<string, string | number>; progress: Map<string, string | number>; itemIds: string[] } {
+): { values: Map<string, string | number>; progress: Map<string, string | number>; itemIds: string[]; offIds: string[] } {
   const xp = sheet.xp.filter((e) => reached === undefined || reached(e.nodeId));
   const computed = computeSheet(system, sheet.withXp(xp));
   const progress = new Map(sheet.progress);
@@ -476,7 +520,7 @@ export function settle(
       values.set(v.id, (isNumber(own) ? own : v.base) + n);
     }
   }
-  return { values, progress, itemIds: [...sheet.itemIds] };
+  return { values, progress, itemIds: [...sheet.itemIds], offIds: [...sheet.offIds] };
 }
 
 /** A sheet's experience in story order, with the level each gain left the character at: the level history, read

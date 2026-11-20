@@ -33,8 +33,6 @@ import {
   fileByLetter,
   kindColor,
   letterOf,
-  newEntry,
-  newEntryKinds,
   volumePressed,
   worldShelves,
   worldVisible,
@@ -211,7 +209,7 @@ describe('found in your pages (the world)', () => {
     cast = castOf(w);
     panel = foundInPages(finds(), null, cast.model.categories, false)!;
     const atoms = panel.cards.find((c) => c.find.name === 'Smart Atoms')!;
-    expect(atoms.add).toBe('Add as Power System / Rule');
+    expect(atoms.add).toBe('Add as Power');
     w.act((c) => addFind(c, atoms.find, atoms.kind.key));
     expect(entries()).toContain('Smart Atoms:power');
 
@@ -305,9 +303,7 @@ describe('the first page of the world', () => {
 describe('the world and its entries', () => {
   test('a new entry of a kind is made and opened; its kind’s fields are its page’s', () => {
     const w = new World();
-    const kinds = newEntryKinds(worldShelves(castOf(w)).kinds);
-    expect(kinds.map((k) => k.label)).toContain('Location');
-    const made = w.act((c) => newEntry(c, 'location'));
+    const made = w.act((c) => c.createEntry('location'));
     expect(w.rows('loreEntries').map((r) => [r['name'], r['category']])).toEqual([['New location', 'location']]);
     const cast = castOf(w);
     expect(kindFields(cast, made, cast.model.categories.get('location')!).title).toBe('Location fields');
@@ -360,7 +356,7 @@ describe('the world and its entries', () => {
 
     let related = relatedEntries(castOf(w), entry);
     expect(related.empty).toBe('Not linked to anything yet.');
-    expect(related.linkable).toEqual([{ value: guild, label: 'Ash Guild (Faction / Species)' }]);
+    expect(related.linkable).toEqual([{ value: guild, label: 'Ash Guild (Faction)' }]);
     w.act(relatedEdits.link(keep, guild, 'Seat of'));
     const link = w.rows('loreLinks')[0];
     expect([link['fromId'], link['fromLabel']]).toEqual([keep, 'Seat of']);

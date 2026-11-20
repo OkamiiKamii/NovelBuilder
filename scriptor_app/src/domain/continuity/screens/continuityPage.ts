@@ -298,9 +298,10 @@ const subjectLabels: Readonly<Record<RuleKind, string>> = { status: 'Character',
 export function ruleForm(model: StoryModel, kind: RuleKind, draft: RuleDraft, editing: boolean) {
   const all = stableSorted(model.entries.values(), (a, b) => localeCompare(a.name, b.name));
   // The fitting category when the novel has it; otherwise everything, so custom categories work too.
+  const fits = (e: Entry) => e.category === preferred[kind] || (kind === 'possession' && e.category === 'artifact');
   const pool =
-    all.some((e) => e.category === preferred[kind]) && kind !== 'power'
-      ? all.filter((e) => e.category === preferred[kind] || e.id === draft.entryId || e.id === draft.toEntryId)
+    all.some(fits) && kind !== 'power'
+      ? all.filter((e) => fits(e) || e.id === draft.entryId || e.id === draft.toEntryId)
       : all;
   const characters = all.filter((e) => e.category === 'character');
   const chapters = stableSorted(

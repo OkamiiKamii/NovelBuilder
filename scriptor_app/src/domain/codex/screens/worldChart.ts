@@ -120,7 +120,14 @@ export function belongsWord(kind: string): string {
       return 'kept in';
     case 'power':
       return 'known in';
+    case 'species':
+      return 'native to';
+    case 'artifact':
+      return 'kept in';
+    case 'rule':
+      return 'applies in';
     case 'lore':
+    case 'history':
       return 'remembered in';
     default:
       return 'found in';

@@ -8,7 +8,7 @@
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { type ComponentRef, type ReactNode, type RefObject, useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Pressable, StyleSheet, Text, TextInput, type TextStyle, View } from 'react-native';
+import { AccessibilityInfo, Animated, Pressable, StyleSheet, Switch, Text, TextInput, type TextStyle, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { captureRef } from 'react-native-view-shot';
 
@@ -73,6 +73,7 @@ export function WindowView({
   view,
   onEdit,
   onHold,
+  onSwitch,
   onNew,
   frameRef,
   wide,
@@ -80,6 +81,8 @@ export function WindowView({
   view: StatusWindowView;
   onEdit?: (e: SheetEdit) => void;
   onHold?: (itemId: string, hold: boolean) => void;
+  /** A held thing switched off (true) or on (false); it stays held. */
+  onSwitch?: (itemId: string, off: boolean) => void;
   onNew?: (groupId: string, groupName: string) => void;
   /** The frame, for a picture of it. */
   frameRef?: RefObject<ComponentRef<typeof View> | null>;
@@ -95,7 +98,7 @@ export function WindowView({
   const row = (r: WindowRow, i: number): ReactNode => {
     switch (r.kind) {
       case 'line':
-        return <Line key={i} look={look} label={r.label} value={r.value} strong={r.strong} raised={r.raised} />;
+        return <Line key={i} look={look} label={r.label} value={r.value} strong={r.strong} raised={r.raised} breakdown={r.breakdown} />;
       case 'next':
         return (
           <Text key={i} style={[t(11, { color: faint }), styles.next]}>
@@ -169,7 +172,7 @@ export function WindowView({
         {view.groups.map((g) => (
           <View key={`g-${g.id}`}>
             {rule(`rg-${g.id}`)}
-            <Group look={look} group={g} onHold={onHold} onNew={onNew} />
+            <Group look={look} group={g} onHold={onHold} onSwitch={onSwitch} onNew={onNew} />
           </View>
         ))}
       </View>
@@ -226,15 +229,18 @@ function useBarFill(): Animated.Value {
   return fill;
 }
 
-function Line({ look, label, value, strong, raised }: { look: WindowLook; label: string; value: string; strong: boolean; raised: boolean }) {
+function Line({ look, label, value, strong, raised, breakdown }: { look: WindowLook; label: string; value: string; strong: boolean; raised: boolean; breakdown?: string }) {
   const t = textOf(look);
   return (
-    <View style={styles.line}>
-      <Text style={[t(13, { color: withAlpha(ink, 0.72) }), styles.shrink]}>{label}</Text>
-      <Text style={[t(13.5, { bold: strong || raised, color: raised ? look.accent : ink }), styles.value]}>
-        {value}
-        {raised ? ' ▲' : ''}
-      </Text>
+    <View>
+      <View style={styles.line}>
+        <Text style={[t(13, { color: withAlpha(ink, 0.72) }), styles.shrink]}>{label}</Text>
+        <Text style={[t(13.5, { bold: strong || raised, color: raised ? look.accent : ink }), styles.value]}>
+          {value}
+          {raised ? ' ▲' : ''}
+        </Text>
+      </View>
+      {breakdown !== undefined && <Text style={t(11, { color: faint })}>{breakdown}</Text>}
     </View>
   );
 }
@@ -283,6 +289,7 @@ function Stepper({ look, row, onSet }: { look: WindowLook; row: Extract<WindowRo
       <View style={styles.flex}>
         <Text style={t(13, { color: withAlpha(ink, 0.72) })}>{row.label}</Text>
         {row.of !== null && <Text style={t(11.5, { color: withAlpha(ink, 0.6) })}>{row.of}</Text>}
+        {row.breakdown !== undefined && <Text style={t(11, { color: faint })}>{row.breakdown}</Text>}
       </View>
       {button('minus', row.less, row.value - 1)}
       <Pressable accessibilityRole="button" accessibilityLabel={row.semanticsLabel} onPress={() => setAsking(true)} style={styles.stepNumber}>
@@ -373,7 +380,7 @@ function Choose({ look, row, onChoose }: { look: WindowLook; row: Extract<Window
 }
 
 /** A group of what the sheet holds: its label (with Add when editing), and its chips. */
-function Group({ look, group, onHold, onNew }: { look: WindowLook; group: WindowGroup; onHold?: (itemId: string, hold: boolean) => void; onNew?: (groupId: string, groupName: string) => void }) {
+function Group({ look, group, onHold, onSwitch, onNew }: { look: WindowLook; group: WindowGroup; onHold?: (itemId: string, hold: boolean) => void; onSwitch?: (itemId: string, off: boolean) => void; onNew?: (groupId: string, groupName: string) => void }) {
   const t = textOf(look);
   const [adding, setAdding] = useState(false);
   const editing = group.more !== null;
@@ -396,6 +403,16 @@ function Group({ look, group, onHold, onNew }: { look: WindowLook; group: Window
           {group.held.map((h) => (
             <View key={h.id} style={styles.heldRow}>
               <Held look={look} held={h} />
+              {editing && onSwitch !== undefined && (
+                <Switch
+                  value={!h.off}
+                  onValueChange={(on) => onSwitch(h.id, !on)}
+                  trackColor={{ true: look.accent, false: colors.border }}
+                  thumbColor={colors.text}
+                  accessibilityLabel={`${h.name}: ${h.off ? 'off' : 'on'}`}
+                  accessibilityHint="Switches it on or off; it stays held"
+                />
+              )}
               {editing && h.from === null && (
                 <Pressable accessibilityRole="button" accessibilityLabel={takeAwayLabel(h.name)} onPress={() => onHold?.(h.id, false)} style={styles.takeAway}>
                   <Icon name="close" size={18} color={withAlpha(ink, 0.7)} />
@@ -424,7 +441,7 @@ function Group({ look, group, onHold, onNew }: { look: WindowLook; group: Window
 function Held({ look, held }: { look: WindowLook; held: WindowHeld }) {
   const t = textOf(look);
   return (
-    <View accessible accessibilityLabel={heldWords(held)} style={[styles.held, { backgroundColor: withAlpha(look.accent, 0.08), borderColor: withAlpha(look.accent, 0.45) }]}>
+    <View accessible accessibilityLabel={heldWords(held)} style={[styles.held, { backgroundColor: withAlpha(look.accent, 0.08), borderColor: withAlpha(look.accent, 0.45) }, held.off && styles.dim]}>
       <Text style={t(13, { bold: true })}>
         <Text style={{ color: look.accent }}>[</Text>
         {held.name}
@@ -433,6 +450,7 @@ function Held({ look, held }: { look: WindowLook; held: WindowHeld }) {
       </Text>
       {held.effects.length > 0 && <Text style={t(11, { color: withAlpha(ink, 0.65) })}>{held.effects.join(' · ')}</Text>}
       {held.from !== null && <Text style={[t(10.5, { color: withAlpha(look.accent, 0.85) }), styles.from]}>{`from ${held.from}`}</Text>}
+      {held.off && <Text style={t(10.5, { color: faint, italic: true })}>switched off</Text>}
     </View>
   );
 }
@@ -531,6 +549,7 @@ export function StatusWindow({
         frameRef={frame}
         onEdit={editing ? (e) => sys.now((c) => applyEdit(c, sheet!.id, e)) : undefined}
         onHold={editing ? (id, hold) => sys.now((c) => applyHold(c, sheet!.id, id, hold)) : undefined}
+        onSwitch={editing ? (id, off) => sys.now((c) => c.setItemOff(sheet!.id, id, off)) : undefined}
         onNew={editing ? (groupId, group) => setNaming({ groupId, group }) : undefined}
       />
       {view.caption.length > 0 && <Text style={styles.caption}>{view.caption}</Text>}
@@ -649,6 +668,7 @@ const styles = StyleSheet.create({
   heldRow: { flexDirection: 'row', alignItems: 'center', maxWidth: '100%' },
   held: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 3, borderWidth: 1, flexShrink: 1 },
   from: { fontWeight: '600' },
+  dim: { opacity: 0.55 },
   takeAway: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center' },
   caption: { fontFamily: fonts.bookItalic, fontSize: 14.5, lineHeight: 21, color: colors.muted },
   said: { fontFamily: fonts.ui, fontSize: 14, color: colors.text },

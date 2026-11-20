@@ -6,6 +6,7 @@
 //
 // Set FILES_DART to the dump's whole output (run it with FULL=1) to compare whole when this fails.
 
+import '../flutterBuiltins';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 

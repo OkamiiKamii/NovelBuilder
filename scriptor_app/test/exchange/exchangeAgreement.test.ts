@@ -2,6 +2,7 @@
 // same golden file (made by the original app): the compiled document, plain text, Markdown and the web page. Not
 // ported here: the Word file, import and a view's records (in importExport.test.ts).
 
+import '../flutterBuiltins';
 import { join } from 'node:path';
 
 import { type JsonMap, isMap } from '../../src/domain/json';

@@ -4,7 +4,7 @@
 // widgets/encyclopedia.dart and widgets/entry_bits.dart: what is shown, in what order, in what words, at what sizes.
 //
 // The page (top to bottom): "New entry" (a menu of every kind not archived, by `singular`; a press makes the entry in
-// that kind and opens its page: `newEntry`), "Categories & fields" (to /organize/world/kinds); Found in your pages
+// that kind and opens its page: `newEntryWith`), "Categories & fields" (to /organize/world/kinds); Found in your pages
 // (foundInPages.ts); with no entries, the charter (worldCharter.ts); else the volumes, then (with no volume chosen) the
 // chart (worldChart.ts), the search ("Search names, tags, fields", with "Clear search") and the tag chooser ("Tag":
 // "All tags" and each tag; only with tags), the count line (`countLine`), and the encyclopedia, or, with nothing
@@ -16,7 +16,7 @@ import { dartToUpperCase } from '../../exchange/dartUpperCase';
 import type { StoryOrder } from '../../model/storyOrder';
 import { dartSort } from '../../manuscript/dartSort';
 import { stableSorted } from '../../reader/stableSort';
-import { Category } from '../../records/category';
+import { Category, type FieldDef } from '../../records/category';
 import type { Entry } from '../../records/entry';
 import type { StoryNode } from '../../records/storyNode';
 import { dartTrim } from '../../text/dartString';
@@ -94,14 +94,25 @@ export function countLine(visible: number, all: number): string {
   return visible === all ? plural(all, 'entry', 'entries') : `${formatNumber(visible)} of ${plural(all, 'entry', 'entries')}`;
 }
 
-/** The kinds "New entry" offers: those not archived, in shelf order, each by its `singular`. */
-export function newEntryKinds(kinds: readonly Category[]): { key: string; label: string }[] {
-  return kinds.filter((k) => !k.archived).map((k) => ({ key: k.key, label: k.singular }));
+/** The few fields the New entry sheet asks for up front: the required ones first, then those not long text, then long
+ * text, three at most (the rest are on the entry's page). */
+export function quickFields(kind: Category): FieldDef[] {
+  const live = kind.fields.filter((f) => !f.archived);
+  // Required first, then short ones (choices, links, numbers…), then long text: a type with only long-text fields still
+  // shows its first ones.
+  return [
+    ...live.filter((f) => f.required),
+    ...live.filter((f) => !f.required && f.type !== 'longtext'),
+    ...live.filter((f) => !f.required && f.type === 'longtext'),
+  ].slice(0, 3);
 }
 
-/** A press on one of "New entry"'s kinds: the entry made (then opened at entryPath(id, character: false)). */
-export function newEntry(c: CodexChanges, key: string): Entry {
-  return c.createEntry(key);
+/** "Save" or "Save and add another" on that sheet: the entry made in one change with its name and the values typed
+ * (by field id; blanks left unset), and the entry as stored. */
+export function newEntryWith(c: CodexChanges, key: string, name: string, values: Readonly<Record<string, string>>): Entry {
+  const entry = c.createEntry(key, name);
+  for (const [defId, value] of Object.entries(values)) if (dartTrim(value).length > 0) c.setFieldValue(entry.id, defId, value);
+  return c.owned(entry.id);
 }
 
 /** The kind of an entry: its category, or one made up for a key the novel does not have. */

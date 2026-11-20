@@ -12,7 +12,7 @@ import { type JsonMap, isMap, jsonEquals, listOf, mapOrNull, numOrNull, str } fr
 import { type EntityRef } from '../model/entityRef';
 import { stableSorted } from '../reader/stableSort';
 import { type CanonStatus } from '../records/canon';
-import { Category, builtinCategoryKeys, fieldTypeOf, resolveCategories } from '../records/category';
+import { Category, builtinCategoryKeys, fieldTypeOf, resolveCategories, standIn, typePartners } from '../records/category';
 import { dartNumTryParse } from '../records/dartNum';
 import { Entry, viewFields } from '../records/entry';
 import { maps } from '../records/jsonRecord';
@@ -94,7 +94,7 @@ export function cleanList(values: Iterable<unknown>): string[] {
 /** The novel's categories, the built-ins (with the author's changes) and the author's own, by key, in order. */
 export function categoriesOf(s: NovelSnapshot): Map<string, Category> {
   const out = new Map<string, Category>();
-  for (const c of resolveCategories(s.rows('loreSchemas').map((r) => new Category(r)))) out.set(c.key, c);
+  for (const c of resolveCategories(s.rows('loreSchemas').map((r) => new Category(r)), s.rows('loreEntries').map((r) => str(r['category'])))) out.set(c.key, c);
   return out;
 }
 
@@ -223,6 +223,7 @@ export class CodexChanges extends RecordChanges {
       notes: '',
       tags: [],
       fields: [],
+      ...(typePartners.has(categoryKey) ? { typeSorted: true } : {}),
       createdAt: this.now,
       updatedAt: this.now,
     };
@@ -247,6 +248,7 @@ export class CodexChanges extends RecordChanges {
     const out: JsonMap = {};
     if (changes.category !== undefined && categoriesOf(this.snapshot).has(changes.category)) {
       out['category'] = changes.category;
+      if (typePartners.has(changes.category)) out['typeSorted'] = true;
     }
     if (changes.notes !== undefined) out['notes'] = changes.notes;
     if (changes.name !== undefined) {
@@ -414,7 +416,8 @@ export class CodexChanges extends RecordChanges {
     const same = (a: string, b: string) => dartToLowerCase(dartTrim(a)) === dartToLowerCase(dartTrim(b));
     const matching = (incoming: JsonMap): Category | null =>
       incoming['builtin'] === true && builtinCategoryKeys.includes(incoming['key'] as string)
-        ? (all.find((c) => c.key === incoming['key']) ?? null)
+        ? // A newer built-in is hidden where another type has its name ("Species"): that one takes its place.
+          (all.find((c) => c.key === incoming['key']) ?? standIn(str(incoming['key']), all) ?? all.find((c) => same(c.name, str(incoming['name']))) ?? null)
         : (all.find((c) => same(c.name, str(incoming['name']))) ?? null);
     const here = incomingAll.map((incoming) => matching(incoming)?.key ?? `custom-${this.newId()}`);
     const keys = new Map<string, string>();

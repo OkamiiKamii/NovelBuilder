@@ -192,15 +192,19 @@ describe('defining a kind of record', () => {
 });
 
 describe('categories and fields', () => {
-  test('starts with the six built-in categories and their default fields, storing nothing', () => {
+  test('starts with the ten built-in categories, partners together, and their default fields, storing nothing', () => {
     const w = new Codex();
     expect(w.read.categories().map((c) => c.name)).toEqual([
       'Characters',
       'Locations',
-      'Factions & Species',
-      'Items & Artifacts',
-      'Power Systems & Rules',
-      'Lore & History',
+      'Factions',
+      'Species',
+      'Items',
+      'Artifacts',
+      'Powers',
+      'Rules',
+      'Lore',
+      'History',
     ]);
     expect(w.fieldNames('location')).toEqual(['Type:longtext', 'Region:longtext', 'Notable features:longtext']);
     expect(w.snapshot.rows('loreSchemas')).toEqual([]);

@@ -10,7 +10,7 @@
 
 import { type JsonMap, mapOrNull, numOrNull, str, strOrNull, listOf } from '../json';
 import { type StoryOrder, stageAt } from '../model/storyOrder';
-import { Category, type FieldDef, builtinCategoryKeys, fieldTypeOf } from '../records/category';
+import { Category, type FieldDef, builtinCategoryKeys, fieldTypeOf, mergedNames } from '../records/category';
 import { maps, strings } from '../records/jsonRecord';
 import { type CharacterRelation } from '../records/relation';
 import { tidyBlueprint } from '../systems/blueprints';
@@ -313,7 +313,13 @@ export function bindingsJson(b: Bindings): JsonMap {
  * one of that name. */
 export function resolveCategory(name: string, categories: readonly Category[], bindings?: Bindings | null): Category | null {
   const bound = bindings?.categories.get(lower(name));
-  return categories.find((c) => c.key === bound) ?? categories.find((c) => lower(c.name) === lower(name)) ?? null;
+  const merged = Object.entries(mergedNames).find(([, [n]]) => lower(n) === lower(name))?.[0];
+  return (
+    categories.find((c) => c.key === bound) ??
+    categories.find((c) => lower(c.name) === lower(name)) ??
+    categories.find((c) => c.key === merged) ??
+    null
+  );
 }
 
 /** A category's field a module means by one of its names, the same way. A field the author archived is not found. */
@@ -329,8 +335,9 @@ export function resolveField(
   return fields.find((f) => !f.archived && f.id === bound) ?? fields.find((f) => !f.archived && lower(f.name) === lower(name)) ?? null;
 }
 
-/** The name a built-in category goes by in a module: its original name, whatever the author has since called it. */
-export const builtinCategoryLabel = (key: string): string => Category.builtin(key).name;
+/** The name a built-in category goes by in a module: its original name (the merged one for the four that were split),
+ * whatever the author has since called it. */
+export const builtinCategoryLabel = (key: string): string => mergedNames[key]?.[0] ?? Category.builtin(key).name;
 
 /** Notes which categories and fields of the novel a module's names stand for. What was noted before is kept, so a
  * renamed category or field stays the one the module uses; only names not yet bound are added. */

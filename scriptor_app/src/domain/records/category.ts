@@ -3,6 +3,7 @@
 import { localeCompare } from '../collation';
 import { type JsonMap, mapOrNull, numOrNull, str, strOrNull } from '../json';
 import { compareNum, dartSort } from '../manuscript/dartSort';
+import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { JsonRecord, boolOf, freezeMap, maps, strings } from './jsonRecord';
 
 /** Field types for custom fields. Values are always stored as text, whatever the type, so retyping a field can never
@@ -102,26 +103,101 @@ export class FieldDef {
   }
 }
 
-/** The categories every project starts with. Their keys are fixed; names, colours and fields can change. */
-export const builtinCategoryKeys: readonly string[] = ['character', 'location', 'faction', 'item', 'power', 'lore'];
+/** The categories every project starts with, partners side by side. Their keys are fixed; names, colours and fields can
+ * change. Species, artifacts, rules and history were once folded into faction, item, power and lore. */
+export const builtinCategoryKeys: readonly string[] = [
+  'character',
+  'location',
+  'faction',
+  'species',
+  'item',
+  'artifact',
+  'power',
+  'rule',
+  'lore',
+  'history',
+];
+
+/** The four types that were once two: each original key and the newer built-in that took half of it. */
+export const typePartners: ReadonlyMap<string, string> = new Map([
+  ['faction', 'species'],
+  ['item', 'artifact'],
+  ['power', 'rule'],
+  ['lore', 'history'],
+]);
+
+/** The built-ins added after the first six: kept out of view while the novel has a category of the same name. */
+const addedKeys: readonly string[] = ['species', 'artifact', 'rule', 'history'];
+
+// Orders of the first built-ins stay as they were stored; each newer one sits halfway to the next.
+const builtinOrder: Record<string, number> = {
+  character: 0,
+  location: 1,
+  faction: 2,
+  species: 2.5,
+  item: 3,
+  artifact: 3.5,
+  power: 4,
+  rule: 4.5,
+  lore: 5,
+  history: 5.5,
+};
 
 const builtinNames: Record<string, readonly [string, string, string]> = {
   character: ['Characters', 'Character', '#b4532a'],
   location: ['Locations', 'Location', '#3f7d4e'],
-  faction: ['Factions & Species', 'Faction / Species', '#3d5fa8'],
-  item: ['Items & Artifacts', 'Item / Artifact', '#8a6d1f'],
-  power: ['Power Systems & Rules', 'Power System / Rule', '#7a4fa3'],
-  lore: ['Lore & History', 'Lore / History', '#5c6370'],
+  faction: ['Factions', 'Faction', '#3d5fa8'],
+  species: ['Species', 'Species', '#2b7a8c'],
+  item: ['Items', 'Item', '#8a6d1f'],
+  artifact: ['Artifacts', 'Artifact', '#a8436b'],
+  power: ['Powers', 'Power', '#7a4fa3'],
+  rule: ['Rules', 'Rule', '#6b7a2b'],
+  lore: ['Lore', 'Lore', '#5c6370'],
+  history: ['History', 'Historical event', '#8c2b5a'],
 };
 
-const suggestedFields: Record<string, readonly string[]> = {
-  character: [],
-  location: ['Type', 'Region', 'Notable features'],
-  faction: ['Type', 'Leader', 'Goals'],
-  item: ['Type', 'Owner', 'Abilities'],
-  power: ['Rules', 'Costs & limits', 'Tiers'],
-  lore: ['When', 'Who was involved', 'Consequences'],
+/** What four built-ins were called when they held two kinds each: still shown by their new names. */
+export const mergedNames: Record<string, readonly [string, string]> = {
+  faction: ['Factions & Species', 'Faction / Species'],
+  item: ['Items & Artifacts', 'Item / Artifact'],
+  power: ['Power Systems & Rules', 'Power System / Rule'],
+  lore: ['Lore & History', 'Lore / History'],
 };
+
+type SuggestedField = readonly [name: string, type?: FieldType, extra?: JsonMap];
+
+// The first fields of a built-in keep their ids (`builtin-<key>-<n>`): entries store values against them. Add after.
+const suggestedFields: Record<string, readonly SuggestedField[]> = {
+  character: [],
+  location: [['Type'], ['Region'], ['Notable features']],
+  faction: [['Type'], ['Leader'], ['Goals']],
+  species: [
+    ['Lifespan', 'text'],
+    ['Homeland', 'reference', { target: 'location' }],
+    ['Sapient', 'toggle'],
+    ['Traits', 'tags'],
+    ['Abilities'],
+  ],
+  item: [['Type'], ['Owner'], ['Abilities']],
+  artifact: [
+    ['Origin'],
+    ['Current holder', 'reference', { target: 'character' }],
+    ['Powers'],
+    ['Rank', 'select', { options: ['Common', 'Uncommon', 'Rare', 'Legendary', 'Unique'] }],
+    ['Cursed', 'toggle'],
+  ],
+  power: [['Rules'], ['Costs & limits'], ['Tiers']],
+  rule: [['Applies to', 'text'], ['What it says', 'longtext'], ['Exceptions'], ['Cost of breaking it']],
+  lore: [['When'], ['Who was involved'], ['Consequences']],
+  history: [
+    ['When', 'text'],
+    ['Who was involved', 'references', { target: 'character' }],
+    ['Where', 'reference', { target: 'location' }],
+    ['Consequences'],
+  ],
+};
+
+const sameName = (a: string, b: string) => dartToLowerCase(dartTrim(a)) === dartToLowerCase(dartTrim(b));
 
 /** A codex category with its field set: a built-in (with the project's changes) or one the author created. A project's
  * stored version of one is a row of `loreSchemas`. */
@@ -139,8 +215,14 @@ export class Category extends JsonRecord {
       singular,
       color,
       builtin: true,
-      order: builtinCategoryKeys.indexOf(key),
-      fields: suggestedFields[key].map((f, i) => ({ id: `builtin-${key}-${i}`, name: f, type: 'longtext', options: [] })),
+      order: builtinOrder[key],
+      fields: suggestedFields[key].map(([f, type, extra], i) => ({
+        id: `builtin-${key}-${i}`,
+        name: f,
+        type: type ?? 'longtext',
+        options: [],
+        ...extra,
+      })),
     });
   }
 
@@ -187,12 +269,39 @@ export class Category extends JsonRecord {
   }
 }
 
-/** A project's categories: the built-ins (with any changes) followed by its own, sorted by order, then name. */
-export function resolveCategories(stored: readonly Category[]): Category[] {
+/** Another category that stands in for a newer built-in by having its name (the author's own, or a renamed built-in), or
+ * else by being one of them ("Species & Races", whose singular is "Species"). */
+export function standIn(key: string, categories: Iterable<Category>): Category | null {
+  if (!addedKeys.includes(key)) return null;
+  const [name, singular] = builtinNames[key];
+  const list = [...categories].filter((c) => c.key !== key);
+  // By name first ("Species"), then by what one of them is called ("Species & Races", a Species), as a genre module's.
+  return list.find((c) => sameName(c.name, name)) ?? list.find((c) => sameName(c.singular, singular)) ?? null;
+}
+
+/** A built-in shows its new name and singular when it still has the old merged ones (or is not stored); one the author
+ * typed stays. Where another category already has the new name, the old merged one is kept so names never repeat. The
+ * stored row is not rewritten. */
+function freshNames(c: Category, stored: readonly Category[], isStored: boolean): Category {
+  const old = mergedNames[c.key];
+  if (old === undefined) return c;
+  const [name, singular] = builtinNames[c.key];
+  const taken = stored.some((o) => o.key !== c.key && sameName(o.name, name));
+  const pick = (shown: string, was: string, now: string) => (isStored && shown !== was ? shown : taken ? was : now);
+  return new Category(c.merged({ name: pick(c.name, old[0], name), singular: pick(c.singular, old[1], singular) }));
+}
+
+/** A project's categories: the built-ins (with any changes) followed by its own, sorted by order, then name. A newer
+ * built-in is left out when the author already has a category by its name (until it is stored). */
+export function resolveCategories(stored: readonly Category[], inUse: Iterable<string> = []): Category[] {
   const byKey = new Map<string, Category>();
   for (const c of stored) byKey.set(c.key, c);
-  const builtins = builtinCategoryKeys.map((key) => byKey.get(key) ?? Category.builtin(key));
+  // A built-in that entries are filed under is always shown, even where another type stands in for it.
+  const used = new Set(inUse);
   const custom = stored.filter((c) => !builtinCategoryKeys.includes(c.key));
+  const builtins = builtinCategoryKeys
+    .filter((key) => byKey.has(key) || used.has(key) || standIn(key, stored) === null)
+    .map((key) => freshNames(byKey.get(key) ?? Category.builtin(key), stored, byKey.has(key)));
   return dartSort([...builtins, ...custom], (a, b) => {
     const byOrder = compareNum(a.order, b.order);
     return byOrder !== 0 ? byOrder : localeCompare(a.name, b.name);

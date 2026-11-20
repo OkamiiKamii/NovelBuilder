@@ -20,7 +20,7 @@ import { maps } from '../../domain/records/jsonRecord';
 import type { SysItem, SysTrack, SystemBlueprint } from '../../domain/records/system';
 import { checkFormula } from '../../domain/systems/compute';
 import type { SystemChanges } from '../../domain/systems/systemChanges';
-import { blankBlueprint, systemPresets } from '../../domain/systems/systemPresets';
+import { blankBlueprint, allSystemPresets } from '../../domain/systems/systemPresets';
 import { presetIcon } from '../../domain/systems/screens/gallery';
 import { moved, patched, rowTools, without } from '../../domain/systems/screens/parts';
 import {
@@ -50,7 +50,6 @@ import {
   itemWords,
   kitsWords,
   laterKey,
-  modifierOpLabel,
   moveIn,
   moveStage,
   namedList,
@@ -59,6 +58,9 @@ import {
   removeCost,
   removeFrom,
   removeModifier,
+  rankPowerEdit,
+  rankPowerNote,
+  rankRows,
   removeStage,
   removeSystem,
   removingDialog,
@@ -279,7 +281,7 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
         visible={choosing}
         title={systemsWords.presetTooltip}
         onClose={() => setChoosing(false)}
-        actions={systemPresets.map((p) => ({ label: p.name, icon: motifIcon(presetIcon(p.id)), onPress: () => create(p.content) }))}
+        actions={allSystemPresets.map((p) => ({ label: p.name, icon: motifIcon(presetIcon(p.id)), onPress: () => create(p.content) }))}
       />
       {ask && (
         <ConfirmDelete
@@ -643,7 +645,9 @@ function NamedRows({
   /** How the list as stored changes. */
   edit: (change: (all: JsonMap[]) => JsonMap[]) => Change;
 }) {
-  const list = namedList(noun, names, hint);
+  const [badPower, setBadPower] = useState<Record<string, string | null>>({});
+  const ranked = noun === 'rank' ? rankRows(system) : null;
+  const list = ranked ?? namedList(noun, names, hint);
   return (
     <View style={styles.gapSm}>
       {list.rows.map((r) => (
@@ -656,6 +660,21 @@ function NamedRows({
                 if (v.trim().length > 0) sys.later(laterKey(system.id, saveKey, r.id), edit((all) => patched(all, r.id, { name: v.trim() })));
               }}
             />
+            {ranked && (
+              <View style={styles.powerField}>
+                <SavedText
+                  label={ranked.rows.find((p) => p.id === r.id)!.power.label}
+                  value={ranked.rows.find((p) => p.id === r.id)!.power.value}
+                  placeholder={ranked.rows.find((p) => p.id === r.id)!.power.hint}
+                  keyboardType="numeric"
+                  hint={badPower[r.id] ?? undefined}
+                  onSave={(v) => {
+                    setBadPower((b) => ({ ...b, [r.id]: rankPowerNote(v) }));
+                    typed(sys, laterKey(system.id, 'rankPower', r.id), rankPowerEdit(system.id, r.id, v));
+                  }}
+                />
+              </View>
+            )}
           </View>
           <RowTools
             name={r.value}
@@ -682,6 +701,7 @@ function KitsTab({ sys, system, model, onAsk }: { sys: OpenSystems; system: Syst
     <View style={styles.gap}>
       <Panel style={styles.gapSm} glow={false}>
         <Text style={styles.boxTitle}>{kitsWords.ranks}</Text>
+        <Muted>{kitsWords.ranksNote}</Muted>
         <NamedRows
           sys={sys}
           system={system}
@@ -769,7 +789,6 @@ function ItemEditor({ sys, system, item, onRemove }: { sys: OpenSystems; system:
   const ed = itemEditor(system, item);
   const key = (field: string) => laterKey(system.id, 'item', item.id, field);
   const save = (field: Parameters<typeof itemEdit>[2]) => (v: string) => typed(sys, key(field), itemEdit(system.id, item.id, field, v));
-  const ops = Object.keys(modifierOpLabel);
   const firstKey = ed.targets[0]?.value ?? '';
   return (
     <View style={styles.gapSm}>
@@ -787,26 +806,39 @@ function ItemEditor({ sys, system, item, onRemove }: { sys: OpenSystems; system:
         saveKey={key('requires')}
         onSave={(v) => itemEdit(system.id, item.id, 'requires', v)}
       />
+      {ed.modifiers.length > 0 && <Text style={styles.itemTitle}>{itemWords.boosts}</Text>}
       {ed.modifiers.map((m) => (
         <View key={m.id} style={styles.sub}>
+          <Text style={styles.itemTitle}>{m.summary}</Text>
           <ChooserField
             label={m.targetLabel}
             value={m.target ?? ''}
             choices={[...(m.target === null ? [{ value: '', label: '—' }] : []), ...ed.targets]}
             onChoose={(v) => sys.now(editModifier(system.id, item.id, m.id, { target: v }))}
           />
+          <ChooserField label={m.howSemantics} value={m.op} choices={ed.ops} onChoose={(v) => sys.now(editModifier(system.id, item.id, m.id, { op: v }))} />
           <ChooserField
-            label={m.howSemantics}
-            value={m.op}
-            choices={ops.map((o) => ({ value: o, label: modifierOpLabel[o] }))}
-            onChoose={(v) => sys.now(editModifier(system.id, item.id, m.id, { op: v }))}
+            label={m.amountLabel}
+            value={m.amountMode}
+            choices={ed.amountChoices}
+            onChoose={(v) => sys.now(editModifier(system.id, item.id, m.id, { byRank: v === 'rank' }))}
           />
-          <SavedText
-            label={m.valueLabel}
-            value={m.value}
-            placeholder={m.valueHint}
-            onSave={(v) => sys.later(key(`mod:${m.id}`), editModifier(system.id, item.id, m.id, { value: v }))}
-          />
+          {m.byRank ? (
+            m.rankNote !== null && <Muted>{m.rankNote}</Muted>
+          ) : (
+            <SavedText
+              label={m.valueLabel}
+              value={m.value}
+              placeholder={m.valueHint}
+              onSave={(v) => sys.later(key(`mod:${m.id}`), editModifier(system.id, item.id, m.id, { value: v }))}
+            />
+          )}
+          {m.preview !== null && <Muted>{m.preview}</Muted>}
+          {m.problem !== null && (
+            <Text accessibilityRole="alert" style={styles.problem}>
+              {m.problem}
+            </Text>
+          )}
           <OutlineButton label={itemWords.removeChange} icon="close" compact tone="muted" onPress={() => sys.now(removeModifier(system.id, item.id, m.id))} style={styles.start} />
         </View>
       ))}
@@ -1067,6 +1099,8 @@ const styles = StyleSheet.create({
   item: { borderRadius: 10, borderWidth: 1, borderColor: colors.border, padding: space.sm, gap: space.sm },
   itemHead: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 44 },
   itemTitle: { fontFamily: fonts.ui, fontSize: 15, fontWeight: '600', color: colors.text },
+  powerField: { width: 160 },
+  problem: { fontFamily: fonts.ui, fontSize: 13, lineHeight: 18, color: colors.danger },
   sub: { paddingLeft: space.sm, borderLeftWidth: 2, borderLeftColor: colors.border, gap: space.xs },
   gridRow: { flexDirection: 'row', alignItems: 'center' },
   gridHead: { fontFamily: fonts.ui, fontSize: 13, fontWeight: '700', color: colors.gold, paddingHorizontal: 4 },

@@ -660,6 +660,7 @@ function SnapshotEditor({
                 <SavedText label={r.own.label} placeholder={r.own.hint} value={r.own.value} keyboardType="numeric" onSave={(v) => inSys(part.system.id, snapshotEdits.own(r.variable, part.auto, v))} />
               )}
               {r.shown && <Text style={[styles.body, r.shown.error && { color: colors.danger }]}>{r.shown.text}</Text>}
+              {r.breakdown !== null && <Muted>{r.breakdown}</Muted>}
               {r.byHand && <SavedText label={r.byHand.label} value={r.byHand.value} keyboardType="numeric" onSave={(v) => inSys(part.system.id, snapshotEdits.byHand(r.variable, v))} />}
             </View>
           ))}
@@ -679,6 +680,24 @@ function SnapshotEditor({
                   );
                 })}
               </View>
+              {g.options
+                .filter((item) => g.switchable.includes(item.id))
+                .map((item) => {
+                  const off = snapshot.systems.get(part.system.id)?.offIds.includes(item.id) ?? false;
+                  return (
+                    <View key={item.id} style={styles.switchRow}>
+                      <Text style={[styles.body, styles.flex, off && styles.dimmed]}>{off ? `${item.name} · switched off` : item.name}</Text>
+                      <Switch
+                        value={!off}
+                        onValueChange={(on) => actions.snapshot((x) => x.setItemOff(snapshot.id, part.system.id, item.id, !on))}
+                        trackColor={{ true: colors.gold, false: colors.border }}
+                        thumbColor={colors.text}
+                        accessibilityLabel={`${item.name}: ${off ? 'off' : 'on'}`}
+                        accessibilityHint="Switches it on or off in this snapshot; it stays held"
+                      />
+                    </View>
+                  );
+                })}
             </View>
           ))}
           {part.reach && <Muted>{part.reach}</Muted>}
@@ -877,6 +896,7 @@ const styles = StyleSheet.create({
   expandRow: { flexDirection: 'row', alignItems: 'center', minHeight: 48, borderTopWidth: 1, borderTopColor: colors.border },
   systemPart: { gap: space.sm, padding: space.md, borderRadius: 10, borderWidth: 1, borderColor: colors.border },
   switchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  dimmed: { opacity: 0.55 },
   gearRow: { flexDirection: 'row', alignItems: 'flex-start', gap: space.xs },
   summaryHeading: { fontFamily: fonts.display, fontSize: 12, fontWeight: '700', letterSpacing: 2, color: colors.gold },
   summary: { fontFamily: fonts.ui, fontSize: 16, lineHeight: 23, color: colors.text },

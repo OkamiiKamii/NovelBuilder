@@ -109,7 +109,7 @@ export class StoryModel {
     }
     const calendarRows = s.rows('storyCalendars');
     const categories = new Map<string, Category>();
-    for (const c of resolveCategories(s.rows('loreSchemas').map((r) => new Category(r)))) categories.set(c.key, c);
+    for (const c of resolveCategories(s.rows('loreSchemas').map((r) => new Category(r)), s.rows('loreEntries').map((r) => str(r['category'])))) categories.set(c.key, c);
     return new StoryModel({
       novel: new Novel(s.project),
       nodes,

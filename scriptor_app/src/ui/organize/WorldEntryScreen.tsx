@@ -350,7 +350,7 @@ function EntryPicture({ entry, tone, initial, uploaded, label, size }: { entry: 
 }
 
 /** A value written in its field's own way: typed (saved a moment later) or chosen (saved at once). */
-function TypedValue({
+export function TypedValue({
   label,
   type,
   value,

@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { StoryModel } from '../../domain/model/storyModel';
 import { type PagesSystem, ownSystemJob } from '../../domain/systems/fromPages';
-import { type SystemPreset, blankBlueprint, systemPresets } from '../../domain/systems/systemPresets';
+import { type SystemPreset, blankBlueprint, allSystemPresets } from '../../domain/systems/systemPresets';
 import { galleryColumns, galleryWords, ownSystemCard, presetCard, presetIcon } from '../../domain/systems/screens/gallery';
 import { type StatusWindowView, type WindowRow, statusWindowView, windowInk } from '../../domain/systems/screens/statusWindow';
 import {
@@ -161,7 +161,7 @@ export function SystemsPane() {
             <OwnSystemCard own={ownSystem} holder={holder?.holderName ?? null} onBegin={begin} />
           )}
           <View style={styles.cards}>
-            {systemPresets.map((p) => (
+            {allSystemPresets.map((p) => (
               <PresetCard key={p.id} preset={p} width={cardWidth} holder={open?.cast.list.find((l) => l.profile.roles.includes('Protagonist'))?.entry.name ?? null} onBegin={() => create(p.content)} />
             ))}
             <Panel style={[styles.card, { width: cardWidth }]}>
@@ -183,7 +183,7 @@ export function SystemsPane() {
         visible={choosing}
         title={systemsWords.presetTooltip}
         onClose={() => setChoosing(false)}
-        actions={systemPresets.map((p) => ({ label: p.name, icon: motifIcon(presetIcon(p.id)), onPress: () => create(p.content) }))}
+        actions={allSystemPresets.map((p) => ({ label: p.name, icon: motifIcon(presetIcon(p.id)), onPress: () => create(p.content) }))}
       />
     </ScrollView>
   );

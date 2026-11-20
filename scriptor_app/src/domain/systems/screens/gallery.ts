@@ -14,7 +14,7 @@ import { type JsonMap, str } from '../../json';
 import { maps } from '../../records/jsonRecord';
 import { dartToLowerCase } from '../../text/dartString';
 import { type PagesSystem } from '../fromPages';
-import { type SystemPreset, systemPresets } from '../systemPresets';
+import { type SystemPreset, allSystemPresets } from '../systemPresets';
 import { exampleHeld } from './statusWindow';
 
 /** The motif of each preset, by its id (Material icon names; an unknown one has the system mark). */
@@ -90,7 +90,7 @@ export function presetCard(p: SystemPreset, holder: string | null): {
 }
 
 /** The gallery's preset cards, in order. */
-export const presetCards = (holder: string | null) => systemPresets.map((p) => presetCard(p, holder));
+export const presetCards = (holder: string | null) => allSystemPresets.map((p) => presetCard(p, holder));
 
 /** The book's own system's card: why the pages read as it, and the hero's window as it begins. */
 export function ownSystemCard(s: PagesSystem, holder: string | null): {

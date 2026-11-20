@@ -4,6 +4,7 @@
 // histories), on both real fixtures and the generated chronicle, each in the standard calendar and in one of its own.
 // test/model/timeline.test.ts checks the calendar, chronology and orders parts of the same golden; this checks all.
 
+import '../flutterBuiltins';
 import { join } from 'node:path';
 
 import { CharacterHistoryLine } from '../../src/domain/characters/characterRecords';

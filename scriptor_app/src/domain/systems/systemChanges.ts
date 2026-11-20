@@ -10,7 +10,7 @@ import { type JsonMap, mapOrNull, str } from '../json';
 import { maps, strings } from '../records/jsonRecord';
 import { SystemBlueprint, SystemSheet, blankSheet } from '../records/system';
 import { instantiateBlueprint, tidyBlueprint } from './blueprints';
-import { takesPoints } from './compute';
+import { stageGrants, takesPoints } from './compute';
 import { dartTrim } from '../text/dartString';
 import { blankBlueprint } from './systemPresets';
 
@@ -139,15 +139,37 @@ export class SystemChanges extends RecordChanges {
     for (const [key, value] of Object.entries(mapOrNull(next['spent']) ?? {})) {
       if (pointed.has(key) && finiteNumber(value) && value !== 0) spent[key] = value;
     }
-    this.put('systemSheets', {
-      ...current.raw,
-      values,
-      progress,
-      itemIds,
-      xp,
-      spent,
-      note: text(next['note']),
-      updatedAt: this.now,
+    // Only a held item can be off: one let go comes back on when it is given again. What the stages reached give is
+    // held without being in itemIds, so it can stay off too, until that stage is left.
+    const granted = stageGrants(system, new Map(Object.entries(progress)));
+    const offIds = [...new Set(strings(next['offIds']).filter((id) => itemIds.includes(id) || granted.has(id)))];
+    const saved: JsonMap = { ...current.raw, values, progress, itemIds, xp, spent, note: text(next['note']), updatedAt: this.now };
+    // Written only when something is off, so a sheet that never used it stays as it was.
+    if (offIds.length > 0) saved['offIds'] = offIds;
+    else delete saved['offIds'];
+    this.put('systemSheets', saved);
+  }
+
+  /** Switches a held item off (or on again) on a sheet: it stays held and listed, but changes nothing while off. */
+  setItemOff(sheetId: string, itemId: string, off: boolean): void {
+    this.updateSheet(sheetId, (cur) => {
+      if (!this.owned(cur.systemId).items.some((i) => i.id === itemId)) throw new ChangeRefused('That item is not in this system.');
+      return { offIds: [...cur.offIds.filter((id) => id !== itemId), ...(off ? [itemId] : [])] };
+    });
+  }
+
+  /** Sets what a rank is worth (a number), or takes its power away (null). Boosts "by rank" read it. */
+  setRankPower(systemId: string, rankId: string, power: number | null): void {
+    if (power !== null && !finiteNumber(power)) throw new ChangeRefused('A rank’s power must be a number.');
+    this.updateSystem(systemId, (cur) => {
+      if (!cur.ranks.some((r) => r.id === rankId)) throw new ChangeRefused('That rank is not in this system.');
+      return {
+        ranks: maps(cur.raw['ranks']).map((r) => {
+          if (r['id'] !== rankId) return r;
+          const { power: _old, ...rest } = r;
+          return power === null ? rest : { ...rest, power };
+        }),
+      };
     });
   }
 

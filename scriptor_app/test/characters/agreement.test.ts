@@ -3,6 +3,7 @@
 // port, and every result must equal what the original TypeScript produced for the same file (the goldens in
 // flutter_app/test/fixtures/golden, which the Flutter port is held to as well).
 
+import '../flutterBuiltins';
 import { join } from 'node:path';
 
 import {

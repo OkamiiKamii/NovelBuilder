@@ -16,7 +16,7 @@ import { newId } from '../../ids';
 import { type JsonMap, mapOrNull } from '../../json';
 import { type StoryModel } from '../../model/storyModel';
 import { maps } from '../../records/jsonRecord';
-import { type SysTrack, type SystemBlueprint, type SystemSheet, type XpEntry } from '../../records/system';
+import { type SysItem, type SysTrack, type SystemBlueprint, type SystemSheet, type XpEntry } from '../../records/system';
 import { SheetProfile, computeSheet, takesPoints, xpHistory } from '../compute';
 import { dartRound } from '../faceOff';
 import { formatNumber } from '../formula';
@@ -118,7 +118,26 @@ export function sheetEditor(system: SystemBlueprint, sheet: SystemSheet, name: s
   return { fields, groups, title: `${name}’s sheet`, takeOff: `Take ${name} off ${system.name}` };
 }
 
-const progressOf = (c: SystemSheet): JsonMap => ({ ...(mapOrNull(c.raw['progress']) ?? {}) });
+/** For a skill's editor: each change it makes with whether it follows the rank's power, and what it does from the
+ * blueprint's starting values ("Strength 10 → 200"); null when it cannot be worked out (a rank with no power…). A rank's
+ * own power is `system.rankList`. */
+export function modifierPreviews(system: SystemBlueprint, item: SysItem): { id: string; byRank: boolean; preview: string | null }[] {
+  const base = computeSheet(system).rows;
+  const items = system.raw['items'];
+  return item.modifiers.map((m) => {
+    // The item held alone with only this change.
+    const alone = system.withFields({
+      items: maps(items).map((i) => (i['id'] === item.id ? { ...i, modifiers: [m.raw] } : i)),
+    });
+    const after = computeSheet(alone, new SheetProfile({ itemIds: [item.id] }));
+    const from = base.find((r) => r.variable.key === m.target);
+    const to = after.rows.find((r) => r.variable.key === m.target);
+    const ok = from !== undefined && to !== undefined && typeof to.value === 'number' && after.items.find((i) => i.item.id === item.id)?.error == null && to.breakdown !== null;
+    return { id: m.id, byRank: m.byRank, preview: ok ? `${to.variable.name} ${formatNumber(from.value as number)} → ${formatNumber(to.value as number)}` : null };
+  });
+}
+
+const progressOf =(c: SystemSheet): JsonMap => ({ ...(mapOrNull(c.raw['progress']) ?? {}) });
 
 /** A level typed (through autosave): at least 1, rounded. */
 export const setLevel = (sheetId: string, trackId: string, text: string): Change => (c) =>

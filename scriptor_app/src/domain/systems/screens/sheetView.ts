@@ -11,7 +11,8 @@ import { type FormulaCheck, SheetProfile, checkFormula, computeSheet } from '../
 import { formatNumber } from '../formula';
 
 export type SheetPart = { text: string; style: 'plain' | 'strong' | 'small' | 'error' | 'strongError' };
-export type SheetLine = { name: string; parts: SheetPart[] };
+/** `breakdown`: how a boosted value came out ("10 + 5 from Power"), null otherwise. */
+export type SheetLine = { name: string; parts: SheetPart[]; breakdown?: string | null };
 export type SheetThing = {
   name: string;
   badges: string[];
@@ -19,6 +20,8 @@ export type SheetThing = {
   requires: { text: string; met: boolean } | null;
   evolution: string | null;
   error: string | null;
+  /** Held but switched off: it changes nothing until it is switched on. */
+  off: boolean;
 };
 
 /** The sheet as lines: each track, the points, each value; then each group with what is held in it; then what is
@@ -53,6 +56,7 @@ export function sheetView(
     const spent = profile.spent.get(row.variable.id) ?? 0;
     return {
       name: row.variable.name,
+      breakdown: row.breakdown,
       parts: [
         row.error !== null ? { text: row.error, style: 'error' } : { text: row.display, style: 'plain' },
         ...(spent !== 0 ? [{ text: ` · ${formatNumber(spent)} placed`, style: 'small' as const }] : []),
@@ -84,6 +88,7 @@ export function sheetView(
                 : null,
             evolution: i.item.evolution.length > 0 ? i.item.evolution : null,
             error: i.error,
+            off: i.off,
           };
         }),
     }));

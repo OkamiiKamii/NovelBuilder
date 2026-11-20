@@ -8,7 +8,7 @@
 import * as Clipboard from 'expo-clipboard';
 import { LinearGradient } from 'expo-linear-gradient';
 import { type ComponentRef, useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 import { captureRef } from 'react-native-view-shot';
 
@@ -81,6 +81,22 @@ export function SheetEditor({ sys, systemId, sheetId }: { sys: OpenSystems; syst
   const name = dartTrim(model.entries.get(sheet.entryId)?.name ?? '') || 'Unnamed';
   const editor = sheetEditor(system, sheet, name);
   const view = sheetView(system, SheetProfile.of(sheet));
+  const onOff = (itemId: string, label: string) => {
+    const off = sheet.offIds.includes(itemId);
+    return (
+      <View key={`on-${itemId}`} style={styles.onOff}>
+        <Text style={[styles.sheetLine, styles.flex, off && styles.dim]}>{off ? `${label} · switched off` : label}</Text>
+        <Switch
+          value={!off}
+          onValueChange={(on) => sys.now((c) => c.setItemOff(sheet.id, itemId, !on))}
+          trackColor={{ true: colors.gold, false: colors.border }}
+          thumbColor={colors.text}
+          accessibilityLabel={`${label}: ${off ? 'off' : 'on'}`}
+          accessibilityHint="Switches it on or off; it stays held"
+        />
+      </View>
+    );
+  };
   return (
     <View style={styles.gap}>
       <View style={styles.wrap}>
@@ -128,6 +144,7 @@ export function SheetEditor({ sys, systemId, sheetId }: { sys: OpenSystems; syst
               choices={g.options}
               onChoose={(v) => sys.now(chooseSingle(sheet.id, g.options.map((o) => o.value).filter((o) => o.length > 0), v))}
             />
+            {g.value.length > 0 && onOff(g.value, g.options.find((o) => o.value === g.value)?.label ?? g.label)}
           </View>
         ) : (
           <View key={g.groupId} style={styles.gapXs}>
@@ -137,6 +154,7 @@ export function SheetEditor({ sys, systemId, sheetId }: { sys: OpenSystems; syst
                 <Chip key={c.id} label={c.label} selected={c.selected} icon={c.selected ? 'check' : undefined} onPress={() => sys.now(holdItem(sheet.id, c.id, !c.selected))} />
               ))}
             </View>
+            {g.chips.filter((c) => c.selected).map((c) => onOff(c.id, c.label))}
           </View>
         ),
       )}
@@ -147,22 +165,25 @@ export function SheetEditor({ sys, systemId, sheetId }: { sys: OpenSystems; syst
         ) : (
           <>
             {[...view.tracks, ...(view.points ? [view.points] : []), ...view.rows].map((l, i) => (
-              <Text key={i} style={styles.sheetLine}>
-                <Text style={styles.sheetName}>{`${l.name}  `}</Text>
-                {l.parts.map((p, j) => (
-                  <Text key={j} style={partStyle(p)}>
-                    {p.text}
-                  </Text>
-                ))}
-              </Text>
+              <View key={i}>
+                <Text style={styles.sheetLine}>
+                  <Text style={styles.sheetName}>{`${l.name}  `}</Text>
+                  {l.parts.map((p, j) => (
+                    <Text key={j} style={partStyle(p)}>
+                      {p.text}
+                    </Text>
+                  ))}
+                </Text>
+                {l.breakdown != null && <Text style={styles.breakdown}>{l.breakdown}</Text>}
+              </View>
             ))}
             {view.groups.map((g) => (
               <View key={g.name} style={styles.sheetGroup}>
                 <Text style={styles.sheetGroupName}>{g.name}</Text>
                 {g.things.map((t, i) => (
-                  <View key={i} style={styles.thing}>
+                  <View key={i} style={[styles.thing, t.off && styles.dim]}>
                     <View style={styles.thingHead}>
-                      <Text style={styles.thingName}>{t.name}</Text>
+                      <Text style={styles.thingName}>{t.off ? `${t.name} · switched off` : t.name}</Text>
                       {t.badges.map((b) => (
                         <Text key={b} style={styles.badge}>
                           {b}
@@ -641,6 +662,9 @@ const styles = StyleSheet.create({
   partPlain: { fontFamily: fonts.ui, fontSize: 14, color: colors.text },
   partStrong: { fontFamily: fonts.ui, fontSize: 14, fontWeight: '600', color: colors.text },
   small: { fontFamily: fonts.ui, fontSize: 12.5, lineHeight: 18, color: colors.muted },
+  breakdown: { fontFamily: fonts.ui, fontSize: 12, lineHeight: 17, color: colors.muted, marginTop: -2, marginBottom: 4 },
+  onOff: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  dim: { opacity: 0.55 },
   sheetGroup: { marginTop: 8, gap: 4 },
   sheetGroupName: { fontFamily: fonts.ui, fontSize: 15, fontWeight: '600', color: colors.text },
   thing: { gap: 2 },

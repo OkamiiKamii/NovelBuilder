@@ -114,6 +114,7 @@ export function tidyBlueprint(given: JsonMap, createId: () => string = newId): J
         target: text(m['target']),
         op: modifierOps.includes(m['op'] as string) ? m['op'] : 'add',
         value: text(m['value']),
+        ...(m['byRank'] === true ? { byRank: true } : {}),
       });
     }
     const costs: JsonMap[] = [];

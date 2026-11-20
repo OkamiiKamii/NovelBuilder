@@ -23,10 +23,11 @@ import { maps } from '../../records/jsonRecord';
 import { type SysItem, type SysStage, type SysTrack, type SystemBlueprint, type SystemSheet } from '../../records/system';
 import { stableSorted } from '../../reader/stableSort';
 import { dartToLowerCase, dartTrim } from '../../text/dartString';
-import { curveTable } from '../compute';
+import { SheetProfile, computeSheet, curveTable } from '../compute';
 import { type PagesSystem } from '../fromPages';
 import { type SystemChanges } from '../systemChanges';
 import { blankBlueprint } from '../systemPresets';
+import { modifierPreviews } from './sheetEditor';
 import { dartDoubleTryParse, dartIntTryParse, formatBase, listOf, moved, patched, splitList, without } from './parts';
 
 type Change = (c: SystemChanges) => void;
@@ -63,8 +64,8 @@ export const tabOf = (tab: string | null): SystemsTab => systemsTabs.find((t) =>
 
 /** A variable's kinds, as the chooser and the add buttons name them. */
 export const variableKindLabel: Readonly<Record<string, string>> = { number: 'Attribute', resource: 'Resource pool', derived: 'Formula', choice: 'Choice' };
-/** What a held thing does to a value, as the chooser shows it. */
-export const modifierOpLabel: Readonly<Record<string, string>> = { add: '+', multiply: '×', set: '=' };
+/** The same, in words, for the boost row's chooser. */
+const modifierOpWords: Readonly<Record<string, string>> = { add: 'Add', multiply: 'Multiply by', set: 'Set to' };
 
 /** From this width (of the page's content) the blueprint's window stands beside it; below, it is folded above it. */
 export const blueprintBesideFrom = 1000;
@@ -375,8 +376,32 @@ export function namedList(noun: string, names: readonly { id: string; name: stri
 /** A new name in a named list ("New rank"). */
 export const newNamed = (noun: string, createId: () => string = newId): JsonMap => ({ id: createId(), name: `New ${noun}` });
 
+/** The ranks list: each name (as `namedList`) with its power field, the number a skill's boost "by rank" uses. */
+export function rankRows(system: SystemBlueprint): { rows: { id: string; label: string; value: string; first: boolean; last: boolean; power: { label: string; hint: string; value: string } }[]; add: string } {
+  const list = namedList('rank', system.ranks, kitsWords.ranksHint);
+  const powers = new Map(system.rankList.map((r) => [r.id, r.power]));
+  return { ...list, rows: list.rows.map((r) => ({ ...r, power: { label: `Power of ${r.value}`, hint: '20', value: powers.get(r.id) == null ? '' : formatBase(powers.get(r.id)!) } })) };
+}
+
+/** A rank's power as typed: a number (a decimal comma counts as a point) or null. */
+const powerOf = (text: string): number | null => {
+  const n = dartDoubleTryParse(dartTrim(text).replace(/^(-?\d*),(\d+)$/, '$1.$2'));
+  return n !== null && Number.isFinite(n) ? n : null;
+};
+
+/** A rank's power typed: a number sets it, blank takes it away; text that is no number changes nothing. */
+export function rankPowerEdit(systemId: string, rankId: string, text: string): Change | null {
+  if (dartTrim(text).length === 0) return (c) => c.setRankPower(systemId, rankId, null);
+  const n = powerOf(text);
+  return n === null ? null : (c) => c.setRankPower(systemId, rankId, n);
+}
+
+/** The note under the power field when what is typed is not a number (null when it is, or blank). */
+export const rankPowerNote = (text: string): string | null => (dartTrim(text).length === 0 || powerOf(text) !== null ? null : 'A number, like 20');
+
 export const kitsWords = {
   ranks: 'Ranks, lowest first',
+  ranksNote: 'Give a rank a power number and a skill can boost a stat “by rank”: rank S with power 20 multiplies by 20.',
   ranksHint: 'Common, Advanced, Unique…',
   groupName: 'Group name',
   single: 'Held one at a time',
@@ -423,7 +448,31 @@ export function itemEditor(system: SystemBlueprint, item: SysItem): {
   parent: { label: string; value: string; options: { value: string; label: string }[] };
   description: { label: string; hint: string; value: string };
   requires: { label: string; hint: string; value: string };
-  modifiers: { id: string; target: string | null; targetLabel: string; op: string; how: string; howSemantics: string; value: string; valueLabel: string; valueHint: string }[];
+  modifiers: {
+    id: string;
+    target: string | null;
+    targetLabel: string;
+    op: string;
+    how: string;
+    howSemantics: string;
+    /** "Adds 5 to Strength", "Multiplies Strength by its rank's power". */
+    summary: string;
+    byRank: boolean;
+    amountLabel: string;
+    /** 'rank' (follow the rank's power) or 'value' (type a number or formula). */
+    amountMode: 'rank' | 'value';
+    value: string;
+    valueLabel: string;
+    valueHint: string;
+    /** Under a by-rank boost: which rank and power it uses. */
+    rankNote: string | null;
+    /** "Strength 10 → 200"; null when it cannot be worked out. */
+    preview: string | null;
+    /** Why a by-rank boost cannot be worked out (the domain's words). */
+    problem: string | null;
+  }[];
+  ops: { value: string; label: string }[];
+  amountChoices: { value: 'rank' | 'value'; label: string }[];
   costs: { id: string; target: string | null; targetLabel: string; amount: string; amountLabel: string; amountHint: string }[];
   targets: { value: string; label: string }[];
   canAdd: boolean;
@@ -433,6 +482,11 @@ export function itemEditor(system: SystemBlueprint, item: SysItem): {
 } {
   const variables = system.variables.filter((v) => v.kind !== 'choice');
   const others = system.items.filter((i) => i.id !== item.id);
+  const previews = modifierPreviews(system, item);
+  const needsWhy = item.modifiers.some((m, i) => m.byRank && previews[i].preview === null);
+  const why = needsWhy ? (computeSheet(system, new SheetProfile({ itemIds: [item.id] })).items.find((i) => i.item.id === item.id)?.error ?? null) : null;
+  const power = system.rankPower(item);
+  const rank = system.rankName(item);
   return {
     rank: {
       label: `Rank of ${item.name}`,
@@ -446,17 +500,33 @@ export function itemEditor(system: SystemBlueprint, item: SysItem): {
     },
     description: { label: `Description of ${item.name}`, hint: 'What it is', value: item.description },
     requires: { label: `What ${item.name} requires`, hint: 'Class: Void Mage AND level >= 50', value: item.requires },
-    modifiers: item.modifiers.map((m) => ({
-      id: m.id,
-      target: variables.some((v) => v.key === m.target) ? m.target : null,
-      targetLabel: `What ${item.name} changes`,
-      op: m.op,
-      how: 'How',
-      howSemantics: `How ${item.name} changes it`,
-      value: m.value,
-      valueLabel: `Amount ${item.name} gives`,
-      valueHint: '5',
-    })),
+    modifiers: item.modifiers.map((m, i) => {
+      const stat = variables.find((v) => v.key === m.target)?.name ?? 'a stat';
+      const amount = m.byRank ? 'its rank’s power' : m.value.length === 0 ? '…' : m.value;
+      return {
+        id: m.id,
+        target: variables.some((v) => v.key === m.target) ? m.target : null,
+        targetLabel: `Stat ${item.name} boosts`,
+        op: m.op,
+        how: 'How',
+        howSemantics: `How ${item.name} boosts it`,
+        summary: m.op === 'multiply' ? `Multiplies ${stat} by ${amount}` : m.op === 'set' ? `Sets ${stat} to ${amount}` : `Adds ${amount} to ${stat}`,
+        byRank: m.byRank,
+        amountLabel: `Amount ${item.name} gives`,
+        amountMode: m.byRank ? 'rank' : 'value',
+        value: m.value,
+        valueLabel: 'Number or formula',
+        valueHint: '5',
+        rankNote: m.byRank && power !== null ? `Uses the power of rank “${rank}”: ${formatBase(power)}` : null,
+        preview: previews[i].preview,
+        problem: m.byRank && previews[i].preview === null ? why : null,
+      };
+    }),
+    ops: Object.entries(modifierOpWords).map(([value, label]) => ({ value, label })),
+    amountChoices: [
+      { value: 'value', label: 'A number or formula' },
+      { value: 'rank', label: 'By rank' },
+    ],
     costs: item.costs.map((c) => ({
       id: c.id,
       target: variables.some((v) => v.key === c.target) ? c.target : null,
@@ -477,7 +547,7 @@ export function itemEditor(system: SystemBlueprint, item: SysItem): {
   };
 }
 
-export const itemWords = { name: 'Name', addChange: 'A change it makes', addCost: 'A cost', removeChange: 'Remove this change', removeCost: 'Remove this cost' } as const;
+export const itemWords = { name: 'Name', addChange: 'A stat boost', addCost: 'A cost', removeChange: 'Remove this boost', removeCost: 'Remove this cost', boosts: 'Stat boosts' } as const;
 
 /** A change to one item, worked out from it as stored. */
 export const editItem = (systemId: string, itemId: string, change: (item: JsonMap) => JsonMap): Change =>

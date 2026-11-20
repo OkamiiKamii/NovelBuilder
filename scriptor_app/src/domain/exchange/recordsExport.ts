@@ -183,7 +183,7 @@ export function exportRecords(
         put(kind, sorted(byCategory('faction'), nameOf));
         break;
       case 'items':
-        put(kind, sorted(byCategory('item'), nameOf));
+        put(kind, sorted([...byCategory('item'), ...byCategory('artifact')], nameOf));
         break;
       case 'entries':
         put(kind, sorted(entries.filter((e) => kept(e.id)).map((e) => entry(e.raw)), nameOf));

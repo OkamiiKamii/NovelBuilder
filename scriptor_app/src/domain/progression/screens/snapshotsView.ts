@@ -394,8 +394,11 @@ export type SystemPartView = {
     shown: { text: string; error: boolean } | null;
     /** With the calculator on, for any value but a choice: "Set X by hand". */
     byHand: { label: string; value: string } | null;
+    /** How a boosted value came out ("10 + 5 from Power"); null when nothing boosts it or it is set by hand. */
+    breakdown: string | null;
   }[];
-  groups: { group: SysGroup; heading: string; options: SysItem[]; held: string[] }[];
+  /** `switchable`: what is held in the group, chosen or given by a stage reached, each with an on/off switch. */
+  groups: { group: SysGroup; heading: string; options: SysItem[]; held: string[]; switchable: string[] }[];
   reach: string | null;
 };
 
@@ -447,10 +450,17 @@ export function systemPart(system: SystemBlueprint, state: SnapshotSystem): Syst
             : null,
         shown: auto ? { text: row.error ?? (row.byHand ? (row.systemSays ?? row.display) : row.display), error: row.error !== null } : null,
         byHand: auto && v.kind !== 'choice' ? { label: `Set ${v.name} by hand`, value: numberText(state.overrides.get(v.id)) } : null,
+        breakdown: row.breakdown,
       };
     }),
     groups: system.groupList
-      .map((group) => ({ group, heading: `${group.name} in this snapshot`, options: items.filter((i) => i.groupId === group.id), held: state.itemIds }))
+      .map((group) => ({
+        group,
+        heading: `${group.name} in this snapshot`,
+        options: items.filter((i) => i.groupId === group.id),
+        held: state.itemIds,
+        switchable: resolved.items.filter((i) => i.item.groupId === group.id).map((i) => i.item.id),
+      }))
       .filter((g) => g.options.length > 0),
     reach: resolved.available.length === 0 ? null : `Now within reach: ${resolved.available.map((i) => i.name).join(', ')}`,
   };

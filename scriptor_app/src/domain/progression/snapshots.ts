@@ -14,7 +14,7 @@ import { stableSorted } from '../reader/stableSort';
 import { JsonRecord, maps, strings } from '../records/jsonRecord';
 import { StoryNode } from '../records/storyNode';
 import { type SysItem, type SysTrack, type SysVariable, SystemBlueprint, SystemSheet } from '../records/system';
-import { type SheetItem, type SheetTrack, SheetProfile, computeSheet, settle } from '../systems/compute';
+import { type SheetItem, type SheetTrack, SheetProfile, computeSheet, settle, stageGrants } from '../systems/compute';
 import { formatNumber } from '../systems/formula';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 
@@ -65,6 +65,10 @@ export class SnapshotSystem {
   }
   get overrides(): Map<string, string | number> {
     return numbersOrLabels(this.raw['overrides']);
+  }
+  /** Held items switched off at this point. Absent reads as none. */
+  get offIds(): string[] {
+    return strings(this.raw['offIds']);
   }
 }
 
@@ -197,6 +201,8 @@ export class StateRow {
     readonly systemSays: string | null,
     readonly sources: string[],
     readonly error: string | null,
+    /** How a boosted value came out; null when nothing boosts it or the author set it by hand. */
+    readonly breakdown: string | null = null,
   ) {}
 }
 
@@ -229,7 +235,7 @@ function show(variable: SysVariable, value: number | string | null): string {
  * entered. */
 export function resolveSystem(system: SystemBlueprint, snapshot?: SnapshotSystem | null): SystemState {
   const snap = snapshot ?? new SnapshotSystem({});
-  const profile = new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds });
+  const profile = new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds, offIds: snap.offIds });
   const plain = computeSheet(system, profile);
   const overrides = snap.overrides;
   const set = (v: SysVariable): number | string | null => {
@@ -258,7 +264,7 @@ export function resolveSystem(system: SystemBlueprint, snapshot?: SnapshotSystem
   }
   const worked = computeSheet(
     system,
-    new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds, overrides }),
+    new SheetProfile({ values: snap.values, progress: snap.progress, itemIds: snap.itemIds, offIds: snap.offIds, overrides }),
   );
   const rows = worked.rows.map((row, i) => {
     const byHand = set(row.variable) !== null;
@@ -270,6 +276,7 @@ export function resolveSystem(system: SystemBlueprint, snapshot?: SnapshotSystem
       byHand && plain.rows[i].display !== row.display ? plain.rows[i].display : null,
       row.sources,
       byHand ? null : row.error,
+      byHand ? null : row.breakdown,
     );
   });
   return new SystemState(system, true, rows, worked.tracks, worked.items, worked.available);
@@ -405,12 +412,23 @@ export class SnapshotChanges extends RecordChanges {
       if (this.mine('systems', key) === null) continue;
       const raw = mapOrNull(value);
       if (raw === null) continue;
+      const itemIds = [...new Set(listOf(raw['itemIds']).filter((id): id is string => typeof id === 'string'))];
+      // Only a held item can be off: one let go comes back on when it is given again. What the stages reached give is
+      // held without being in itemIds, so it can stay off too, until that stage is left.
+      const blueprint = this.rows('systems').find((r) => r['id'] === key);
+      const progress = this.record(raw['progress']);
+      const granted = blueprint === undefined ? new Map<string, string>() : stageGrants(new SystemBlueprint(blueprint), new Map(Object.entries(progress)));
+      const offIds = [
+        ...new Set(listOf(raw['offIds']).filter((id): id is string => typeof id === 'string' && (itemIds.includes(id) || granted.has(id)))),
+      ];
       outSystems[key] = {
         auto: raw['auto'] !== false,
         values: this.record(raw['values']),
-        progress: this.record(raw['progress']),
-        itemIds: [...new Set(listOf(raw['itemIds']).filter((id): id is string => typeof id === 'string'))],
+        progress,
+        itemIds,
         overrides: this.record(raw['overrides']),
+        // Written only when something is off, so older files and the Flutter app's read as they always have.
+        ...(offIds.length > 0 ? { offIds } : {}),
       };
     }
     return {
@@ -462,6 +480,7 @@ export class SnapshotChanges extends RecordChanges {
               progress: plainObject(settled.progress),
               itemIds: settled.itemIds,
               overrides: {},
+              ...(settled.offIds.length > 0 ? { offIds: settled.offIds } : {}),
             };
     }
     // The snapshot's id first, then its gear's, in the order the original makes them.
@@ -497,6 +516,16 @@ export class SnapshotChanges extends RecordChanges {
       notes: str(next['notes']),
       ...this.clean(next['systems'], next['gear'], next['status']),
       updatedAt: this.now,
+    });
+  }
+
+  /** Switches a held item off (or on again) in one system of one snapshot. */
+  setItemOff(snapshotId: string, systemId: string, itemId: string, off: boolean): void {
+    this.updateSnapshot(snapshotId, (cur) => {
+      const system = cur.systems.get(systemId);
+      if (system === undefined) throw new ChangeRefused('That system is not in this snapshot.');
+      const others = system.offIds.filter((id) => id !== itemId);
+      return { systems: { ...(mapOrNull(cur.raw['systems']) ?? {}), [systemId]: { ...system.raw, offIds: off ? [...others, itemId] : others } } };
     });
   }
 

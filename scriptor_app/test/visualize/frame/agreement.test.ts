@@ -5,6 +5,7 @@
 //
 // Set FRAME_DART to dump.dart's whole output (run it with FULL=1; the scratch dir's run.sh does both) to compare whole.
 
+import '../../flutterBuiltins';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 

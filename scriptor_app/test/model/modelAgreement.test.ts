@@ -7,6 +7,7 @@
 //
 // Set MODEL_DUMP to a file path to write Scriptor's whole outputs there, to compare with dump.dart's when this fails.
 
+import '../flutterBuiltins';
 import { createHash } from 'node:crypto';
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';

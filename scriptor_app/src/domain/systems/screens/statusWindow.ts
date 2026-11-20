@@ -106,10 +106,11 @@ export function within(value: number, min: number | null, max: number | null): n
   return v;
 }
 
-export type WindowHeld = { id: string; name: string; rank: string | null; effects: string[]; from: string | null };
+/** `off`: switched off, still held; toggle it with `SystemChanges.setItemOff(sheetId, id, !off)`. */
+export type WindowHeld = { id: string; name: string; rank: string | null; effects: string[]; from: string | null; off: boolean };
 
 export type WindowRow =
-  | { kind: 'line'; label: string; value: string; strong: boolean; raised: boolean }
+  | { kind: 'line'; label: string; value: string; strong: boolean; raised: boolean; /** How a boosted value came out; absent when nothing changed it. */ breakdown?: string }
   | { kind: 'next'; text: string }
   | { kind: 'bar'; name: string; value: string; part: number }
   | {
@@ -125,6 +126,7 @@ export type WindowRow =
       semanticsLabel: string;
       less: string;
       more: string;
+      breakdown?: string;
     }
   | { kind: 'choose'; edit: { id: string; track: boolean }; label: string; options: { value: string; label: string }[]; current: string };
 
@@ -195,12 +197,19 @@ export function statusWindowView(args: {
   // A level its experience gives: where it started is changed on the whole sheet, not here.
   const fromXp = (trackId: string): boolean => profile?.xp.some((e) => e.trackId === trackId) ?? false;
 
-  const line = (label: string, value: string, strong = false, raised = false): WindowRow => ({ kind: 'line', label, value, strong, raised });
+  const line = (label: string, value: string, strong = false, raised = false, breakdown: string | null = null): WindowRow => ({
+    kind: 'line',
+    label,
+    value,
+    strong,
+    raised,
+    ...(breakdown === null ? {} : { breakdown }),
+  });
   const stepper = (
     edit: { id: string; track: boolean },
     label: string,
     value: number,
-    opts: { whole?: boolean; min?: number | null; max?: number | null; of?: string | null },
+    opts: { whole?: boolean; min?: number | null; max?: number | null; of?: string | null; breakdown?: string | null },
   ): WindowRow => {
     const whole = opts.whole ?? false;
     const shown = whole ? String(Math.round(value)) : windowNumber(value);
@@ -216,6 +225,7 @@ export function statusWindowView(args: {
       semanticsLabel: `${label}: ${shown}. Press to type a number.`,
       less: `Less ${label}`,
       more: `More ${label}`,
+      ...(opts.breakdown == null ? {} : { breakdown: opts.breakdown }),
     };
   };
 
@@ -268,7 +278,7 @@ export function statusWindowView(args: {
   });
 
   const attributes: WindowRow[] = attributeRows.map((r) => {
-    if (!editing) return line(r.variable.name, r.display, false, r.sources.length > 0);
+    if (!editing) return line(r.variable.name, r.display, false, r.sources.length > 0, r.breakdown);
     if (r.variable.kind === 'choice') {
       return {
         kind: 'choose',
@@ -281,10 +291,11 @@ export function statusWindowView(args: {
     // Their own number: what a class or skill adds is the blueprint's, and stays out of it.
     return stepper({ id: r.variable.id, track: false }, r.variable.name, own(r.variable.id) ?? r.variable.base, {
       of: r.sources.length > 0 ? `→ ${r.display}` : null,
+      breakdown: r.breakdown,
     });
   });
 
-  const follows: WindowRow[] = compact ? [] : followRows.map((r) => line(r.variable.name, r.display));
+  const follows: WindowRow[] = compact ? [] : followRows.map((r) => line(r.variable.name, r.display, false, false, r.breakdown));
 
   const heldOf = (i: SheetItem): WindowHeld => ({
     id: i.item.id,
@@ -292,6 +303,7 @@ export function statusWindowView(args: {
     rank: ranks.get(i.item.rankId ?? '') ?? null,
     effects: [...i.effects, ...i.costs.map((c) => `costs ${c.label}`)],
     from: i.from,
+    off: i.off,
   });
 
   const groups: WindowGroup[] = [];
@@ -349,5 +361,5 @@ export const takeAwayLabel = (name: string): string => `Take away ${name}`;
 
 /** A held thing's chip, as a screen reader would have it read. */
 export function heldWords(h: WindowHeld): string {
-  return [h.name, h.rank ?? '', ...h.effects, h.from === null ? '' : `from ${h.from}`].filter((x) => x.length > 0).join(', ');
+  return [h.name, h.rank ?? '', ...h.effects, h.from === null ? '' : `from ${h.from}`, h.off ? 'switched off' : ''].filter((x) => x.length > 0).join(', ');
 }

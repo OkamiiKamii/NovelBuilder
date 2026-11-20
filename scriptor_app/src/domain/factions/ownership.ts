@@ -54,10 +54,10 @@ export class Ownership {
   ) {}
 }
 
-/** Items: every codex entry of the Item category, and anything the author records as owned. */
+/** Items: every codex entry of the Item or Artifact category, and anything the author records as owned. */
 export function ownedItems(model: StoryModel): Entry[] {
   const ids = new Set<string>();
-  for (const e of model.entries.values()) if (e.category === 'item') ids.add(e.id);
+  for (const e of model.entries.values()) if (e.category === 'item' || e.category === 'artifact') ids.add(e.id);
   for (const l of model.links) {
     if (connectionType(l.type).key === 'owns' && l.toType === 'entry' && model.entries.has(l.toId)) ids.add(l.toId);
   }

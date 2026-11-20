@@ -4,7 +4,7 @@
 import { type JsonMap, idOrNull, numOrNull, str, strOrNull } from '../json';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 import { type Category, type FieldDef, type FieldType, fieldTypeOf } from './category';
-import { JsonRecord, freezeMap, maps, strings } from './jsonRecord';
+import { JsonRecord, boolOf, freezeMap, maps, strings } from './jsonRecord';
 
 /** One attribute of an entry. `defId` ties it to a field of the entry's category; without it, the field belongs to
  * this entry alone. Values are text whatever the type (see FieldType). */
@@ -67,6 +67,10 @@ export class Entry extends JsonRecord {
   /** For a place: its level in the novel's place hierarchy. */
   get placeLevel(): string | null {
     return idOrNull(this.raw['placeLevel']);
+  }
+  /** The author has settled which of two partner types (faction or species, ...) this entry is. */
+  get typeSorted(): boolean {
+    return boolOf(this.raw['typeSorted']);
   }
   get createdAt(): number {
     return numOrNull(this.raw['createdAt']) ?? 0;

@@ -76,6 +76,10 @@ export class SysModifier {
   get value(): string {
     return str(this.raw['value']);
   }
+  /** The amount is the item's rank power (and `value` is ignored). */
+  get byRank(): boolean {
+    return this.raw['byRank'] === true;
+  }
 }
 
 /** What using an item spends: an amount (a number or a formula) of a variable, by key. */
@@ -242,6 +246,10 @@ export class SystemBlueprint extends JsonRecord {
   get ranks(): { id: string; name: string }[] {
     return named(this.raw['ranks']);
   }
+  /** Ranks with their power: the number a boost "by rank" uses (Super Strength rank S, power 20, is ×20). */
+  get rankList(): { id: string; name: string; power: number | null }[] {
+    return maps(this.raw['ranks']).map((r) => ({ id: str(r['id']), name: str(r['name']), power: numOrNull(r['power']) }));
+  }
   get items(): SysItem[] {
     return maps(this.raw['items']).map((i) => new SysItem(i));
   }
@@ -268,6 +276,11 @@ export class SystemBlueprint extends JsonRecord {
   rankName(item: SysItem): string {
     const rankId = item.rankId;
     return rankId === null ? '' : (firstOrNull(this.ranks.filter((r) => r.id === rankId))?.name ?? '');
+  }
+
+  /** The power of an item's rank; null when it has no rank or its rank has no power. */
+  rankPower(item: SysItem): number | null {
+    return this.rankList.find((r) => r.id === item.rankId)?.power ?? null;
   }
 
   withFields(changes: JsonMap): SystemBlueprint {
@@ -319,6 +332,10 @@ export class SystemSheet extends JsonRecord {
   }
   get itemIds(): string[] {
     return strings(this.raw['itemIds']);
+  }
+  /** Held items switched off: still held and listed, but their modifiers do nothing. Absent reads as none. */
+  get offIds(): string[] {
+    return strings(this.raw['offIds']);
   }
   /** This entry's own value for a variable, by variable id: a number or a label. */
   get values(): Map<string, string | number> {

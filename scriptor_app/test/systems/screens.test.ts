@@ -12,7 +12,7 @@ import { NovelSnapshot } from '../../src/domain/snapshot/novelSnapshot';
 import { SheetProfile, computeSheet } from '../../src/domain/systems/compute';
 import { systemFromPages } from '../../src/domain/systems/fromPages';
 import { SystemChanges } from '../../src/domain/systems/systemChanges';
-import { systemPresets } from '../../src/domain/systems/systemPresets';
+import { allSystemPresets, systemPresets } from '../../src/domain/systems/systemPresets';
 import { climbChart, climbView } from '../../src/domain/systems/screens/climbView';
 import { faceOffBars, faceOffView } from '../../src/domain/systems/screens/faceOffView';
 import { ownSystemCard, presetCards } from '../../src/domain/systems/screens/gallery';
@@ -67,7 +67,8 @@ describe('the status window', () => {
     // What a class held raises is marked so.
     const strength = sheet.rows.find((r) => r.variable.name === 'Strength')!;
     expect(strength.sources.length).toBeGreaterThan(0);
-    expect(view.attributes).toContainEqual({ kind: 'line', label: 'Strength', value: strength.display, strong: false, raised: true });
+    expect(view.attributes).toContainEqual({ kind: 'line', label: 'Strength', value: strength.display, strong: false, raised: true, breakdown: strength.breakdown });
+    expect(strength.breakdown).toMatch(/base/);
     const shown = view.groups.flatMap((g) => g.held.map((h) => h.name));
     for (const i of sheet.items) expect(shown).toContain(i.item.name);
     // A bar's part is what is left of its most.
@@ -198,7 +199,7 @@ describe('the system speaks', () => {
 describe('the gallery, the book’s own system', () => {
   test('every preset to begin from, its ranks in words', () => {
     const cards = presetCards(null);
-    expect(cards.map((c) => c.begin)).toEqual(systemPresets.map((p) => `Begin with ${p.name}`));
+    expect(cards.map((c) => c.begin)).toEqual(allSystemPresets.map((p) => `Begin with ${p.name}`));
     expect(cards.some((c) => c.lines.some(([, v]) => v === 'Common → Advanced → Unique → Legendary'))).toBe(true);
   });
 

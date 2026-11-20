@@ -52,7 +52,7 @@ export function detailsLinks(
 } {
   const related = cast.relatedOf(entry.id).filter((r) => r.entry.category !== 'character');
   const of = (categories: ReadonlySet<string>) => related.filter((r) => categories.has(r.entry.category));
-  const others = related.filter((r) => r.entry.category !== 'power' && r.entry.category !== 'item');
+  const others = related.filter((r) => r.entry.category !== 'power' && r.entry.category !== 'item' && r.entry.category !== 'artifact');
   const kind = (e: Entry) => cast.model.categories.get(e.category)?.singular ?? e.category;
   const row = (link: RelatedEntry, withStatus: boolean): LinkRow => {
     const status = profile.linkStatus.get(link.linkId) ?? '';
@@ -71,7 +71,7 @@ export function detailsLinks(
     };
   };
   const powers = of(new Set(['power']));
-  const items = of(new Set(['item']));
+  const items = of(new Set(['item', 'artifact']));
   const already = new Set(related.map((r) => r.entry.id));
   const linkable = stableSorted(
     cast.entries.filter((e) => e.category !== 'character' && !already.has(e.id)),

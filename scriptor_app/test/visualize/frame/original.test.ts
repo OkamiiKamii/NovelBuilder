@@ -4,6 +4,7 @@
 // opened, turning views off and on; each kind's table, CSV, timeline, map, ladder and holders; every chart under the
 // original's filters, the empty novel's charts, nice steps, the CSV file and the filter read from an address.
 
+import '../../flutterBuiltins';
 import { join } from 'node:path';
 
 import { ChartFilter, analyticsCharts, type Chart, niceStep, toCsv } from '../../../src/domain/analytics/charts';
