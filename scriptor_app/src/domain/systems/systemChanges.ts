@@ -77,6 +77,13 @@ export class SystemChanges extends RecordChanges {
     this.put('systems', { ...current.raw, ...next, updatedAt: this.now });
   }
 
+  /** Sets a system aside (or brings it back). Only `off: true` is written; turning it on removes the key, so a system
+   * never turned off stays as it was. Nothing else changes. */
+  setSystemOff(systemId: string, off: boolean): void {
+    const { off: _old, ...rest } = this.owned(systemId).raw;
+    this.put('systems', off ? { ...rest, off: true, updatedAt: this.now } : { ...rest, updatedAt: this.now });
+  }
+
   /** Deletes a blueprint and the sheets made from it. Codex entries are not changed. */
   removeSystem(systemId: string): void {
     this.owned(systemId);

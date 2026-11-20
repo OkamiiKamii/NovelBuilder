@@ -13,7 +13,7 @@ import { StoryOrder } from '../model/storyOrder';
 import { stableSorted } from '../reader/stableSort';
 import { JsonRecord, maps, strings } from '../records/jsonRecord';
 import { StoryNode } from '../records/storyNode';
-import { type SysItem, type SysTrack, type SysVariable, SystemBlueprint, SystemSheet } from '../records/system';
+import { type SysItem, type SysTrack, type SysVariable, SystemBlueprint, SystemSheet, isSystemOn } from '../records/system';
 import { type SheetItem, type SheetTrack, SheetProfile, computeSheet, settle, stageGrants } from '../systems/compute';
 import { formatNumber } from '../systems/formula';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
@@ -463,7 +463,8 @@ export class SnapshotChanges extends RecordChanges {
       const sheet = new SystemSheet(r);
       if (sheet.entryId !== entryId) continue;
       const system = blueprints.get(sheet.systemId);
-      if (system === undefined) continue;
+      // An off system keeps what the previous snapshot held; no new state is made from its sheet.
+      if (system === undefined || !isSystemOn(system)) continue;
       const settled = settle(system, SheetProfile.of(sheet), reached);
       const before = mapOrNull(mapOrNull(previous?.raw['systems'])?.[sheet.systemId]);
       // With an earlier snapshot, its numbers stand; only levels with experience logged move on.

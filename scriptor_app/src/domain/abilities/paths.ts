@@ -17,7 +17,7 @@ import { stableSorted } from '../reader/stableSort';
 import { connectionType } from '../records/link';
 import type { ProgressChange } from '../records/progress';
 import type { StoryNode } from '../records/storyNode';
-import type { SysItem, SystemBlueprint } from '../records/system';
+import { type SysItem, type SystemBlueprint, isSystemOn } from '../records/system';
 import { checkFormula, groupNamed } from '../systems/compute';
 import { type FNode, parseFormula } from '../systems/formula';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
@@ -151,10 +151,15 @@ const keyOfChange = (c: ProgressChange): string | null =>
 export function abilityTree(model: StoryModel, snapshots: readonly ProgressSnapshot[] = []): AbilityTree {
   const connections = deriveConnections(model).connections;
   const nodes = new Map<string, AbilityNode>();
-  const systemIndex = new Map([...model.systems.keys()].map((id, i) => [id, i]));
+  const systemIndex = new Map([...model.allSystems.keys()].map((id, i) => [id, i]));
+  // An off system's abilities are on no path, and a recorded path to one is skipped quietly.
+  const isOff = (ref: EntityRef): boolean => {
+    const system = ref.type === 'ability' ? model.abilities.get(ref.id)?.system : undefined;
+    return system !== undefined && !isSystemOn(system);
+  };
   const eligible = (ref: EntityRef): boolean =>
     ref.type === 'ability'
-      ? model.abilities.has(ref.id)
+      ? model.abilities.has(ref.id) && !isOff(ref)
       : ref.type === 'entry'
         ? (model.entries.get(ref.id)?.category ?? 'character') !== 'character'
         : false;
@@ -214,6 +219,7 @@ export function abilityTree(model: StoryModel, snapshots: readonly ProgressSnaps
   const isPath = (c: Connection) => c.kind === 'link' && pathTypes.has(connectionType(c.type).key);
   const notDrawn: AbilityTree['notDrawn'] = [];
   for (const c of connections.filter(isPath)) {
+    if ([c.from, c.to].some(isOff)) continue;
     const bad = [c.from, c.to].find((end) => !eligible(end));
     if (bad === undefined) {
       add(c.from);

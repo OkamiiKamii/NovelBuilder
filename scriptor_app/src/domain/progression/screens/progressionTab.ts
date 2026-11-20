@@ -36,6 +36,8 @@ export type ProgressionSheets = {
   caption: string;
   /** With no blueprints in the novel: the line, and "Open Systems". */
   none: { line: string; open: string } | null;
+  /** The novel has systems but every one is turned off: the tab says nothing about systems. */
+  allOff: boolean;
   sheets: { sheet: SystemSheet; system: SystemBlueprint; title: string; open: boolean }[];
   /** "Add X to a system…", with the systems they are not on, by name. */
   add: { label: string; tooltip: string; systems: { id: string; name: string }[] } | null;
@@ -56,7 +58,8 @@ export function progressionSheets(model: StoryModel, entryId: string, name: stri
     caption:
       `Put ${name} on one of the novel’s system blueprints to give them a sheet. A sheet keeps only what is ` +
       'their own; everything a class or skill brings is read from the blueprint.',
-    none: model.systems.size === 0 ? { line: 'This novel has no system blueprints.', open: 'Open Systems' } : null,
+    none: model.allSystems.size === 0 ? { line: 'This novel has no system blueprints.', open: 'Open Systems' } : null,
+    allOff: model.systems.size === 0 && model.allSystems.size > 0,
     sheets: sheets.map((sheet) => {
       const system = model.systems.get(sheet.systemId)!;
       return { sheet, system, title: system.name, open: sheets.length === 1 };
@@ -135,7 +138,7 @@ export function statusView(cast: CastData, listed: Listed, systemId: string | nu
         { label: 'Chapters linked', value: formatNumber(listed.linkedIn.length) },
         { label: 'In the text', value: formatNumber(listed.seenIn.length) },
         { label: 'Relationships', value: formatNumber(ties) },
-        { label: 'Systems', value: formatNumber(model.sheets.filter((s) => s.entryId === entry.id).length) },
+        { label: 'Systems', value: formatNumber(model.sheets.filter((s) => s.entryId === entry.id && model.systems.has(s.systemId)).length) },
       ],
       goTo: 'GO TO',
       tabs: [

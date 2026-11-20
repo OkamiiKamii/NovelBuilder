@@ -4,6 +4,7 @@
 import { ChangeRefused, cleanList } from '../codex/codexChanges';
 import { type JsonMap, jsonEquals, listOf, mapOrNull, str } from '../json';
 import { maps, strings } from '../records/jsonRecord';
+import { isSystemOn } from '../records/system';
 import { substituteIds } from '../snapshot/copy';
 import type { NovelSnapshot } from '../snapshot/novelSnapshot';
 import { dartTrim } from '../text/dartString';
@@ -202,7 +203,10 @@ export function mergePlan(s: NovelSnapshot, keepId: string, mergeId: string): Me
   const links = s.rows('loreLinks').filter(between).length;
   const relations = s.rows('characterRelations').filter(between).length;
   const profiles = s.rows('characterProfiles').filter((p) => p['entryId'] === keepId || p['entryId'] === mergeId).length;
-  const sheets = s.rows('systemSheets').filter((r) => r['entryId'] === keepId || r['entryId'] === mergeId);
+  const off = offSystemIds(s);
+  const sheets = s.rows('systemSheets').filter((r) => (r['entryId'] === keepId || r['entryId'] === mergeId) && !off.has(r['systemId']));
+  const offRows = s.rows('systemSheets').filter((r) => off.has(r['systemId']));
+  const offKept = offRows.filter((r) => r['entryId'] === mergeId && offRows.some((k) => k['entryId'] === keepId && k['systemId'] === r['systemId'])).length;
   const doubled = sheets.filter((r) => r['entryId'] === mergeId && sheets.some((k) => k['entryId'] === keepId && k['systemId'] === r['systemId'])).length;
   const keys = new Set(maps(keep['fields']).map((f) => normalizeName(str(f['key']))));
   const newFields = maps(merge['fields'])
@@ -225,6 +229,7 @@ export function mergePlan(s: NovelSnapshot, keepId: string, mergeId: string): Me
       ...(dartTrim(str(merge['summary'])).length > 0 && dartTrim(str(keep['summary'])).length === 0 ? ['its summary'] : []),
       ...(merge['image'] !== null && merge['image'] !== undefined && (keep['image'] === null || keep['image'] === undefined) ? ['its picture'] : []),
       `a note on “${keepName}” saying “${mergeName}” was merged into it`,
+      ...(offKept > 0 ? [`${plural(offKept, 'sheet', 'sheets')} on a turned-off system ${offKept === 1 ? 'is' : 'are'} kept; turn it on to choose one`] : []),
     ],
     [
       ...(links > 0 ? [`${plural(links, 'connection', 'connections')} between the two, which would point at itself`] : []),
@@ -237,6 +242,9 @@ export function mergePlan(s: NovelSnapshot, keepId: string, mergeId: string): Me
   );
 }
 
+/** Ids of the systems turned off: their sheets are never dropped, even when doubled. */
+const offSystemIds = (s: NovelSnapshot) => new Set(s.rows('systems').filter((r) => !isSystemOn(r)).map((r) => r['id']));
+
 /** Merges one entry into another of the same category, once the author has seen the plan and said yes. Every
  * reference to the merged entry is re-pointed at the one kept; what that makes point at itself, or double, goes; the
  * merged entry's content is added; then the merged entry is deleted. Nothing is left pointing at nothing. */
@@ -247,6 +255,7 @@ export function mergeEntries(s: NovelSnapshot, keepId: string, mergeId: string, 
   const merge = entryRow(s, mergeId);
   const goneProfile = s.rows('characterProfiles').find((p) => p['entryId'] === mergeId) ?? null;
   const keptProfile = s.rows('characterProfiles').find((p) => p['entryId'] === keepId) ?? null;
+  const off = offSystemIds(s);
   const goneSheets = new Set(s.rows('systemSheets').filter((r) => r['entryId'] === mergeId).map((r) => r['id']));
 
   // 1. Every reference follows.
@@ -295,7 +304,7 @@ export function mergeEntries(s: NovelSnapshot, keepId: string, mergeId: string, 
     'systemSheets',
     out
       .rows('systemSheets')
-      .filter((r) => !(goneSheets.has(r['id']) && keptSheets.some((k) => !goneSheets.has(k['id']) && k['systemId'] === r['systemId']))),
+      .filter((r) => !(goneSheets.has(r['id']) && keptSheets.some((k) => !goneSheets.has(k['id']) && k['systemId'] === r['systemId']) && !off.has(r['systemId']))),
   );
 
   // 3. The merged entry's own content joins the one kept.

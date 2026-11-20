@@ -17,7 +17,7 @@ import { type FieldType } from '../records/category';
 import { type Entry, EntryField } from '../records/entry';
 import { maps, strings } from '../records/jsonRecord';
 import { Link } from '../records/link';
-import { blankSheet } from '../records/system';
+import { blankSheet, isSystemOn } from '../records/system';
 import type { NovelSnapshot } from '../snapshot/novelSnapshot';
 import { dartToLowerCase, dartTrim } from '../text/dartString';
 import {
@@ -261,6 +261,7 @@ export class CharacterChanges extends CodexChanges {
     // start, every number read from the blueprint until the author gives them their own.
     if (Object.prototype.hasOwnProperty.call(this.snapshot.collections, 'systemSheets')) {
       for (const system of this.rows('systems')) {
+        if (!isSystemOn(system)) continue;
         const systemId = str(system['id']);
         if (this.rows('systemSheets').some((s) => s['systemId'] === systemId && s['entryId'] === entry.id)) continue;
         this.put(

@@ -5,6 +5,7 @@
 import { localeCompare } from '../exchange/collation';
 import { type JsonMap, idOrNull, mapOrNull, strOrNull } from '../json';
 import { strings } from '../records/jsonRecord';
+import { isSystemOn } from '../records/system';
 import { type Connection, type ConnectionKind, connectionKindOf, deriveConnections } from './connections';
 import { EntityRef, type EntityType, type EntityView, entityTypeOf, entityTypes } from './entityRef';
 import { type StoryModel } from './storyModel';
@@ -121,7 +122,7 @@ function idsOf(model: StoryModel, type: EntityType): Iterable<string> {
     case 'relation':
       return model.relations.keys();
     case 'ability':
-      return model.abilities.keys();
+      return [...model.abilities].filter(([, a]) => isSystemOn(a.system)).map(([id]) => id);
   }
 }
 

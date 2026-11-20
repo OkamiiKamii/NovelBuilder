@@ -16,7 +16,7 @@ import { Novel } from '../records/novel';
 import { ProgressCategory, ProgressChange } from '../records/progress';
 import { CharacterRelation } from '../records/relation';
 import { ChapterPlan, StoryNode } from '../records/storyNode';
-import { type SysItem, SystemBlueprint, SystemSheet } from '../records/system';
+import { type SysItem, SystemBlueprint, SystemSheet, isSystemOn } from '../records/system';
 import { PlotThread } from '../records/thread';
 import type { NovelSnapshot } from '../snapshot/novelSnapshot';
 import { type EntityRef, EntityView, abilityId } from './entityRef';
@@ -44,6 +44,7 @@ type ModelParts = {
   events: ReadonlyMap<string, TimelineEvent>;
   threads: ReadonlyMap<string, PlotThread>;
   systems: ReadonlyMap<string, SystemBlueprint>;
+  allSystems: ReadonlyMap<string, SystemBlueprint>;
   abilities: ReadonlyMap<string, AbilityRecord>;
   sheets: readonly SystemSheet[];
   calendar: Calendar;
@@ -63,7 +64,11 @@ export class StoryModel {
   readonly relations: ReadonlyMap<string, CharacterRelation>;
   readonly events: ReadonlyMap<string, TimelineEvent>;
   readonly threads: ReadonlyMap<string, PlotThread>;
+  /** The systems that are on: what characters and checks read. */
   readonly systems: ReadonlyMap<string, SystemBlueprint>;
+  /** Every system, on and off, in the same order. */
+  readonly allSystems: ReadonlyMap<string, SystemBlueprint>;
+  /** Built from every system, so a link to an off system's ability still resolves. */
   readonly abilities: ReadonlyMap<string, AbilityRecord>;
   readonly sheets: readonly SystemSheet[];
   readonly calendar: Calendar;
@@ -83,6 +88,7 @@ export class StoryModel {
     this.events = parts.events;
     this.threads = parts.threads;
     this.systems = parts.systems;
+    this.allSystems = parts.allSystems;
     this.abilities = parts.abilities;
     this.sheets = parts.sheets;
     this.calendar = parts.calendar;
@@ -98,9 +104,9 @@ export class StoryModel {
       return out;
     };
     const nodes = index('chapters', (r) => new StoryNode(r));
-    const systems = index('systems', (r) => new SystemBlueprint(r));
+    const allSystems = index('systems', (r) => new SystemBlueprint(r));
     const abilities = new Map<string, AbilityRecord>();
-    for (const system of systems.values()) {
+    for (const system of allSystems.values()) {
       const groups = new Map<string, string>();
       for (const g of system.groups) groups.set(g.id, g.name);
       for (const item of system.items) {
@@ -121,7 +127,8 @@ export class StoryModel {
       relations: index('characterRelations', (r) => new CharacterRelation(r)),
       events: index('timelineEvents', (r) => new TimelineEvent(r)),
       threads: index('plotThreads', (r) => new PlotThread(r)),
-      systems,
+      systems: new Map([...allSystems].filter(([, s]) => isSystemOn(s))),
+      allSystems,
       abilities,
       sheets: s.rows('systemSheets').map((r) => new SystemSheet(r)),
       calendar: Calendar.fromJson(calendarRows.length === 0 ? null : calendarRows[0]),
@@ -149,6 +156,7 @@ export class StoryModel {
       events: this.events,
       threads: this.threads,
       systems: this.systems,
+      allSystems: this.allSystems,
       abilities: this.abilities,
       sheets: this.sheets,
       calendar: this.calendar,

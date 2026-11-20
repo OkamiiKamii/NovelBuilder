@@ -12,7 +12,7 @@ import { openStatuses } from '../plot/diagnostics';
 import { ProgressSnapshot, compareSnapshots, inStoryOrder } from '../progression/snapshots';
 import { maps } from '../records/jsonRecord';
 import { StoryNode } from '../records/storyNode';
-import { SystemBlueprint } from '../records/system';
+import { SystemBlueprint, isSystemOn } from '../records/system';
 import { stableSorted } from '../reader/stableSort';
 import { dartTrim } from '../text/dartString';
 
@@ -770,7 +770,7 @@ export function worldFromRows(rows: (collection: string) => readonly JsonMap[]):
     facts: [...rows('canonFacts')],
     rules: [...rows('continuityRules')],
     snapshots: rows('progressSnapshots').map((r) => new ProgressSnapshot(r)),
-    systems: rows('systems').map((r) => new SystemBlueprint(r)),
+    systems: rows('systems').filter(isSystemOn).map((r) => new SystemBlueprint(r)),
   };
 }
 

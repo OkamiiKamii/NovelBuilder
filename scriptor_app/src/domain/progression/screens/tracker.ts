@@ -22,6 +22,7 @@ import { type StoryModel } from '../../model/storyModel';
 import { Anchor, EventAnchor, NodeAnchor, spanOfEvent } from '../../model/validity';
 import { type ProgressCategory, type ProgressChange } from '../../records/progress';
 import { stableSorted } from '../../reader/stableSort';
+import { isSystemOn } from '../../records/system';
 import { dartToLowerCase, dartTrim } from '../../text/dartString';
 import { nodeLabel } from '../../timeline/narrative';
 import {
@@ -347,6 +348,8 @@ export function changeForm(
       model.progress.filter((c) => c.categoryId === category.id && c.entryId === entryId && c.subject.length > 0).map((c) => c.subject),
     ),
   ];
+  // An off system's abilities are not offered (one already chosen stays, so editing loses nothing).
+  const usable = [...model.abilities].filter(([id, a]) => isSystemOn(a.system) || id === form.abilityId);
   const others = stableSorted(
     [...model.entries.values()].filter((e) => e.id !== entryId),
     (a, b) => localeCompare(a.name, b.name),
@@ -378,10 +381,10 @@ export function changeForm(
     refChoices: heldOrMoment ? [{ value: '', label: 'None' }, ...others.map((e) => ({ value: e.id, label: e.name }))] : null,
     refValue: others.some((e) => e.id === form.refId) ? form.refId : '',
     abilityChoices:
-      heldOrMoment && model.abilities.size > 0
+      heldOrMoment && usable.length > 0
         ? [
             { value: '', label: 'None' },
-            ...[...model.abilities].map(([id, a]) => ({ value: id, label: `${a.system.name}: ${a.item.name}` })),
+            ...usable.map(([id, a]) => ({ value: id, label: `${a.system.name}: ${a.item.name}` })),
           ]
         : null,
     abilityValue: model.abilities.has(form.abilityId) ? form.abilityId : '',

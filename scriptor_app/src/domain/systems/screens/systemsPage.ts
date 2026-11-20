@@ -82,12 +82,14 @@ export function systemsPath(args: { systemId?: string | null; tab?: string | nul
   return `/organize/systems${query.length === 0 ? '' : `?${query.join('&')}`}`;
 }
 
-/** The novel's systems, oldest first (then by name), and the one shown (`chosen`, else the first). */
+/** Every system of the novel: those that are on first, then those turned off, each oldest first (then by name); and
+ * the one shown (`chosen`, else the first). */
 export function systemsOf(model: StoryModel, chosen: string | null): { systems: SystemBlueprint[]; system: SystemBlueprint | null } {
-  const systems = stableSorted(model.systems.values(), (a, b) => {
+  const sorted = stableSorted(model.allSystems.values(), (a, b) => {
     const c = a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0;
     return c !== 0 ? c : localeCompare(a.name, b.name);
   });
+  const systems = [...sorted.filter((s) => !s.off), ...sorted.filter((s) => s.off)];
   return { systems, system: systems.find((s) => s.id === chosen) ?? systems[0] ?? null };
 }
 
@@ -121,7 +123,31 @@ export const systemsWords = {
   description: 'What it is',
   delete: 'Delete this system…',
   speaks: 'The system speaks',
+  turnedOff: 'Turned off',
+  addSystem: 'Add a system',
+  turnedOffNote: 'Turned off: hidden from your characters and checks. Nothing is deleted; turn it on to bring it back.',
 } as const;
+
+/** The On/Off switch of a system. */
+export function systemSwitch(system: SystemBlueprint): { on: boolean; label: 'On' | 'Off'; accessibilityLabel: string; hint: string } {
+  const on = !system.off;
+  return {
+    on,
+    label: on ? 'On' : 'Off',
+    accessibilityLabel: `${system.name} is ${on ? 'on' : 'off'}`,
+    hint: on ? 'Turn it off to set it aside without deleting anything' : 'Turn it on to bring it back as it was',
+  };
+}
+
+/** A system's name on its chip: "(off)" after one turned off. */
+export const systemChipLabel = (s: SystemBlueprint): string => (s.off ? `${s.name} (off)` : s.name);
+
+/** The toast after the switch is pressed. */
+export const switchedToast = (name: string, on: boolean): string => `“${name}” turned ${on ? 'on' : 'off'}.`;
+
+// These return true so a screen can tell the change was made (`now(...) !== undefined`).
+export const turnSystemOff = (systemId: string) => (c: SystemChanges) => (c.setSystemOff(systemId, true), true as const);
+export const turnSystemOn = (systemId: string) => (c: SystemChanges) => (c.setSystemOff(systemId, false), true as const);
 
 // ---------------------------------------------------------------------------------------------------- the head
 
@@ -142,13 +168,13 @@ export function deleteSystemDialog(system: SystemBlueprint): { title: string; me
   return {
     title: `Delete ${system.name}?`,
     message:
-      'The blueprint goes, with the sheets made from it and the paths recorded between its items. Characters and entries are not changed; snapshots keep what they recorded.',
+      'The blueprint goes, with the sheets made from it and the paths recorded between its items. Characters and entries are not changed; snapshots keep what they recorded. To keep it all, turn the system off instead: it is set aside and nothing is deleted.',
     confirm: 'Delete the system',
     done: `Deleted ${system.name}.`,
   };
 }
 
-export const removeSystem = (systemId: string): Change => (c) => c.removeSystem(systemId);
+export const removeSystem = (systemId: string) => (c: SystemChanges) => (c.removeSystem(systemId), true as const);
 
 /** Taking items out of a blueprint takes the paths recorded to or from them, and the sheets that hold them stop
  * holding them. When anything would go, the author is told what first (null: nothing to ask). */

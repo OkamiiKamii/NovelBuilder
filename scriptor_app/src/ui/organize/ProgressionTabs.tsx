@@ -405,6 +405,7 @@ function SystemSheets({ open, entryId }: { open: OpenCast; entryId: string }) {
   const name = open.cast.nameOf(entryId) ?? '';
   const view = progressionSheets(open.cast.model, entryId, name);
   const shown = (id: string, first: boolean) => openSheets.has(id) !== first;
+  if (view.allOff) return null;
   return (
     <Panel style={styles.box}>
       <Text style={styles.boxTitle}>{view.title}</Text>

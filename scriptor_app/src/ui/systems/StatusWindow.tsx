@@ -49,7 +49,7 @@ const faint = withAlpha(ink, 0.62);
 
 /** A blueprint and a sheet as the model holds them. */
 function systemOf(model: StoryModel, systemId: string): SystemBlueprint | null {
-  return model.systems.get(systemId) ?? null;
+  return model.allSystems.get(systemId) ?? null;
 }
 
 /** The text style of a window: its face (JetBrains Mono when the look is mono, else the book face), ink, height 1.3. */

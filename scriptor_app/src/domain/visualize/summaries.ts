@@ -93,7 +93,7 @@ export function graphSummary(
       degree.set(end.key, { ref: end, label: was?.label ?? model.resolve(end)?.label ?? end.id, count: (was?.count ?? 0) + 1 });
     }
   }
-  const records = model.nodes.size + model.entries.size + model.events.size + model.threads.size + model.abilities.size;
+  const records = model.nodes.size + model.entries.size + model.events.size + model.threads.size + [...model.abilities.values()].filter((a) => model.systems.has(a.system.id)).length;
   return {
     records,
     connections: connections.length,
@@ -165,6 +165,7 @@ export function progressionRows(model: StoryModel, snapshots: readonly JsonMap[]
   const counts = new Map<string, { abilities: number; snapshots: number; changes: number }>();
   const at = (id: string) => counts.get(id) ?? { abilities: 0, snapshots: 0, changes: 0 };
   for (const sheet of model.sheets) {
+    if (!model.systems.has(sheet.systemId)) continue;
     const c = at(sheet.entryId);
     counts.set(sheet.entryId, { ...c, abilities: c.abilities + sheet.itemIds.length });
   }

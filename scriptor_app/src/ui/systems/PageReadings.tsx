@@ -100,7 +100,7 @@ function Head({ icon, heading, right }: { icon: IconName; heading: string; right
 
 export function NumberLedgerView({ sys, systemId }: { sys: OpenSystems; systemId: string }) {
   const model = useMemo(() => StoryModel.fromSnapshot(sys.snapshot), [sys.snapshot]);
-  const system = model.systems.get(systemId) ?? null;
+  const system = model.allSystems.get(systemId) ?? null;
   const { stored, version } = useStored(sys.novelId);
   const openChapter = useOpenChapter(sys.novelId);
   const key = system === null ? '' : `${systemId}\u0000${version}\u0000${JSON.stringify(system.raw)}\u0000${model.sheets.length}`;
@@ -175,7 +175,7 @@ export function PagesNamesView({ sys, systemId }: { sys: OpenSystems; systemId: 
   const toast = useToast();
   const storeSetting = useStoreSetting();
   const model = useMemo(() => StoryModel.fromSnapshot(sys.snapshot), [sys.snapshot]);
-  const system = model.systems.get(systemId) ?? null;
+  const system = model.allSystems.get(systemId) ?? null;
   const { stored, version } = useStored(sys.novelId);
   const aside = lib.settings.read(setAsideKey(systemId));
   const [done, setDone] = useState<ReadonlySet<string>>(new Set());

@@ -424,7 +424,7 @@ export function lifeHistory(
   }
 
   // The abilities on their system sheets: held, with no time given.
-  for (const sheet of model.sheets.filter((s) => s.entryId === characterId)) {
+  for (const sheet of model.sheets.filter((s) => s.entryId === characterId && model.systems.has(s.systemId))) {
     for (const itemId of sheet.itemIds) {
       const id = `${sheet.systemId}/${itemId}`;
       const ability = model.abilities.get(id);

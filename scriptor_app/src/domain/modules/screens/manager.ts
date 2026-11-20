@@ -17,6 +17,7 @@ import { type ModuleFit } from '../moduleMatch';
 import { ModuleChanges, type ModuleState, type ModuleStatus, moduleStateLabel } from '../moduleChanges';
 import { ModuleDefinition, builtinModules } from '../moduleDefs';
 import { maps } from '../../records/jsonRecord';
+import { isSystemOn } from '../../records/system';
 
 /** Which modules the manager shows. */
 export type ShowModules = 'all' | 'on' | 'off';
@@ -109,7 +110,7 @@ export function managerView(
           .map((f) => f.name)
           .join(', '),
       })),
-    systems: snapshot.rows('systems').map((s) => ({ id: str(s['id']), name: str(s['name'], 'Untitled system') })),
+    systems: snapshot.rows('systems').filter(isSystemOn).map((s) => ({ id: str(s['id']), name: str(s['name'], 'Untitled system') })),
   };
 }
 

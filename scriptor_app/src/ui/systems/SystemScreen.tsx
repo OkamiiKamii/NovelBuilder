@@ -20,8 +20,6 @@ import { maps } from '../../domain/records/jsonRecord';
 import type { SysItem, SysTrack, SystemBlueprint } from '../../domain/records/system';
 import { checkFormula } from '../../domain/systems/compute';
 import type { SystemChanges } from '../../domain/systems/systemChanges';
-import { blankBlueprint, allSystemPresets } from '../../domain/systems/systemPresets';
-import { presetIcon } from '../../domain/systems/screens/gallery';
 import { moved, patched, rowTools, without } from '../../domain/systems/screens/parts';
 import {
   type SystemsMode,
@@ -37,7 +35,6 @@ import {
   addVariable,
   blueprintBesideFrom,
   cellEdit,
-  createSystem,
   deleteSystemDialog,
   describeSystem,
   editCost,
@@ -75,6 +72,7 @@ import {
   systemsModes,
   systemsOf,
   systemsTabs,
+  systemChipLabel,
   systemsWords,
   tabChip,
   tabOf,
@@ -94,11 +92,12 @@ import { rememberOrganizeTab } from '../organize/OrganizeScreen';
 import { ChooserField, SavedText } from '../organize/parts';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
+import { AddSystemSheet } from './SystemGallery';
+import { SystemSwitch } from './SystemSwitch';
 import { SheetEditor } from './SheetTools';
 import { LiveWindow } from './StatusWindow';
 import { ClimbView, FaceOffView, SystemSpeaks } from './SheetTools';
 import { LevelsView, NumberLedgerView, PagesNamesView } from './PageReadings';
-import { motifIcon } from './SystemsPane';
 import { type OpenSystems, useSystems } from './useSystems';
 
 type Change = (c: SystemChanges) => void;
@@ -141,10 +140,11 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
       lib.novels.touchSettings();
     });
   };
-  const create = (content: JsonMap) => {
-    const made = sys.now(createSystem(content));
-    if (made) {
-      setChosen(made.id);
+  /** A system added from the gallery: shown (the book's own, in the story; a new one, its blueprint). */
+  const made = (id: string, own: boolean) => {
+    setChosen(id);
+    if (own) setMode('story');
+    else {
       setModeState('blueprint');
       setTab('variables');
     }
@@ -184,9 +184,18 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
     <Page top={insets.top} title={systemsWords.title} subtitle={String(sys.snapshot.project['title'] ?? '')} onBack={back}>
       <View style={styles.wrap}>
         {systems.map((s) => (
-          <Chip key={s.id} label={s.name} selected={s.id === system.id} onPress={() => setChosen(s.id)} />
+          <View key={s.id} style={s.off && !(s.id === system.id) && styles.dim}>
+            <Chip label={systemChipLabel(s)} selected={s.id === system.id} onPress={() => setChosen(s.id)} />
+          </View>
         ))}
       </View>
+      {system.off && (
+        <View style={styles.banner} accessibilityRole="alert">
+          <Text style={styles.bannerTitle}>{systemsWords.turnedOff}</Text>
+          <Muted>{systemsWords.turnedOffNote}</Muted>
+          <SystemSwitch sys={sys} system={system} />
+        </View>
+      )}
       <View style={styles.halves} accessibilityRole="tablist">
         {systemsModes.map((m) => {
           const on = m === mode;
@@ -225,8 +234,7 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
       ) : (
         <View style={styles.gap}>
           <View style={styles.row}>
-            <GoldButton label={systemsWords.blank} icon="plus" compact onPress={() => create(blankBlueprint)} />
-            <OutlineButton label={systemsWords.preset} compact onPress={() => setChoosing(true)} accessibilityLabel={systemsWords.presetTooltip} />
+            <GoldButton label={systemsWords.addSystem} icon="plus" compact onPress={() => setChoosing(true)} />
           </View>
           <BlueprintHead
             sys={sys}
@@ -277,12 +285,7 @@ export function SystemScreen({ systemId, tab, sheetId }: { systemId: string | nu
         </View>
       )}
 
-      <ActionSheet
-        visible={choosing}
-        title={systemsWords.presetTooltip}
-        onClose={() => setChoosing(false)}
-        actions={allSystemPresets.map((p) => ({ label: p.name, icon: motifIcon(presetIcon(p.id)), onPress: () => create(p.content) }))}
-      />
+      {choosing && <AddSystemSheet sys={sys} model={model} onClose={() => setChoosing(false)} onMade={made} />}
       {ask && (
         <ConfirmDelete
           visible
@@ -428,6 +431,7 @@ function BlueprintHead({ sys, system, onDelete }: { sys: OpenSystems; system: Sy
         multiline
         onSave={(v) => typed(sys, laterKey(system.id, 'description'), describeSystem(system.id, v))}
       />
+      {!system.off && <SystemSwitch sys={sys} system={system} />}
       <OutlineButton label={systemsWords.delete} icon="delete-outline" compact tone="danger" onPress={onDelete} style={styles.start} />
     </Panel>
   );
@@ -1032,6 +1036,9 @@ function SheetsTab({
 
 const styles = StyleSheet.create({
   speaks: { alignSelf: 'flex-start' },
+  dim: { opacity: 0.6 },
+  banner: { gap: 2, padding: space.md, borderRadius: 10, borderWidth: 1, borderColor: colors.border, borderLeftWidth: 3, borderLeftColor: colors.gold, backgroundColor: colors.surface },
+  bannerTitle: { fontFamily: fonts.ui, fontSize: 15, fontWeight: '700', color: colors.text },
   page: { flex: 1 },
   head: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingHorizontal: space.sm, paddingTop: space.sm },
   title: { fontFamily: fonts.display, fontSize: 22, color: colors.text },

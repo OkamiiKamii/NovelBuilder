@@ -75,7 +75,7 @@ function Kicker({ icon, text }: { icon: 'trending-up' | 'sword-cross' | 'message
  * <Name> off <System>". */
 export function SheetEditor({ sys, systemId, sheetId }: { sys: OpenSystems; systemId: string; sheetId: string }) {
   const model = useModel(sys);
-  const system = model.systems.get(systemId) ?? null;
+  const system = model.allSystems.get(systemId) ?? null;
   const sheet = model.sheets.find((s) => s.id === sheetId) ?? null;
   if (!system || !sheet) return null;
   const name = dartTrim(model.entries.get(sheet.entryId)?.name ?? '') || 'Unnamed';
@@ -234,7 +234,7 @@ function Leveling({ sys, model, systemId, sheetId, name }: { sys: OpenSystems; m
   const [source, setSource] = useState('');
   const [place, setPlace] = useState('');
   const [note, setNote] = useState('');
-  const system = model.systems.get(systemId);
+  const system = model.allSystems.get(systemId);
   const sheet = model.sheets.find((s) => s.id === sheetId);
   if (!system || !sheet) return null;
   const lv = leveling(model, system, sheet, name, track);
@@ -317,7 +317,7 @@ export function ClimbView({ sys, systemId, sheetId }: { sys: OpenSystems; system
   const model = useModel(sys);
   const [chosen, setChosen] = useState<string | null>(sheetId);
   const [width, setWidth] = useState(0);
-  const system = model.systems.get(systemId);
+  const system = model.allSystems.get(systemId);
   if (!system) return null;
   const v = climbView(model, system, chosen ?? sheetId);
   if (!v) return null;
@@ -398,7 +398,7 @@ export function FaceOffView({ sys, systemId }: { sys: OpenSystems; systemId: str
   const [sides, setSides] = useState<{ a: string | null; b: string | null }>({ a: null, b: null });
   const [said, setSaid] = useState<string | null>(null);
   const card = useRef<ComponentRef<typeof View>>(null);
-  const system = model.systems.get(systemId);
+  const system = model.allSystems.get(systemId);
   if (!system) return null;
   const v = faceOffView(model, system, sides);
   if (!v) return null;
@@ -507,7 +507,7 @@ export function SystemSpeaks({
   const router = useRouter();
   const toast = useToast();
   const model = useModel(sys);
-  const system = model.systems.get(systemId) ?? null;
+  const system = model.allSystems.get(systemId) ?? null;
   const [state] = useState(() => {
     if (!system) return null;
     const s = new SpeaksState(model, system, lib.settings.read(bracketKey(sys.novelId)));

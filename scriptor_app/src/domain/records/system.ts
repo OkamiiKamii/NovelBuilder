@@ -271,6 +271,10 @@ export class SystemBlueprint extends JsonRecord {
   get createdAt(): number {
     return numOrNull(this.raw['createdAt']) ?? 0;
   }
+  /** Set aside: hidden from characters and checks, nothing deleted. Stored as `off: true`; absent reads as on. */
+  get off(): boolean {
+    return this.raw['off'] === true;
+  }
 
   /** The name of an item's rank as it is now; empty when it has none. */
   rankName(item: SysItem): string {
@@ -287,6 +291,10 @@ export class SystemBlueprint extends JsonRecord {
     return new SystemBlueprint(this.merged(changes));
   }
 }
+
+/** Whether a system row (or blueprint) is on: only `off: true` turns it off. */
+export const isSystemOn = (system: JsonMap | SystemBlueprint): boolean =>
+  (system instanceof SystemBlueprint ? system.raw : system)['off'] !== true;
 
 /** A sheet as it begins: `entryId` on the system `systemId`, with nothing of its own yet (every number read from the
  * blueprint), holding nothing. Made when a character is put on a system, by hand or as they are created. */

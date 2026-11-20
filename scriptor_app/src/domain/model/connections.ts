@@ -473,7 +473,10 @@ export function deriveConnections(model: StoryModel): {
 
   const connections: Connection[] = [];
   const dangling: DanglingConnection[] = [];
+  // An end on an off system's ability is hidden quietly: not shown, and not broken (the ability still resolves).
+  const hidden = (end: EntityRef) => end.type === 'ability' && !model.systems.has(model.abilities.get(end.id)?.system.id ?? '') && model.abilities.has(end.id);
   for (const c of all.values()) {
+    if (hidden(c.from) || hidden(c.to)) continue;
     const missing = [c.from, c.to].filter((end) => !model.exists(end));
     if (missing.length === 0) connections.push(c);
     else dangling.push(new DanglingConnection(c, missing));

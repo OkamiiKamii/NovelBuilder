@@ -343,6 +343,8 @@ through so they can be referred to by number ("build #42 next"). The source file
 374. **Skills switched on or off (Scriptor only)** — Each held skill has an On/Off switch on the status window and each chapter snapshot (skills a stage gives included), and each chosen skill on the whole-sheet editor; an off skill stays listed, dimmed, and changes nothing. A skill given back comes back on. [src/domain/records/system.ts, src/domain/systems/systemChanges.ts, src/domain/progression/snapshots.ts]
 375. **How a stat came out (Scriptor only)** — Under a boosted stat: "(10 base + 5 Iron Skin) × 20 Super Strength (S)", on the status window, the sheet and snapshots. [src/domain/systems/compute.ts]
 376. **Leveling Job preset (Scriptor only)** — A fifth starter: a Level track, Strength, Speed, Intelligence, Defense and Vitality, ranks F–SSS with power numbers, a Job group (one at a time) and Skills. [src/domain/systems/systemPresets.ts]
+377. **Systems on and off (Scriptor only)** — Every system has an On | Off control, on its card and its page. Off sets it aside: characters, Progression, chapter snapshots, ability paths and checks show nothing of it, and nothing is deleted (blueprint, sheets, experience, snapshots and links all stay). On brings it all back. Turned-off systems are listed apart, dimmed. [src/ui/systems/SystemSwitch.tsx, src/domain/systems/systemChanges.ts, src/domain/model/storyModel.ts]
+378. **Add a system, any time (Scriptor only)** — One button opens the gallery: each starter with a sample status window, "Your book's own system" when the pages describe one, and blank. [src/ui/systems/SystemGallery.tsx]
 
 ## 24. Character progression (Progression tab on a profile)
 

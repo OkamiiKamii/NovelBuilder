@@ -145,7 +145,7 @@ export function progressionLine(
   cast: CastData,
   entryId: string,
 ): { title: string; text: string; open: string } | null {
-  const sheets = cast.model.sheets.filter((s) => s.entryId === entryId).length;
+  const sheets = cast.model.sheets.filter((s) => s.entryId === entryId && cast.model.systems.has(s.systemId)).length;
   const snapshots = cast.snapshot.rows('progressSnapshots').filter((s) => s['entryId'] === entryId).length;
   const changes = cast.model.progress.filter((c) => c.entryId === entryId).length;
   if (sheets + snapshots + changes === 0) return null;

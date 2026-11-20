@@ -14,6 +14,7 @@ import type { StoryModel } from '../model/storyModel';
 import { stableSorted } from '../reader/stableSort';
 import { Category, type FieldType } from '../records/category';
 import { strings } from '../records/jsonRecord';
+import { isSystemOn } from '../records/system';
 import { connectionType } from '../records/link';
 import { isGroup } from '../records/storyNode';
 import { dartTrim } from '../text/dartString';
@@ -228,7 +229,7 @@ export function knowledgeGraph(model: StoryModel): KnowledgeGraph {
   for (const id of model.events.keys()) add(new EntityRef('event', id));
   for (const id of model.nodes.keys()) add(new EntityRef('node', id));
   for (const id of model.threads.keys()) add(new EntityRef('thread', id));
-  for (const id of model.abilities.keys()) add(new EntityRef('ability', id));
+  for (const [id, a] of model.abilities) if (isSystemOn(a.system)) add(new EntityRef('ability', id));
   const { connections, dangling } = deriveConnections(model);
   const edges: GraphEdge[] = [];
   // A kind may choose which of its link fields are drawn; the others are left out, and counted.
