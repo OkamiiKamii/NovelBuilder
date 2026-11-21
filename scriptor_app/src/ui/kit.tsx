@@ -3,7 +3,7 @@
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
+import { type ComponentProps, type ComponentRef, type ReactNode, type Ref, useEffect, useState } from 'react';
 import {
   Animated,
   Pressable,
@@ -224,7 +224,7 @@ export function ProgressBar({ value, showPercent = true }: { value: number; show
 }
 
 /** A labelled text field on a raised ground. */
-export function Field({ label, hint, style, ...input }: TextInputProps & { label: string; hint?: string }) {
+export function Field({ label, hint, style, ...input }: TextInputProps & { label: string; hint?: string; ref?: Ref<ComponentRef<typeof TextInput>> }) {
   return (
     <View style={styles.field}>
       <Text style={styles.fieldLabel}>{label.toUpperCase()}</Text>

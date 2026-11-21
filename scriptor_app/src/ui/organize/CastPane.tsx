@@ -4,8 +4,10 @@
 // flutter_app/lib/features/characters/characters_page.dart; what it shows is src/domain/characters/screens/library.ts.
 
 import { useRouter } from 'expo-router';
-import { type ComponentRef, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import type { KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
+import { PageScroll } from '../pageScroll';
 
 import { CastFilters, type CastSort, castSortLabel, castSorts, type Listed } from '../../domain/characters/cast';
 import { isUploadedImage } from '../../domain/characters/screens/profile';
@@ -65,7 +67,7 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
   const [choosing, setChoosing] = useState(false);
   const [more, setMore] = useState(false);
   const [stage, setStage] = useState(false);
-  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const scroll = useRef<KeyboardAwareScrollViewRef>(null);
   const chooseView = (v: CastView) =>
     lib.saves.saveNow(`setting:${castViewKey}`, () => {
       lib.settings.write(castViewKey, v);
@@ -93,7 +95,7 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
 
   return (
     <View style={styles.flex}>
-      <ScrollView ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+      <PageScroll ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         <View style={styles.searchRow}>
           <View style={styles.search}>
             <Icon name="magnify" size={20} color={colors.muted} />
@@ -195,7 +197,7 @@ export function CastPane({ novel }: { novel: OpenNovel }) {
         {(castView === 'cards' || castView === 'list') && view.found.length > shown && <OutlineButton label={showMoreLabel(view.found.length, shown)} compact onPress={() => setShown(shown + castPage)} style={styles.more} />}
         </CastPagePanels>
         {view.list.length > 0 && <Muted style={styles.note}>{whereNote}</Muted>}
-      </ScrollView>
+      </PageScroll>
 
       <Sheet visible={arrange} onClose={() => setArrange(false)} title="Arrange the cast" footer={<GoldButton label="Done" onPress={() => setArrange(false)} style={styles.flex} />}>
         <Text style={styles.label}>IN WHAT ORDER</Text>

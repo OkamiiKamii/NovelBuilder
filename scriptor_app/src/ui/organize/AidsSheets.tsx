@@ -4,7 +4,7 @@
 // face_sketch.dart and name_forge.dart; their logic is src/domain/characters/aids/*.
 
 import { type ComponentRef, useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Animated, PanResponder, Pressable, type ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 
 import type { CharacterProfile } from '../../domain/characters/characterRecords';
 import { FaceSketchState, faceWords } from '../../domain/characters/aids/faceSketch';
@@ -34,12 +34,13 @@ export function InterviewSheet({ open, entry, profile, onClose }: { open: OpenCa
     setTyped('');
     tick((t) => t + 1);
     if (talk.closed) onClose();
-    setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 50);
+    // The newest question, and the box to answer it, come into view.
+    else setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 50);
   };
   const button = talk.nextButton(typed);
   const progress = talk.progress;
   return (
-    <Sheet visible onClose={onClose} title={talk.title}>
+    <Sheet visible onClose={onClose} title={talk.title} scrollRef={scroll}>
       <Muted>{talk.gauge}</Muted>
       <View style={styles.marks} accessibilityLabel={progress.label}>
         {progress.marks.map((m, i) => (
@@ -49,7 +50,7 @@ export function InterviewSheet({ open, entry, profile, onClose }: { open: OpenCa
       {step === null ? (
         <Muted>Every question already has an answer in {talk.name}’s profile.</Muted>
       ) : (
-        <ScrollView ref={scroll} style={styles.talk} nestedScrollEnabled>
+        <View style={styles.talk}>
           {talk.said.map((x, i) => (
             <View key={i} style={styles.exchange}>
               <View style={styles.ask}>
@@ -69,7 +70,7 @@ export function InterviewSheet({ open, entry, profile, onClose }: { open: OpenCa
             <Text style={styles.askText}>{step.ask}</Text>
           </View>
           <Text style={styles.went}>{interviewWords.goesInto(step.fieldName)}</Text>
-        </ScrollView>
+        </View>
       )}
       {step && (
         <>
@@ -335,7 +336,7 @@ const styles = StyleSheet.create({
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.6, color: colors.gold, marginTop: space.md },
   marks: { flexDirection: 'row', gap: 3, marginVertical: space.sm },
   mark: { flex: 1, height: 4, borderRadius: 2, backgroundColor: colors.border },
-  talk: { maxHeight: 320 },
+  talk: { gap: space.sm },
   exchange: { gap: 4, marginBottom: space.sm },
   ask: { alignSelf: 'flex-start', maxWidth: '85%', padding: space.sm, borderRadius: radius.panel, backgroundColor: colors.elevated },
   askText: { fontFamily: fonts.book, fontSize: 15, lineHeight: 22, color: colors.text },

@@ -39,6 +39,7 @@ import { CalculatorTool, InventoryTool, LineageTool, LogTool, PageTool, RanksToo
 import { ChooserField, SavedText } from './parts';
 import { tiedNameSave } from './skillTieWords';
 import { useSystems } from '../systems/useSystems';
+import { PageScroll } from '../pageScroll';
 import { type OpenModules, useModules } from './useModules';
 
 /** An entry's own page: a character's profile, or the world's entry page. */
@@ -149,9 +150,9 @@ function Page({ top, title, subtitle, onBack, children }: { top: number; title: 
           ) : null}
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.body0} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={styles.body0} keyboardShouldPersistTaps="handled">
         {children}
-      </ScrollView>
+      </PageScroll>
     </View>
   );
 }

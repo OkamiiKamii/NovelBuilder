@@ -7,8 +7,10 @@
 // is src/domain/codex/screens/{world,worldCharter,foundInPages}.ts.
 
 import { useRouter } from 'expo-router';
-import { type ComponentRef, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Image, type LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import type { KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
+import { PageScroll } from '../pageScroll';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { boundLook, cssOf, rgbaOf } from '../../domain/characters/aids/colour';
@@ -92,7 +94,7 @@ export function WorldPane() {
   const toast = useToast();
   const { width } = useWindowDimensions();
   const compact = sizeClassOf(width) === 'compact';
-  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const scroll = useRef<KeyboardAwareScrollViewRef>(null);
   const [category, setCategory] = useState<string | null>(null);
   const [tag, setTag] = useState<string | null>(null);
   const [query, setQuery] = useState('');
@@ -110,7 +112,7 @@ export function WorldPane() {
 
   return (
     <View style={styles.flex}>
-      <ScrollView ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+      <PageScroll ref={scroll} contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         <View style={styles.actions}>
           <GoldButton label={worldWords.newEntry} icon="plus" compact onPress={() => setMaking(true)} />
           <OutlineButton label={worldWords.kinds} icon="tune-variant" compact onPress={() => router.navigate('/organize/kinds' as never)} />
@@ -188,7 +190,7 @@ export function WorldPane() {
             )}
           </>
         )}
-      </ScrollView>
+      </PageScroll>
       {making && <QuickEntrySheet open={open} kinds={shelves.kinds.filter((k) => !k.archived)} onClose={() => setMaking(false)} onSaved={go} />}
     </View>
   );

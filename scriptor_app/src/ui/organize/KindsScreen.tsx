@@ -8,7 +8,7 @@
 
 import { useRouter } from 'expo-router';
 import { type ReactNode, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CodexChanges } from '../../domain/codex/codexChanges';
@@ -39,6 +39,7 @@ import {
   templateMenu,
 } from '../../domain/codex/screens/kinds';
 import { chosenField, graphLinkTicked, kindUses, saveUses, setUse, setUseIn, slotMenu, treeTicked, viewState } from '../../domain/codex/screens/kindUses';
+import { PageScroll } from '../pageScroll';
 import { kindColor } from '../../domain/codex/screens/world';
 import { type TemplateSettings, TemplateStore } from '../../domain/codex/templates';
 import { typePresets } from '../../domain/codex/typePresets';
@@ -113,7 +114,7 @@ export function KindsScreen({ initial }: { initial?: string | null }) {
           <Muted numberOfLines={1}>{cast.novelTitle}</Muted>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         <ChooserField
           label={kindsWords.category}
           value={kind.key}
@@ -148,7 +149,7 @@ export function KindsScreen({ initial }: { initial?: string | null }) {
         />
         <KindEditor key={kind.key} open={open} kind={kind} />
         <Templates open={open} />
-      </ScrollView>
+      </PageScroll>
       <Sheet visible={presets} onClose={() => setPresets(false)} title={kindsWords.fromPresetTooltip}>
         {typePresets.map((p) => (
           <Pressable

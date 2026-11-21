@@ -14,11 +14,10 @@ import { stableSorted } from '../../domain/reader/stableSort';
 import type { Category, FieldDef } from '../../domain/records/category';
 import type { Entry } from '../../domain/records/entry';
 import { jobSystems, skillKindKey, untiedSkills } from '../../domain/systems/skillTies';
-import { Sheet } from '../dialogs';
+import { Sheet, useFocusOnShow } from '../dialogs';
 import { Field, GoldButton, Icon, OutlineButton } from '../kit';
 import { useSystems } from '../systems/useSystems';
 import { colors, fonts, space } from '../theme';
-import { useToast } from '../toast';
 import { ChooserField } from './parts';
 import { manySystems, skillChoiceLabel, tieWords } from './skillTieWords';
 import type { OpenCast } from './useCast';
@@ -30,7 +29,8 @@ const typed = (type: FieldDef['type']) =>
   type === null || type === 'text' || type === 'longtext' || type === 'number' || type === 'tags' || type === 'date';
 
 export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenCast; kinds: readonly Category[]; onClose: () => void; onSaved: (entryId: string) => void }) {
-  const toast = useToast();
+  const { ref: focusRef, onShow: focusOnShow } = useFocusOnShow();
+  const [added, setAdded] = useState('');
   const [key, setKey] = useState(kinds[0]?.key ?? '');
   const [name, setName] = useState('');
   const [values, setValues] = useState<Record<string, string>>({});
@@ -72,7 +72,8 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
       onSaved(made.id);
       return;
     }
-    toast(`${kind.singular} “${made.name}” added.`);
+    // The toast host lives under a Modal, so the confirmation sits in the sheet.
+    setAdded(`Added “${made.name}”.`);
     setName('');
     setTieTo('');
     setValues({});
@@ -85,13 +86,8 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
       visible
       title={worldWords.newEntry}
       onClose={onClose}
-      footer={
-        <View style={styles.footer}>
-          <GoldButton label="Save" icon="check" onPress={() => save(false)} />
-          <OutlineButton label="Save & add another" icon="plus" onPress={() => save(true)} />
-          <OutlineButton label="Cancel" tone="muted" onPress={onClose} />
-        </View>
-      }
+      onShow={focusOnShow}
+      footer={<GoldButton label="Save" icon="check" onPress={() => save(false)} style={styles.save} />}
     >
       <Text style={styles.label}>TYPE</Text>
       <View style={styles.types}>
@@ -130,15 +126,16 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
       )}
       {!tying && (
         <Field
+          ref={focusRef}
           label="Name"
           value={name}
           onChangeText={(v) => {
             setName(v);
             setRefused(false);
+            setAdded('');
           }}
-          autoFocus
           returnKeyType="done"
-          hint={refused ? 'Give the entry a name first.' : undefined}
+          hint={refused ? 'Give the entry a name first.' : added || undefined}
           style={refused ? styles.bad : undefined}
         />
       )}
@@ -182,12 +179,17 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
           />
         );
       })}
+      <View style={styles.more}>
+        <OutlineButton label="Save & add another" icon="plus" onPress={() => save(true)} style={styles.save} />
+        <OutlineButton label="Cancel" tone="muted" onPress={onClose} />
+      </View>
     </Sheet>
   );
 }
 
 const styles = StyleSheet.create({
-  footer: { gap: space.sm },
+  save: { flex: 1 },
+  more: { flexDirection: 'row', gap: space.sm, marginTop: space.md },
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.2, color: colors.muted },
   types: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   tieGap: { marginTop: space.md },

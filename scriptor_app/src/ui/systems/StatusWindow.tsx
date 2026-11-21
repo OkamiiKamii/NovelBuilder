@@ -39,7 +39,7 @@ import {
 import { windowKindOf } from '../../domain/systems/screens/systemSpeaks';
 import type { SystemChanges } from '../../domain/systems/systemChanges';
 import { dartToLowerCase, dartTrim } from '../../domain/text/dartString';
-import { ActionSheet, PromptSheet, Sheet } from '../dialogs';
+import { ActionSheet, PromptSheet, Sheet, useFocusOnShow } from '../dialogs';
 import { Chip, GoldButton, Icon, Muted, OutlineButton } from '../kit';
 import { colors, fonts, space } from '../theme';
 import type { OpenSystems } from './useSystems';
@@ -317,10 +317,12 @@ function Stepper({ look, row, onSet }: { look: WindowLook; row: Extract<WindowRo
 /** A number typed: the field, what it must be ("at least 1, at most 100"), Cancel and Set. */
 function NumberPrompt({ label, initial, whole, limits, onClose, onSet }: { label: string; initial: string; whole: boolean; limits: string; onClose: () => void; onSet: (text: string) => void }) {
   const [text, setText] = useState(initial);
+  const { ref: focusRef, onShow: focusOnShow } = useFocusOnShow();
   return (
     <Sheet
       visible
       onClose={onClose}
+      onShow={focusOnShow}
       title={label}
       footer={
         <View style={styles.row}>
@@ -330,9 +332,9 @@ function NumberPrompt({ label, initial, whole, limits, onClose, onSet }: { label
       }
     >
       <TextInput
+        ref={focusRef}
         value={text}
         onChangeText={setText}
-        autoFocus
         keyboardType={whole ? 'number-pad' : 'numeric'}
         onSubmitEditing={() => onSet(text)}
         selectionColor={colors.gold}

@@ -8,6 +8,7 @@
 import { useRouter } from 'expo-router';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { PageScroll } from '../pageScroll';
 
 import { pickTextFile, shareTextFile } from '../../data/files';
 import { kindColor } from '../../domain/codex/screens/world';
@@ -226,7 +227,7 @@ function Manager({ mods }: { mods: OpenModules }) {
   const title = str(snapshot.project['title']);
 
   return (
-    <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+    <PageScroll contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
       <Text style={styles.pageTitle} accessibilityRole="header">
         {managerWords.title}
       </Text>
@@ -299,7 +300,7 @@ function Manager({ mods }: { mods: OpenModules }) {
       <OutlineButton label={managerWords.importButton} icon="file-import-outline" compact onPress={() => void importModule()} style={styles.start} />
 
       {writes && <MakeModule mods={mods} packable={view.packable} systems={view.systems} onSaved={(m) => { library.save(m); tell(savedMessage(m)); }} />}
-    </ScrollView>
+    </PageScroll>
   );
 }
 

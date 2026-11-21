@@ -35,7 +35,7 @@ export function ChooserField<T>({
   const [find, setFind] = useState('');
   const current = choices.find((c) => c.value === value);
   const long = choices.length > longFrom;
-  const wanted = find.trim().toLowerCase().split(/s+/).filter((w) => w.length > 0);
+  const wanted = find.trim().toLowerCase().split(/\s+/).filter((w) => w.length > 0);
   const matching = long && wanted.length > 0 ? choices.filter((c) => wanted.every((w) => c.label.toLowerCase().includes(w))) : choices;
   const shown = long ? matching.slice(0, longShown) : matching;
   const close = () => {

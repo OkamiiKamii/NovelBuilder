@@ -5,6 +5,7 @@ import { router, Slot, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, useWindowDimensions } from 'react-native';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { DatabaseOpenError, describe } from '../data/database';
@@ -85,22 +86,24 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
-      {library ? (
-        <LibraryProvider value={library}>
-          <ToastProvider bottomOffset={barShown ? bottomBarHeight : 0}>
-            <AppFrame>
-              <ErrorBoundary where="page">
-                <ReviewGate>
-                  <Slot />
-                </ReviewGate>
-              </ErrorBoundary>
-            </AppFrame>
-          </ToastProvider>
-        </LibraryProvider>
-      ) : (
-        <LibraryErrorScreen reason={'error' in opened ? opened.error : ''} onRetry={retry} />
-      )}
+      <KeyboardProvider>
+        <StatusBar style="light" />
+        {library ? (
+          <LibraryProvider value={library}>
+            <ToastProvider bottomOffset={barShown ? bottomBarHeight : 0}>
+              <AppFrame>
+                <ErrorBoundary where="page">
+                  <ReviewGate>
+                    <Slot />
+                  </ReviewGate>
+                </ErrorBoundary>
+              </AppFrame>
+            </ToastProvider>
+          </LibraryProvider>
+        ) : (
+          <LibraryErrorScreen reason={'error' in opened ? opened.error : ''} onRetry={retry} />
+        )}
+      </KeyboardProvider>
     </SafeAreaProvider>
   );
 }

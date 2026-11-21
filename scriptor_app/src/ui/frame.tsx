@@ -5,8 +5,9 @@
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { usePathname, useRouter } from 'expo-router';
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { Image, Keyboard, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { type ReactNode, useMemo } from 'react';
+import { Image, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useKeyboardState } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 
@@ -103,16 +104,9 @@ function useNavigate() {
 /** How tall the on-screen keyboard is (0 when it is down). Android draws apps edge to edge, so the window does not
  * shrink for the keyboard: screens that type leave this much room themselves. */
 export function useKeyboardHeight(): number {
-  const [height, setHeight] = useState(0);
-  useEffect(() => {
-    const show = Keyboard.addListener('keyboardDidShow', (e) => setHeight(e.endCoordinates.height));
-    const hide = Keyboard.addListener('keyboardDidHide', () => setHeight(0));
-    return () => {
-      show.remove();
-      hide.remove();
-    };
-  }, []);
-  return height;
+  // keyboard-controller reports the keyboard as it starts to move, so the bar and the pages change together. The height
+  // is the whole keyboard, the navigation bar under it included: add no bottom inset on top of it.
+  return useKeyboardState((k) => (k.isVisible ? k.height : 0));
 }
 
 /** Whether the on-screen keyboard is up: the bottom bar steps aside for it, so it never sits on top of the writing. */

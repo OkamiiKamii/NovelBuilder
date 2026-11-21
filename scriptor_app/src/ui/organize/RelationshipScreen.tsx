@@ -5,7 +5,7 @@
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { newId } from '../../domain/ids';
@@ -45,6 +45,7 @@ import { ChooserField, SavedText } from './parts';
 import { type OpenNovel, useOpenNovel } from './useNovel';
 import { DateEditor } from '../plan/DateEditor';
 import { resolveChronology } from '../../domain/timeline/chronology';
+import { PageScroll } from '../pageScroll';
 
 function message(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
@@ -119,7 +120,7 @@ export function RelationshipScreen() {
           <Muted>{view.subtitle}</Muted>
         </View>
       </View>
-      <ScrollView contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
         <Panel style={styles.panel}>
           <Text style={styles.kicker}>{view.whoIsWhoTitle.toUpperCase()}</Text>
           <Text style={styles.text}>{view.whoIsWho}</Text>
@@ -163,7 +164,7 @@ export function RelationshipScreen() {
         </Panel>
 
         <OutlineButton label={view.deleteLabel} icon="delete-outline" tone="danger" onPress={() => setDeleting(true)} style={styles.start} />
-      </ScrollView>
+      </PageScroll>
 
       <Sheet
         visible={recordOpen}

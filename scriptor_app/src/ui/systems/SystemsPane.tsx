@@ -7,7 +7,8 @@
 
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { PageScroll } from '../pageScroll';
 
 import { StoryModel } from '../../domain/model/storyModel';
 import type { SystemBlueprint } from '../../domain/records/system';
@@ -74,7 +75,7 @@ export function SystemsPane() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+    <PageScroll contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
       {systems.length > 0 ? (
         <>
           <Text style={styles.title} accessibilityRole="header">
@@ -104,7 +105,7 @@ export function SystemsPane() {
         </>
       )}
       {choosing && <AddSystemSheet sys={sys} model={model} onClose={() => setChoosing(false)} onMade={made} />}
-    </ScrollView>
+    </PageScroll>
   );
 }
 

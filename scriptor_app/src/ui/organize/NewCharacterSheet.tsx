@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { characterRoles } from '../../domain/characters/characterRecords';
 import { CastingCall, castingCallWords, characterPath, makeNewCharacter } from '../../domain/characters/screens/create';
 import { castTone, monogram } from '../../domain/characters/screens/library';
-import { Sheet } from '../dialogs';
+import { Sheet, useFocusOnShow } from '../dialogs';
 import { Chip, Field, GoldButton, Muted, OutlineButton } from '../kit';
 import { colors, fonts, radius, space } from '../theme';
 import { ChooserField } from './parts';
@@ -19,6 +19,7 @@ import { useCast } from './useCast';
 export function NewCharacterSheet({ visible, onClose, line }: { visible: boolean; onClose: () => void; line?: string }) {
   const open = useCast();
   const router = useRouter();
+  const { ref: focusRef, onShow: focusOnShow } = useFocusOnShow();
   const [call, setCall] = useState<CastingCall | null>(null);
   const [, setTick] = useState(0);
   const changed = () => setTick((t) => t + 1);
@@ -42,6 +43,7 @@ export function NewCharacterSheet({ visible, onClose, line }: { visible: boolean
   };
   return (
     <Sheet
+      onShow={focusOnShow}
       visible={visible}
       onClose={onClose}
       title={castingCallWords.title}
@@ -66,6 +68,7 @@ export function NewCharacterSheet({ visible, onClose, line }: { visible: boolean
         </View>
       </View>
       <Field
+        ref={focusRef}
         label={castingCallWords.line}
         placeholder={castingCallWords.lineHint}
         hint={castingCallWords.lineHelper}
@@ -74,7 +77,6 @@ export function NewCharacterSheet({ visible, onClose, line }: { visible: boolean
           call.lineChanged(v);
           changed();
         }}
-        autoFocus
       />
       {call.also.length > 0 && (
         <View style={styles.also}>

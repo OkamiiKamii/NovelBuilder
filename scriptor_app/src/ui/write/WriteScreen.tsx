@@ -348,7 +348,7 @@ export function WriteScreen() {
   );
 
   const editor = selected ? (
-    <View style={[styles.flex, { paddingTop: insets.top, paddingBottom: keyboard > 0 ? keyboard + insets.bottom : phone && !focus ? 0 : insets.bottom }]}>
+    <View style={[styles.flex, { paddingTop: insets.top, paddingBottom: keyboard > 0 ? keyboard : phone && !focus ? 0 : insets.bottom }]}>
       <EditorPane
         key={selected.id}
         novelId={novelId}

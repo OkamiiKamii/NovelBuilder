@@ -10,6 +10,7 @@
 import { useRouter } from 'expo-router';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { PageScroll } from '../pageScroll';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { characterPath } from '../../domain/characters/screens/create';
@@ -321,9 +322,9 @@ function Page({ top, title, subtitle, onBack, children }: { top: number; title: 
           ) : null}
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         {children}
-      </ScrollView>
+      </PageScroll>
     </View>
   );
 }

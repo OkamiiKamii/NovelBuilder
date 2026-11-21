@@ -51,6 +51,7 @@ import {
 } from '../../domain/relationships/screens/relationshipMap';
 import { relationshipPath } from '../../domain/relationships/screens/relationshipPage';
 import { Chip, Field, GoldButton, IconButton, Muted, OutlineButton, Panel } from '../kit';
+import { PageScroll } from '../pageScroll';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
 import { ChooserField } from './parts';
@@ -133,7 +134,7 @@ export function RelationshipMapScreen() {
         </View>
         <IconButton icon="cog-outline" label="Types and attributes" onPress={() => router.navigate('/organize/relationships/settings')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xl }]} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xl }]} keyboardShouldPersistTaps="handled">
         <View style={styles.row}>
           {viewChoices.map((v) => (
             <Chip key={String(v.value)} label={v.label} icon={v.value ? 'format-list-bulleted' : 'graph-outline'} selected={state.list === v.value} onPress={() => setState({ ...state, list: v.value })} />
@@ -363,7 +364,7 @@ export function RelationshipMapScreen() {
             </View>
           </>
         )}
-      </ScrollView>
+      </PageScroll>
     </View>
   );
 }

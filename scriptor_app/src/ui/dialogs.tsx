@@ -1,21 +1,23 @@
 // Dialogs and sheets: a sheet from the foot of the screen on a phone, a centred card on a tablet. Also the
 // hold-to-confirm button every destructive action uses (FEATURES.md #361), a list of actions, and a one-line prompt.
 
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ComponentRef, type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   Animated,
   Easing,
-  KeyboardAvoidingView,
   Modal,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  type TextInput,
   useWindowDimensions,
   Vibration,
   View,
 } from 'react-native';
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
+import Reanimated, { useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Field, GoldButton, Icon, type IconName, OutlineButton } from './kit';
@@ -28,6 +30,8 @@ export function Sheet({
   children,
   footer,
   wide = false,
+  onShow,
+  scrollRef,
 }: {
   visible: boolean;
   onClose: () => void;
@@ -35,39 +39,75 @@ export function Sheet({
   children: ReactNode;
   footer?: ReactNode;
   wide?: boolean;
+  /** The sheet has appeared: the moment to focus a field (autoFocus on mount does not open the keyboard in a sliding Modal). */
+  onShow?: () => void;
+  /** The body's scroll view, for a sheet that scrolls itself (the interview, to its newest question). */
+  scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
 }) {
+  const { width } = useWindowDimensions();
+  return (
+    <Modal visible={visible} transparent animationType={sizeClassOf(width) === 'compact' ? 'slide' : 'fade'} onRequestClose={onClose} onShow={onShow} statusBarTranslucent navigationBarTranslucent>
+      {/* The app's one KeyboardProvider hears the Modal's keyboard too: a second one here would leave the app's own
+          listener paused after the sheet closes. */}
+      <SheetCard onClose={onClose} title={title} footer={footer} wide={wide} scrollRef={scrollRef}>
+        {children}
+      </SheetCard>
+    </Modal>
+  );
+}
+
+/** A box to focus once its sheet has appeared: autoFocus on mount does not open the keyboard in a sliding Modal.
+ * Give `ref` to the box and `onShow` to the Sheet. */
+export function useFocusOnShow() {
+  const ref = useRef<ComponentRef<typeof TextInput>>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (timer.current !== null) clearTimeout(timer.current);
+  }, []);
+  // A moment after the window is shown, so it has focus and Android opens the keyboard.
+  const onShow = () => {
+    timer.current = setTimeout(() => ref.current?.focus(), 80);
+  };
+  return { ref, onShow };
+}
+
+/** The sheet itself. The backdrop is padded by the keyboard's height as it moves, so the card always fits between the
+ * status bar and the keyboard (it shrinks, and its body scrolls); the footer stays in view. The body is a plain scroll
+ * view: the card already sits above the keyboard, and Android keeps the focused box in view as the body shrinks. */
+function SheetCard({ onClose, title, children, footer, wide, scrollRef }: { onClose: () => void; title: string; children: ReactNode; footer?: ReactNode; wide: boolean; scrollRef?: Ref<ComponentRef<typeof ScrollView>> }) {
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const phone = sizeClassOf(width) === 'compact';
+  const { height: keyboard, progress } = useReanimatedKeyboardAnimation();
+  const lift = useAnimatedStyle(() => ({ paddingBottom: Math.max(0, -keyboard.value) }));
+  // The bottom inset is the keyboard's job while it is up: no dead band above it.
+  const rest = useAnimatedStyle(() => ({ paddingBottom: space.lg + (phone ? insets.bottom * (1 - progress.value) : 0) }));
   return (
-    <Modal visible={visible} transparent animationType={phone ? 'slide' : 'fade'} onRequestClose={onClose} statusBarTranslucent>
-      <KeyboardAvoidingView behavior="padding" style={[styles.backdrop, phone ? styles.backdropPhone : styles.backdropWide]}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close" />
-        <View
-          style={[
-            styles.card,
-            phone
-              ? [styles.cardPhone, { paddingBottom: insets.bottom + space.lg, maxHeight: height * 0.92 }]
-              : [styles.cardWide, { width: Math.min(width - 64, wide ? 760 : 560), maxHeight: height * 0.88 }],
-          ]}
-          accessibilityViewIsModal
-        >
-          {phone && <View style={styles.handle} />}
-          <View style={styles.titleRow}>
-            <Text style={styles.title} accessibilityRole="header">
-              {title}
-            </Text>
-            <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={onClose} hitSlop={10} style={styles.close}>
-              <Icon name="close" size={22} color={colors.muted} />
-            </Pressable>
-          </View>
-          <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.body}>
-            {children}
-          </ScrollView>
-          {footer && <View style={styles.footer}>{footer}</View>}
+    <Reanimated.View style={[styles.backdrop, phone ? styles.backdropPhone : styles.backdropWide, { paddingTop: insets.top }, lift]}>
+      <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close" />
+      <Reanimated.View
+        style={[
+          styles.card,
+          phone ? [styles.cardPhone, { maxHeight: height * 0.92 }] : [styles.cardWide, { width: Math.min(width - 64, wide ? 760 : 560), maxHeight: height * 0.88 }],
+          rest,
+        ]}
+        accessibilityViewIsModal
+      >
+        {phone && <View style={styles.handle} />}
+        <View style={styles.titleRow}>
+          <Text style={styles.title} accessibilityRole="header">
+            {title}
+          </Text>
+          <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={onClose} hitSlop={10} style={styles.close}>
+            <Icon name="close" size={22} color={colors.muted} />
+          </Pressable>
         </View>
-      </KeyboardAvoidingView>
-    </Modal>
+        <ScrollView ref={scrollRef} style={styles.scroll} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.body}>
+          {children}
+        </ScrollView>
+        {footer && <View style={styles.footer}>{footer}</View>}
+      </Reanimated.View>
+    </Reanimated.View>
   );
 }
 
@@ -219,6 +259,7 @@ export function PromptSheet({
   allowEmpty?: boolean;
 }) {
   const [value, setValue] = useState(initial);
+  const { ref: focusRef, onShow: focusOnShow } = useFocusOnShow();
   useEffect(() => {
     if (visible) setValue(initial);
   }, [visible, initial]);
@@ -230,6 +271,7 @@ export function PromptSheet({
       visible={visible}
       onClose={onClose}
       title={title}
+      onShow={focusOnShow}
       footer={
         <>
           <OutlineButton label="Cancel" onPress={onClose} tone="muted" style={styles.flex} />
@@ -237,7 +279,7 @@ export function PromptSheet({
         </>
       }
     >
-      <Field label={label} value={value} onChangeText={setValue} autoFocus returnKeyType="done" onSubmitEditing={submit} />
+      <Field ref={focusRef} label={label} value={value} onChangeText={setValue} returnKeyType="done" onSubmitEditing={submit} />
     </Sheet>
   );
 }
@@ -245,9 +287,11 @@ export function PromptSheet({
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' },
+  scroll: { flexGrow: 0, flexShrink: 1 },
   backdropPhone: { justifyContent: 'flex-end' },
   backdropWide: { justifyContent: 'center', alignItems: 'center' },
-  card: { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
+  // It shrinks to fit between the status bar and the keyboard; its body scrolls.
+  card: { flexShrink: 1, backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
   cardPhone: { borderTopLeftRadius: 18, borderTopRightRadius: 18, paddingTop: space.sm },
   cardWide: { borderRadius: radius.panel, paddingTop: space.md, shadowColor: colors.sky, shadowOpacity: 0.3, shadowRadius: 16, elevation: 10 },
   handle: { alignSelf: 'center', width: 40, height: 4, borderRadius: 2, backgroundColor: colors.border, marginBottom: space.sm },

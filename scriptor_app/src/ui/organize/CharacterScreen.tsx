@@ -46,11 +46,12 @@ import {
   withOwnRole,
 } from '../../domain/characters/screens/profile';
 import { docBlocks } from '../../domain/prose';
-import { ActionSheet, ConfirmDelete, PromptSheet, Sheet } from '../dialogs';
+import { ActionSheet, ConfirmDelete, PromptSheet, Sheet, useFocusOnShow } from '../dialogs';
 import { Chip, Field, GoldButton, Icon, type IconName, IconButton, Muted, OutlineButton, Panel } from '../kit';
 import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
+import { PageScroll } from '../pageScroll';
 import { ProfileTab } from './ProfileTabs';
 import { SavedText } from './parts';
 import { Cameo } from './Cameo';
@@ -95,7 +96,7 @@ export function CharacterScreen() {
   const listed = open && params.id ? open.cast.listed(params.id) : null;
   // The page a deep link or "Go to" asked for; the screen scrolls to it once, when its tab has laid out.
   const wanted = useRef<string | null>(null);
-  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const scroll = useRef<ComponentRef<typeof PageScroll>>(null);
   const tabTop = useRef(0);
   const [landed, setLanded] = useState<{ page: ProfilePage; y: number } | null>(null);
   useEffect(() => {
@@ -193,7 +194,7 @@ export function CharacterScreen() {
         <IconButton icon="account-search-outline" label={vaultWords.find} onPress={() => setFinding(true)} />
         <IconButton icon="dots-vertical" label={vaultWords.moreOptions(entry.name)} onPress={() => setMenu(true)} />
       </View>
-      <ScrollView ref={scroll} contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
+      <PageScroll ref={scroll} contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
         {profile.archived && (
           <View style={styles.banner}>
             <Icon name="archive-outline" size={20} color={colors.sky} />
@@ -282,7 +283,7 @@ export function CharacterScreen() {
             <ProfileTab view={shown} open={open} listed={listed} onTab={onTab} onPageY={(page, y) => setLanded({ page, y })} />
           </View>
         )}
-      </ScrollView>
+      </PageScroll>
 
       <ActionSheet
         visible={portraitMenu}
@@ -477,10 +478,11 @@ function DeleteSheet({ open, entryId, onDelete, onArchive, onClose }: { open: Op
 /** Find a character: the cast's list with its search ready. */
 function FindSheet({ visible, open, keep, onPick, onClose }: { visible: boolean; open: OpenCast; keep: string; onPick: (id: string) => void; onClose: () => void }) {
   const [q, setQ] = useState('');
+  const { ref: focusRef, onShow: focusOnShow } = useFocusOnShow();
   const people = vaultOrder(open.cast, { keep }).filter((l) => vaultMatches(l, q));
   return (
-    <Sheet visible={visible} onClose={onClose} title={vaultWords.find}>
-      <Field label="Search" value={q} onChangeText={setQ} autoFocus />
+    <Sheet visible={visible} onClose={onClose} onShow={focusOnShow} title={vaultWords.find}>
+      <Field ref={focusRef} label="Search" value={q} onChangeText={setQ} />
       {people.map((l) => (
         <Pressable key={l.entry.id} accessibilityRole="button" onPress={() => onPick(l.entry.id)} style={({ pressed }) => [styles.choice, pressed && { backgroundColor: colors.elevated }, l.entry.id === keep && { backgroundColor: '#3A2A08' }]}>
           <Text style={styles.text}>{l.entry.name}</Text>

@@ -7,7 +7,7 @@
 
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { pickCoverPicture } from '../../data/files';
@@ -61,6 +61,7 @@ import { useToast } from '../toast';
 import { StoryModel } from '../../domain/model/storyModel';
 import { skillKindKey, skillTieOf, tiedAbilityId } from '../../domain/systems/skillTies';
 import { useSystems } from '../systems/useSystems';
+import { PageScroll } from '../pageScroll';
 import { NameForgeSheet } from './AidsSheets';
 import { ConnectionsPanel } from './ConnectionsPanel';
 import { ChooserField, DateField, SavedText } from './parts';
@@ -173,7 +174,7 @@ export function WorldEntryScreen() {
           </Text>
         </View>
       </View>
-      <ScrollView contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
+      <PageScroll contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + space.xxl }]} keyboardShouldPersistTaps="handled">
         {/* The head: picture, name, category, summary. */}
         <Panel style={[styles.panel, !phone && styles.headWide]}>
           <View style={styles.pictureCol}>
@@ -323,7 +324,7 @@ export function WorldEntryScreen() {
 
         <Muted>{entryWords.reference}</Muted>
         <OutlineButton label={entryWords.delete} icon="delete-outline" compact tone="danger" onPress={() => setDeleting(true)} style={styles.start} />
-      </ScrollView>
+      </PageScroll>
 
       {forging && (
         <NameForgeSheet
