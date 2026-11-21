@@ -113,6 +113,7 @@ export const builtinCategoryKeys: readonly string[] = [
   'item',
   'artifact',
   'power',
+  'skill',
   'rule',
   'lore',
   'history',
@@ -127,7 +128,7 @@ export const typePartners: ReadonlyMap<string, string> = new Map([
 ]);
 
 /** The built-ins added after the first six: kept out of view while the novel has a category of the same name. */
-const addedKeys: readonly string[] = ['species', 'artifact', 'rule', 'history'];
+const addedKeys: readonly string[] = ['species', 'artifact', 'skill', 'rule', 'history'];
 
 // Orders of the first built-ins stay as they were stored; each newer one sits halfway to the next.
 const builtinOrder: Record<string, number> = {
@@ -138,6 +139,7 @@ const builtinOrder: Record<string, number> = {
   item: 3,
   artifact: 3.5,
   power: 4,
+  skill: 4.25,
   rule: 4.5,
   lore: 5,
   history: 5.5,
@@ -151,6 +153,7 @@ const builtinNames: Record<string, readonly [string, string, string]> = {
   item: ['Items', 'Item', '#8a6d1f'],
   artifact: ['Artifacts', 'Artifact', '#a8436b'],
   power: ['Powers', 'Power', '#7a4fa3'],
+  skill: ['Skills', 'Skill', '#d98c1f'],
   rule: ['Rules', 'Rule', '#6b7a2b'],
   lore: ['Lore', 'Lore', '#5c6370'],
   history: ['History', 'Historical event', '#8c2b5a'],
@@ -187,6 +190,7 @@ const suggestedFields: Record<string, readonly SuggestedField[]> = {
     ['Cursed', 'toggle'],
   ],
   power: [['Rules'], ['Costs & limits'], ['Tiers']],
+  skill: [['Effect', 'longtext'], ['Limits', 'longtext'], ['First appears', 'text']],
   rule: [['Applies to', 'text'], ['What it says', 'longtext'], ['Exceptions'], ['Cost of breaking it']],
   lore: [['When'], ['Who was involved'], ['Consequences']],
   history: [

@@ -1,4 +1,4 @@
-// The goldens the Flutter app made know six built-in categories, with the merged names. Scriptor has ten (see
+// The goldens the Flutter app made know six built-in categories, with the merged names. Scriptor has eleven (see
 // src/domain/records/category.ts), so a suite that compares with those goldens starts with `import '../flutterBuiltins'`
 // (before anything from src) and sees the Flutter app's six. Everything else is the real code.
 jest.mock('../src/domain/records/category', () => {

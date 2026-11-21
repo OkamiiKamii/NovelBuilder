@@ -61,10 +61,14 @@ const named = (a: string, b: string) => dartToLowerCase(dartTrim(a)) === dartToL
 /** "Move": the entry changes to its partner type and is decided. Each value goes to the field of the same name there
  * when the new field can hold text of that kind; any other stays on the entry as a field of its own. */
 export function moveType(c: CodexChanges, entryId: string): void {
-  const entry = c.owned(entryId);
-  const all = c.categories();
-  const to = partnerOf(entry.category, all);
+  const to = partnerOf(c.owned(entryId).category, c.categories());
   if (to === null) throw new ChangeRefused('There is no type to move this entry to.');
+  moveTypeTo(c, entryId, to);
+}
+
+/** The same move to any category; `marker` is the decision written on the entry (the merged-type sort by default). */
+export function moveTypeTo(c: CodexChanges, entryId: string, to: Category, marker: JsonMap = { typeSorted: true }): void {
+  const entry = c.owned(entryId);
   const from = c.category(entry.category);
   const oldDefs = new Map(from.fields.map((d) => [d.id, d]));
   const targets = to.fields.filter((d) => !d.archived);
@@ -83,5 +87,5 @@ export function moveType(c: CodexChanges, entryId: string): void {
     const clash = def !== undefined || targets.some((d) => named(d.name, label));
     return { ...own, key: clash ? `${label} (from ${from.name})` : label };
   });
-  c.putEntry(entry, { category: to.key, typeSorted: true, fields: moved });
+  c.putEntry(entry, { category: to.key, ...marker, fields: moved });
 }

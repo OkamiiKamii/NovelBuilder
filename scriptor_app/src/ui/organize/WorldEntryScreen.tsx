@@ -58,9 +58,14 @@ import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from 
 import { useLibrary } from '../LibraryContext';
 import { colors, fonts, radius, sizeClassOf, space } from '../theme';
 import { useToast } from '../toast';
+import { StoryModel } from '../../domain/model/storyModel';
+import { skillKindKey, skillTieOf, tiedAbilityId } from '../../domain/systems/skillTies';
+import { useSystems } from '../systems/useSystems';
 import { NameForgeSheet } from './AidsSheets';
 import { ConnectionsPanel } from './ConnectionsPanel';
 import { ChooserField, DateField, SavedText } from './parts';
+import { FromSystemPanel, TieToSystemPanel } from './SkillTiePanel';
+import { tiedNameSave } from './skillTieWords';
 import { type OpenCast, useCast } from './useCast';
 
 /** The kinds page lives at /organize/kinds here (the Flutter app's /organize/world/kinds). */
@@ -80,6 +85,8 @@ export function WorldEntryScreen() {
   const [deleting, setDeleting] = useState(false);
   const [all, setAll] = useState(false);
 
+  const sys = useSystems();
+  const sysModel = useMemo(() => (sys ? StoryModel.fromSnapshot(sys.snapshot) : null), [sys?.snapshot]); // eslint-disable-line react-hooks/exhaustive-deps
   const entry = open && params.id ? (open.cast.model.entries.get(params.id) ?? null) : null;
   // Where its names first come in each chapter: read from the saved chapters.
   const found = useMemo(() => {
@@ -116,6 +123,9 @@ export function WorldEntryScreen() {
   const where = whereItFigures(cast, entry);
   const pages = theirPages(cast, found, all, entryWords.inItsPages);
   const id = entry.id;
+  const tied = tiedAbilityId(entry) !== null;
+  const tie = sys && sysModel && tied ? skillTieOf(sysModel, id) : null;
+  const skillKind = entry.category === skillKindKey([...cast.model.categories.values()]);
 
   const openChapter = (nodeId: string) => {
     lib.saves.saveNow(`setting:${lastNodeSetting(open.novelId)}`, () => lib.settings.write(lastNodeSetting(open.novelId), nodeId));
@@ -177,6 +187,12 @@ export function WorldEntryScreen() {
               label={entryWords.nameLabel}
               value={entry.name}
               onSave={(v) => {
+                // A tied entry and its skill are renamed together, through the systems service (a blank name waits).
+                if (tied && sys) {
+                  const rename = tiedNameSave(entry, v);
+                  if (rename) sys.later(autosaveKeys.name(id), rename);
+                  return;
+                }
                 const change = nameTyped(id, v);
                 if (change) open.later(autosaveKeys.name(id), change);
               }}
@@ -202,6 +218,9 @@ export function WorldEntryScreen() {
             />
           </View>
         </Panel>
+
+        {sys && sysModel && tie && <FromSystemPanel sys={sys} entry={entry} tie={tie} />}
+        {sys && sysModel && !tied && skillKind && <TieToSystemPanel sys={sys} model={sysModel} entry={entry} />}
 
         <Panel style={styles.panel}>
           <SavedText
@@ -313,7 +332,10 @@ export function WorldEntryScreen() {
           onClose={() => setForging(false)}
           onPick={(name) => {
             setForging(false);
-            open.now(entryEdits.forged(id, name));
+            // A tied entry's skill takes the forged name too.
+            const rename = tiedNameSave(entry, name);
+            if (rename && sys) sys.now(rename);
+            else open.now(entryEdits.forged(id, name));
           }}
         />
       )}

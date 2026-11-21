@@ -1274,6 +1274,7 @@ const levelingJobJson: JsonMap = deepFreeze({
     "A job and a level that climbs. Powers gained each level go in Skills and can boost a stat by their rank: Super Strength at rank S multiplies Strength by 20.",
   content: {
     name: "The Job",
+    preset: "leveling-job",
     description:
       "A job, a level, and a skill for every level. A skill's rank carries a power number that can boost a stat.",
     variables: [

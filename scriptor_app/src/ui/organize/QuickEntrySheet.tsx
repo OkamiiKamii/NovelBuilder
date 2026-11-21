@@ -2,17 +2,25 @@
 // (quickFields). "Save" makes the entry and opens it; "Save & add another" makes it and clears the sheet, keeping the
 // type, so a run of species or items is typed without leaving. The rest of the fields are on the entry's page.
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { localeCompare } from '../../domain/collation';
+import { fieldValueSet } from '../../domain/codex/screens/entryPage';
 import { kindColor, newEntryWith, quickFields, worldWords } from '../../domain/codex/screens/world';
+import { abilityId } from '../../domain/model/entityRef';
+import { StoryModel } from '../../domain/model/storyModel';
 import { stableSorted } from '../../domain/reader/stableSort';
 import type { Category, FieldDef } from '../../domain/records/category';
+import type { Entry } from '../../domain/records/entry';
+import { jobSystems, skillKindKey, untiedSkills } from '../../domain/systems/skillTies';
 import { Sheet } from '../dialogs';
-import { Field, GoldButton, OutlineButton } from '../kit';
+import { Field, GoldButton, Icon, OutlineButton } from '../kit';
+import { useSystems } from '../systems/useSystems';
 import { colors, fonts, space } from '../theme';
 import { useToast } from '../toast';
+import { ChooserField } from './parts';
+import { manySystems, skillChoiceLabel, tieWords } from './skillTieWords';
 import type { OpenCast } from './useCast';
 import { TypedValue } from './WorldEntryScreen';
 
@@ -28,20 +36,36 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
   const [values, setValues] = useState<Record<string, string>>({});
   const [refused, setRefused] = useState(false);
   const [round, setRound] = useState(0);
+  const [tieTo, setTieTo] = useState('');
+  const [alsoJob, setAlsoJob] = useState(false);
+  const sys = useSystems();
+  const sysModel = useMemo(() => (sys ? StoryModel.fromSnapshot(sys.snapshot) : null), [sys?.snapshot]); // eslint-disable-line react-hooks/exhaustive-deps
   const kind = kinds.find((k) => k.key === key) ?? kinds[0];
   if (!kind) return null;
   const fields = quickFields(kind);
   const set = (id: string, v: string) => setValues((prev) => ({ ...prev, [id]: v }));
+  // A Skill is tied to a skill of a system that is On, or made new (and, if wanted, added to The Job at once).
+  const skills = sys && sysModel && kind.key === skillKindKey(kinds) ? untiedSkills(sysModel) : [];
+  const job = sys && sysModel && kind.key === skillKindKey(kinds) ? jobSystems(sysModel)[0] : undefined;
+  const tying = tieTo !== '' && skills.some((a) => abilityId(a.system.id, a.item.id) === tieTo);
 
   const save = (another: boolean) => {
-    if (name.trim().length === 0) {
+    if (!tying && name.trim().length === 0) {
       setRefused(true);
       return;
     }
     // Tags are typed with commas and stored one per line.
     const stored = { ...values };
     for (const f of fields) if (f.type === 'tags' && stored[f.id]) stored[f.id] = stored[f.id]!.split(',').map((x) => x.trim()).filter(Boolean).join('\n');
-    const made = open.now((c) => newEntryWith(c, kind.key, name.trim(), stored));
+    let made: Entry | undefined;
+    if (tying) {
+      // The entry takes the skill's name; what was typed in the fields goes through the codex path.
+      made = sys!.now((c) => c.logInWorld(tieTo));
+      if (made) for (const [defId, v] of Object.entries(stored)) if (v.trim().length > 0) open.now(fieldValueSet(made.id, defId, v));
+    } else {
+      made = open.now((c) => newEntryWith(c, kind.key, name.trim(), stored));
+      if (made && job && alsoJob) sys!.now((c) => c.logInSystem(made!.id, job.id));
+    }
     if (!made) return;
     if (!another) {
       onClose();
@@ -50,6 +74,7 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
     }
     toast(`${kind.singular} “${made.name}” added.`);
     setName('');
+    setTieTo('');
     setValues({});
     setRefused(false);
     setRound(round + 1);
@@ -92,18 +117,43 @@ export function QuickEntrySheet({ open, kinds, onClose, onSaved }: { open: OpenC
           );
         })}
       </View>
-      <Field
-        label="Name"
-        value={name}
-        onChangeText={(v) => {
-          setName(v);
-          setRefused(false);
-        }}
-        autoFocus
-        returnKeyType="done"
-        hint={refused ? 'Give the entry a name first.' : undefined}
-        style={refused ? styles.bad : undefined}
-      />
+      {skills.length > 0 && (
+        <View style={styles.tieGap}>
+          <ChooserField
+            label={tieWords.panelTitle}
+            value={tieTo}
+            choices={[{ value: '', label: 'A new skill' }, ...skills.map((a) => ({ value: abilityId(a.system.id, a.item.id), label: skillChoiceLabel(a, manySystems(skills)) }))]}
+            helper={tieWords.chooserHelper}
+            onChoose={setTieTo}
+          />
+        </View>
+      )}
+      {!tying && (
+        <Field
+          label="Name"
+          value={name}
+          onChangeText={(v) => {
+            setName(v);
+            setRefused(false);
+          }}
+          autoFocus
+          returnKeyType="done"
+          hint={refused ? 'Give the entry a name first.' : undefined}
+          style={refused ? styles.bad : undefined}
+        />
+      )}
+      {!tying && job && (
+        <Pressable
+          accessibilityRole="switch"
+          accessibilityLabel={tieWords.alsoAdd(job.name)}
+          accessibilityState={{ checked: alsoJob }}
+          onPress={() => setAlsoJob(!alsoJob)}
+          style={styles.toggle}
+        >
+          <Icon name={alsoJob ? 'checkbox-marked' : 'checkbox-blank-outline'} size={24} color={alsoJob ? colors.gold : colors.muted} />
+          <Text style={styles.toggleText}>{tieWords.alsoAdd(job.name)}</Text>
+        </Pressable>
+      )}
       {fields.map((f) => {
         const label = f.required ? `${f.name} (required)` : f.name;
         const v = values[f.id] ?? '';
@@ -140,9 +190,12 @@ const styles = StyleSheet.create({
   footer: { gap: space.sm },
   label: { fontFamily: fonts.ui, fontSize: 12, letterSpacing: 1.2, color: colors.muted },
   types: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  tieGap: { marginTop: space.md },
   type: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: space.md, borderRadius: 22, borderWidth: 1.5 },
   typeOff: { borderColor: colors.border },
   typeText: { fontFamily: fonts.ui, fontSize: 14, color: colors.muted },
   dot: { width: 10, height: 10, borderRadius: 5 },
+  toggle: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  toggleText: { flex: 1, fontFamily: fonts.ui, fontSize: 15, color: colors.text },
   bad: { borderWidth: 1, borderColor: colors.danger },
 });

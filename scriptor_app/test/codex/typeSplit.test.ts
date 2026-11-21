@@ -36,14 +36,14 @@ class Book {
 const row = (key: string, name: string, singular: string): JsonMap => ({ ...Category.builtin(key).raw, name, singular });
 const sp = () => typePresets.find((p) => p.id === 'species')!.categories;
 
-describe('the ten built-in types', () => {
+describe('the eleven built-in types', () => {
   test('resolve in paired order with their own names, colours and unchanged first fields', () => {
     const all = resolveCategories([]);
     expect(all.map((c) => c.key)).toEqual([
-      'character', 'location', 'faction', 'species', 'item', 'artifact', 'power', 'rule', 'lore', 'history',
+      'character', 'location', 'faction', 'species', 'item', 'artifact', 'power', 'skill', 'rule', 'lore', 'history',
     ]);
     expect(all.map((c) => c.name)).toEqual([
-      'Characters', 'Locations', 'Factions', 'Species', 'Items', 'Artifacts', 'Powers', 'Rules', 'Lore', 'History',
+      'Characters', 'Locations', 'Factions', 'Species', 'Items', 'Artifacts', 'Powers', 'Skills', 'Rules', 'Lore', 'History',
     ]);
     expect(all.slice(0, 3).map((c) => c.order)).toEqual([0, 1, 2]);
     expect(Category.builtin('item').order).toBe(3);

@@ -73,7 +73,7 @@ describe('categories and fields', () => {
     w.act((c) => addCategory('Kingdoms')!(c));
     w.act((c) => c.createEntry('location', 'Glass River'));
     const kinds = kindsInOrder(w.cast.model.categories.values());
-    expect(kinds.map((k) => k.key).slice(0, 10)).toEqual([
+    expect(kinds.map((k) => k.key).slice(0, 11)).toEqual([
       'character',
       'location',
       'faction',
@@ -81,15 +81,16 @@ describe('categories and fields', () => {
       'item',
       'artifact',
       'power',
+      'skill',
       'rule',
       'lore',
       'history',
     ]);
-    expect(kinds[10].name).toBe('Kingdoms');
+    expect(kinds[11].name).toBe('Kingdoms');
     expect(chosenKind(kinds, null).key).toBe('location');
-    expect(chosenKind(kinds, kinds[10].key).name).toBe('Kingdoms');
+    expect(chosenKind(kinds, kinds[11].key).name).toBe('Kingdoms');
     expect(kindChoiceLabel(kinds[1], 1)).toBe('Locations · 1 entry');
-    expect(kindChoiceLabel(kinds[10], 0)).toBe('Kingdoms · 0 entries');
+    expect(kindChoiceLabel(kinds[11], 0)).toBe('Kingdoms · 0 entries');
     expect(addCategory('   ')).toBeNull();
   });
 
@@ -277,7 +278,7 @@ describe('templates', () => {
     a.act(fieldsChange(kind.key, () => [def('c', 'Crew', 'number')]));
     const data = a.act((c) => c.schemaSnapshot());
     const saved = t.save('My world', allAsTemplate(data).description, data);
-    expect(saved.description).toBe('11 categories');
+    expect(saved.description).toBe('12 categories');
     expect(allAsTemplate(data).tell('My world')).toBe('Saved “My world”. Pick it when you create a new novel, or add it to any novel here.');
     const b = new World();
     b.act(addCategory('Ships')!);

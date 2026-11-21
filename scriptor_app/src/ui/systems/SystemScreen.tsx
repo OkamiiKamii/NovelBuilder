@@ -15,7 +15,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { characterPath } from '../../domain/characters/screens/create';
 import { worldEntryPath } from '../../domain/codex/screens/entryPage';
 import type { JsonMap } from '../../domain/json';
+import { abilityId } from '../../domain/model/entityRef';
 import { StoryModel } from '../../domain/model/storyModel';
+import { entryForAbility, loggable } from '../../domain/systems/skillTies';
 import { maps } from '../../domain/records/jsonRecord';
 import type { SysItem, SysTrack, SystemBlueprint } from '../../domain/records/system';
 import { checkFormula } from '../../domain/systems/compute';
@@ -758,6 +760,7 @@ function KitsTab({ sys, system, model, onAsk }: { sys: OpenSystems; system: Syst
                     <ItemEditor
                       sys={sys}
                       system={system}
+                      model={model}
                       item={it}
                       onRemove={() => remove([it.id], it.name, removeFrom(system.id, 'items', it.id))}
                     />
@@ -789,7 +792,11 @@ function KitsTab({ sys, system, model, onAsk }: { sys: OpenSystems; system: Syst
   );
 }
 
-function ItemEditor({ sys, system, item, onRemove }: { sys: OpenSystems; system: SystemBlueprint; item: SysItem; onRemove: () => void }) {
+function ItemEditor({ sys, system, model, item, onRemove }: { sys: OpenSystems; system: SystemBlueprint; model: StoryModel; item: SysItem; onRemove: () => void }) {
+  const router = useRouter();
+  const toast = useToast();
+  const id = abilityId(system.id, item.id);
+  const entry = entryForAbility(model, id);
   const ed = itemEditor(system, item);
   const key = (field: string) => laterKey(system.id, 'item', item.id, field);
   const save = (field: Parameters<typeof itemEdit>[2]) => (v: string) => typed(sys, key(field), itemEdit(system.id, item.id, field, v));
@@ -872,7 +879,21 @@ function ItemEditor({ sys, system, item, onRemove }: { sys: OpenSystems; system:
       {ed.more.map((m) => (
         <SavedText key={m.key} label={m.label} value={m.value} placeholder={m.hint} onSave={save(m.key)} />
       ))}
-      <OutlineButton label={ed.remove} icon="delete-outline" compact tone="danger" accessibilityLabel={ed.removeSemantics} onPress={onRemove} style={styles.start} />
+      <View style={styles.row}>
+        {loggable(system, item) && (
+          <OutlineButton
+            label={entry ? 'Open in World' : 'Log in World'}
+            icon="book-open-variant"
+            compact
+            accessibilityLabel={`${entry ? 'Open' : 'Log'} ${item.name} in World`}
+            onPress={() => {
+              if (entry) router.navigate(worldEntryPath(entry.id) as never);
+              else if (sys.now((c) => c.logInWorld(id))) toast(`“${item.name}” logged in World.`);
+            }}
+          />
+        )}
+        <OutlineButton label={ed.remove} icon="delete-outline" compact tone="danger" accessibilityLabel={ed.removeSemantics} onPress={onRemove} style={styles.start} />
+      </View>
     </View>
   );
 }

@@ -37,6 +37,8 @@ import { Chip, GoldButton, Icon, IconButton, Muted, OutlineButton, Panel } from 
 import { colors, fonts, radius, space } from '../theme';
 import { CalculatorTool, InventoryTool, LineageTool, LogTool, PageTool, RanksTool } from './ModuleToolsMore';
 import { ChooserField, SavedText } from './parts';
+import { tiedNameSave } from './skillTieWords';
+import { useSystems } from '../systems/useSystems';
 import { type OpenModules, useModules } from './useModules';
 
 /** An entry's own page: a character's profile, or the world's entry page. */
@@ -561,6 +563,7 @@ function RegistryTool({ mods, at, recordId }: { mods: OpenModules; at: ToolAt; r
 
 function RegistryRecordView({ mods, at, record, category }: { mods: OpenModules; at: ToolAt; record: NonNullable<Extract<ReturnType<typeof registryTool>, { category: Category }>['record']>; category: Category }) {
   const router = useRouter();
+  const sys = useSystems();
   const key = (k: string) => `module:${mods.novelId}:record:${k}`;
   const e = record.entry;
   return (
@@ -573,6 +576,9 @@ function RegistryRecordView({ mods, at, record, category }: { mods: OpenModules;
         label={record.nameLabel}
         value={e.name}
         onSave={(v) => {
+          // A World skill tied to a system skill is renamed with it.
+          const rename = tiedNameSave(e, v);
+          if (rename && sys) return sys.later(key(record.keys.name), rename);
           const change = record.saveName(v);
           if (change) mods.later(key(record.keys.name), change);
         }}

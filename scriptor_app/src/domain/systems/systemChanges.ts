@@ -5,17 +5,22 @@
 // The Dart makes new ids with the global `newId` here; this makes them with the change's own (`newId()`, the same
 // generator in the app), so a test can hand them out in turn.
 
-import { ChangeRefused, RecordChanges } from '../codex/codexChanges';
+import { moveTypeTo } from '../codex/sortTypes';
+import { ChangeRefused,CodexChanges, RecordChanges, categoriesOf } from '../codex/codexChanges';
 import { type JsonMap, mapOrNull, str } from '../json';
+import { abilityId } from '../model/entityRef';
+import { Entry } from '../records/entry';
 import { maps, strings } from '../records/jsonRecord';
-import { SystemBlueprint, SystemSheet, blankSheet } from '../records/system';
+import { SystemBlueprint, SystemSheet, blankSheet, isSystemOn } from '../records/system';
 import { instantiateBlueprint, tidyBlueprint } from './blueprints';
 import { stageGrants, takesPoints } from './compute';
 import { dartTrim } from '../text/dartString';
+import { skillKindKey, skillsGroupOf, isJobSystem, loggable, tiedAbilityId } from './skillTies';
 import { blankBlueprint } from './systemPresets';
 
-/** The collections a change to systems reads and writes. */
-export const systemCollections: readonly string[] = ['systems', 'systemSheets', 'loreEntries', 'loreLinks', 'chapters'];
+/** The collections a change to systems reads and writes. `loreSchemas` is only read: a new World entry needs the novel's
+ * categories (a module's own Skills type stands in for the built-in one). */
+export const systemCollections: readonly string[] = ['systems', 'systemSheets', 'loreEntries', 'loreLinks', 'chapters', 'loreSchemas'];
 
 const text = (v: unknown): string => (typeof v === 'string' ? v : '');
 const finiteNumber = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
@@ -53,6 +58,109 @@ export class SystemChanges extends RecordChanges {
     }
   }
 
+  private entriesTiedTo(id: string): JsonMap[] {
+    return this.rows('loreEntries').filter((e) => tiedAbilityId(e) === id);
+  }
+
+  private untie(entry: JsonMap): void {
+    const { ability: _gone, ...rest } = entry;
+    this.put('loreEntries', { ...rest, updatedAt: this.now });
+  }
+
+  private ownedEntry(entryId: string): JsonMap {
+    const r = this.row('loreEntries', entryId);
+    if (r === null) throw new ChangeRefused('That entry is no longer in this novel.');
+    return r;
+  }
+
+  /** A skill of a system that is On, with its system; refused otherwise. */
+  private liveSkill(id: string): { system: SystemBlueprint; name: string } {
+    for (const system of this.systems()) {
+      const item = system.items.find((i) => abilityId(system.id, i.id) === id);
+      if (item === undefined) continue;
+      if (!isSystemOn(system)) throw new ChangeRefused(`${system.name} is off. Turn it on to tie its skills.`);
+      if (!loggable(system, item)) throw new ChangeRefused(`${item.name} is one at a time (a class or job), not a skill.`);
+      return { system, name: item.name };
+    }
+    throw new ChangeRefused('That skill is not in this novel.');
+  }
+
+  /** Ties a World entry to a skill: the entry takes the skill's name. One skill, one entry. */
+  tieSkill(entryId: string, id: string): void {
+    const entry = this.ownedEntry(entryId);
+    const { name } = this.liveSkill(id);
+    if (this.entriesTiedTo(id).some((e) => e['id'] !== entryId)) throw new ChangeRefused('That skill is already tied to another World entry.');
+    this.put('loreEntries', { ...entry, ability: id, name, updatedAt: this.now });
+  }
+
+  /** Drops the tie; the entry and the skill both stay as they are. */
+  untieSkill(entryId: string): void {
+    this.untie(this.ownedEntry(entryId));
+  }
+
+  /** Makes the World entry of a skill (under the Skills kind, named for it), or returns the one it already has. */
+  logInWorld(id: string): Entry {
+    const { name } = this.liveSkill(id);
+    const existing = this.entriesTiedTo(id)[0];
+    if (existing !== undefined) return new Entry(existing);
+    const codex = new CodexChanges(this.snapshot, { now: this.now, createId: () => this.newId() });
+    const made = codex.createEntry(skillKindKey([...categoriesOf(codex.snapshot).values()]), name);
+    this.snapshot = codex.snapshot;
+    this.tieSkill(made.id, id);
+    return new Entry(this.row('loreEntries', made.id)!);
+  }
+
+  /** "Keep": the Power stays a Power and the offer to make it a skill is not shown again. */
+  keepAsPower(entryId: string): void {
+    this.put('loreEntries', { ...this.ownedEntry(entryId), skillSorted: true, updatedAt: this.now });
+  }
+
+  keepRestAsPowers(entryIds: readonly string[]): void {
+    for (const id of entryIds) this.keepAsPower(id);
+  }
+
+  /** "Move to Skills and tie": the entry becomes a Skill (values kept as when a type is sorted) and takes the skill's name. */
+  moveToSkillAndTie(entryId: string, id: string): void {
+    this.ownedEntry(entryId);
+    this.liveSkill(id);
+    if (this.entriesTiedTo(id).length > 0) throw new ChangeRefused('That skill is already tied to another World entry.');
+    const codex = new CodexChanges(this.snapshot, { now: this.now, createId: () => this.newId() });
+    const kinds = categoriesOf(codex.snapshot);
+    const to = kinds.get(skillKindKey([...kinds.values()]));
+    if (to === undefined || to.archived) throw new ChangeRefused('There is no Skills type to move this entry to.');
+    moveTypeTo(codex, entryId, to, { skillSorted: true });
+    this.snapshot = codex.snapshot;
+    this.tieSkill(entryId, id);
+  }
+
+  /** Adds a skill named for the entry to The Job's "Skills" group and ties it; returns its ability id. */
+  logInSystem(entryId: string, systemId?: string): string {
+    const entry = this.ownedEntry(entryId);
+    if (tiedAbilityId(entry) !== null) throw new ChangeRefused('That entry is already tied to a skill.');
+    const jobs = this.systems().filter((s) => isSystemOn(s) && isJobSystem(s));
+    const system = systemId === undefined ? jobs[0] : jobs.find((s) => s.id === systemId);
+    const group = system === undefined ? null : skillsGroupOf(system);
+    if (system === undefined || group === null) throw new ChangeRefused(systemId === undefined ? 'There is no Job system turned on.' : 'Skills can only be logged in a Job system that is on.');
+    const name = dartTrim(str(entry['name'])) || 'Unnamed';
+    const itemId = this.newId();
+    this.updateSystem(system.id, (c) => ({ items: [...maps(c.raw['items']), { id: itemId, groupId: group.id, name } as JsonMap] }));
+    this.put('loreEntries', { ...entry, ability: abilityId(system.id, itemId), name, updatedAt: this.now });
+    return abilityId(system.id, itemId);
+  }
+
+  /** Renames a tied entry and its skill together (an untied entry is simply renamed). A blank name is refused. */
+  renameTiedSkill(entryId: string, name: string): void {
+    const entry = this.ownedEntry(entryId);
+    const wanted = dartTrim(name);
+    if (wanted.length === 0) throw new ChangeRefused('A name cannot be empty.');
+    const id = tiedAbilityId(entry);
+    const at = id === null ? undefined : this.systems().find((s) => s.items.some((i) => abilityId(s.id, i.id) === id));
+    if (at !== undefined) {
+      this.updateSystem(at.id, (c) => ({ items: maps(c.raw['items']).map((i) => (abilityId(at.id, str(i['id'])) === id ? { ...i, name: wanted } : i)) }));
+    }
+    this.put('loreEntries', { ...this.ownedEntry(entryId), name: wanted, updatedAt: this.now });
+  }
+
   /** Creates a blueprint: empty, or as a fresh copy of a preset or of any other blueprint's content. */
   createSystem(content: JsonMap = blankBlueprint): SystemBlueprint {
     const saved: JsonMap = {
@@ -74,6 +182,21 @@ export class SystemChanges extends RecordChanges {
     const kept = new Set(maps(next['items']).map((i) => i['id']));
     const gone = new Set(current.items.filter((i) => !kept.has(i.id)).map((i) => i.id));
     if (gone.size > 0) this.removeAbilityConnections(systemId, gone);
+    // A skill and its World entry are one thing: a new name goes to both; a skill taken out only drops the tie.
+    const names = new Map(maps(next['items']).map((i) => [str(i['id']), str(i['name'])]));
+    const tiedHere = new Map<string, JsonMap[]>();
+    for (const e of this.rows('loreEntries')) {
+      const id = tiedAbilityId(e);
+      if (id !== null && id.startsWith(`${systemId}/`)) tiedHere.set(id, [...(tiedHere.get(id) ?? []), e]);
+    }
+    for (const item of current.items) {
+      const tied = tiedHere.get(abilityId(systemId, item.id)) ?? [];
+      const name = names.get(item.id);
+      for (const e of tied) {
+        if (name === undefined) this.untie(e);
+        else if (name !== item.name && name !== str(e['name'])) this.put('loreEntries', { ...e, name, updatedAt: this.now });
+      }
+    }
     this.put('systems', { ...current.raw, ...next, updatedAt: this.now });
   }
 
@@ -89,6 +212,7 @@ export class SystemChanges extends RecordChanges {
     this.owned(systemId);
     for (const s of this.sheets()) if (s.systemId === systemId) this.remove('systemSheets', s.id);
     this.removeAbilityConnections(systemId);
+    for (const e of this.rows('loreEntries')) if (str(e['ability']).startsWith(`${systemId}/`)) this.untie(e);
     this.remove('systems', systemId);
   }
 

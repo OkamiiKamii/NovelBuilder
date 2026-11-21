@@ -157,6 +157,8 @@ export function tidyBlueprint(given: JsonMap, createId: () => string = newId): J
   }
   return {
     name: or(dartTrim(text(input['name'])), 'Untitled system'),
+    // Which preset it began from; only "leveling-job" is told apart (The Job, where World skills can be logged).
+    ...(text(input['preset']).length > 0 ? { preset: input['preset'] } : {}),
     description: text(input['description']),
     variables,
     // A stage gives only what is still in the blueprint.

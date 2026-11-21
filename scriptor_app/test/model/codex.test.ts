@@ -192,7 +192,7 @@ describe('defining a kind of record', () => {
 });
 
 describe('categories and fields', () => {
-  test('starts with the ten built-in categories, partners together, and their default fields, storing nothing', () => {
+  test('starts with the eleven built-in categories, partners together, and their default fields, storing nothing', () => {
     const w = new Codex();
     expect(w.read.categories().map((c) => c.name)).toEqual([
       'Characters',
@@ -202,6 +202,7 @@ describe('categories and fields', () => {
       'Items',
       'Artifacts',
       'Powers',
+      'Skills',
       'Rules',
       'Lore',
       'History',
